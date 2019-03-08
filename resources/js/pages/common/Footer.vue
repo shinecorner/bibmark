@@ -28,6 +28,7 @@
                                     <input type="email" class="form-control" id="email" placeholder="E-mail">
                                 </div>
                                 <button type="submit" class="btn btn-primary mb-2">Search</button>
+                                <!-- <button class="btn btn-sm  ml-2 mr-2 search-btn align-content-sm-center" type="submit"><span class="search-btn-text">Search</span></button> -->
                             </form>
                         </div>
                 </div>
@@ -284,105 +285,6 @@
         color: lightblue;
     }
 
-    @media only screen and (min-width: 1200px) {
-        .subscribe-text {
-            padding-left: 150px;
-        }
-        .input-email {
-            margin-left: 6vw;
-            width: 446px;
-        }
-
-        .email-form {
-            width: 120%;
-        }
-
-        .search-btn {
-            width: 127px;
-            display: block;
-            border-radius: 5px;
-            background-color: #ffe100;
-        }
-    }
-
-    @media only screen and (max-width: 1119px) {
-        .subscribe-text {
-            padding-left: 150px;
-        }
-        .input-email {
-            margin-left: 4vw;
-            width: 446px;
-        }
-
-        .email-form {
-            width: 100%;
-        }
-
-        .search-btn {
-            width: 90px;
-            display: block;
-            border-radius: 5px;
-            background-color: #ffe100;
-        }
-    }
-
-    @media only screen and  (max-width: 767px) {
-        .subscribe-text {
-            padding-left: 0px;
-        }
-        .input-email {
-            width: 350px;
-            border-radius: 3px;
-            background-color: #ffffff;
-        }
-
-        .search-btn {
-            width: 127px;
-            border-radius: 5px;
-            background-color: #ffe100;
-        }
-
-        .email-form {
-            padding-left: 5vw;
-            width: 110%;
-        }
-    }
-
-    @media only screen and  (max-width: 576px) {
-
-        .subscribe-text {
-            padding-bottom: 2%;
-            font-size: calc(8px + 0.78vw);
-            text-align: center;
-            font-weight: 400;
-            line-height: 0.54;
-            color: #ffffff;
-            z-index: 1;
-        }
-
-        .input-email {
-            width: 100%;
-            margin-left: 0px;
-        }
-
-        .email-form {
-            width: 100%;
-        }
-
-        .search-btn {
-            width: 100%;
-            border-radius: 5px;
-            background-color: #ffe100;
-        }
-
-        .subscribe-text {
-            font-size: 12px;
-            font-weight: 400;
-            line-height: 0.54;
-            color: #ffffff;
-            z-index: 1;
-        }
-    }
     /* New style */
     .first-row{
         padding-top: 10px;
@@ -400,8 +302,11 @@
     }
     @media (min-width: 1100px) {
         .form-control {
-        width: 28vw;
-        height: 40px;
+            width: 28vw;
+            height: 40px;
+        }
+        .btn-primary{
+            width: 8vw;
         }
     }
     
@@ -437,32 +342,13 @@
     }
     @media screen and (min-width: 992px) and (max-width: 1200px) {
         .form-control {
-            min-width:150px;
+            max-width: 310px;
         }
         .footer-text{
-            font-size: 22px;
+            font-size: 19px;
         }
     }
-    /*
-    @media screen and (min-width: 768px) and (max-width: 992px) {
-        .form-control {
-            min-width:100px;
-        }
-        .footer-text{
-            font-size: 16px;
-        }
-    } */
-    /* @media (min-width: 576px) and (max-width: 768px) {
-        .form-control {
-            width:100%;
-        }
-        .footer-text{
-            font-size: 10px;
-        }
-        .btn-primary{
-            width: 100%;
-        }
-    } */
+
     @media screen and (min-width: 768px) and (max-width: 992px) {
         .form-control {
             min-width:100px;
@@ -482,7 +368,7 @@
         line-height: normal;
         letter-spacing: normal;
         color: #000000;
-        height: 40px;
+        /* height: 40px; */
     }
     .btn-primary:hover {
         border-color: transparent;
