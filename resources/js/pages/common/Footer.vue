@@ -147,7 +147,7 @@
             <!-- Footer Links -->
 
             <!-- Copyright -->
-            <div class="footer-copyright padding-side text-sm-center text-md-center text-lg-center text-xl-left text-white">
+            <div class="footer-copyright padding-side text-white">
                 ©&nbsp;2019&nbsp;Bibmark,&nbsp;Inc.&nbsp;All&nbsp;Rights&nbsp;Reserved
             </div>
             <!-- Copyright -->
@@ -331,14 +331,17 @@
         }
     }
 
-    @media screen and (min-width: 768px) and (max-width: 1200px) {
+    @media screen and (min-width: 768px) and (max-width: 1600px) {
         .second-row {
             display: flex;
             justify-content: space-evenly;
         }
+        .footer-copyright {
+            text-align: center;
+        }
     }
 
-    @media screen and (max-width: 1390px) {
+    @media screen and (max-width: 1600px) {
         .first-row {
             display: flex;
             justify-content: center;
@@ -353,6 +356,12 @@
         }
         .padding-side {
             padding-left: 0px !important;;
+        }
+    }
+
+    @media screen and (min-width: 1600px) {
+        .footer-copyright {
+            text-align: left;
         }
     }
 
