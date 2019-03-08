@@ -17,10 +17,10 @@
 
             <div class="container first-row">
                 <div class="row">
-                        <div class="col-sm-7">
+                        <div class="col-sm-6">
                             <p class="footer-text">Get the latest on news, events and races from Bibmark.</p>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-sm-6">
                             <!-- <input class="form-control col-md-7 col-sm-auto input-email align-content-sm-center" type="search" placeholder="E-mail" aria-label="Search">
                             <button class="btn btn-sm  ml-2 mr-2 search-btn align-content-sm-center" type="submit"><span class="search-btn-text">Search</span></button> -->
                             <form class="form-inline">
@@ -48,7 +48,7 @@
                         <div class="pt-lg-4">
                             <img src="/img/bibmark-footer-logo.svg">
                         </div>
-                        <ul class="list-unstyled list-inline pt-4">
+                        <ul class="list-unstyled list-inline pt-3">
                             <li class="list-inline-item pr-1 pt-1">
                                 <a href="javascript:void(0)">
                                     <img src="/img/instagram-icon.svg">
@@ -85,7 +85,7 @@
                     <div class="col-md-3 mx-auto pt-3">
 
                         <!-- Links -->
-                        <h5 class="font-weight-bold mt-3 mb-4 text-white">Company</h5>
+                        <h5 class="font-weight-bold mt-3 mb-3 text-white">Company</h5>
 
                         <ul class="list-unstyled">
                             <li>
@@ -124,7 +124,7 @@
                     <div class="col-md-3 mx-auto pt-3">
 
                         <!-- Links -->
-                        <h5 class="font-weight-bold mt-3 mb-4 text-white">Help</h5>
+                        <h5 class="font-weight-bold mt-3 mb-3 text-white">Help</h5>
 
                         <ul class="list-unstyled">
                             <li>
@@ -158,7 +158,7 @@
                     <div class="col-md-3 mx-auto pt-3">
 
                         <!-- Links -->
-                        <h5 class="font-weight-bold mt-3 mb-4 text-white">Collaborate</h5>
+                        <h5 class="font-weight-bold mt-3 mb-3 text-white">Collaborate</h5>
 
                         <ul class="list-unstyled">
                             <li>
@@ -261,8 +261,9 @@
     }
 
     .font-columns-style {
-        font-family: "SFProDisplay", "San Francisco", sans-serif;;
+        font-family: SFProText "San Francisco", sans-serif;
         font-size: 14px;
+        font-weight: normal;
         font-style: normal;
         font-stretch: normal;
         line-height: normal;
@@ -271,7 +272,8 @@
     }
 
     .Bibmark-Inc {
-        padding-left: 15vw;
+        padding-left: 10vw;
+        /* padding-left: 135px; */
     }
 
     a.grey {
@@ -383,11 +385,11 @@
     }
     /* New style */
     .first-row{
-        padding-top: 20px;
+        padding-top: 10px;
     }
     .footer-text{
         font-family: SFProDisplay;
-        font-size: 26px;
+        font-size: 23px;
         /* font-weight: 600; */
         font-style: normal;
         font-stretch: normal;
@@ -396,9 +398,13 @@
         color: #ffffff;
         padding-top: 13px;
     }
-    .form-control {
-        min-width: 250px;
+    @media (min-width: 1100px) {
+        .form-control {
+        width: 28vw;
+        height: 40px;
+        }
     }
+    
     @media (max-width: 900px) {
         .footer-text{
             font-size: 14px;
@@ -423,7 +429,7 @@
     } */
     @media (max-width: 992px) {
         .form-control {
-        min-width:220px;
+        min-width:225px;
         }
         .footer-text{
             font-size: 14px;
@@ -476,10 +482,24 @@
         line-height: normal;
         letter-spacing: normal;
         color: #000000;
+        height: 40px;
     }
     .btn-primary:hover {
         border-color: transparent;
         background: #ffe100;
         color: #000000;
+    }
+    .list-inline-item:not(:last-child) {
+        margin-right: 0.2rem;
+        padding-right: 0 !important;
+    }
+    .font-weight-bold{
+        /* font-family: SFProDisplay; */
+        font-size: 14px;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        color: #ffffff;
     }
 </style>
