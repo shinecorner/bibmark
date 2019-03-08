@@ -89,27 +89,27 @@
                         <h5 class="font-weight-bold mt-3 mb-3 text-white">Company</h5>
 
                         <ul class="list-unstyled">
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Story
                                 </a>
                             </li>
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Contact
                                 </a>
                             </li>
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Press
                                 </a>
                             </li>
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Blog
                                 </a>
                             </li>
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Terms and Privacy
                                 </a>
@@ -128,22 +128,22 @@
                         <h5 class="font-weight-bold mt-3 mb-3 text-white">Help</h5>
 
                         <ul class="list-unstyled">
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Sizing
                                 </a>
                             </li>
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Group Orders
                                 </a>
                             </li>
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Shipping & Delivery
                                 </a>
                             </li>
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Contact
                                 </a>
@@ -162,22 +162,22 @@
                         <h5 class="font-weight-bold mt-3 mb-3 text-white">Collaborate</h5>
 
                         <ul class="list-unstyled">
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Sponsors
                                 </a>
                             </li>
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Partnerships
                                 </a>
                             </li>
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Charity
                                 </a>
                             </li>
-                            <li>
+                            <li class="mb-1">
                                 <a href="javascript:void(0)" class="grey">
                                     Social Responsibility
                                 </a>
