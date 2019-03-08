@@ -342,6 +342,9 @@
     }
 
     @media screen and (max-width: 1600px) {
+        .footer-description {
+            text-align: center;
+        }
         .first-row {
             display: flex;
             justify-content: center;
@@ -361,6 +364,9 @@
 
     @media screen and (min-width: 1600px) {
         .footer-copyright {
+            text-align: left;
+        }
+        .footer-description {
             text-align: left;
         }
     }
