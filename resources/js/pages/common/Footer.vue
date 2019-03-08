@@ -2,12 +2,12 @@
     <div id="footer-container">
         <footer class="page-footer">
             <div class="first-row padding-side row mx-0">
-                <div class="col-xs-12 footer-description">
+                <div class="footer-description text-sm-center text-md-center text-lg-left text-xl-left">
                     Get the latest on news, events and races from Bibmark.
                 </div>
-                <div class="col-xs-12 input-email row mx-0">
+                <div class="input-email d-flex mx-0">
                     <input type="email" class="form-control ml-0" id="email" placeholder="E-mail">
-                    <button class="btn search-btn">Search</button>
+                    <button class="search-btn">Search</button>
                 </div>
             </div>
 
@@ -52,102 +52,102 @@
 
                 <span class="clearfix w-100 d-md-none"></span>
 
-                <div class="page-links row mx-0">
-                    <div class="common-cls">
-                        <h5 class="pane-title mb-3 text-white">Company</h5>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Story
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Contact
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Press
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Blog
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Terms and Privacy
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <span class="clearfix w-100 d-md-none"></span>
-
-                    <div class="common-cls">
-                        <h5 class="pane-title mb-3 text-white">Help</h5>
-
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Sizing
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Group Orders
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Shipping & Delivery
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Contact
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <span class="clearfix w-100 d-md-none"></span>
-
-                    <div class="common-cls  mx-0">
-                        <h5 class="pane-title mb-3 text-white">Collaborate</h5>
-
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Sponsors
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Partnerships
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Charity
-                                </a>
-                            </li>
-                            <li class="mb-2">
-                                <a href="javascript:void(0)" class="grey">
-                                    Social Responsibility
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                <!--<div class="page-links row mx-0">-->
+                <div class="common-cls">
+                    <h5 class="pane-title mb-3 text-white">Company</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Story
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Contact
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Press
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Blog
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Terms and Privacy
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+
+                <span class="clearfix w-100 d-md-none"></span>
+
+                <div class="common-cls">
+                    <h5 class="pane-title mb-3 text-white">Help</h5>
+
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Sizing
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Group Orders
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Shipping & Delivery
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Contact
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <span class="clearfix w-100 d-md-none"></span>
+
+                <div class="common-cls  mx-0">
+                    <h5 class="pane-title mb-3 text-white">Collaborate</h5>
+
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Sponsors
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Partnerships
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Charity
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Social Responsibility
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--</div>-->
 
             </div>
             <!-- Footer Links -->
 
             <!-- Copyright -->
-            <div class="footer-copyright padding-side text-sm-center text-lg-center text-md-center text-xl-left text-white">
+            <div class="footer-copyright padding-side text-sm-center text-md-center text-lg-center text-xl-left text-white">
                 ©&nbsp;2019&nbsp;Bibmark,&nbsp;Inc.&nbsp;All&nbsp;Rights&nbsp;Reserved
             </div>
             <!-- Copyright -->
@@ -216,6 +216,8 @@
                         line-height: normal;
                         letter-spacing: normal;
                         color: #000000;
+                        border: none;
+                        cursor: pointer;
                     }
                 }
 
@@ -231,7 +233,7 @@
             .second-row {
                 .social-links {
                     margin-top: 48px;
-                    margin-right: 169px;
+                    padding-right: 169px;
                     ul {
                         width: 155px;
                     }
@@ -278,85 +280,81 @@
 
     .common-cls {
         margin-top: 54px;
-        margin-right: 110px;
+        padding-right: 110px;
         min-height: 185px;
     }
 
     .padding-side {
         padding-left: 331px;
     }
-    
+
+    @media screen and (min-width: 320px) and (max-width: 550px) {
+        .input-email {
+            display: flex;
+            justify-content: space-evenly;
+            width: 220px;
+            padding-right: 0px !important;
+            padding-left: 0px !important;
+            .search-btn {
+                width: 70px !important;
+                font-size: 14px !important;
+            }
+        }
+    }
+
     @media screen and (max-width: 768px) {
-        .second-row {
-            display: block !important;
+        .input-email {
+            padding: 8px 55px 11px 55px;
+            #email {
+                width: 420px;
+                height: 40px;
+            }
+            .search-btn {
+                width: 127px;
+                height: 40px;
+                font-size: 17px;
+            }
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+
+        .first-row {
+            display: block;
+        }
+        .footer-description {
+            font-size: 16px !important;
+            padding-left: 20px;
         }
         .social-links ul {
             width: 100% !important;
         }
-        .common-cls {
-            margin-top: 0px;
-        }
+    }
 
-        .common-cls, .social-links {
-            width: 100%;
-            margin-right: 0px !important;
-            margin-bottom: 30px;
+    @media screen and (min-width: 768px) and (max-width: 1200px) {
+        .second-row {
+            display: flex;
+            justify-content: space-evenly;
+        }
+    }
+
+    @media screen and (max-width: 1390px) {
+        .first-row {
+            display: flex;
+            justify-content: center;
         }
 
         .footer-copyright {
             text-align: center;
         }
-    }
-
-    @media screen and (max-width: 992px) and (min-width: 768px){
-        .common-cls {
-            margin-right: 50px !important;;
+        .common-cls, .social-links {
+            padding-right: 0px !important;
 
         }
-        .social-links {
-            margin-right: 100px !important;
-        }
-    }
-
-    @media screen and (max-width: 1390px) {
         .padding-side {
             padding-left: 0px !important;;
         }
-
-        .first-row {
-            display: flex;
-            justify-content: center;
-        }
-
-        .second-row {
-            display: flex;
-            justify-content: center;
-        }
     }
 
-    @media screen and (min-width: 1390px) {
-        input {
-            width: 350px !important;
-        }
-    }
-
-    @media screen and (max-width: 675px) {
-        .first-row {
-            .footer-description {
-                font-size: 16px !important;
-            }
-            .input-email {
-                padding-right: 0px !important;
-                padding-left: 0px !important;
-            }
-            input {
-                width: 200px !important;
-            }
-            button {
-                width: 80px !important;
-                font-size: 14px !important;
-            }
-        }
-    }
 
 </style>
