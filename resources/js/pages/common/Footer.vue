@@ -1,200 +1,154 @@
 <template>
-    <div>
-        <footer class="page-footer font-small" style="background-color: black">
-            <!-- <div class="pl-3">
-                <div class="row pt-1">
-                    <div class="col-md-6 mb-2  m-0 mt-1 text-sm-center text-md-left text-lg-right pt-3 text-white subscribe-text">
-                        Get&nbsp;the&nbsp;latest&nbsp;on&nbsp;news,&nbsp;events&nbsp;and&nbsp;races&nbsp;from&nbsp;Bibmark.
-                    </div>
-                    <div class="col-md-6 pl-1 pl-sm-2 pr-sm-2">
-                        <div class="row p-sm-0 email-form m-0 mt-1">
-                            <input class="form-control col-md-7 col-sm-auto input-email align-content-sm-center" type="search" placeholder="E-mail" aria-label="Search">
-                            <button class="btn btn-sm  ml-2 mr-2 search-btn align-content-sm-center" type="submit"><span class="search-btn-text">Search</span></button>
-                        </div>
-                    </div>
+    <div id="footer-container">
+        <footer class="page-footer">
+            <div class="first-row padding-side row mx-0">
+                <div class="footer-description text-sm-center text-md-center text-lg-left text-xl-left">
+                    Get the latest on news, events and races from Bibmark.
                 </div>
-            </div> -->
-
-            <div class="container first-row">
-                <div class="row">
-                        <div class="col-sm-7">
-                            <p class="footer-text">Get the latest on news, events and races from Bibmark.</p>
-                        </div>
-                        <div class="col-sm-5">
-                            <!-- <input class="form-control col-md-7 col-sm-auto input-email align-content-sm-center" type="search" placeholder="E-mail" aria-label="Search">
-                            <button class="btn btn-sm  ml-2 mr-2 search-btn align-content-sm-center" type="submit"><span class="search-btn-text">Search</span></button> -->
-                            <form class="form-inline">
-                                <div class="form-group mx-sm-3 mb-2">
-                                    <input type="email" class="form-control" id="email" placeholder="E-mail">
-                                </div>
-                                <button type="submit" class="btn btn-primary mb-2">Search</button>
-                            </form>
-                        </div>
+                <div class="input-email d-flex mx-0">
+                    <input type="email" class="form-control ml-0" id="email" placeholder="E-mail">
+                    <button class="search-btn">Search</button>
                 </div>
             </div>
 
             <!-- yellow line-->
-            <div class="yellow-line mt-2"></div>
+            <div class="yellow-line"></div>
             <!-- Footer Links -->
-            <div class="container text-center text-md-left mt-4">
+            <div class="second-row padding-side text-center text-md-left d-lg-flex mx-0">
 
-                <!-- Grid row -->
-                <div class="row">
-
-                    <!-- Grid column -->
-                    <div class="col-md-3 mx-auto">
-
-                        <!-- Links -->
-                        <div class="pt-lg-4">
-                            <img src="/img/bibmark-footer-logo.svg">
-                        </div>
-                        <ul class="list-unstyled list-inline pt-4">
-                            <li class="list-inline-item pr-1 pt-1">
-                                <a href="javascript:void(0)">
-                                    <img src="/img/instagram-icon.svg">
-                                </a>
-                            </li>
-                            <li class="list-inline-item pr-1 pt-1">
-                                <a href="javascript:void(0)">
-                                    <img src="/img/fb-icon.svg">
-                                </a>
-                            </li>
-                            <li class="list-inline-item pr-1 pt-1">
-                                <a href="javascript:void(0)">
-                                    <img src="/img/twitter-icon.svg">
-                                </a>
-                            </li>
-                            <li class="list-inline-item pr-1 pt-1">
-                                <a href="javascript:void(0)">
-                                    <img src="/img/youtube-icon.svg">
-                                </a>
-                            </li>
-                            <li class="list-inline-item pr-1 pt-1">
-                                <a href="javascript:void(0)">
-                                    <img src="/img/snapchat-icon.svg">
-                                </a>
-                            </li>
-                        </ul>
-
+                <div class="social-links">
+                    <div class="">
+                        <img src="/img/bibmark-footer-logo.svg">
                     </div>
-                    <!-- Grid column -->
-
-                    <hr class="clearfix w-100 d-md-none">
-
-                    <!-- Grid column -->
-                    <div class="col-md-3 mx-auto pt-3">
-
-                        <!-- Links -->
-                        <h5 class="font-weight-bold mt-3 mb-4 text-white">Company</h5>
-
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Story
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Contact
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Press
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Blog
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Terms and Privacy
-                                </a>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <!-- Grid column -->
-
-                    <hr class="clearfix w-100 d-md-none">
-
-                    <!-- Grid column -->
-                    <div class="col-md-3 mx-auto pt-3">
-
-                        <!-- Links -->
-                        <h5 class="font-weight-bold mt-3 mb-4 text-white">Help</h5>
-
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Sizing
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Group Orders
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Shipping & Delivery
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Contact
-                                </a>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <!-- Grid column -->
-
-                    <hr class="clearfix w-100 d-md-none">
-
-                    <!-- Grid column -->
-                    <div class="col-md-3 mx-auto pt-3">
-
-                        <!-- Links -->
-                        <h5 class="font-weight-bold mt-3 mb-4 text-white">Collaborate</h5>
-
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Sponsors
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Partnerships
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Charity
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)" class="grey">
-                                    Social Responsibility
-                                </a>
-                            </li>
-                        </ul>
-
-                    </div>
-                    <!-- Grid column -->
-
+                    <ul class="list-unstyled list-inline pt-3">
+                        <li class="list-item pt-1">
+                            <a href="javascript:void(0)">
+                                <img src="/img/instagram-icon.svg">
+                            </a>
+                        </li>
+                        <li class="list-item pt-1">
+                            <a href="javascript:void(0)">
+                                <img src="/img/fb-icon.svg">
+                            </a>
+                        </li>
+                        <li class="list-item pt-1">
+                            <a href="javascript:void(0)">
+                                <img src="/img/twitter-icon.svg">
+                            </a>
+                        </li>
+                        <li class="list-item pt-1">
+                            <a href="javascript:void(0)">
+                                <img src="/img/youtube-icon.svg">
+                            </a>
+                        </li>
+                        <li class="list-item pt-1">
+                            <a href="javascript:void(0)">
+                                <img src="/img/snapchat-icon.svg">
+                            </a>
+                        </li>
+                    </ul>
                 </div>
-                <!-- Grid row -->
+
+
+                <span class="clearfix w-100 d-md-none"></span>
+
+                <!--<div class="page-links row mx-0">-->
+                <div class="common-cls">
+                    <h5 class="pane-title mb-3 text-white">Company</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Story
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Contact
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Press
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Blog
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Terms and Privacy
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <span class="clearfix w-100 d-md-none"></span>
+
+                <div class="common-cls">
+                    <h5 class="pane-title mb-3 text-white">Help</h5>
+
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Sizing
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Group Orders
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Shipping & Delivery
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Contact
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <span class="clearfix w-100 d-md-none"></span>
+
+                <div class="common-cls  mx-0">
+                    <h5 class="pane-title mb-3 text-white">Collaborate</h5>
+
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Sponsors
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Partnerships
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Charity
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="javascript:void(0)" class="grey">
+                                Social Responsibility
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--</div>-->
 
             </div>
             <!-- Footer Links -->
 
             <!-- Copyright -->
-            <div class="footer-copyright text-lg-left text-sm-center py-3">
-                <div class="text-white font-columns-style Bibmark-Inc">©&nbsp;2019&nbsp;Bibmark,&nbsp;Inc.&nbsp;All&nbsp;Rights&nbsp;Reserved</div>
+            <div class="footer-copyright padding-side text-white">
+                ©&nbsp;2019&nbsp;Bibmark,&nbsp;Inc.&nbsp;All&nbsp;Rights&nbsp;Reserved
             </div>
             <!-- Copyright -->
 
@@ -208,278 +162,214 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     @font-face {
-            font-family: "SFProDisplay";
-            src: url("/fonts/SF-Pro-Display-Regular.otf") format('truetype');
-        }
+        font-family: "SFProDisplay";
+        src: url("/fonts/SF-Pro-Display-Regular.otf") format('truetype');
+    }
+
     @font-face {
         font-family: "SFProText";
         src: url("/fonts/SFProText-Regular.ttf") format('truetype');
     }
-    /*footer*/
-    .subscribe-text {
-        font-size: calc(8px + 0.78vw);
-        font-weight: 400;
-        line-height: 0.54;
-        color: #ffffff;
-        z-index: 1;
-    }
 
-    .input-email {
-        width: 446px;
-        border-radius: 3px;
-        margin-left: 6vw;
-        background-color: #ffffff;
-    }
+    #footer-container {
+        padding-top: 67px;
+        background: #ffffff;
+        .page-footer {
+            background-color: #000000;
+            .first-row {
+                .footer-description {
+                    padding-top: 10px;
+                    font-family: SFProDisplay;
+                    font-size: 26px;
+                    font-style: normal;
+                    font-stretch: normal;
+                    line-height: normal;
+                    letter-spacing: normal;
+                    color: #ffffff;
+                }
+                .input-email {
+                    padding-top: 8px;
+                    padding-bottom: 11px;
+                    padding-right: 55px;
+                    padding-left: 55px;
+                    #email {
+                        width: 420px;
+                        height: 40px;
+                        border-radius: 3px;
+                        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);
+                        border: solid 1px #d4d4d4;
+                        background-color: #ffffff;
+                    }
+                    .search-btn {
+                        width: 127px;
+                        height: 40px;
+                        border-radius: 5px;
+                        background-color: #ffe100;
+                        margin-left: 15px;
+                        font-family: SFProText;
+                        font-size: 17px;
+                        font-weight: bold;
+                        font-style: normal;
+                        font-stretch: normal;
+                        line-height: normal;
+                        letter-spacing: normal;
+                        color: #000000;
+                        border: none;
+                        cursor: pointer;
+                    }
+                }
 
-    .search-btn {
-        border-radius: 5px;
-        background-color: #ffe100;
-    }
+            }
 
-    .email-form {
-        width: 115%;
-    }
+            .yellow-line {
+                width: 100%;
+                height: 3px;
+                background-color: #fff300;
+                z-index: 9;
+            }
 
-    .search-btn-text {
-        font-family: "SFProDisplay", "San Francisco", sans-serif;
-        font-size: calc(10px + 0.46vw);
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        color: #000000;
-    }
+            .second-row {
+                .social-links {
+                    margin-top: 48px;
+                    padding-right: 169px;
+                    ul {
+                        width: 155px;
+                    }
+                    .list-item {
+                        padding-right: 3px;
+                        display: inline-block;
+                    }
+                }
 
-    .yellow-line {
-        width: 100%;
-        height: 3px;
-        background-color: #fff300;
-        z-index: 9;
-    }
+                .pane-title {
+                    font-family: SFProText;
+                    font-size: 14px;
+                    font-weight: bold;
+                    font-style: normal;
+                    font-stretch: normal;
+                    line-height: normal;
+                    letter-spacing: normal;
+                    color: #ffffff;
+                }
+                a.grey {
+                    color: grey;
+                }
 
-    .font-columns-style {
-        font-family: "SFProDisplay", "San Francisco", sans-serif;;
-        font-size: 14px;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        color: #ffffff;
-    }
+                a:hover {
+                    color: lightblue;
+                }
+            }
 
-    .Bibmark-Inc {
-        padding-left: 15vw;
-    }
-
-    a.grey {
-        color: grey;
-    }
-
-    a:hover {
-        color: lightblue;
-    }
-
-    @media only screen and (min-width: 1200px) {
-        .subscribe-text {
-            padding-left: 150px;
+            .footer-copyright {
+                padding-top: 31px;
+                padding-bottom: 13px;
+                font-family: SFProText, "San Francisco", sans-serif;
+                font-size: 14px;
+                font-weight: normal;
+                font-style: normal;
+                font-stretch: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                color: #ffffff;
+            }
         }
+
+    }
+
+    .common-cls {
+        margin-top: 54px;
+        padding-right: 110px;
+        min-height: 185px;
+    }
+
+    .padding-side {
+        padding-left: 331px;
+    }
+
+    @media screen and (min-width: 320px) and (max-width: 550px) {
         .input-email {
-            margin-left: 6vw;
-            width: 446px;
+            display: flex;
+            justify-content: space-evenly;
+            width: 220px;
+            padding-right: 0px !important;
+            padding-left: 0px !important;
+            .search-btn {
+                width: 70px !important;
+                font-size: 14px !important;
+            }
         }
+    }
 
-        .email-form {
-            width: 120%;
+    @media screen and (max-width: 768px) {
+        .input-email {
+            padding: 8px 55px 11px 55px;
+            #email {
+                width: 420px;
+                height: 40px;
+            }
+            .search-btn {
+                width: 127px;
+                height: 40px;
+                font-size: 17px;
+            }
         }
+    }
 
-        .search-btn {
-            width: 127px;
+    @media screen and (max-width: 768px) {
+
+        .first-row {
             display: block;
-            border-radius: 5px;
-            background-color: #ffe100;
+        }
+        .footer-description {
+            font-size: 16px !important;
+            padding-left: 20px;
+        }
+        .social-links ul {
+            width: 100% !important;
         }
     }
 
-    @media only screen and (max-width: 1119px) {
-        .subscribe-text {
-            padding-left: 150px;
+    @media screen and (min-width: 768px) and (max-width: 1600px) {
+        .second-row {
+            display: flex;
+            justify-content: space-evenly;
         }
-        .input-email {
-            margin-left: 4vw;
-            width: 446px;
-        }
-
-        .email-form {
-            width: 100%;
-        }
-
-        .search-btn {
-            width: 90px;
-            display: block;
-            border-radius: 5px;
-            background-color: #ffe100;
-        }
-    }
-
-    @media only screen and  (max-width: 767px) {
-        .subscribe-text {
-            padding-left: 0px;
-        }
-        .input-email {
-            width: 350px;
-            border-radius: 3px;
-            background-color: #ffffff;
-        }
-
-        .search-btn {
-            width: 127px;
-            border-radius: 5px;
-            background-color: #ffe100;
-        }
-
-        .email-form {
-            padding-left: 5vw;
-            width: 110%;
-        }
-    }
-
-    @media only screen and  (max-width: 576px) {
-
-        .subscribe-text {
-            padding-bottom: 2%;
-            font-size: calc(8px + 0.78vw);
+        .footer-copyright {
             text-align: center;
-            font-weight: 400;
-            line-height: 0.54;
-            color: #ffffff;
-            z-index: 1;
-        }
-
-        .input-email {
-            width: 100%;
-            margin-left: 0px;
-        }
-
-        .email-form {
-            width: 100%;
-        }
-
-        .search-btn {
-            width: 100%;
-            border-radius: 5px;
-            background-color: #ffe100;
-        }
-
-        .subscribe-text {
-            font-size: 12px;
-            font-weight: 400;
-            line-height: 0.54;
-            color: #ffffff;
-            z-index: 1;
-        }
-    }
-    /* New style */
-    .first-row{
-        padding-top: 20px;
-    }
-    .footer-text{
-        font-family: SFProDisplay;
-        font-size: 26px;
-        /* font-weight: 600; */
-        font-style: normal;
-        font-stretch: normal;
-        line-height: 0.54;
-        letter-spacing: normal;
-        color: #ffffff;
-        padding-top: 13px;
-    }
-    .form-control {
-        min-width: 250px;
-    }
-    @media (max-width: 900px) {
-        .footer-text{
-            font-size: 14px;
-            font-style: normal;
-            font-stretch: normal;
-            line-height: 0.54;
-            letter-spacing: normal;
-            color: #ffffff;
-            padding-top: 0px;
-        }
-        .form-control {
-        min-width:220px;
         }
     }
 
-    /* @media (min-width: 576px) {
-    html { font-size: 1.25rem; }
-    }
+    @media screen and (max-width: 1600px) {
+        .footer-description {
+            text-align: center;
+        }
+        .first-row {
+            display: flex;
+            justify-content: center;
+        }
 
-    @media (min-width: 768px) {
-        html { font-size: 1.5rem; }
-    } */
-    @media (max-width: 992px) {
-        .form-control {
-        min-width:220px;
+        .footer-copyright {
+            text-align: center;
         }
-        .footer-text{
-            font-size: 14px;
+        .common-cls, .social-links {
+            padding-right: 0px !important;
+
         }
-    }
-    @media screen and (min-width: 992px) and (max-width: 1200px) {
-        .form-control {
-            min-width:150px;
-        }
-        .footer-text{
-            font-size: 22px;
-        }
-    }
-    /*
-    @media screen and (min-width: 768px) and (max-width: 992px) {
-        .form-control {
-            min-width:100px;
-        }
-        .footer-text{
-            font-size: 16px;
-        }
-    } */
-    /* @media (min-width: 576px) and (max-width: 768px) {
-        .form-control {
-            width:100%;
-        }
-        .footer-text{
-            font-size: 10px;
-        }
-        .btn-primary{
-            width: 100%;
-        }
-    } */
-    @media screen and (min-width: 768px) and (max-width: 992px) {
-        .form-control {
-            min-width:100px;
-        }
-        .footer-text{
-            font-size: 16px;
+        .padding-side {
+            padding-left: 0px !important;;
         }
     }
 
-    .btn-primary{
-        background: #ffe100;;
-        font-family: SFProText;
-        font-size: 17px;
-        font-weight: bold;
-        font-style: normal;
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: normal;
-        color: #000000;
+    @media screen and (min-width: 1600px) {
+        .footer-copyright {
+            text-align: left;
+        }
+        .footer-description {
+            text-align: left;
+        }
     }
-    .btn-primary:hover {
-        border-color: transparent;
-        background: #ffe100;
-        color: #000000;
-    }
+
+
 </style>

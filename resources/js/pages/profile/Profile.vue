@@ -221,10 +221,6 @@
     }
 
     @media (max-width: 768px) {
-        .profile-content {
-            padding: 0px 20px !important;
-            text-align: center;
-        }
         #wrapper {
             display: block !important;
         }
