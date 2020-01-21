@@ -20,16 +20,16 @@ class AddressService
     public function createAddress($data)
     {
 		$epAddress = \EasyPost\Address::create([
-		    'name' => $data['name'],
-		    'street1' => $data['address_1'],
-		    'street2' => isset($data['address_2']) ?: ' ',
-		    'city' => $data['city'],
-		    'state' => $data['state'],
-		    'zip' => $data['postal_code'],
-		    'country' => isset($data['country']) ?: 'US',
-		    'email' => $data['email'],
-		    'phone' => $data['phone'],
-		    'verify' => ["delivery"]
+			"name"    => $data['name'],
+			"street1" => $data['address_1'],
+			'street2' => isset($data['address_2']) ? $data['address_2'] : ' ',
+			"city"    => $data['city'],
+			"state"   => $data['state'],
+			"zip"     => $data['postal_code'],
+			"country" => isset($data['country']) ? $data['country'] : 'US',
+			"email"		=> $data['email'],
+			"phone"   => $data['phone'],
+			"verify" => ["delivery"]
 		]);
         if ($epAddress->verifications->delivery->success) {
             $address = Address::create([

@@ -57,27 +57,27 @@
                     <h5 class="pane-title mb-3 text-white">Company</h5>
                     <ul class="list-unstyled">
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/story" class="grey">
                                 Story
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/contact" class="grey">
                                 Contact
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/press" class="grey">
                                 Press
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/blog" class="grey">
                                 Blog
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/terms-privacy" class="grey">
                                 Terms and Privacy
                             </a>
                         </li>
@@ -91,22 +91,22 @@
 
                     <ul class="list-unstyled">
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/sizing" class="grey">
                                 Sizing
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/group-orders" class="grey">
                                 Group Orders
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/Shipping-delivery" class="grey">
                                 Shipping & Delivery
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/contact" class="grey">
                                 Contact
                             </a>
                         </li>
@@ -120,22 +120,22 @@
 
                     <ul class="list-unstyled">
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/sponsors" class="grey">
                                 Sponsors
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/partnerships" class="grey">
                                 Partnerships
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/charity" class="grey">
                                 Charity
                             </a>
                         </li>
                         <li class="mb-2">
-                            <a href="javascript:void(0)" class="grey">
+                            <a href="/social-responsibility" class="grey">
                                 Social Responsibility
                             </a>
                         </li>

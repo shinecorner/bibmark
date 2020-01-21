@@ -41,7 +41,7 @@
                 <a class="join-cta-element d-flex justify-content-md-end" @click="goNext()">
                     <img src="/img/auth/next.png" style="width: 64px; height: 64px;"/>
                     <div class="join-cta-labels d-flex flex-column ml-4">
-                        <div class="join-cta-label-desc">Select Shipping</div>
+                        <div class="join-cta-label-desc">Select {{ NexSelect }}</div>
                         <div class="join-cta-label">Continue</div>
                     </div>
                 </a>
@@ -121,6 +121,20 @@ export default {
     },
     backEnabled() {
       return this.currentStep != 0;
+    },
+    NexSelect() {
+      if(this.currentStep == 0){
+        return 'Shipping'
+      }
+      if(this.currentStep == 1){
+        return 'Billing'
+      }
+      if(this.currentStep == 2){
+        return 'Review'
+      }
+      if(this.currentStep == 3){
+        return 'Confirmation'
+      }   
     }
   },
   methods: {
@@ -326,9 +340,9 @@ export default {
 /* Wizard body 
 *******************************/
 .wizard__body__actions{
-  position:  absolute;
+  /* position:  absolute; */
   bottom:  0px;
-  /* height:  50px; */
+  height:  50px;
   width:  100%;
   margin-bottom: 35px;
   padding-bottom: 30px;
@@ -444,5 +458,7 @@ export default {
 .wizard__step.active.vgw-mobile{
   display: inline-block;
 }
-
+.wizard__back{
+  padding-top: 25px;
+}
 </style>

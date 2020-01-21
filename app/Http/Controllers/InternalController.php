@@ -2,23 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Account;
+// use App\Services\BillingService;
+use App\Models\Billing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\User\{LoginRequest, CreateOrUpdateUserUnderAccountRequest, GetAllUsersRequest, CreateOrUpdateUserRequest};
+use App\Http\Resources\BillingResource;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\UploadImageRequest;
+use phpDocumentor\Reflection\Types\Integer;
+use App\Http\Requests\Billing\{CreateBillingRequest};
+use App\Http\Requests\Asset\{CreateOrUpdateAssetRequest};
 use App\Http\Requests\Account\{CreateOrUpdateAccountRequest};
 use App\Http\Requests\Charity\{CreateOrUpdateCharityRequest};
 use App\Http\Requests\Event\{CreateOrUpdateEventRequest, RegisterEventRequest};
-use App\Http\Requests\Product\{CreateOrUpdateProductRequest, AddProductToSizeRequest};
-use App\Http\Requests\Location\{CreateAddressRequest, CreateOrUpdateLocationRequest};
-use App\Http\Requests\Order\{CreateOrUpdateOrderItemRequest, UpdateOrderRequest, PlaceOrderRequest};
-use App\Http\Requests\Billing\{CreateBillingRequest};
 use App\Http\Requests\Design\{CreateOrUpdateDesignRequest, UploadDesignFileRequest};
-use App\Http\Requests\UploadImageRequest;
-use App\Services\{AccountService, CharityService, EventService, UserService, ProductService, LocationService, AddressService, OrderService, BillingService, DesignService, ExtraService, ShippingService};
-use App\Http\Resources\{AccountResource, AccountCollection, CharityResource, CharityCollection, EventResource, EventCollection, UserResource, UserCollection, ProductResource, ProductCollection};
+use App\Http\Requests\Location\{CreateAddressRequest, CreateOrUpdateLocationRequest};
+use App\Http\Requests\Product\{CreateOrUpdateProductRequest, AddProductToSizeRequest};
+use App\Http\Requests\Order\{CreateOrUpdateOrderItemRequest, UpdateOrderRequest, PlaceOrderRequest};
+use App\Http\Requests\User\{LoginRequest, CreateOrUpdateUserUnderAccountRequest, GetAllUsersRequest, CreateOrUpdateUserRequest};
 use App\Http\Resources\{LocationResource, LocationCollection, AddressResource, OrderItemResource, OrderItemCollection, OrderResource, OrderCollection, DesignResource, DesignCollection};
-use Illuminate\Support\Facades\Redirect;
+use App\Http\Resources\{AccountResource, AccountCollection, CharityResource, CharityCollection, EventResource, EventCollection, UserResource, UserCollection, ProductResource, ProductCollection, AssetCollection, AssetResource};
+use App\Services\{AccountService, CharityService, EventService, UserService, ProductService, LocationService, AddressService, OrderService, BillingService, DesignService, ExtraService, ShippingService, AssetService};
 
 class InternalController extends Controller
 {
@@ -85,7 +91,7 @@ class InternalController extends Controller
     /**
      * Get all charities
      *
-     * @param App\Services\CharityService $charityService
+     * @param App\Services\AssetService $assetService
      * @return \Illuminate\Http\Response
      */
     public function charities(CharityService $charityService)
@@ -428,6 +434,12 @@ class InternalController extends Controller
         return response()->json($result, 200);
     }
 
+    public function getAddress($id){
+        $user = User::find($id);
+
+        return $user->address;
+    }
+
     /**
      * Delete a location
      *
@@ -529,6 +541,16 @@ class InternalController extends Controller
         return response()->json($result, 200);
     }
 
+    // Update
+    public function updateBilling(CreateBillingRequest $request, BillingService $billingService)
+    {
+        $result = new BillingResource($billingService->createBilling($request->all()));
+        $card_id = $request->card_id;
+        $oldCard = Billing::find($card_id);
+        $oldCard->delete();
+        return response()->json($result, 200);
+    }
+
     /**
      * Get all billings belong to an account
      *
@@ -620,6 +642,62 @@ class InternalController extends Controller
         $result = $extraService->uploadImage($request->all());
 
         return response()->json(['url' => $result], 200);
+    }
+
+
+    /**
+     * Get all charities
+     *
+     * @param App\Services\CharityService $charityService
+     * @return \Illuminate\Http\Response
+     */
+
+    public function Assets(AssetService $assetService)
+    {
+        $result = new AssetCollection($assetService->getAllAssets());
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * Create or Update a asset
+     *
+     * @param App\Http\Requests\Account\CreateOrUpdateCharityRequest $request
+     * @param App\Services\AssetService $assetService
+     * @return \Illuminate\Http\Response
+     */
+    public function createOrUpdateAsset(CreateOrUpdateAssetRequest $request, AssetService $assetService)
+    {
+        $result = new AssetResource($assetService->createOrUpdateAsset($request->all()));
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * Delete a asset
+     *
+     * @param integer $assetId
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteAsset($assetId, AssetService $assetService)
+    {
+        $result = $assetService->deleteAsset($assetId);
+
+        return response()->json($result, 200);
+    }
+
+    /**
+     * Get asset details
+     *
+     * @param integer $assetId
+     * @param \App\Services\AssetService $assetService
+     * @return \Illuminate\Http\Response
+     */
+    public function assetDetails($assetId, AssetService $assetService)
+    {
+        $result = new AssetResource($assetService->getAssetById($assetId));
+
+        return response()->json($result, 200);
     }
 
 }

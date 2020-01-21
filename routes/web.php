@@ -15,6 +15,28 @@ use Illuminate\Support\Facades\Route;
 // frontend
 Route::get('/', 'WebController@homePage');
 
+// Header menus routes 
+Route::get('/tech', 'WebController@techPage');
+Route::get('/apparel', 'WebController@apparelPage');
+Route::get('/sponsors', 'WebController@sponsorsPage');
+Route::get('/races', 'WebController@racesPage');
+Route::get('/charity', 'WebController@charityPage');
+
+// Footer menus routes 
+Route::get('/story', 'FooterPageController@storyPage');
+Route::get('/contact', 'FooterPageController@contactPage');
+Route::get('/press', 'FooterPageController@pressPage');
+Route::get('/blog', 'FooterPageController@blogPage');
+Route::get('/terms-privacy', 'FooterPageController@termsPrivacyPage');
+
+Route::get('/sizing', 'FooterPageController@sizingPage');
+Route::get('/group-orders', 'FooterPageController@groupOrdersPage');
+Route::get('/Shipping-delivery', 'FooterPageController@ShippingDeliveryPage');
+
+Route::get('/partnerships', 'FooterPageController@partnershipsPage');
+Route::get('/social-responsibility', 'FooterPageController@socialResponsibilityPage');
+
+
 // Add frontauth middleware to avoid access to login, join route after fully authenticated
 Route::get('/login', 'WebController@loginPage')->middleware('frontauth')->name('login');
 Route::get('/join', 'WebController@joinPage')->middleware('frontauth');
@@ -40,8 +62,19 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/profile/my-events', 'WebController@myEventsPage');
     Route::get('/profile/my-events/{id}', 'ProfileController@getEvents');
     Route::post('/profile/my-events', 'ProfileController@registerEvent');
+    Route::get('/profile/my-designs', 'WebController@myDesignsPage');
 
     Route::get('/cart', 'CartController@index');
+
+    Route::get('/profile/my-design', 'DesignController@myDesign');
+    Route::post('/profile/my-design', 'DesignController@saveDesign');
+
+    // Design
+    Route::get('/design', 'DesignController@index');
+    // charities
+    Route::get('/charities', 'DesignController@getCharities');
+    // Sponsors
+    Route::get('/sponsors', 'DesignController@getSponsors');
 });
 
 Route::get('/reset-password/{token}/{email}', 'WebController@resetPasswordPage');
@@ -76,6 +109,9 @@ Route::namespace('Admin')->middleware(['auth'])->group(function() {
         Route::resource('locations', 'LocationController')->only(['index', 'show', 'create', 'edit']);
         Route::resource('orders', 'OrderController')->only(['index', 'show', 'create', 'edit']);
         Route::resource('designs', 'DesignController')->only(['index', 'show', 'create', 'edit']);
+
+        Route::resource('/assets', 'AssetController')->only(['index', 'show', 'create', 'edit']);
+
     });
 });
 
@@ -100,6 +136,12 @@ Route::prefix('internal')->group(function() {
         Route::get('charity/{charity_id}', 'InternalController@charityDetails');
         Route::post('charity', 'InternalController@createOrUpdateCharity');
         Route::delete('charity/{charity_id}', 'InternalController@deleteCharity');
+
+        // Asset
+        Route::get('/assets', 'InternalController@Assets');
+        Route::get('asset/{asset_id}', 'InternalController@assetDetails');
+        Route::post('asset', 'InternalController@createOrUpdateAsset');
+        Route::delete('asset/{asset_id}', 'InternalController@deleteAsset');
 
         // event
         Route::get('events', 'InternalController@events');
@@ -126,6 +168,7 @@ Route::prefix('internal')->group(function() {
         // location
         Route::get('locations', 'InternalController@locations');
         Route::post('address', 'InternalController@createAddress');
+        Route::get('address/{user_id}', 'InternalController@getAddress');
         Route::post('location', 'InternalController@createOrUpdateLocation');
         Route::delete('location/{location_id}', 'InternalController@deleteLocation');
 
@@ -140,6 +183,8 @@ Route::prefix('internal')->group(function() {
         Route::post('billing', 'InternalController@createBilling');
         Route::get('account/{account_id}/billing', 'InternalController@getBillingsWithAccountId');
         Route::get('account/{user_id}/billing', 'InternalController@getBillingsWithUserId');
+        Route::get('account/{user_id}/cards', 'BillingController@index');
+        Route::post('billing/card', 'InternalController@updateBilling');
 
         // design
         Route::get('designs', 'InternalController@designs');

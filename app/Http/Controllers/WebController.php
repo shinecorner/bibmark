@@ -95,4 +95,24 @@ class WebController extends Controller
         return view('front.my-events');
     }
 
+    public function myDesignsPage(){
+        return view('front.my-designs');
+    }
+
+    // Menu Header Pages
+    public function techPage() {
+        return view('front.pages.tech');
+    }
+    public function apparelPage() {
+        return view('front.pages.apparel');
+    }
+    public function sponsorsPage() {
+        return view('front.pages.sponsors');
+    }
+    public function racesPage() {
+        return view('front.pages.races');
+    }
+    public function charityPage() {
+        return view('front.pages.charity');
+    }
 }

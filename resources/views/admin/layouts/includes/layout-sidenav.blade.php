@@ -44,6 +44,9 @@
                 <li class="sidenav-item{{ strpos($routeName, 'orders') !== false ? ' active' : '' }}">
                     <a href="{{ route('orders.index') }}" class="sidenav-link"><i class="sidenav-icon ion ion-md-paper"></i><div>Orders</div></a>
                 </li>
+                <li class="sidenav-item{{ strpos($routeName, 'assets') !== false ? ' active' : '' }}">
+                    <a href="{{ route('assets.index') }}" class="sidenav-link"><i class="sidenav-icon ion ion-md-image"></i><div>Assets</div></a>
+                </li>
             @endif
             <li class="sidenav-item{{ strpos($routeName, 'designs') !== false ? ' active' : '' }}">
                 <a href="{{ route('designs.index') }}" class="sidenav-link"><i class="sidenav-icon ion ion-md-shirt"></i><div>Designs</div></a>

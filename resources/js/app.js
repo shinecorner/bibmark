@@ -12,12 +12,35 @@ import Axios from 'axios'
 import VueMoment from 'vue-moment'
 import VeeValidate from 'vee-validate'
 import VModal from 'vue-js-modal'
+import VueToastr from '@deveodk/vue-toastr'
+import '@deveodk/vue-toastr/dist/@deveodk/vue-toastr.css'
+
+// State management
+import Vuex from 'vuex'
+
+// Vue.use(store)
+window.Vuex = Vuex;
+
+import store from './store.js';
+// Import component
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
+Vue.use(Loading, {
+    color: '#ffe100',
+    opacity: 0.8,
+});
 
 window.Vue = Vue
 window.axios = Axios
+Vue.use(Vuex)
 Vue.use(VueMoment)
 Vue.use(VeeValidate)
 Vue.use(VModal)
+Vue.use(VueToastr, {
+    defaultPosition: 'toast-bottom-center',
+    defaultType: 'info',
+    defaultTimeout: 1500
+})
 
 /**
  * The following block of code may be used to automatically register your
@@ -44,6 +67,7 @@ Vue.component('auth-reset-password', require('./pages/auth/ResetPassword.vue'))
 Vue.component('user-profile', require('./pages/profile/profile.vue'))
 Vue.component('edit-account', require('./pages/profile/EditAccount.vue'))
 Vue.component('my-events', require('./pages/profile/MyEvents.vue'))
+Vue.component('my-designs', require('./pages/profile/MyDesigns.vue'))
 
 // backend
 Vue.component('account-list', require('./pages/account/AccountList.vue'))
@@ -55,6 +79,11 @@ Vue.component('charity-list', require('./pages/charity/CharityList.vue'))
 Vue.component('charity-edit', require('./pages/charity/CharityEdit.vue'))
 Vue.component('charity-show', require('./pages/charity/CharityShow.vue'))
 Vue.component('charity-detail-page', require('./pages/charity/CharityDetailPage.vue'))
+
+Vue.component('asset-list', require('./pages/asset/AssetList.vue'))
+Vue.component('asset-edit', require('./pages/asset/AssetEdit.vue'))
+Vue.component('asset-show', require('./pages/asset/AssetShow.vue'))
+Vue.component('asset-detail-page', require('./pages/asset/AssetDetailPage.vue'))
 
 Vue.component('event-list', require('./pages/event/EventList.vue'))
 Vue.component('event-edit', require('./pages/event/EventEdit.vue'))
@@ -80,6 +109,10 @@ Vue.component('dashboard', require('./pages/dashboard/Dasboard.vue'))
 
 Vue.component('cart', require('./pages/cart/Cart.vue'))
 
+Vue.component('Design', require('./pages/design/Design.vue'))
+
+Vue.component('Apparel', require('./pages/apparel/Product.vue'))
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -89,6 +122,8 @@ Vue.component('cart', require('./pages/cart/Cart.vue'))
 var Events = new Vue({})
 const _app = new Vue({
     el: '#app',
+    //store,
+    store: new Vuex.Store(store),
     data: {
         activeModal: null,
         isMobile: false,

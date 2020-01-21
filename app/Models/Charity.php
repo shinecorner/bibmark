@@ -72,4 +72,15 @@ class Charity extends Model
         $user = User::find($user_id);
         return $user->canRead(MorphType::Charity, $this->id);
     }
+
+    /**
+     * Get all of the assets that are assigned this account
+     * 
+     * @return array
+     */
+    public function assets()
+    {
+        return $this->morphMany(MorphType::Asset, 'assetable');
+    }
+
 }

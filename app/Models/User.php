@@ -149,6 +149,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all of the user's address
+     *
+     * @return array
+     */
+    // public function address()
+    // {
+    //     return $this->morphMany('App\Models\Address', 'addressable');
+    // }
+
+    /**
      * Get all of the user's charges
      *
      * @return array

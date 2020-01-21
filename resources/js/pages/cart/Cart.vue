@@ -9,10 +9,10 @@
             <div id="page-content-wrapper">
                 <div class="container-fluid1">
                     <div class="profile-content">
-                        <div class="col-lg-10 col-xs-12">
+                        <div class="col-lg col-xs-12">
                             <h2 class="welcome">My Shopping Cart</h2>
                             <hr class="content-divider">
-                            <div class="container1">
+                            <div class="contain">
                                 <div class="main-step">
                                     <!-- <div class="wizard"> -->
                                         <vue-good-wizard
@@ -20,25 +20,22 @@
                                             :onNext="nextClicked"
                                             :onBack="backClicked">
                                             <div slot="page1">
-                                                <!-- <h4>Step 1</h4>
-                                                <p>This is the CART step</p> -->
                                                 <product/>
                                             </div>
                                             <div slot="page2">
-                                                <h4>Step 2</h4>
-                                                <p>This is the SHIPPING step</p>
+                                                <product :editable='true'/>
+                                                <shipping/>
                                             </div>
                                             <div slot="page3">
-                                                <h4>Step 3</h4>
-                                                <p>This is the BILLING step</p>
+                                                <product :editable='true'/>
+                                                <billing/>
                                             </div>
                                             <div slot="page4">
-                                                <h4>Step 4</h4>
-                                                <p>This is the REVIEW step</p>
+                                                <product :editable='true'/>
+                                                <review/>
                                             </div>
                                             <div slot="page5">
-                                                <h4>Step 5</h4>
-                                                <p>This is the CONFIRMATION step</p>
+                                                <confirmation/>
                                             </div>
                                         </vue-good-wizard>
                                 </div>                                
@@ -57,9 +54,14 @@
 <script>
 import GoodWizard from './Wizard.vue';
 import Product from './Product.vue';
+import Shipping from './Shipping.vue';
+import Billing from './Billing.vue';
+import Review from './Review.vue';
+import Confirmation from './Confirmation.vue';
     export default {
-        components: {'vue-good-wizard': GoodWizard, Product},
+        components: {'vue-good-wizard': GoodWizard, Product, Shipping, Billing, Review, Confirmation},
         name: 'cart',
+        props: ['backClicked','nextClicked'],
         data(){
             return {
             steps: [
@@ -88,7 +90,21 @@ import Product from './Product.vue';
                 }
             ],
             };
-        }
+        },
+        methods: {
+            nextClicked: function(currentPage){
+                console.log(currentPage);
+                if (currentPage == 1 && jQuery.isEmptyObject(this.$store.state.shipping)){
+                    this.$toastr('error', 'Select a shipping method', 'Error')
+                    return false;
+                }
+                if (currentPage == 2 && jQuery.isEmptyObject(this.$store.state.card)){
+                    this.$toastr('error', 'Select a payment method', 'Error')
+                    return false;
+                }
+                return true
+            }
+        },
     }
 
 </script>
@@ -225,6 +241,7 @@ import Product from './Product.vue';
         .profile-sidebar {
             padding: 0px !important;
         }
+        
     }
 
     @media (max-width: 900px) {
@@ -247,4 +264,26 @@ import Product from './Product.vue';
         margin-right: auto;
     }
 
+        /* 
+    ##Device = Tablets, Ipads (portrait)
+    ##Screen = B/w 768px to 1024px
+    */
+    @media (min-width: 768px) and (max-width: 1024px) {
+        .contain{
+            margin-left: 40px;
+            margin-right: 60px;
+        }
+    }
+    
+    @media (min-width: 1025px) {
+    /* 
+    ##Device = Desktops
+    ##Screen = 1025px to higher resolution desktops
+    */
+        .contain{
+            margin-left: 80px;
+            margin-right: 120px;
+        }
+    
+    }
 </style>

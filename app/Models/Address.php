@@ -13,4 +13,12 @@ class Address extends Model
      */
     protected $guarded = [];
 
+    /**
+     * Get all of the owning billingable models.
+     */
+    // public function addressable()
+    // {
+    //     return $this->morphTo();
+    // }
+
 }

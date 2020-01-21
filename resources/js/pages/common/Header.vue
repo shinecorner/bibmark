@@ -3,29 +3,29 @@
         <a class="navbar-brand" href="/"><img src="/img/bibmark-logo.svg" class="logo"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"><i class="fa fa-bars"
-                                                 style="font-size:24px; margin-top: -5px; margin-left: -3px;"
-                                                 aria-hidden="true"></i></span>
+                style="font-size:24px; margin-top: -5px; margin-left: -3px;"
+                aria-hidden="true"></i></span>
         </button>
         <div class="collapse navbar-collapse align-self-center" id="collapsibleNavbar">
             <div class="d-flex justify-content-between w-100">
                 <ul class="navbar-nav">
                     <li class="nav-item default-space">
-                        <a class="nav-link black" href="#">THE&nbsp;TECH</a>
+                        <a class="nav-link black" :class="{ active: isActive('/tech') }" href="/tech">THE&nbsp;TECH</a>
                     </li>
                     <li class="nav-item default-space">
-                        <a class="nav-link black" href="#">APPAREL</a>
+                        <a class="nav-link black" :class="{ active: isActive('/apparel') }" href="/apparel">APPAREL</a>
                     </li>
                     <li class="nav-item default-space">
-                        <a class="nav-link black" href="#">DESIGN</a>
+                        <a class="nav-link black" :class="{ active: isActive('/design') }" href="/design">DESIGN</a>
                     </li>
                     <li class="nav-item default-space">
-                        <a class="nav-link black" href="#">SPONSORS</a>
+                        <a class="nav-link black" :class="{ active: isActive('/sponsors') }"  href="/sponsors">SPONSORS</a>
                     </li>
                     <li class="nav-item default-space">
-                        <a class="nav-link black" href="#">RACES</a>
+                        <a class="nav-link black" :class="{ active: isActive('/races') }" href="/races">RACES</a>
                     </li>
                     <li class="nav-item default-space">
-                        <a class="nav-link black" href="#">CHARITY</a>
+                        <a class="nav-link black" :class="{ active: isActive('/charity') }" href="/charity">CHARITY</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-2">
@@ -35,10 +35,6 @@
                     <li class="nav-item" v-if="!authenticated">
                         <a class="nav-link black" href="/login">LOG&nbsp;IN</a>
                     </li>
-                    <!-- <li class="" v-if="authenticated">
-                        <a class="nav-link black" href="/doLogout">LOGOUT</a>
-
-                    </li> -->
                     <div class="hello" v-if="authenticated">
                         <a class="nav-link black" href="/profile">
                             <span>HELLO {{ firstname }}</span>
@@ -65,7 +61,15 @@
         },
         mounted() {
 
-        }
+        },
+        methods: {
+            isActive(url) {
+                if (location.pathname == url) {
+                    return true;
+                }
+                return false;
+            },
+        },
     }
 </script>
 
@@ -139,6 +143,7 @@
 
     .logo {
         width: 10vw;
+        padding-bottom: 10px;
     }
 
     .navbar-brand {
@@ -182,6 +187,15 @@
         .navbar-nav {
             margin-left: 2rem !important;
         }
+        .active{
+            border-bottom: solid 3px #ffc600;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+            width: fit-content;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            padding-bottom: 5px;
+        }
     }
 
     .hello {
@@ -209,5 +223,14 @@
             margin-top: 10px;
             margin-bottom: 0;
         }
+    }
+    .active{
+        border-bottom: solid 3px #ffc600;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+        width: fit-content;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 5px;
     }
 </style>

@@ -22,7 +22,8 @@ class BillingService
                 'address' => $data['address'],
                 'city' => $data['city'],
                 'state' => $data['state'],
-                'zip' => $data['zip']
+                'zip' => $data['zip'],
+                'country' => $data['country']
             ]);
             $billing->createAsStripeCustomer($data['stripe_token']);
 

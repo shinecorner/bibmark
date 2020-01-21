@@ -34,17 +34,17 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" :class="{ active: isActive('/profile/my-events') }"
-                           href="/profile/my-events">My Events</a>
+                        href="/profile/my-events">My Events</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">My Designs</a>
+                        <a class="nav-link" :class="{ active: isActive('/profile/my-designs') }" href="/profile/my-designs">My Designs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">My Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" :class="{ active: isActive('/profile/edit-account') }"
-                           href="/profile/edit-account">Edit Account</a>
+                        href="/profile/edit-account">Edit Account</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/doLogout">Logout</a>

@@ -22,7 +22,8 @@ class CreateAddressRequest extends Request
             'postal_code' => 'required|string',
             'country' => 'sometimes|string',
             'email' => 'required|email',
-            'phone' => 'required|numeric|regex:/(01)[0-9]{9}/',
+            // 'phone' => 'required|numeric|regex:/(01)[0-9]{9}/',
+            'phone' => 'required|numeric',
         ];
     }
 
