@@ -2,38 +2,38 @@ export default {
     props:[],
     data: function() {
         return {
-            accountId: 0,
+            sponsorId: 0,
         };
     },
     mounted: function () {
-        this.getAccounts();
+        this.getSponsors();
 
         var self = this;
-        $('#account-list').on('click', '.btn-remove', function() {
-            self.accountId = $(this).attr('data');
-            self.removeAccount();
+        $('#sponsor-list').on('click', '.btn-remove', function() {
+            self.sponsorId = $(this).attr('data');
+            self.removeSponsor();
         });
     },
     watch: {
         
     },
     methods: {
-        getAccounts: function(callback) {
-            $('#account-list').dataTable({
+        getSponsors: function(callback) {
+            $('#sponsor-list').dataTable({
                 "destroy": true,
                 "ajax": {
-                    url: '/internal/accounts',
+                    url: '/internal/sponsors',
                     dataSrc: function(json) {
                         let data = [];
-                        json.accounts.forEach(account => {
+                        json.sponsors.forEach(sponsor => {
                             data.push([
-                                account.id,
-                                account.name,
-                                account.logo,
-                                account.background_image,
-                                account.balance,
-                                account.budget,
-                                moment(account.created_at.date).format('YYYY-MM-DD'),
+                                sponsor.id,
+                                sponsor.name,
+                                sponsor.logo,
+                                sponsor.background_image,
+                                sponsor.balance,
+                                sponsor.budget,
+                                moment(sponsor.created_at.date).format('YYYY-MM-DD'),
                                 '',
                             ]);
                         });
@@ -52,7 +52,7 @@ export default {
                 "createdRow": function(row, data, index) {
                     var isRtl = $('body').attr('dir') === 'rtl' || $('html').attr('dir') === 'rtl';
                     $('td', row).eq(1).html('').append(
-                        '<a href="accounts/' + data[0] + '">' + data[1] + '</a>'
+                        '<a href="sponsors/' + data[0] + '">' + data[1] + '</a>'
                     );
                     if (data[2]) {
                         $('td', row).eq(2).html('').append(
@@ -65,11 +65,11 @@ export default {
                         );
                     }
                     $('td', row).eq(7).addClass('text-center text-nowrap').html('').append(
-                    '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'accounts/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
+                    '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'sponsors/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
                     '<div class="btn-group">' +
                         '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat dropdown-toggle hide-arrow user-tooltip" title="Actions" data-toggle="dropdown"><i class="ion ion-ios-settings"></i></button>' +
                         '<div class="dropdown-menu' + (isRtl ? '' : ' dropdown-menu-right') + '">' +
-                        '<a class="dropdown-item" href="accounts/' + data[0] + '">View account</a>' +
+                        '<a class="dropdown-item" href="sponsors/' + data[0] + '">View sponsor</a>' +
                         '<a class="dropdown-item btn-remove" href="javascript:void(0)" data="' + data[0] + '">Remove</a>' +
                         '</div>' +
                     '</div>'
@@ -77,14 +77,14 @@ export default {
                 }
             });
         },
-        removeAccount: function() {
+        removeSponsor: function() {
             var self = this;
             bootbox.confirm({
-                message: 'Are you sure remove this account?',
+                message: 'Are you sure remove this sponsor?',
                 className: 'bootbox-sm',
                 callback: function(result) {
                     if (result) {
-                        $('#account-list').block({
+                        $('#sponsor-list').block({
                             message: '<div class="sk-wave sk-primary"><div class="sk-rect sk-rect1"></div> <div class="sk-rect sk-rect2"></div> <div class="sk-rect sk-rect3"></div> <div class="sk-rect sk-rect4"></div> <div class="sk-rect sk-rect5"></div></div>',
                             css: {
                                 backgroundColor: 'transparent',
@@ -95,14 +95,14 @@ export default {
                                 opacity: 0.8
                             }
                         });
-                        axios.delete('/internal/account/' + self.accountId)
+                        axios.delete('/internal/sponsor/' + self.sponsorId)
                         .then((response) => {
-                            self.getAccounts(function() {
-                                $('#account-list').unblock();
+                            self.getSponsors(function() {
+                                $('#sponsor-list').unblock();
                             });
                         })
                         .catch((error) => {
-                            $('#account-list').unblock();
+                            $('#sponsor-list').unblock();
                         });
                     }
                 },

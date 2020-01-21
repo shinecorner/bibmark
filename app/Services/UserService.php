@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\{Account, Charity, Event};
+use App\Models\{Sponsor, Charity, Event};
 use App\Enums\{ MorphType, UserRole };
 
 class UserService
 {
     /**
      * Get a user with id
-     * 
+     *
      * @param integer $userId
      * @return App\Models\User
      */
@@ -21,16 +21,16 @@ class UserService
     }
 
     /**
-     * Get all users belong to the account
-     * 
-     * @param integer $accountId
+     * Get all users belong to the sponsor
+     *
+     * @param integer $sponsorId
      * @return array
      */
-    public function usersWithAccountId($accountId)
+    public function usersWithSponsorId($sponsorId)
     {
         $user = Auth::user();
-        if ($user->isSuperAdmin() || $user->canRead(MorphType::Account, $accountId)) {
-            return Account::find($accountId)->users;
+        if ($user->isSuperAdmin() || $user->canRead(MorphType::Sponsor, $sponsorId)) {
+            return Sponsor::find($sponsorId)->users;
         }
 
         return [];
@@ -38,7 +38,7 @@ class UserService
 
     /**
      * Get all users
-     * 
+     *
      * @param string $search
      * @return array
      */
@@ -57,26 +57,26 @@ class UserService
     }
 
     /**
-     * Create or update an user belongs to the account
-     * 
+     * Create or update an user belongs to the sponsor
+     *
      * @param array $data
      * @return App\Models\User
      */
-    public function createOrUpdateUserUnderAccount($data)
+    public function createOrUpdateUserUnderSponsor($data)
     {
         if (isset($data['user_id'])) {
             $user = User::find($data['user_id']);
-            $user->accounts()->updateExistingPivot($data['account_id'], [
+            $user->sponsors()->updateExistingPivot($data['sponsor_id'], [
                 'role' => $data['role']
             ]);
-            
+
             return $user;
         } else {
-            $account = Account::find($data['account_id']);
+            $sponsor = Sponsor::find($data['sponsor_id']);
             $names = explode(' ', $data['name'], 2);
             $firstname = $names[0];
             $lastname = !empty($names[1]) ? $names[1] : '';
-            $user = $account->users()->create([
+            $user = $sponsor->users()->create([
                 'name' => $data['name'],
                 'firstname' => $firstname,
                 'lastname' => $lastname,
@@ -90,7 +90,7 @@ class UserService
 
     /**
      * Create or Update an user
-     * 
+     *
      * @param array $data
      * @return App\Models\User
      */
@@ -125,7 +125,7 @@ class UserService
 
     /**
      * Delete a user
-     * 
+     *
      * @param integer userId
      * @return boolean
      */
@@ -133,7 +133,7 @@ class UserService
     {
         if (Auth::user()->isSuperAdmin()) {
             $user = User::find($userId);
-            $user->accounts()->detach();
+            $user->sponsors()->detach();
             $user->charities()->detach();
             $user->events()->detach();
             return $user->delete();
@@ -143,8 +143,8 @@ class UserService
     }
 
     /**
-     * get user relations data Accounts, Charities, Events
-     * or total Accounts, Charities, Events, Users if user is admin
+     * get user relations data Sponsors, Charities, Events
+     * or total Sponsors, Charities, Events, Users if user is admin
      *
      * @param integer userId
      * @return array
@@ -153,24 +153,24 @@ class UserService
     {
         $user = User::find($userId);
         if ($user->isSuperAdmin()) {
-            $totalAccounts = Account::all();
+            $totalSponsors = Sponsor::all();
             $totalCharities = Charity::all();
             $totalEvents = Event::all();
             $totalUsers = User::all()->except(Auth::id());
 
             return [
-                'total_accounts' => json_encode($totalAccounts),
+                'total_sponsors' => json_encode($totalSponsors),
                 'total_charities' => json_encode($totalCharities),
                 'total_events' => json_encode($totalEvents),
                 'total_users' => json_encode($totalUsers)
             ];
         }
-        $userAccounts = $user->accounts;
+        $userSponsors = $user->sponsors;
         $userCharities = $user->charities;
         $userEvents = $user->events;
 
         return [
-            'user_accounts' => json_encode($userAccounts),
+            'user_sponsors' => json_encode($userSponsors),
             'user_charities' => json_encode($userCharities),
             'user_events' => json_encode($userEvents)
         ];

@@ -3,36 +3,36 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Services\AccountService;
+use App\Services\SponsorService;
 
-class ChargeAccounts extends Command
+class ChargeSponsors extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'charge:accounts';
+    protected $signature = 'charge:sponsors';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Charge Accounts';
+    protected $description = 'Charge Sponsors';
 
-    protected $accountService;
+    protected $sponsorService;
 
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(AccountService $accountService)
+    public function __construct(SponsorService $sponsorService)
     {
         parent::__construct();
 
-        $this->accountService = $accountService;
+        $this->sponsorService = $sponsorService;
     }
 
     /**
@@ -42,6 +42,6 @@ class ChargeAccounts extends Command
      */
     public function handle()
     {
-        $this->accountService->chargeAccounts();
+        $this->sponsorService->chargeSpnsors();
     }
 }

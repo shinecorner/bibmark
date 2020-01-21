@@ -5,7 +5,7 @@ namespace App\Http\Requests\User;
 use App\Http\Requests\Request;
 use Waavi\Sanitizer\Laravel\SanitizesInput;
 
-class CreateOrUpdateUserUnderAccountRequest extends Request
+class CreateOrUpdateUserUnderSponsorRequest extends Request
 {
     /**
      *  Validation rules to be applied to the input.
@@ -15,7 +15,7 @@ class CreateOrUpdateUserUnderAccountRequest extends Request
     public function rules()
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
+            'sponsor_id' => 'required|integer|exists:sponsors,id',
             'user_id' => 'sometimes|integer|exists:users,id',
             'role' => 'sometimes|integer',
             'name' => 'sometimes|string',

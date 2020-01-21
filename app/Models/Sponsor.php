@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\{ User, Billing };
 use App\Enums\MorphType;
 
-class Account extends Model
+class Sponsor extends Model
 {
     /**
      * The attributes that aren't mass assignable.
@@ -16,8 +16,8 @@ class Account extends Model
     protected $guarded = [];
 
     /**
-     * Get all of the users that are assigned this account.
-     * 
+     * Get all of the users that are assigned this sponsor.
+     *
      * @return array
      */
     public function users()
@@ -26,8 +26,8 @@ class Account extends Model
     }
 
     /**
-     * Get all of the assets that are assigned this account
-     * 
+     * Get all of the assets that are assigned this sponsor
+     *
      * @return array
      */
     public function assets()
@@ -36,8 +36,8 @@ class Account extends Model
     }
 
     /**
-     * Get all of the account's cards
-     * 
+     * Get all of the sponsor's cards
+     *
      * @return array
      */
     public function cards()
@@ -47,7 +47,7 @@ class Account extends Model
 
     /**
      * Get a default billing
-     * 
+     *
      * @return Billing
      */
     public function defaultCard()
@@ -62,8 +62,8 @@ class Account extends Model
     }
 
     /**
-     * Get all of the account's charges
-     * 
+     * Get all of the sponsor's charges
+     *
      * @return array
      */
     public function charges()
@@ -72,26 +72,26 @@ class Account extends Model
     }
 
     /**
-     * check if a certain user has a admin role to this account
-     * 
+     * check if a certain user has a admin role to this sponsor
+     *
      * @param integer $userId
      * @return boolean
      */
     public function hasAdminAccess($userId)
     {
         $user = User::find($userId);
-        return $user->hasAdminAccess(MorphType::Account, $this->id);
+        return $user->hasAdminAccess(MorphType::Sponsor, $this->id);
     }
 
     /**
-     * check if a certain user has read and admin roles to this account
-     * 
+     * check if a certain user has read and admin roles to this sponsor
+     *
      * @param integer $userId
      * @return boolean
      */
     public function canRead($userId)
     {
         $user = User::find($userId);
-        return $user->canRead(MorphType::Account, $this->id);
+        return $user->canRead(MorphType::Sponsor, $this->id);
     }
 }

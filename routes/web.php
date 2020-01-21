@@ -90,13 +90,13 @@ Route::namespace('Admin')->middleware(['auth'])->group(function() {
 
     Route::prefix('dashboard')->group(function() {
         Route::get('/', 'AdminController@dashboard')->name('dashboard');
-        // account
-        Route::get('/account/{account_id}/home', 'AdminController@dashboardAccount');
+        // sponsor
+        Route::get('/sponsor/{sponsor_id}/home', 'AdminController@dashboardSponsor');
         Route::middleware(['superadmin'])->group(function() {
-            Route::resource('accounts', 'AccountController')->only(['index', 'show', 'create', 'edit']);
-            Route::prefix('accounts/{account_id}/users')->group(function() {
-                Route::get('create', 'AccountController@createUser')->name('accounts.user.create');
-                Route::get('{user_id}', 'AccountController@editUser')->name('accounts.user.edit');
+            Route::resource('sponsors', 'SponsorController')->only(['index', 'show', 'create', 'edit']);
+            Route::prefix('sponsors/{sponsor_id}/users')->group(function() {
+                Route::get('create', 'SponsorController@createUser')->name('sponsors.user.create');
+                Route::get('{user_id}', 'SponsorController@editUser')->name('sponsors.user.edit');
             });
         });
 
@@ -123,13 +123,13 @@ Route::post('/reset-password', 'Admin\AdminController@resetPassword');
 Route::prefix('internal')->group(function() {
 
     Route::middleware(['auth'])->group(function() {
-        // account
-        Route::get('accounts', 'InternalController@accounts');
-        Route::get('account/{account_id}', 'InternalController@accountDetails');
-        Route::get('account/{account_id}/users', 'InternalController@usersWithAccountId');
-        Route::post('account/user', 'InternalController@createOrUpdateUserUnderAccount');
-        Route::post('account', 'InternalController@createOrUpdateAccount');
-        Route::delete('account/{account_id}', 'InternalController@deleteAccount');
+        // sponsor
+        Route::get('sponsors', 'InternalController@sponsors');
+        Route::get('sponsor/{sponsor_id}', 'InternalController@sponsorDetails');
+        Route::get('sponsor/{sponsor_id}/users', 'InternalController@usersWithSponsorId');
+        Route::post('sponsor/user', 'InternalController@createOrUpdateUserUnderSponsor');
+        Route::post('sponsor', 'InternalController@createOrUpdateSponsor');
+        Route::delete('sponsor/{sponsor_id}', 'InternalController@deleteSponsor');
 
         // charity
         Route::get('charities', 'InternalController@charities');
@@ -181,9 +181,9 @@ Route::prefix('internal')->group(function() {
 
         // billing
         Route::post('billing', 'InternalController@createBilling');
-        Route::get('account/{account_id}/billing', 'InternalController@getBillingsWithAccountId');
-        Route::get('account/{user_id}/billing', 'InternalController@getBillingsWithUserId');
-        Route::get('account/{user_id}/cards', 'BillingController@index');
+        Route::get('sponsor/{sponsor_id}/billing', 'InternalController@getBillingsWithSponsorId');
+        Route::get('sponsor/{user_id}/billing', 'InternalController@getBillingsWithUserId');
+        Route::get('sponsor/{user_id}/cards', 'BillingController@index');
         Route::post('billing/card', 'InternalController@updateBilling');
 
         // design

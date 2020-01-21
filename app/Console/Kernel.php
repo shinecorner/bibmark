@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        'App\Console\Commands\ChargeAccounts'
+        'App\Console\Commands\ChargeSponsors'
     ];
 
     /**
@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('charge:accounts')->when(function() {
+        $schedule->command('charge:sponsors')->when(function() {
             return Carbon::now()->startOfMonth()->isToday();
         });
     }

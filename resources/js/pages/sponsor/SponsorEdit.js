@@ -1,6 +1,6 @@
 export default {
     props: {
-        account: {
+        sponsor: {
             type: Object,
             default: function() {
                 return {
@@ -21,7 +21,7 @@ export default {
         this.initValidation();
     },
     watch: {
-        
+
     },
     methods: {
         showToast: function(type, title, msg) {
@@ -106,7 +106,7 @@ export default {
                 var self = this;
                 this.uploadImage('profile', this.logo, '#logo-input', function(success, url) {
                     if (success) {
-                        self.account.logo = url;
+                        self.sponsor.logo = url;
                     } else {
                         self.showToast('error', 'Upload Failed', 'Unable to upload logo image.');
                     }
@@ -121,7 +121,7 @@ export default {
                 var self = this;
                 this.uploadImage('profile', this.background, '#background-input', function(success, url) {
                     if (success) {
-                        self.account.background_image = url;
+                        self.sponsor.background_image = url;
                     } else {
                         self.showToast('error', 'Upload Failed', 'Unable to upload background image.');
                     }
@@ -155,12 +155,12 @@ export default {
                 if (success) {
                     self.uploadBackground(function(success) {
                         if (success) {
-                            axios.post('/internal/account', self.account)
+                            axios.post('/internal/sponsor', self.sponsor)
                                 .then((response) => {
                                     $('#input-form').unblock();
                                     ladda.stop();
                                     window.history.go(-1);
-                                    
+
                                 })
                                 .catch((error) => {
                                     $('#input-form').unblock();

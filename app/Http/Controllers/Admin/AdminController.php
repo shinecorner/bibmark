@@ -48,15 +48,15 @@ class AdminController extends Controller
     }
 
     /**
-     * Show detailed page account
+     * Show detailed page sponsor
      *
-     * @param integer $accountId
+     * @param integer $sponsorId
      * @return view
      */
-    public function dashboardAccount($accountId)
+    public function dashboardSponsor($sponsorId)
     {
-        return view('admin.pages.dashboard.account', [
-            'accountId' => $accountId
+        return view('admin.pages.dashboard.sponsor', [
+            'sponsorId' => $sponsorId
         ]);
     }
 

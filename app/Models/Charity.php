@@ -17,7 +17,7 @@ class Charity extends Model
 
     /**
      * Get all of the users that are assigned this charity.
-     * 
+     *
      * @return array
      */
     public function users()
@@ -51,7 +51,7 @@ class Charity extends Model
 
     /**
      * check if a certain user has a admin role to this charity
-     * 
+     *
      * @param integer $user_id
      * @return boolean
      */
@@ -63,7 +63,7 @@ class Charity extends Model
 
     /**
      * check if a certain user has read and admin roles to this charity
-     * 
+     *
      * @param integer $user_id
      * @return boolean
      */
@@ -74,8 +74,8 @@ class Charity extends Model
     }
 
     /**
-     * Get all of the assets that are assigned this account
-     * 
+     * Get all of the assets that are assigned this sponsor
+     *
      * @return array
      */
     public function assets()

@@ -38,7 +38,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * have access to an Account, Charity or Event or if super admin
+     * have access to an Sponsor, Charity or Event or if super admin
      *
      * @return \Illuminate\Http\Response
      */

@@ -5,11 +5,11 @@
                 <form id="validation-form">
                     <div class="form-group">
                         <label class="form-label">Name</label>
-                        <input type="text" class="form-control" name="input-name" v-model="account.name">
+                        <input type="text" class="form-control" name="input-name" v-model="sponsor.name">
                     </div>
                     <div class="form-group media" style="min-height:1px">
                         <div class="ui-bg-cover" style="width: 80px;height: 80px;">
-                            <img id="logo-image" style="width: 100%; height: 100%; object-fit: contain;" v-bind:src="account.logo" alt="logo" v-if="account.logo || logo" />
+                            <img id="logo-image" style="width: 100%; height: 100%; object-fit: contain;" v-bind:src="sponsor.logo" alt="logo" v-if="sponsor.logo || logo" />
                         </div>
                         <div class="media-body ml-3">
                             <label class="form-label">
@@ -23,7 +23,7 @@
                     </div>
                     <div class="form-group media" style="min-height:1px">
                         <div class="ui-bg-cover" style="width: 80px;height: 80px;">
-                            <img id="background-image" style="width: 100%; height: 100%; object-fit: contain;" v-bind:src="account.background_image" alt="background" v-if="account.background_image || background" />
+                            <img id="background-image" style="width: 100%; height: 100%; object-fit: contain;" v-bind:src="sponsor.background_image" alt="background" v-if="sponsor.background_image || background" />
                         </div>
                         <div class="media-body ml-3">
                             <label class="form-label">
@@ -46,4 +46,4 @@
     </div>
 </template>
 
-<script src="./AccountEdit.js"></script>
+<script src="./SponsorEdit.js"></script>

@@ -42,7 +42,7 @@
                         <a href="join" class="login-cta-element d-flex">
                             <img src="img/auth/add.png" style="width: 64px; height: 64px;"/>
                             <div class="login-cta-labels d-flex flex-column ml-4">
-                                <div class="login-cta-label-desc">Don’t have an account??</div>
+                                <div class="login-cta-label-desc">Don’t have an account?</div>
                                 <div class="login-cta-label">Join Now</div>
                             </div>
                         </a>

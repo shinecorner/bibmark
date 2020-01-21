@@ -10,7 +10,7 @@
 
 @section('content')
     <h4 class="font-weight-bold py-3 mb-4">
-    Edit account <span class="text-muted">#{{ $account->id }}</span>
+    Edit sponsor <span class="text-muted">#{{ $sponsor->id }}</span>
     </h4>
-    <account-edit :account="{{ $account }}"></account-edit>
+    <sponsor-edit :sponsor="{{ $sponsor }}"></sponsor-edit>
 @endsection

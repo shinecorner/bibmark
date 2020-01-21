@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use App\Models\{ Billing };
 
 class BillingService
 {
     /**
      * Create a billing
-     * 
+     *
      * @param array $data
      * @return App\Models\Billing
      */
@@ -34,21 +34,21 @@ class BillingService
     }
 
     /**
-     * Get all billings belong to an account
-     * 
-     * @param integer $accountId
+     * Get all billings belong to an sponsor
+     *
+     * @param integer $sponsorId
      * @return array
      */
-    public function getBillingsWithAccountId($accountId)
+    public function getBillingsWithSponsorId($sponsorId)
     {
-        $account = Account::find($accountId);
+        $sponsor = Sponsor::find($sponsorId);
 
-        return $account->cards;
+        return $sponsor->cards;
     }
 
     /**
      * Get all billings belong to a user
-     * 
+     *
      * @param integer $userId
      * @return array
      */

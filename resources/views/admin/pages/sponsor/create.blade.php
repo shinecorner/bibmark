@@ -10,7 +10,7 @@
 
 @section('content')
     <h4 class="font-weight-bold py-3 mb-4">
-    Create account
+    Create sponsor
     </h4>
-    <account-edit></account-edit>
+    <sponsor-edit></sponsor-edit>
 @endsection

@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <div class="card-datatable table-responsive">
-            <table id="account-list" class="table table-striped table-bordered">
+            <table id="sponsor-list" class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -19,4 +19,4 @@
     </div>
 </template>
 
-<script src="./AccountList.js"></script>
+<script src="./SponsorList.js"></script>

@@ -1,6 +1,6 @@
 export default {
     props: {
-        accountId: {
+        sponsorId: {
             type: Number,
             required: true
         }
@@ -15,11 +15,11 @@ export default {
         };
     },
     mounted: function () {
-        this.getAccountDetails(this.accountId);
+        this.getSponsorDetails(this.sponsorId);
     },
     watch: {},
     methods: {
-        getAccountDetails(id) {
+        getSponsorDetails(id) {
             $('.profile-picture').block({
                 message: '<div style="border-radius: 50px;"><div class="sk-fading-circle">' +
                     '<div class="sk-circle1 sk-circle"></div><div class="sk-circle2 sk-circle"></div>' +
@@ -56,7 +56,7 @@ export default {
                     opacity: 0.8
                 }
             });
-            axios.get('/internal/account/' + id)
+            axios.get('/internal/sponsor/' + id)
                 .then(response => {
                     // console.log(response.data);
                     this.name = response.data.name;
@@ -136,15 +136,15 @@ export default {
                 }
             })
                 .then((response) => {
-                this.updateAccountDetails(type, response.data.url);
+                this.updateSponsorDetails(type, response.data.url);
                 })
                 .catch((error) => {
 
                 });
         },
-        updateAccountDetails(type, url) {
+        updateSponsorDetails(type, url) {
             let formData = new FormData();
-            formData.append('id', this.accountId);
+            formData.append('id', this.sponsorId);
             formData.append('name', this.name);
             if (type === 'logo') {
                 formData.append(type, url);
@@ -157,11 +157,11 @@ export default {
                 formData.append('background_image', this.background_image ? this.background_image : '');
             }
 
-            window.axios.post('/internal/account', formData)
+            window.axios.post('/internal/sponsor', formData)
                 .then(response => {
                     this.image_to_change = '';
                     this.errors = [];
-                    this.getAccountDetails(this.accountId);
+                    this.getSponsorDetails(this.sponsorId);
                 })
                 .catch(error => {
                     this.errors = error.response.data.errors;
@@ -172,7 +172,7 @@ export default {
                 });
         },
         allowChangeName() {
-            this.updateAccountDetails(null, null);
+            this.updateSponsorDetails(null, null);
             $('#closeBtn').click();
         }
 

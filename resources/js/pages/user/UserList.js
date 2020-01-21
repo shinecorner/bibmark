@@ -1,6 +1,6 @@
 export default {
     props: {
-        accountId: {
+        sponsorId: {
             type: String
         }
     },
@@ -11,8 +11,8 @@ export default {
         };
     },
     mounted: function () {
-        if (this.accountId) {
-            this.getUsersUnderAccount();
+        if (this.sponsorId) {
+            this.getUsersUnderSponsor();
         } else {
             this.getAllUsers();
         }
@@ -38,11 +38,11 @@ export default {
                 newestOnTop: true
               });
         },
-        getUsersUnderAccount: function(callback) {
+        getUsersUnderSponsor: function(callback) {
             $('#user-list').dataTable({
                 "destroy": true,
                 "ajax": {
-                    url: '/internal/account/' + this.accountId + '/users',
+                    url: '/internal/sponsor/' + this.sponsorId + '/users',
                     dataSrc: function(json) {
                         let data = [];
                         json.users.forEach(user => {
@@ -158,8 +158,8 @@ export default {
                         });
                         axios.delete('/internal/user/' + self.userId)
                         .then((response) => {
-                            if (self.accountId) {
-                                self.getUsersUnderAccount(function() {
+                            if (self.sponsorId) {
+                                self.getUsersUnderSponsor(function() {
                                     $('#user-list').unblock();
                                 });
                             } else {

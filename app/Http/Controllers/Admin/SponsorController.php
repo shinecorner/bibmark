@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Account;
+use App\Models\Sponsor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AccountResource;
+use App\Http\Resources\SponsorResource;
 use App\Services\UserService;
 
-class AccountController extends Controller
+class SponsorController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
     /**
@@ -22,7 +22,7 @@ class AccountController extends Controller
      */
     public function index()
     {
-        return view('admin.pages.account.index');
+        return view('admin.pages.sponsor.index');
     }
 
     /**
@@ -32,7 +32,7 @@ class AccountController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.account.create');
+        return view('admin.pages.sponsor.create');
     }
 
     /**
@@ -49,26 +49,26 @@ class AccountController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Account  $account
+     * @param  \App\Models\Sponsor  $sponsor
      * @return \Illuminate\Http\Response
      */
-    public function show(Account $account)
+    public function show(Sponsor $sponsor)
     {
-        return view('admin.pages.account.show', [
-            'account' => $account
+        return view('admin.pages.sponsor.show', [
+            'sponsor' => $sponsor
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Account  $account
+     * @param  \App\Models\Sponsor  $sponsor
      * @return \Illuminate\Http\Response
      */
-    public function edit(Account $account)
+    public function edit(Sponsor $sponsor)
     {
-        return view('admin.pages.account.edit', [
-            'account' => $account
+        return view('admin.pages.sponsor.edit', [
+            'sponsor' => $sponsor
         ]);
     }
 
@@ -76,10 +76,10 @@ class AccountController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Account  $account
+     * @param  \App\Models\Sponsor  $sponsor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Account $account)
+    public function update(Request $request, Sponsor $sponsor)
     {
         //
     }
@@ -87,10 +87,10 @@ class AccountController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Account  $account
+     * @param  \App\Models\Sponsor  $sponsor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Account $account)
+    public function destroy(Sponsor $sponsor)
     {
         //
     }
@@ -100,25 +100,25 @@ class AccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createUser($accountId)
+    public function createUser($sponsorId)
     {
         return view('admin.pages.user.create', [
-            'accountId' => $accountId
+            'sponsorId' => $sponsorId
         ]);
     }
 
     /**
      * Show the form for editing a user.
      *
-     * @param integer $accountId
+     * @param integer $sponsorId
      * @param integer $userId
      * @param App\Services\UserService $userService
      * @return \Illuminate\Http\Response
      */
-    public function editUser($accountId, $userId, UserService $userService)
+    public function editUser($sponsorId, $userId, UserService $userService)
     {
         return view('admin.pages.user.edit', [
-            'accountId' => $accountId,
+            'sponsorId' => $sponsorId,
             'user' => $userService->user($userId)
         ]);
     }

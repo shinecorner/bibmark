@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asset;
 use App\Models\Design;
-use App\Models\Account;
+use App\Models\Sponsor;
 use App\Models\Charity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -88,36 +88,35 @@ class DesignController extends Controller
         //
     }
 
-    public function getCharities(){
-
-        // $charities = Charity::all();
+    public function getCharities()
+    {
         $charities = Asset::where('assetable_id', 1)->get();
         return $charities;
     }
 
-    public function getSponsors(){
-
-        // $sponsors = Account::all();
+    public function getSponsors()
+    {
         $sponsors = Asset::where('assetable_id', 2)->get();
         return $sponsors;
     }
 
-    public function myDesign(){
-
+    public function myDesign()
+    {
         $user_id = Auth::check() ? Auth::user()->id : null;
         $mydesigns = Design::where('user_id', $user_id)->get();
 
         return $mydesigns;
     }
 
-    public function saveDesign(Request $request){
+    public function saveDesign(Request $request)
+    {
         $mydesigns = Design::create([
             'user_id' => $request->user_id,
             'name' => $request->name,
             'exported_file' => $request->exported_file,
             'image' => $request->image
         ]);
-        
+
         return $mydesigns;
     }
 }

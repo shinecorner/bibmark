@@ -1,6 +1,6 @@
 export default {
     props: {
-        accountId: {
+        sponsorId: {
             type: String
         },
         user: {
@@ -72,10 +72,10 @@ export default {
             var ladda = Ladda.create(document.querySelector('.ladda-button'));
             ladda.start();
 
-            if (this.accountId) {
-                this.user.account_id = this.accountId;
+            if (this.sponsorId) {
+                this.user.sponsor_id = this.sponsorId;
                 axios.post(
-                    '/internal/account/user', 
+                    '/internal/sponsor/user', 
                     this.user
                 ).then((response) => {
                     $('#input-form').unblock();

@@ -20,8 +20,8 @@
                             <div class="d-flex align-items-center">
                                 <div class="ion ion-md-contact display-4 text-success"></div>
                                 <div class="ml-3">
-                                    <div class="text-muted small">Total Accounts</div>
-                                    <div class="text-large">{{totalAccounts.length}}</div>
+                                    <div class="text-muted small">Total Sponsors</div>
+                                    <div class="text-large">{{totalSponsors.length}}</div>
                                 </div>
                             </div>
                         </div>
@@ -79,16 +79,16 @@
         <div v-else>
             <!-- Counters -->
             <div class="row">
-                <div class="col-sm-6 col-xl-3" v-if="userAccounts.length > 0">
+                <div class="col-sm-6 col-xl-3" v-if="userSponsors.length > 0">
 
                     <div class="card mb-4">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="ion ion-md-contact display-4 text-success"></div>
                                 <div class="ml-3">
-                                    <div class="text-muted small">My Accounts</div>
-                                    <div v-for="account in userAccounts" class="text-small">
-                                        <a :href="'/dashboard/account/'+ account.id +'/home'">{{account.name}}</a>
+                                    <div class="text-muted small">My Sponsorts</div>
+                                    <div v-for="sponsor in userSponsors" class="text-small">
+                                        <a :href="'/dashboard/sponsor/'+ sponsor.id +'/home'">{{sponsor.name}}</a>
                                     </div>
                                 </div>
                             </div>

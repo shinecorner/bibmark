@@ -1,6 +1,6 @@
 export default {
     props: {
-        account: {
+        sponsor: {
             type: Object,
             required: true
         }

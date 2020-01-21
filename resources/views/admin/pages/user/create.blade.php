@@ -12,5 +12,5 @@
     <h4 class="font-weight-bold py-3 mb-4">
     Create user
     </h4>
-    <user-edit account-id="{{ isset($accountId) ? $accountId : '' }}"></user-edit>
+    <user-edit sponsor-id="{{ isset($sponsorId) ? $sponsorId : '' }}"></user-edit>
 @endsection

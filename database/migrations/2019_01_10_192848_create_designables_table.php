@@ -18,7 +18,7 @@ class CreateDesignablesTable extends Migration
             $table->unsignedInteger('design_id');
             $table->unsignedInteger('designable_id');
             $table->string('deesignable_type');
-            $table->unsignedInteger('account_id')->nullable();
+            $table->unsignedInteger('sponsor_id')->nullable();
             $table->timestamps();
         });
     }

@@ -19,7 +19,7 @@ class CreateItemablesTable extends Migration
             $table->unsignedInteger('itemable_id');
             $table->string('itemable_type');
             $table->double('amount', 11, 2)->default(0);
-            $table->unsignedInteger('account_id')->nullable();
+            $table->unsignedInteger('sponsor_id')->nullable();
             $table->timestamps();
         });
     }

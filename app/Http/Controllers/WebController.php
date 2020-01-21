@@ -10,37 +10,45 @@ use Illuminate\Support\Facades\Validator;
 
 class WebController extends Controller
 {
-    public function homePage() {
+    public function homePage()
+    {
         return view('front.home');
     }
 
-    public function loginPage() {
+    public function loginPage()
+    {
         return view('front.auth.login');
     }
 
-    public function joinPage() {
+    public function joinPage()
+    {
         return view('front.auth.join');
     }
 
-    public function forgotPasswordPage() {
+    public function forgotPasswordPage()
+    {
         return view('front.auth.forgot-password');
     }
 
-    public function resetPasswordPage($token, $email) {
+    public function resetPasswordPage($token, $email)
+    {
         return view('front.auth.reset-password')->with(
             ['token' => $token, 'email' => $email]
         );
     }
 
-    public function showResetForm(Request $request) {
+    public function showResetForm(Request $request)
+    {
 
     }
 
-    public function profilePage() {
+    public function profilePage()
+    {
         return view('front.profile');
     }
 
-    public function editAccountPage() {
+    public function editAccountPage()
+    {
         return view('front.edit-account');
     }
 
@@ -90,29 +98,39 @@ class WebController extends Controller
         return redirect('/login');
     }
 
-
-    public function myEventsPage() {
+    public function myEventsPage()
+    {
         return view('front.my-events');
     }
 
-    public function myDesignsPage(){
+    public function myDesignsPage()
+    {
         return view('front.my-designs');
     }
 
     // Menu Header Pages
-    public function techPage() {
+    public function techPage()
+    {
         return view('front.pages.tech');
     }
-    public function apparelPage() {
+
+    public function apparelPage()
+    {
         return view('front.pages.apparel');
     }
-    public function sponsorsPage() {
+
+    public function sponsorsPage()
+    {
         return view('front.pages.sponsors');
     }
-    public function racesPage() {
+
+    public function racesPage()
+    {
         return view('front.pages.races');
     }
-    public function charityPage() {
+
+    public function charityPage()
+    {
         return view('front.pages.charity');
     }
 }

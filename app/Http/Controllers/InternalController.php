@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Account;
+use App\Models\Sponsor;
 // use App\Services\BillingService;
 use App\Models\Billing;
 use Illuminate\Http\Request;
@@ -14,17 +14,17 @@ use App\Http\Requests\UploadImageRequest;
 use phpDocumentor\Reflection\Types\Integer;
 use App\Http\Requests\Billing\{CreateBillingRequest};
 use App\Http\Requests\Asset\{CreateOrUpdateAssetRequest};
-use App\Http\Requests\Account\{CreateOrUpdateAccountRequest};
+use App\Http\Requests\Sponsor\{CreateOrUpdateSponsorRequest};
 use App\Http\Requests\Charity\{CreateOrUpdateCharityRequest};
 use App\Http\Requests\Event\{CreateOrUpdateEventRequest, RegisterEventRequest};
 use App\Http\Requests\Design\{CreateOrUpdateDesignRequest, UploadDesignFileRequest};
 use App\Http\Requests\Location\{CreateAddressRequest, CreateOrUpdateLocationRequest};
 use App\Http\Requests\Product\{CreateOrUpdateProductRequest, AddProductToSizeRequest};
 use App\Http\Requests\Order\{CreateOrUpdateOrderItemRequest, UpdateOrderRequest, PlaceOrderRequest};
-use App\Http\Requests\User\{LoginRequest, CreateOrUpdateUserUnderAccountRequest, GetAllUsersRequest, CreateOrUpdateUserRequest};
+use App\Http\Requests\User\{LoginRequest, CreateOrUpdateUserUnderSponsorRequest, GetAllUsersRequest, CreateOrUpdateUserRequest};
 use App\Http\Resources\{LocationResource, LocationCollection, AddressResource, OrderItemResource, OrderItemCollection, OrderResource, OrderCollection, DesignResource, DesignCollection};
-use App\Http\Resources\{AccountResource, AccountCollection, CharityResource, CharityCollection, EventResource, EventCollection, UserResource, UserCollection, ProductResource, ProductCollection, AssetCollection, AssetResource};
-use App\Services\{AccountService, CharityService, EventService, UserService, ProductService, LocationService, AddressService, OrderService, BillingService, DesignService, ExtraService, ShippingService, AssetService};
+use App\Http\Resources\{SponsorResource, SponsorCollection, CharityResource, CharityCollection, EventResource, EventCollection, UserResource, UserCollection, ProductResource, ProductCollection, AssetCollection, AssetResource};
+use App\Services\{SponsorService, CharityService, EventService, UserService, ProductService, LocationService, AddressService, OrderService, BillingService, DesignService, ExtraService, ShippingService, AssetService};
 
 class InternalController extends Controller
 {
@@ -34,56 +34,56 @@ class InternalController extends Controller
     }
 
     /**
-     * Get all accounts
+     * Get all sponsors
      *
-     * @param App\Services\AccountService $accountService
+     * @param App\Services\SponsorService $sponsorService
      * @return \Illuminate\Http\Response
      */
-    public function accounts(AccountService $accountService)
+    public function sponsors(SponsorService $sponsorService)
     {
-        $result = new AccountCollection($accountService->getAllAccounts());
+        $result = new SponsorCollection($sponsorService->getAllSponsors());
 
         return response()->json($result, 200);
     }
 
     /**
-     * Create or Update an account
+     * Create or Update an sponsor
      *
-     * @param App\Http\Requests\Account\CreateOrUpdateAccountRequest $request
-     * @param App\Services\AccountService $accountService
+     * @param App\Http\Requests\Sponsor\CreateOrUpdateSponsorRequest $request
+     * @param App\Services\SponsorService $sponsorService
      * @return \Illuminate\Http\Response
      */
-    public function createOrUpdateAccount(CreateOrUpdateAccountRequest $request, AccountService $accountService)
+    public function createOrUpdateSponsor(CreateOrUpdateSponsorRequest $request, SponsorService $sponsorService)
     {
-        $result = new AccountResource($accountService->createOrUpdateAccount($request->all()));
+        $result = new SponsorResource($sponsorService->createOrUpdateSponsor($request->all()));
 
         return response()->json($result, 200);
     }
 
     /**
-     * Delete an account
+     * Delete an sponsor
      *
-     * @param integer $accountId
-     * @param App\Services\AccountService $accountService
+     * @param integer $sponsorId
+     * @param App\Services\SponsorService $sponsorService
      * @return \Illuminate\Http\Response
      */
-    public function deleteAccount($accountId, AccountService $accountService)
+    public function deleteSponsor($sponsorId, SponsorService $sponsorService)
     {
-        $result = $accountService->deleteAccount($accountId);
+        $result = $sponsorService->deleteSponsor($sponsorId);
 
         return response()->json($result, 200);
     }
 
     /**
-     * Get account details
+     * Get sponsor details
      *
-     * @param integer $accountId
-     * @param App\Services\AccountService $accountService
+     * @param integer $sponsorId
+     * @param App\Services\SponsorService $sponsorService
      * @return \Illuminate\Http\Response
      */
-    public function accountDetails($accountId, AccountService $accountService)
+    public function sponsorDetails($sponsorId, SponsorService $sponsorService)
     {
-        $result = new AccountResource($accountService->getAccountById($accountId));
+        $result = new SponsorResource($sponsorService->getSponsorById($sponsorId));
 
         return response()->json($result, 200);
     }
@@ -104,7 +104,7 @@ class InternalController extends Controller
     /**
      * Create or Update a charity
      *
-     * @param App\Http\Requests\Account\CreateOrUpdateCharityRequest $request
+     * @param App\Http\Requests\Sponsor\CreateOrUpdateCharityRequest $request
      * @param App\Services\CharityService $charityService
      * @return \Illuminate\Http\Response
      */
@@ -212,15 +212,15 @@ class InternalController extends Controller
     }
 
     /**
-     * Get all users belong the account
+     * Get all users belong the sponsor
      *
-     * @param integer $accountId
+     * @param integer $sponsorId
      * @param App\Services\UserService $userService
      * @return \Illuminate\Http\Response
      */
-    public function usersWithAccountId($accountId, UserService $userService)
+    public function usersWithSponsorId($sponsorId, UserService $userService)
     {
-        $result = new UserCollection($userService->usersWithAccountId($accountId));
+        $result = new UserCollection($userService->usersWithSponsorId($sponsorId));
 
         return response()->json($result, 200);
     }
@@ -241,15 +241,15 @@ class InternalController extends Controller
     }
 
     /**
-     * Create a user belongs to the account
+     * Create a user belongs to the sponsor
      *
-     * @param App\Http\Requests\User\CreateOrUpdateUserUnderAccountRequest $request
+     * @param App\Http\Requests\User\CreateOrUpdateUserUnderSponsorRequest $request
      * @param App\Services\UserService $userService
      * @return \Illuminate\Http\Response
      */
-    public function createOrUpdateUserUnderAccount(CreateOrUpdateUserUnderAccountRequest $request, UserService $userService)
+    public function createOrUpdateUserUnderSponsor(CreateOrUpdateUserUnderSponsorRequest $request, UserService $userService)
     {
-        $result = new UserResource($userService->createOrUpdateUserUnderAccount($request->all()));
+        $result = new UserResource($userService->createOrUpdateUserUnderSponsor($request->all()));
 
         return response()->json($result, 200);
     }
@@ -283,8 +283,8 @@ class InternalController extends Controller
     }
 
     /**
-     * Get a user relations info (Accounts, Charities, Events)
-     * or all Accounts, Charities, Events, Users if user is admin
+     * Get a user relations info (Sponsors, Charities, Events)
+     * or all Sponsors, Charities, Events, Users if user is admin
      *
      * @param integer $userId
      * @param App\Services\UserService $userService
@@ -312,7 +312,7 @@ class InternalController extends Controller
     /**
      * Create or Update a product
      *
-     * @param App\Http\Requests\Account\CreateOrUpdateProductRequest $request
+     * @param App\Http\Requests\Sponsor\CreateOrUpdateProductRequest $request
      * @param App\Services\ProductService $productService
      * @return \Illuminate\Http\Response
      */
@@ -552,15 +552,15 @@ class InternalController extends Controller
     }
 
     /**
-     * Get all billings belong to an account
+     * Get all billings belong to an sponsor
      *
-     * @param integer $accountId
+     * @param integer $sponsorId
      * @param App\Services\BillingService $billingService
      * @return \Illuminate\Http\Response
      */
-    public function getBillingsWithAccountId(Integer $accountId, BillingService $billingService)
+    public function getBillingsWithSponsorId(Integer $sponsorId, BillingService $billingService)
     {
-        $result = new BillingCollection($billingService->getBillingsWithAccountId($accountId));
+        $result = new BillingCollection($billingService->getBillingsWithSponsorId($sponsorId));
     }
 
     /**
@@ -662,7 +662,7 @@ class InternalController extends Controller
     /**
      * Create or Update a asset
      *
-     * @param App\Http\Requests\Account\CreateOrUpdateCharityRequest $request
+     * @param App\Http\Requests\Sponsor\CreateOrUpdateCharityRequest $request
      * @param App\Services\AssetService $assetService
      * @return \Illuminate\Http\Response
      */

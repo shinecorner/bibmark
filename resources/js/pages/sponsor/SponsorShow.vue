@@ -3,7 +3,7 @@
         <div>
             <div class="media align-items-center py-3 mb-3">
                 <div class="media-body">
-                    <a v-bind:href="account.id + '/edit'" class="btn btn-primary btn-sm">Edit</a>&nbsp;
+                    <a v-bind:href="sponsor.id + '/edit'" class="btn btn-primary btn-sm">Edit</a>&nbsp;
                     <a href="javascript:history.back()" class="btn btn-default btn-sm">Back</a>&nbsp;
                 </div>
             </div>
@@ -14,31 +14,31 @@
                     <tbody>
                         <tr>
                             <td>ID:</td>
-                            <td>{{ account.id }}</td>
+                            <td>{{ sponsor.id }}</td>
                         </tr>
                         <tr>
                             <td>Name:</td>
-                            <td>{{ account.name }}</td>
+                            <td>{{ sponsor.name }}</td>
                         </tr>
                         <tr>
                             <td>Logo Image:</td>
-                            <td><img style="width: 80px; height: 80px; object-fit: contain;" v-bind:src="account.logo" v-if="account.logo" /></td>
+                            <td><img style="width: 80px; height: 80px; object-fit: contain;" v-bind:src="sponsor.logo" v-if="sponsor.logo" /></td>
                         </tr>
                         <tr>
                             <td>Background Image:</td>
-                            <td><img style="width: 80px; height: 80px; object-fit: contain;" v-bind:src="account.background_image" v-if="account.background_image" /></td>
+                            <td><img style="width: 80px; height: 80px; object-fit: contain;" v-bind:src="sponsor.background_image" v-if="sponsor.background_image" /></td>
                         </tr>
                         <tr>
                             <td>Balance:</td>
-                            <td>{{ account.balance }}</td>
+                            <td>{{ sponsor.balance }}</td>
                         </tr>
                         <tr>
                             <td>Budget:</td>
-                            <td>{{ account.budget }}</td>
+                            <td>{{ sponsor.budget }}</td>
                         </tr>
                         <tr>
                             <td>Created At:</td>
-                            <td>{{ account.created_at | moment("YYYY-MM-DD") }}</td>
+                            <td>{{ sponsor.created_at | moment("YYYY-MM-DD") }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -47,4 +47,4 @@
     </div>
 </template>
 
-<script src="./AccountShow.js"></script>
+<script src="./SponsorShow.js"></script>

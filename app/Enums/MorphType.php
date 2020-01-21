@@ -6,7 +6,7 @@ use BenSampo\Enum\Enum;
 
 final class MorphType extends Enum
 {
-    const Account = 'App\Models\Account';
+    const Sponsor = 'App\Models\Sponsor';
     const Charity = 'App\Models\Charity';
     const Event = 'App\Models\Event';
     const User = 'App\Models\User';

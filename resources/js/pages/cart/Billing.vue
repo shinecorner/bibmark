@@ -345,7 +345,7 @@ export default {
         getUserCards(){
             console.log('Getting the crads ....')
             let id = this.user_id
-            axios.get('/internal/account/'+id+'/cards').then(response => {
+            axios.get('/internal/sponsor/'+id+'/cards').then(response => {
                 console.log(response.data)
                 this.cards = response.data
             })

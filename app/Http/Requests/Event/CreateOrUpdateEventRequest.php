@@ -15,7 +15,7 @@ class CreateOrUpdateEventRequest extends Request
     public function rules()
     {
         return [
-            'id' => 'sometimes|integer|exists:accounts',
+            'id' => 'sometimes|integer|exists:sponsors',
             'name' => 'required|string',
             'rev_share' => 'sometimes|numeric',
             'balance' => 'sometimes|numeric',

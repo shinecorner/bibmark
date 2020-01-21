@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Account;
+namespace App\Http\Requests\Sponsor;
 
 use App\Http\Requests\Request;
 use Waavi\Sanitizer\Laravel\SanitizesInput;
 
-class CreateOrUpdateAccountRequest extends Request
+class CreateOrUpdateSponsorRequest extends Request
 {
     /**
      *  Validation rules to be applied to the input.
@@ -15,7 +15,7 @@ class CreateOrUpdateAccountRequest extends Request
     public function rules()
     {
         return [
-            'id' => 'sometimes|integer|exists:accounts',
+            'id' => 'sometimes|integer|exists:sponsors',
             'name' => 'required|string',
             'budget' => 'sometimes|numeric',
             'balance' => 'sometimes|numeric',

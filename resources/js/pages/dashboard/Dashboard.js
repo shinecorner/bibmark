@@ -10,10 +10,10 @@ export default {
     },
     data: function () {
         return {
-            userAccounts: {},
+            userSponsors: {},
             userCharities: {},
             userEvents: {},
-            totalAccounts: {},
+            totalSponsors: {},
             totalCharities: {},
             totalEvents: {},
             totalUsers: {},
@@ -27,20 +27,20 @@ export default {
             axios.get('/internal/user/'+id+'/dashboard_achievements')
                 .then(response => {
                     if (!this.isAdmin) {
-                        this.userAccounts = JSON.parse(response.data.user_accounts);
+                        this.userSponsors = JSON.parse(response.data.user_sponsors);
                         this.userCharities = JSON.parse(response.data.user_charities);
                         this.userEvents = JSON.parse(response.data.user_events);
 
-                        if (this.userAccounts.length === 1  && this.userCharities.length === 0 && this.userEvents.length === 0) {
-                            window.location.replace('/dashboard/account/' + this.userAccounts[0].id + '/home');
-                        } else if (this.userAccounts.length === 0 && this.userCharities.length === 1 && this.userEvents.length === 0) {
-                            window.location='/dashboard/charity/'+ this.userAccounts[0].id +'/home';
-                        } else if (this.userAccounts.length === 0 && this.userCharities.length === 0 && this.userEvents.length === 1) {
+                        if (this.userSponsors.length === 1  && this.userCharities.length === 0 && this.userEvents.length === 0) {
+                            window.location.replace('/dashboard/sponsor/' + this.userSponsors[0].id + '/home');
+                        } else if (this.userSponsors.length === 0 && this.userCharities.length === 1 && this.userEvents.length === 0) {
+                            window.location='/dashboard/charity/'+ this.userSponsors[0].id +'/home';
+                        } else if (this.userSponsors.length === 0 && this.userCharities.length === 0 && this.userEvents.length === 1) {
                             window.location='/dashboard/event/'+ this.userEvents[0].id +'/home';
                         }
 
                     } else {
-                        this.totalAccounts = JSON.parse(response.data.total_accounts);
+                        this.totalSponsors = JSON.parse(response.data.total_sponsors);
                         this.totalCharities = JSON.parse(response.data.total_charities);
                         this.totalEvents = JSON.parse(response.data.total_events);
                         this.totalUsers = JSON.parse(response.data.total_users);

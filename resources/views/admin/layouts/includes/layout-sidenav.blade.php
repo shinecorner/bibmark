@@ -23,8 +23,8 @@
                     <a href="{{ route('dashboard') }}" class="sidenav-link"><i class="sidenav-icon ion ion-md-home"></i><div>Dashboard</div></a>
                 </li>
             @if (Auth::user()->isSuperAdmin())
-                <li class="sidenav-item{{ strpos($routeName, 'accounts') !== false ? ' active' : '' }}">
-                    <a href="{{ route('accounts.index') }}" class="sidenav-link"><i class="sidenav-icon ion ion-md-contact"></i><div>Accounts</div></a>
+                <li class="sidenav-item{{ strpos($routeName, 'sponsors') !== false ? ' active' : '' }}">
+                    <a href="{{ route('sponsors.index') }}" class="sidenav-link"><i class="sidenav-icon ion ion-md-contact"></i><div>Sponsors</div></a>
                 </li>
                 <li class="sidenav-item{{ strpos($routeName, 'charities') !== false ? ' active' : '' }}">
                     <a href="{{ route('charities.index') }}" class="sidenav-link"><i class="sidenav-icon ion ion-md-gift"></i><div>Charities</div></a>

@@ -15,7 +15,7 @@ class CreateOrUpdateCharityRequest extends Request
     public function rules()
     {
         return [
-            'id' => 'sometimes|integer|exists:accounts',
+            'id' => 'sometimes|integer|exists:sponsors',
             'name' => 'required|string',
             'balance' => 'sometimes|numeric',
             'logo' => 'sometimes|url|nullable',

@@ -3,31 +3,31 @@
         <img :src="background_image || 'https://unsplash.it/975/300'" id="dummy" style="display:none;" alt=""/>
         <header>
             <figure v-if="background_image" :style="'background-image: url(' + background_image+ ')'"
-                    class="cursor-pointer profile-banner" @click="browseExistsFileUpdate('image', accountId)"
+                    class="cursor-pointer profile-banner" @click="browseExistsFileUpdate('image', sponsorId)"
             >
-                <input type="file" :id="'image'+accountId" class="btn btn-sm btn-light" name="image"
+                <input type="file" :id="'image'+sponsorId" class="btn btn-sm btn-light" name="image"
                        ref="background_image" @change="onExistsFileChanged($event, 'background_image')" hidden
                 >
             </figure>
             <figure v-else class="cursor-pointer profile-banner"
                     style="background-image: url('https://unsplash.it/975/300')"
-                    @click="browseExistsFileUpdate('image', accountId)">
-                <input type="file" class="btn btn-sm btn-light" name="image" :id="'image'+accountId"
+                    @click="browseExistsFileUpdate('image', sponsorId)">
+                <input type="file" class="btn btn-sm btn-light" name="image" :id="'image'+sponsorId"
                        ref="background_image" @change="onExistsFileChanged($event, 'background_image')" hidden>
             </figure>
             <figure v-if="logo" class="cursor-pointer profile-picture"
-                    @click="browseExistsFileUpdate('logo', accountId)"
+                    @click="browseExistsFileUpdate('logo', sponsorId)"
                     :style="'background-image: url(' + logo + ')'">
-                <input type="file" class="btn btn-sm btn-light" name="logo" :id="'logo'+accountId" ref="logo"
+                <input type="file" class="btn btn-sm btn-light" name="logo" :id="'logo'+sponsorId" ref="logo"
                        @change="onExistsFileChanged($event, 'logo')" hidden>
             </figure>
-            <figure v-else class="cursor-pointer profile-picture" @click="browseExistsFileUpdate('logo', accountId)"
+            <figure v-else class="cursor-pointer profile-picture" @click="browseExistsFileUpdate('logo', sponsorId)"
                     style="background-image: url('http://unsplash.it/150/150')">
-                <input type="file" class="btn btn-sm btn-light" name="logo" :id="'logo'+accountId" ref="logo"
+                <input type="file" class="btn btn-sm btn-light" name="logo" :id="'logo'+sponsorId" ref="logo"
                        @change="onExistsFileChanged($event, 'logo')" hidden>
             </figure>
             <h1><input :value="name" disabled></h1>
-            <span class="btn lnr lnr-pencil" data-toggle="modal" data-target="#changeNameAccountModal"></span>
+            <span class="btn lnr lnr-pencil" data-toggle="modal" data-target="#changeNameSponsorModal"></span>
         </header>
         <body>
         <ul class="nav nav-tabs">
@@ -41,12 +41,12 @@
         </body>
 
         <!-- Modal -->
-        <div class="modal fade" id="changeNameAccountModal" tabindex="-1" role="dialog"
-             aria-labelledby="changeNameAccountModalTitle" aria-hidden="true">
+        <div class="modal fade" id="changeNameSponsorModal" tabindex="-1" role="dialog"
+             aria-labelledby="changeNameSponsorModalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="changeNameAccountModalTitle">Change name</h5>
+                        <h5 class="modal-title" id="changeNameSponsorModalTitle">Change name</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="modal-footer">
                         <button id="closeBtn" type="button" class="btn btn-secondary" data-dismiss="modal"
-                                @click="getAccountDetails(accountId)">Close
+                                @click="getSponsorDetails(sponsorId)">Close
                         </button>
                         <button type="button" class="btn btn-primary" @click="allowChangeName()">Save changes</button>
                     </div>
@@ -67,7 +67,7 @@
     </div>
 </template>
 
-<script src="./AccountDetailPage.js"></script>
+<script src="./SponsorDetailPage.js"></script>
 
 <style lang="scss" scoped>
     body {

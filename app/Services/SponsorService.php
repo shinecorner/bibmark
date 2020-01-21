@@ -2,40 +2,40 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth; 
-use App\Models\Account;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Sponsor;
 use App\Enums\ChargeStatus;
 
-class AccountService
+class SponsorService
 {
     /**
-     * Get all accounts
-     * 
+     * Get all sponsors
+     *
      * @return array
      */
-    public function getAllAccounts()
+    public function getAllSponsors()
     {
-        return Account::all();
+        return Sponsor::all();
     }
 
     /**
-     * Get account by id
+     * Get sponsor by id
      *
      * @param integer $id
-     * @return App\Models\Account
+     * @return App\Models\Sponsor
      */
-    public function getAccountById($id)
+    public function getSponsorById($id)
     {
-        return Account::find($id);
+        return Sponsor::find($id);
     }
 
     /**
-     * Create or Update an account
-     * 
+     * Create or Update an sponsor
+     *
      * @param array $data
-     * @return App\Models\Account 
+     * @return App\Models\Sponsor
      */
-    public function createOrUpdateAccount($data)
+    public function createOrUpdateSponsor($data)
     {
         $user = Auth::user();
         if ($user->isSuperAdmin()) {
@@ -47,13 +47,13 @@ class AccountService
                 'budget' => isset($data['budget']) ? floatval($data['budget']) : 0,
             ];
             if (isset($data['id'])) {
-                $account = Account::find($data['id']);
-                if ($account->update($values)) {
-                    return $account;
+                $sponsor = Sponsor::find($data['id']);
+                if ($sponsor->update($values)) {
+                    return $sponsor;
                 }
             } else {
-                $account = Account::create($values);
-                return $account;
+                $sponsor = Sponsor::create($values);
+                return $sponsor;
             }
         } else {
             $values = [
@@ -64,18 +64,18 @@ class AccountService
                 'budget' => isset($data['budget']) ? floatval($data['budget']) : 0,
             ];
             if (isset($data['id'])) {
-                $account = Account::find($data['id']);
-                if ($user->accounts->contains($account->id)){
-                    if ($account->update($values)) {
-                        return $account;
+                $sponsor = Sponsor::find($data['id']);
+                if ($user->sponsors->contains($sponsor->id)){
+                    if ($sponsor->update($values)) {
+                        return $sponsor;
                     }
                 }
-                else return $account;
+                else return $sponsor;
             } else {
-                $account = Account::create($values);
-                $user->accounts()->attach($account->id);
+                $sponsor = Sponsor::create($values);
+                $user->sponsors()->attach($sponsor->id);
 
-                return $account;
+                return $sponsor;
             }
         }
 
@@ -83,40 +83,40 @@ class AccountService
     }
 
     /**
-     * Delete an account
-     * 
-     * @param integer accountId
+     * Delete an sponsor
+     *
+     * @param integer sponsorId
      * @return boolean
      */
-    public function deleteAccount($accountId)
+    public function deleteSponsor($sponsorId)
     {
         $user = Auth::user();
         if ($user->isSuperAdmin()) {
-            $account = Account::find($accountId);
-            $account->users()->detach();
-            $account->delete();
+            $sponsor = Sponsor::find($sponsorId);
+            $sponsor->users()->detach();
+            $sponsor->delete();
         }
 
         return false;
     }
 
     /**
-     * Charge accounts
-     * 
+     * Charge sponsors
+     *
      * @return void
      */
-    public function chargeAccounts()
+    public function chargeSponsors()
     {
-        $accounts = Account::where('balance', '<', 'budget')
+        $sponsors = Sponsor::where('balance', '<', 'budget')
                            ->where('balance', '>', 0)
                            ->where('budget', '>', 0)
                            ->get();
-        foreach ($accounts as $account) {
-            $billing = $account->defaultCard();
+        foreach ($sponsors as $sponsor) {
+            $billing = $sponsor->defaultCard();
             if ($billing) {
                 $charge = Charge::create([
                     'order_id' => 0,
-                    'amount' => $account->budget - $account->balance,
+                    'amount' => $sponsor->budget - $sponsor->balance,
                     'name' => $billing->name,
                     'address' => $billing->address,
                     'city' => $billing->city,

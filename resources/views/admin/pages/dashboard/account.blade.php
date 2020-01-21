@@ -10,6 +10,6 @@
 
 @section('content')
     <div>
-        <account-detail-page :account-id="{{ $accountId }}"></account-detail-page>
+        <sponsor-detail-page :sponsor-id="{{ $sponsorId }}"></sponsor-detail-page>
     </div>
 @endsection

@@ -81,7 +81,7 @@ class User extends Authenticatable
      */
     public function isAccess()
     {
-        $types = [MorphType::Charity, MorphType::Event, MorphType::Account];
+        $types = [MorphType::Charity, MorphType::Event, MorphType::Sponsor];
 
         $result = false;
         foreach ($types as $type) {
@@ -99,13 +99,13 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all of the accounts that are assigned this user.
+     * Get all of the sponsors that are assigned this user.
      *
      * @return array
      */
-    public function accounts()
+    public function sponsors()
     {
-        return $this->morphedByMany(MorphType::Account, 'userable');
+        return $this->morphedByMany(MorphType::Sponsor, 'userable');
     }
 
     /**
