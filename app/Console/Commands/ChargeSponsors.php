@@ -42,6 +42,6 @@ class ChargeSponsors extends Command
      */
     public function handle()
     {
-        $this->sponsorService->chargeSpnsors();
+        $this->sponsorService->chargeSponsors();
     }
 }
