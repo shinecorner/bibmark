@@ -639,9 +639,22 @@ class InternalController extends Controller
      */
     public function uploadImage(UploadImageRequest $request, ExtraService $extraService)
     {
-        $result = $extraService->uploadImage($request->all());
-
-        return response()->json(['url' => $result], 200);
+        $image = $request->file('image');
+        $uploadedImage = $image->store(null, 'public');
+        $fileSizes = config('storage.fileSizes');
+        $data = $request->all();
+        $data['file_name'] = $uploadedImage;
+        $data['extension'] = $image->getClientOriginalExtension();
+        $storageDirName = 'storage';
+        $data['image_path'] = $storageDirName . '/' . $uploadedImage;
+        $fileUrls = [];
+        array_push($fileUrls,$extraService->uploadImage($data));
+        foreach ($fileSizes as $sizeInfo) {
+            $result = $extraService->resize($data, $sizeInfo);
+            $data['image_path'] = $storageDirName . '/' . $result;
+            array_push($fileUrls,$extraService->uploadImage($data));
+        }
+        return response()->json(['urls' => $fileUrls, 'success' => true], 200);
     }
 
 

@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth; 
+use App\Models\AssetSize;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Asset;
 
 class AssetService
@@ -37,6 +38,8 @@ class AssetService
     public function createOrUpdateAsset($data)
     {
         $user = Auth::user();
+        $assetableTypes = [1 => 'Charity',2 => 'Sponsor'];
+        $assetableId = isset($data['assetable_id']) ? intval($data['assetable_id']) : 1;
         if ($user->isSuperAdmin()) {
             $values = [
                 'name' => $data['name'],
@@ -45,16 +48,34 @@ class AssetService
                 'rate' => isset($data['rate']) ? floatval($data['rate']) : 0,
                 'cap' => isset($data['cap']) ? floatval($data['cap']) : 0,
                 'cap_perc' => isset($data['cap_perc']) ? floatval($data['cap_perc']) : 0,
-                'assetable_id' => isset($data['assetable_id']) ? intval($data['assetable_id']) : 1,
-                'assetable_type' => $data['assetable_type'],
+                'assetable_id' => $assetableId,
+                'assetable_type' => $assetableTypes[$assetableId],
             ];
             if (isset($data['id'])) {
                 $asset = Asset::find($data['id']);
                 if ($asset->update($values)) {
+                    $assetSizes = $asset->sizes;
+                    if(isset($data['fileurls'])) {
+                        foreach ($data['fileurls'] as $key => $file) {
+                            if ($key) {
+                                $assetSize=AssetSize::find($assetSizes[$key-1]->id);
+                                $assetSize->update(['size' => $file['sizes']['width'] . 'X' . $file['sizes']['height']]);
+                            }
+                        }
+                    }
                     return $asset;
                 }
             } else {
                 $asset = Asset::create($values);
+                foreach ($data['fileurls'] as $key => $file) {
+                    if ($key) {
+                        $assetSize = new AssetSize();
+                        $assetSize->asset_id = $asset->id;
+                        $assetSize->size = $file['sizes']['width'] . 'X' . $file['sizes']['height'];
+                        $assetSize->amount = 1;
+                        $assetSize->save();
+                    }
+                }
                 return $asset;
             }
         } else {
@@ -65,8 +86,8 @@ class AssetService
                 'rate' => isset($data['rate']) ? floatval($data['rate']) : 0,
                 'cap' => isset($data['cap']) ? floatval($data['cap']) : 0,
                 'cap_perc' => isset($data['cap_perc']) ? floatval($data['cap_perc']) : 0,
-                'assetable_id' => isset($data['assetable_id']) ? intval($data['assetable_id']) : 1,
-                'assetable_type' => $data['assetable_type'],
+                'assetable_id' => $assetableId,
+                'assetable_type' => $assetableTypes[$assetableId],
             ];
             if (isset($data['id'])) {
                 $asset = Asset::find($data['id']);
