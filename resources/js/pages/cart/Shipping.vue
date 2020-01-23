@@ -7,8 +7,8 @@
                     <h5 class="card-title">Ship To:</h5>
                     <div class="row card-subtitle">
                         <div class="col-8">
-                            <div class="name">{{ name }}</div>
-                            <div class="adress">{{ adress1 }} {{ city }} {{ country }}</div>   
+                            <div class="name">{{ shippingForm.name }}</div>
+                            <div class="adress">{{ shippingForm.adress1 }} {{ shippingForm.city }} {{ shippingForm.country }}</div>
                         </div>
                         <div class="col-4">
                             <a href="#" @click.prevent="edit" class="btn btn-sm  btn-edit align-content-sm-center"><span class="search-btn-text">Edit</span></a>
@@ -56,7 +56,7 @@
             <div class="form-row">
                 <div class="col form-group mb-5 mr">
                     <label for="name" class="mb-3">Name</label>
-                    <input v-model="name" type="text" class="form-control" id="name" name="name"
+                    <input v-model="shippingForm.name" type="text" class="form-control" id="name" name="name"
                         v-validate="'required'"
                         :class="{ 'is-invalid': errors.has('name') }">
                     <div class="error">
@@ -66,7 +66,7 @@
                 <div class="col">
                     <div class="col form-group mb-5 ml">
                         <label for="email" class="mb-3">Email</label>
-                        <input v-model="email" type="email" class="form-control" id="email" name="email"
+                        <input v-model="shippingForm.email" type="email" class="form-control" id="email" name="email"
                             v-validate="'required'"
                             :class="{ 'is-invalid': errors.has('email') }">
                         <div class="error">
@@ -78,7 +78,7 @@
             <div class="form-row">
                 <div class="col form-group mb-5 mr">
                     <label for="adress1" class="mb-3">Address 1</label>
-                    <input v-model="adress1" type="text" class="form-control" id="adress1" name="adress1"
+                    <input v-model="shippingForm.address_1" type="text" class="form-control" id="adress1" name="adress1"
                         v-validate="'required'"
                         :class="{ 'is-invalid': errors.has('adress1') }">
                     <div class="error">
@@ -88,7 +88,7 @@
                 <div class="col">
                     <div class="col form-group mb-5 ml">
                         <label for="adress2" class="mb-3">Address 2</label>
-                        <input v-model="adress2" type="text" class="form-control" id="adress2" name="adress2"
+                        <input v-model="shippingForm.address_2" type="text" class="form-control" id="adress2" name="adress2"
                             v-validate="'required'"
                             :class="{ 'is-invalid': errors.has('adress2') }">
                     </div>
@@ -97,7 +97,7 @@
             <div class="form-row">
                 <div class="col form-group mb-5">
                     <label for="city" class="mb-3">City</label>
-                    <input v-model="city" type="text" class="form-control" id="city" name="city"
+                    <input v-model="shippingForm.city" type="text" class="form-control" id="city" name="city"
                         v-validate="'required'"
                         :class="{ 'is-invalid': errors.has('city') }">
                     <div class="error">
@@ -107,7 +107,7 @@
                 <div class="col">
                     <div class="col form-group mb-5">
                         <label for="state" class="mb-3">State/Province</label>
-                        <input v-model="state" type="text" class="form-control" id="state" name="state"
+                        <input v-model="shippingForm.state" type="text" class="form-control" id="state" name="state"
                             v-validate="'required'"
                             :class="{ 'is-invalid': errors.has('state') }">
                         <div class="error">
@@ -117,7 +117,7 @@
                 </div>
                 <div class="col form-group mb-5">
                     <label for="pcode" class="mb-3">Postal Code</label>
-                    <input v-model="pcode" type="text" class="form-control" id="pcode" name="pcode"
+                    <input v-model="shippingForm.postal_code" type="text" class="form-control" id="pcode" name="pcode"
                         v-validate="'required'"
                         :class="{ 'is-invalid': errors.has('pcode') }">
                     <div class="error">
@@ -127,7 +127,7 @@
                 <div class="col">
                     <div class="col form-group mb-5">
                         <label for="country" class="mb-3">Country</label>
-                        <input v-model="country" type="text" class="form-control" id="country" name="country"
+                        <input v-model="shippingForm.country" type="text" class="form-control" id="country" name="country"
                             v-validate="'required'"
                             :class="{ 'is-invalid': errors.has('country') }">
                         <div class="error">
@@ -139,7 +139,7 @@
             <div class="form-row">
                 <div class="col-6 form-group mb-5 mr">
                     <label for="phone" class="mb-3">Phone Number</label>
-                    <input v-model="phone" type="tel" class="form-control" id="phone" name="phone"
+                    <input v-model="shippingForm.phone" type="tel" class="form-control" id="phone" name="phone"
                         v-validate="'required'"
                         :class="{ 'is-invalid': errors.has('phone') }">
                     <div class="error">
@@ -149,7 +149,7 @@
                 <!-- <button type="submit" class="btn btn-primary">Confirm identity</button> -->
                 <div class="col">
                     <!-- <div class="col-6 form-group"> -->
-                        <a href="#" @click.prevent="update" class="btn btn-md btn-update"><span class="search-btn-text">Update</span></a>                    
+                        <a href="#" @click.prevent="update" class="btn btn-md btn-update"><span class="search-btn-text">Update</span></a>
                     <!-- </div> -->
                 </div>
             </div>
@@ -160,20 +160,28 @@
 
 <script>
 export default {
+    props: {
+        setValidness: {
+            type: Function,
+            required: true
+        }
+    },
     name: 'shipping',
     data() {
         return {
             shipping: true,
             editShipping: false,
-            name: '',
-            email: '',
-            adress1: '',
-            adress2: '',
-            phone: '',
-            pcode: '',
-            city: '',
-            state: '',
-            country: '',
+            shippingForm: {
+                name: '',
+                email: '',
+                address_1: '',
+                address_2: '',
+                phone: '',
+                postal_code: '',
+                city: '',
+                state: '',
+                country: ''
+            },
             user_id: Laravel.user.id,
             shipingMethod: [
                 {
@@ -197,7 +205,22 @@ export default {
         };
     },
     mounted(){
-        this.getAddress()
+        // this.getAddress();
+    },
+
+    computed: {
+        isValid(){
+            for (const key in this.shippingForm) {
+                if (this.shippingForm.hasOwnProperty(key)) {
+                    const element = this.shippingForm[key];
+                    if(!element){
+                        return false;
+                    }
+                }
+            }
+            this.$store.commit('Address', true);
+            return true;
+        }
     },
     methods: {
         edit() {
@@ -207,18 +230,7 @@ export default {
         update() {
             // this.editShipping = false;
             // this.shipping = true;
-            const data = {
-                name: this.name,
-                email: this.email,
-                address_1: this.adress1,
-                adress_2: this.adress2,
-                phone: this.phone,
-                postal_code: this.pcode,
-                city: this.city,
-                state: this.state,
-                country: this.country,
-            }
-            console.log(data)
+            const data = this.shippingForm;
             this.$validator.validate().then(valid => {
                 if (valid) {
                     let loader = this.$loading.show({
@@ -231,21 +243,36 @@ export default {
                         this.editShipping = false;
                         this.shipping = true;
                         this.$toastr('success', 'Your address has been updated', 'Success')
-                    }).catch(error => {
-                        console.log(error)
+                        this.setValidness(true);
+                    }).catch(({ response }) => {
                         loader.hide()
-                        this.$toastr('error', error.message, 'Error')
+                        this.$toastr('error', response.data.message, 'Error');
+                        this.setValidness(false, response.data.message);
                     });
                 }
             });
         },
         getAddress(){
-            console.log('Getting the address ....')
+            let loader = this.$loading.show({
+                canCancel: true,
+                onCancel: this.onCancel,
+            });
+            this.setValidness(false, 'Setup your shipping info!');
             let id = this.user_id
-            axios.get('/internal/address/'+id).then(response => {
-                console.log(response.data)
-                // this.cards = response.data
-            })
+            axios.get('/internal/address/'+id)
+                .then(response => {
+                    if(!response.data){
+                        this.editShipping = true;
+                        this.setValidness(false, 'Setup your shipping info!');
+                    } else {
+                        // set model when shipping is retrieved and call update
+                        // right now we cant configure this beacuse
+                        // shipping part is not configured!!
+                        // this.update();
+                    }
+                    // this.cards = response.data
+                })
+                .finally(() => loader.hide());
         },
         // addShipping(shipping) {
         //     let selectshipping = this.selectshipping.toFixed(2)

@@ -23,3 +23,5 @@ Route::middleware('auth:api')->group(function() {
     // size
     Route::get('sizes', 'SizeController@getAll');
 });
+
+Route::get('random_product', 'ProductController@random');

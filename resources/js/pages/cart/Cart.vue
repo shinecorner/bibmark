@@ -11,8 +11,9 @@
                     <div class="profile-content">
                         <div class="col-lg col-xs-12">
                             <h2 class="welcome">My Shopping Cart</h2>
+                            <button class="btn btn-primary" @click="testCart">Test Cart</button>
                             <hr class="content-divider">
-                            <div class="contain">
+                            <div class="contain" v-if="!cartIsEmpty">
                                 <div class="main-step">
                                     <!-- <div class="wizard"> -->
                                         <vue-good-wizard
@@ -24,7 +25,9 @@
                                             </div>
                                             <div slot="page2">
                                                 <product :editable='true'/>
-                                                <shipping/>
+                                                <shipping
+                                                    :setValidness="setStepValidness"
+                                                />
                                             </div>
                                             <div slot="page3">
                                                 <product :editable='true'/>
@@ -39,6 +42,9 @@
                                             </div>
                                         </vue-good-wizard>
                                 </div>                                
+                            </div>
+                            <div v-else>
+                                <h3>Your cart is empty, explore the <a href="#">products</a>!</h3>
                             </div>
                         </div>
                     </div>
@@ -58,12 +64,23 @@ import Shipping from './Shipping.vue';
 import Billing from './Billing.vue';
 import Review from './Review.vue';
 import Confirmation from './Confirmation.vue';
+import { random as fetchRandomProduct } from '../../services/product';
+
     export default {
         components: {'vue-good-wizard': GoodWizard, Product, Shipping, Billing, Review, Confirmation},
         name: 'cart',
         props: ['backClicked','nextClicked'],
+        computed: {
+            cartIsEmpty(){
+                return this.$store.state.cart.length < 1;
+            }
+        },
         data(){
             return {
+                stepValidness: {
+                    status: true,
+                    errorsMessage: 'test'
+                },
             steps: [
                 {
                 label: 'CART',
@@ -92,11 +109,37 @@ import Confirmation from './Confirmation.vue';
             };
         },
         methods: {
+            testCart(){
+                fetchRandomProduct()
+                    .then(({ data }) => {
+                        if(data){
+                            this.$store.commit('addToCart', data);
+                            this.$store.commit('saveCart');
+                        } else {
+                            alert('No products found! Create one!');
+                        }
+                    });
+            },
+            setStepValidness(status, errorsMessage = ''){
+                this.stepValidness = { status, errorsMessage };
+            },
             nextClicked: function(currentPage){
+
+                if(!this.stepValidness.status){
+                    this.$toastr('error', this.stepValidness.errorsMessage, 'Error');
+                    return;
+                }
+
                 console.log(currentPage);
-                if (currentPage == 1 && jQuery.isEmptyObject(this.$store.state.shipping)){
-                    this.$toastr('error', 'Select a shipping method', 'Error')
-                    return false;
+                if (currentPage == 1) {
+                    if (jQuery.isEmptyObject(this.$store.state.shipping)) {
+                        this.$toastr('error', 'Select a shipping method', 'Error');
+                        return false;
+                    }
+                    if (jQuery.isEmptyObject(this.$store.state.address)) {
+                        this.$toastr('error', 'Select a shipping address', 'Error');
+                        return false;
+                    }
                 }
                 if (currentPage == 2 && jQuery.isEmptyObject(this.$store.state.card)){
                     this.$toastr('error', 'Select a payment method', 'Error')

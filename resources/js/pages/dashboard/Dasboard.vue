@@ -87,7 +87,7 @@
                                 <div class="ion ion-md-contact display-4 text-success"></div>
                                 <div class="ml-3">
                                     <div class="text-muted small">My Sponsorts</div>
-                                    <div v-for="sponsor in userSponsors" class="text-small">
+                                    <div v-for="sponsor in userSponsors" v-bind:key="sponsor" class="text-small">
                                         <a :href="'/dashboard/sponsor/'+ sponsor.id +'/home'">{{sponsor.name}}</a>
                                     </div>
                                 </div>
@@ -104,7 +104,7 @@
                                 <div class="lnr lnr-gift display-4 text-info"></div>
                                 <div class="ml-3">
                                     <div class="text-muted small">My Charities</div>
-                                    <div v-for="charity in userCharities" class="text-small">
+                                    <div v-for="charity in userCharities" v-bind:key="charity" class="text-small">
                                         <a :href="'/dashboard/charity/'+ charity.id +'/home'">{{charity.name}}</a>
                                     </div>
                                 </div>
@@ -121,7 +121,7 @@
                                 <div class="lnr lnr-calendar-full display-4 text-danger"></div>
                                 <div class="ml-3">
                                     <div class="text-muted small">My Events</div>
-                                    <div v-for="event in userEvents" class="text-small">
+                                    <div v-for="event in userEvents" v-bind:key="event" class="text-small">
                                         <a :href="'/dashboard/event/'+ event.id +'/home'">{{event.name}}</a>
                                     </div>
                                 </div>

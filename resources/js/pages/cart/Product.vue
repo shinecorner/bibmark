@@ -17,11 +17,11 @@
             </thead>
             <tbody>
                 <tr v-for="item in $store.state.cart" :key="item.id">
-                    <td class="border-bottom-total"><a class="thumbnail pull-left" href="#"><img class="img-responsive" :src="item.url" />
+                    <td class="border-bottom-total"><a class="thumbnail pull-left" href="#"><img class="img-responsive" width="80px" :src="item.image" />
                         </a></td>
                     <td class="border-bottom-total">
                         <div class="product">
-                            <div class="product-title">{{ item.title }}</div>
+                            <div class="product-title">{{ item.name }}</div>
                             <div class="product-sub-title">Some Design Name</div>
                         </div>
                     </td>
@@ -48,7 +48,7 @@
                         </div>
                     </td>
                     <td class="price text-center border-bottom-total">$ {{ item.price }}</td>
-                    <td class="price text-center border-bottom-total">${{ item.totalPrice }}</td>
+                    <td class="price text-center border-bottom-total">${{ item.totalPrice.toFixed(2) }}</td>
                     <td class="border-bottom-total">
                         <span class="remove float-right">
                             <a href="javascript:void(0)" @click="removeFromCart(item)" ><img src="/img/remove_icon.png" class="img-responsive" style="margin-top:5px"/></a>
@@ -75,27 +75,6 @@ export default {
     props: ['editable'],
     mounted(){
     },
-    data() {
-            return {
-                items: [
-                    {   url: '/img/products/mens-tee.png',
-                        id: 1,
-                        title: 'Children of Bodom - Hatebreeder',
-                        price: 9.99
-                    },
-                    {   url: '/img/products/mens-tee.png',
-                        id: 2,
-                        title: 'Emperor - Anthems to the Welkin at Dusk',
-                        price: 6.66
-                    },
-                    {   url: '/img/products/mens-tee.png',
-                        id: 3,
-                        title: 'Epica - The Quantum Enigma',
-                        price: 15.99
-                    },
-                ]
-            };
-        },
     methods:{
         addToCart(item) {
             this.$store.commit('addToCart', item);

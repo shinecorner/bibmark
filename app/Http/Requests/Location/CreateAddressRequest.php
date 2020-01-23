@@ -17,6 +17,7 @@ class CreateAddressRequest extends Request
         return [
             'name' => 'required|string',
             'address_1' => 'required|string',
+            'address_2' => 'string',
             'city' => 'required|string',
             'state' => 'required|string',
             'postal_code' => 'required|string',
