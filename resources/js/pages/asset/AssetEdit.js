@@ -101,7 +101,8 @@ export default {
                         'Content-Type': 'multipart/form-data'
                     }
                 }).then((response) => {
-                    callback(response.data.success, response.data.urls);
+                    console.log(response.data.url);
+                    callback(true, response.data.url);
                 }).catch((error) => {
                     callback(false, null);
                 });
@@ -110,10 +111,9 @@ export default {
         uploadLogo: function(callback) {
             if (this.filename) {
                 var self = this;
-                this.uploadImage('profile', this.filename, '#logo-input', function(success, urls) {
+                this.uploadImage('profile', this.filename, '#logo-input', function(success, url) {
                     if (success) {
-                        self.asset.fileurls = urls;
-                        self.asset.filename = urls[0].url;
+                        self.asset.filename = url;
                     } else {
                         self.showToast('error', 'Upload Failed', 'Unable to upload the image.');
                     }
@@ -126,9 +126,9 @@ export default {
         uploadBackground: function(callback) {
             if (this.background) {
                 var self = this;
-                this.uploadImage('profile', this.background, '#background-input', function(success, urls) {
+                this.uploadImage('profile', this.background, '#background-input', function(success, url) {
                     if (success) {
-                        self.asset.background_image = urls[0].url;
+                        self.asset.background_image = url;
                     } else {
                         self.showToast('error', 'Upload Failed', 'Unable to upload background image.');
                     }

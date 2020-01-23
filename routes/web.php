@@ -120,7 +120,7 @@ Route::namespace('Admin')->middleware(['auth'])->group(function() {
 Route::post('/forgot-password', 'Admin\AdminController@forgotPassword');
 Route::post('/reset-password', 'Admin\AdminController@resetPassword');
 
-Route::prefix('internal')->group(function() {
+Route::prefix('api/internal')->group(function() {
 
     Route::middleware(['auth'])->group(function() {
         // sponsor
