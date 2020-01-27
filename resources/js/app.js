@@ -64,7 +64,7 @@ Vue.component('auth-join', require('./pages/auth/Join.vue'))
 Vue.component('auth-forgot-password', require('./pages/auth/ForgotPassword.vue'))
 Vue.component('auth-reset-password', require('./pages/auth/ResetPassword.vue'))
 
-Vue.component('user-profile', require('./pages/profile/profile.vue'))
+Vue.component('user-profile', require('./pages/profile/Profile.vue'))
 Vue.component('edit-account', require('./pages/profile/EditAccount.vue'))
 Vue.component('my-events', require('./pages/profile/MyEvents.vue'))
 Vue.component('my-designs', require('./pages/profile/MyDesigns.vue'))
