@@ -5,6 +5,9 @@ namespace App\Services;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Sponsor;
 use App\Enums\ChargeStatus;
+use App;
+use App\Services\ExtraService;
+
 
 class SponsorService
 {
@@ -98,6 +101,14 @@ class SponsorService
         }
 
         return false;
+    }
+
+    public function uploadImage($image, $type = "sponsor")
+    {
+        return resolve(ExtraService::class)->uploadImage([
+            'image' => $image,
+            'type' => $type
+        ]);
     }
 
     /**

@@ -133,4 +133,5 @@ class WebController extends Controller
     {
         return view('front.pages.charity');
     }
+    
 }

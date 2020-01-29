@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SponsorResource;
 use App\Services\UserService;
+use App\Services\SponsorService;
 
 class SponsorController extends Controller
 {
@@ -82,6 +83,28 @@ class SponsorController extends Controller
     public function update(Request $request, Sponsor $sponsor)
     {
         //
+    }
+
+    public function updateImagesSponsor(Request $request, SponsorService $sponsorService, Sponsor $sponsor, $id)
+    {
+
+        $logoUrl = $request['logo'] ? $sponsorService->uploadImage($request['logo'], 'profile') : null;
+        $coverUrl = $request['cover'] ? $sponsorService->uploadImage($request['cover'], 'profile') : null;
+        $searchedSponsor = $sponsor::find($id);
+        $searchedSponsor->logo = $logoUrl;
+        $searchedSponsor->background_image = $coverUrl;
+        $searchedSponsor->save();
+
+        return response()->json(['logoUrl' => $logoUrl, 'coverUrl' => $coverUrl], 200);
+    }
+
+    public function showSponsorPage(Sponsor $sponsor, $id)
+    {
+        $searchedSponsor = $sponsor::find($id);
+        return view('front.edit-sponsor')->with([
+            'logoUrl' => $searchedSponsor->logo,
+            'coverUrl' => $searchedSponsor->background_image
+        ]);
     }
 
     /**
