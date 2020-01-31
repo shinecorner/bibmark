@@ -44,6 +44,7 @@ class SponsorService
         if ($user->isSuperAdmin()) {
             $values = [
                 'name' => $data['name'],
+                'hashtags' => $data['hashtags'],
                 'logo' => $data['logo'],
                 'background_image' => $data['background_image'],
                 'balance' => isset($data['balance']) ? floatval($data['balance']) : 0,
@@ -61,6 +62,7 @@ class SponsorService
         } else {
             $values = [
                 'name' => $data['name'],
+                'hashtags' => $data['hashtags'],
                 'logo' => $data['logo'],
                 'background_image' => $data['background_image'],
                 'balance' => isset($data['balance']) ? floatval($data['balance']) : 0,

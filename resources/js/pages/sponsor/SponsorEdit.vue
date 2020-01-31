@@ -7,7 +7,12 @@
                         <label class="form-label">Name</label>
                         <input type="text" class="form-control" name="input-name" v-model="sponsor.name">
                     </div>
+                    <div class="form-group">
+                        <label class="form-label">Hashtags</label>
+                        <input @input="prepareHashtags" type="text" class="form-control" name="input-name" v-model="sponsor.hashtags">
+                    </div>
                     <div class="form-group media" style="min-height:1px">
+
                         <div class="ui-bg-cover" style="width: 80px;height: 80px;">
                             <img id="logo-image" style="width: 100%; height: 100%; object-fit: contain;" v-bind:src="sponsor.logo" alt="logo" v-if="sponsor.logo || logo" />
                         </div>

@@ -5,6 +5,7 @@ export default {
             default: function() {
                 return {
                     name: '',
+                    hashtags: '',
                     logo: '',
                     background_image: '',
                 };
@@ -24,6 +25,11 @@ export default {
 
     },
     methods: {
+        prepareHashtags: function(e){
+            console.log(this.sponsor);
+            //TODO: Add validation to the field
+            //this.sponsor.hashtags = 34;
+        },
         showToast: function(type, title, msg) {
             toastr[type](msg, title, {
                 positionClass: 'toast-top-right',
