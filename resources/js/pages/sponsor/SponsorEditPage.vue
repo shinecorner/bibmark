@@ -15,7 +15,7 @@
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="bio">Bio</label></div>
-                        <div class="right-side"><textarea></textarea></div>
+                        <div class="right-side"><textarea id="bio" name="bio"></textarea></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="website">Website</label></div>
@@ -33,10 +33,14 @@
                         <div class="left-side"><label for="twitter">Twitter</label></div>
                         <div class="right-side"><input id="twitter" type="text"></div>
                     </div>
+                    <div class="input-wrap">
+                        <div class="left-side"><label for="hashtag">Hashtag</label></div>
+                        <div class="right-side"><input id="hashtag" type="text"></div>
+                    </div>
                 </div>
                 <div class="col-6">
                     <div class="input-wrap">
-                        <div class="left-side"><label for="companyAddress">Comapny Address</label></div>
+                        <div class="left-side"><label for="companyAddress">Company Address</label></div>
                         <div class="right-side"><input id="companyAddress" type="text"></div>
                     </div>
                     <div class="input-wrap">
