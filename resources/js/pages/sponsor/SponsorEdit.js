@@ -26,9 +26,16 @@ export default {
     },
     methods: {
         prepareHashtags: function(e){
-            console.log(this.sponsor);
-            //TODO: Add validation to the field
-            //this.sponsor.hashtags = 34;
+            let sanitized = e.target.value;
+            if(sanitized){
+                sanitized = sanitized
+                    .trim()
+                    .split(',').map(item => {
+                    return  item.trim();
+                })
+                    .join(', ');
+                this.$refs.hashtag.value = sanitized;
+            }
         },
         showToast: function(type, title, msg) {
             toastr[type](msg, title, {
