@@ -77,6 +77,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/sponsors', 'DesignController@getSponsors');
     Route::get('/sponsors/{id}/profile/edit', 'SponsorController@show');
     Route::put('/sponsors/{id}/profile/edit', 'SponsorController@update');
+    Route::get('/sponsors/{id}/payment/history', 'PaymentController@paymentHistoryShow');
+    Route::put('/sponsors/{id}/profile/updateCover', 'SponsorController@updateCover');
 });
 
 Route::get('/reset-password/{token}/{email}', 'WebController@resetPasswordPage');

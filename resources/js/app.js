@@ -70,11 +70,15 @@ Vue.component('my-events', require('./pages/profile/MyEvents.vue'))
 Vue.component('my-designs', require('./pages/profile/MyDesigns.vue'))
 
 // backend
+Vue.component('sponsor-common', require('./pages/sponsor/SponsorCommon.vue'))
 Vue.component('sponsor-list', require('./pages/sponsor/SponsorList.vue'))
 Vue.component('sponsor-edit', require('./pages/sponsor/SponsorEdit.vue'))
 Vue.component('sponsor-show', require('./pages/sponsor/SponsorShow.vue'))
 Vue.component('sponsor-detail-page', require('./pages/sponsor/SponsorDetailPage.vue'))
 Vue.component('sponsor-edit-page', require('./pages/sponsor/SponsorEditPage.vue'))
+
+Vue.component('payment-history-list', require('./pages/sponsor/PaymentHistoryList.vue'))
+Vue.component('payment-history-page', require('./pages/sponsor/PaymentHistoryPage.vue'))
 
 Vue.component('charity-list', require('./pages/charity/CharityList.vue'))
 Vue.component('charity-edit', require('./pages/charity/CharityEdit.vue'))
@@ -133,7 +137,7 @@ const _app = new Vue({
         },
         eventEmitter: Events
     },
-    mounted: function () {
+    mounted: function() {
         if (this.screen().width < 768) {
             this.isMobile = true
         }
@@ -146,13 +150,14 @@ const _app = new Vue({
         })
     },
     methods: {
-        showModal: function (m) {
+        showModal: function(m) {
             this.activeModal = m
             Events.$emit('modalShown', m)
         },
-        screen: function () {
-            var myWidth = 0, myHeight = 0
-            if (typeof (window.innerWidth) == 'number') {
+        screen: function() {
+            var myWidth = 0,
+                myHeight = 0
+            if (typeof(window.innerWidth) == 'number') {
                 //Non-IE
                 myWidth = window.innerWidth
                 myHeight = window.innerHeight
@@ -174,16 +179,16 @@ const _app = new Vue({
 })
 
 
-Vue.component('modal-test', function (resolve, reject) {
+Vue.component('modal-test', function(resolve, reject) {
     axios.get('/modal/test', {
         params: {
             is_mobile: _app.isMobile ? 1 : 0
         }
-    }).then(function (response) {
+    }).then(function(response) {
         resolve({
             template: response.data,
             props: [],
-            data: function () {
+            data: function() {
                 return {
                     isLoading: false,
                     isLoaded: false,
@@ -193,11 +198,11 @@ Vue.component('modal-test', function (resolve, reject) {
                     isMobile: _app.isMobile
                 }
             },
-            mounted: function () {
+            mounted: function() {
 
             },
             methods: {
-                close: function () {
+                close: function() {
                     this.$emit('closed')
                 }
             }

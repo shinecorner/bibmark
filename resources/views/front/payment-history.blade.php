@@ -9,5 +9,5 @@ window.sponsor_id = {{$id}};
 @endsection
 
 @section('content')
-<sponsor-edit-page :sponsor='@json($sponsor)' ></sponsor-edit-page>
+<payment-history-page :history='@json($history)' :sponsor='@json($sponsor)'></payment-history-page>
 @endsection

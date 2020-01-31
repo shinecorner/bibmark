@@ -55,7 +55,8 @@ class SponsorController extends Controller
     {
         $sponsor = Sponsor::find($id);
         return view('front.edit-sponsor')->with([
-            'sponsor' => $sponsor
+            'sponsor' => $sponsor,
+            'id' => $id
         ]);
     }
 
@@ -81,11 +82,9 @@ class SponsorController extends Controller
     {
         $sponsor = Sponsor::find($id);
         $logo= $request['logo'] ? $this->service->uploadImage($request['logo'], 'profile') : $sponsor->logo;
-        $background_image = $request['cover'] ? $this->service->uploadImage($request['cover'], 'profile') : $sponsor->background_image;
 
         $sponsor->update([
             'logo' => $logo,
-            'background_image' => $background_image
         ]);
 
         return response()->json(['sponsor' => $sponsor], 200);
@@ -100,5 +99,21 @@ class SponsorController extends Controller
     public function destroy(Sponsor $sponsor)
     {
         //
+    }
+
+    /**
+     * Update cover image
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateCover(Request $request, $id){
+        $sponsor = Sponsor::find($id);
+        $background_image = $request['cover'] ? $this->service->uploadImage($request['cover'], 'profile') : $sponsor->background_image;
+        $sponsor->update([
+            'background_image' => $background_image
+        ]);
+        return response()->json(['sponsor' => $sponsor], 200);
     }
 }
