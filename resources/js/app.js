@@ -77,6 +77,8 @@ Vue.component('sponsor-show', require('./pages/sponsor/SponsorShow.vue'))
 Vue.component('sponsor-detail-page', require('./pages/sponsor/SponsorDetailPage.vue'))
 Vue.component('sponsor-edit-page', require('./pages/sponsor/SponsorEditPage.vue'))
 
+Vue.component('campaign-page', require('./pages/sponsor/CampaignPage.vue'))
+
 Vue.component('payment-history-list', require('./pages/sponsor/PaymentHistoryList.vue'))
 Vue.component('payment-history-page', require('./pages/sponsor/PaymentHistoryPage.vue'))
 

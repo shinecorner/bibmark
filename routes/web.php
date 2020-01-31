@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/sponsors/{id}/profile/edit', 'SponsorController@update');
     Route::get('/sponsors/{id}/payment/history', 'PaymentController@paymentHistoryShow');
     Route::put('/sponsors/{id}/profile/updateCover', 'SponsorController@updateCover');
+    Route::get('/sponsors/{id}/campaign/list', 'CampaignController@list');
 });
 
 Route::get('/reset-password/{token}/{email}', 'WebController@resetPasswordPage');

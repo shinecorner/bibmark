@@ -26,7 +26,7 @@
                 navLinks: [
                     {text: "Edit Profile", isActive: false, url: "/sponsors/{0}/profile/edit"},
                     {text: "Manage Team", isActive: false, url: ""},
-                    {text: "Campaigns", isActive: false, url: ""},
+                    {text: "Campaigns", isActive: false, url: "/sponsors/{0}/campaign/list"},
                     {text: "Order Gallery", isActive: false, url: ""},
                     {text: "Reports", isActive: false, url: ""},
                     {text: "Payment Information", isActive: false, url: ""},
@@ -284,6 +284,10 @@
             &:not(:last-child) {
                 margin-bottom: 13px;
             }
+        }
+
+        .table{
+            font-size: 20px;
         }
     }
 </style>
