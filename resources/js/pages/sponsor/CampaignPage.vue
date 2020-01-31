@@ -44,11 +44,11 @@
 
 <style lang="scss" scoped>
     .table {
-        padding-left: 232px !important;
+        padding-left: 154px !important;
     }
 
     .caption {
-        padding-left: 232px;
+        padding-left: 154px;
     }
 
     .caption span {
