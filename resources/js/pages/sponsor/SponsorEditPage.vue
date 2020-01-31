@@ -10,7 +10,7 @@
                             <label class="input-label" for="imageProfile">Choose File</label></div>
                     </div>
                     <div class="input-wrap">
-                        <div class="left-side"><label for="companyName">Comapny Name</label></div>
+                        <div class="left-side"><label for="companyName">Company Name</label></div>
                         <div class="right-side"><input id="companyName" type="text"></div>
                     </div>
                     <div class="input-wrap">
