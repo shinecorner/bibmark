@@ -221,7 +221,7 @@
             display: -o-flex;
             display: flex;
             align-items: center;
-
+            flex-wrap: wrap;
             .input-label {
                 font-size: 18px;
                 color: #444444;

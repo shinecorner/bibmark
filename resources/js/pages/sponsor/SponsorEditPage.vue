@@ -1,78 +1,80 @@
 <template>
     <sponsor-common :sponsor="sponsor" :activeLink="navLink">
         <template v-slot:setting-content>
-            <span class="edit-profile">Edit Profile</span>
-            <div class="row edit-profile-row">
-                <div class="col-6">
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="imageProfile">Profile Picture</label></div>
-                        <div class="right-side"><img id="logo-image" :src="logoUrl" alt="logo" class="logo">
-                            <input v-on:change="selectLogo" ref="logo" id="imageProfile" type="file">
-                            <label class="input-label" for="imageProfile">Choose File</label></div>
+            <form id="validation-form" v-on:submit.prevent>
+                <span class="edit-profile">Edit Profile</span>
+                <div class="row edit-profile-row">
+                    <div class="col-6">
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="imageProfile">Profile Picture</label></div>
+                            <div class="right-side"><img id="logo-image" :src="logoUrl" alt="logo" class="logo">
+                                <input v-on:change="selectLogo" ref="logo" id="imageProfile" type="file">
+                                <label class="input-label" for="imageProfile">Choose File</label></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="companyName">Company Name</label></div>
+                            <div class="right-side"><input id="companyName" name="companyName" type="text" v-model="sponsor.name"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="bio">Bio</label></div>
+                            <div class="right-side"><textarea id="bio" name="bio" v-model="sponsor.bio"></textarea></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="website">Website</label></div>
+                            <div class="right-side"><input id="website" type="text" v-model="sponsor.website"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="instagram">Instagram</label></div>
+                            <div class="right-side"><input id="instagram" type="text" v-model="sponsor.instagram"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="facebook">Facebook</label></div>
+                            <div class="right-side"><input id="facebook" type="text" v-model="sponsor.facebook"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="twitter">Twitter</label></div>
+                            <div class="right-side"><input id="twitter" type="text"  v-model="sponsor.twitter"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="hashtags">Hashtags</label></div>
+                            <div class="right-side">
+                                <input @keyup="prepareHashtags" ref="hashtag" id="hashtags" type="text" v-model="sponsor.hashtags">
+                            </div>
+                        </div>
                     </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="companyName">Company Name</label></div>
-                        <div class="right-side"><input id="companyName" type="text" v-model="sponsor.name"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="bio">Bio</label></div>
-                        <div class="right-side"><textarea id="bio" name="bio" v-model="sponsor.bio"></textarea></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="website">Website</label></div>
-                        <div class="right-side"><input id="website" type="text" v-model="sponsor.website"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="instagram">Instagram</label></div>
-                        <div class="right-side"><input id="instagram" type="text" v-model="sponsor.instagram"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="facebook">Facebook</label></div>
-                        <div class="right-side"><input id="facebook" type="text" v-model="sponsor.facebook"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="twitter">Twitter</label></div>
-                        <div class="right-side"><input id="twitter" type="text"  v-model="sponsor.twitter"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="hashtags">Hashtags</label></div>
-                        <div class="right-side">
-                            <input @keyup="prepareHashtags" ref="hashtag" id="hashtags" type="text" v-model="sponsor.hashtags">
+                    <div class="col-6">
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="companyAddress">Company Address</label></div>
+                            <div class="right-side"><input id="companyAddress" type="text" v-model="sponsor.company_address"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="city">City</label></div>
+                            <div class="right-side"><input id="city" type="text" v-model="sponsor.city"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="state">State</label></div>
+                            <div class="right-side"><input id="state" type="text" v-model="sponsor.state"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="zipCode">Zip Code</label></div>
+                            <div class="right-side"><input id="zipCode" type="text" v-model="sponsor.zip"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="country">Country</label></div>
+                            <div class="right-side"><input id="country" type="text" v-model="sponsor.country"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="companyPhone">Company Phone</label></div>
+                            <div class="right-side"><input id="companyPhone" type="text" v-model="sponsor.company_phone"></div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="companyEmail">Email</label></div>
+                            <div class="right-side"><input id="companyEmail" type="text" v-model="sponsor.email"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="companyAddress">Company Address</label></div>
-                        <div class="right-side"><input id="companyAddress" type="text" v-model="sponsor.company_address"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="city">City</label></div>
-                        <div class="right-side"><input id="city" type="text" v-model="sponsor.city"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="state">State</label></div>
-                        <div class="right-side"><input id="state" type="text" v-model="sponsor.state"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="zipCode">Zip Code</label></div>
-                        <div class="right-side"><input id="zipCode" type="text" v-model="sponsor.zip"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="country">Country</label></div>
-                        <div class="right-side"><input id="country" type="text" v-model="sponsor.country"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="companyPhone">Company Phone</label></div>
-                        <div class="right-side"><input id="companyPhone" type="text" v-model="sponsor.company_phone"></div>
-                    </div>
-                    <div class="input-wrap">
-                        <div class="left-side"><label for="email">Email</label></div>
-                        <div class="right-side"><input id="email" type="text" v-model="sponsor.email"></div>
-                    </div>
-                </div>
-            </div>
-            <button @click="saveProfile" class="save-btn">Save</button>
+                <button @click="saveProfile" class="save-btn">Save</button>
+            </form>
         </template>
     </sponsor-common>
 </template>
@@ -90,12 +92,38 @@
                 require: true
             }
         },
+        mounted: function() {
+            this.initValidation();
+        },
         computed: {
             logoUrl() {
                 return this.sponsor.logo ? this.sponsor.logo : this.defaultLogo
             },
         },
         methods: {
+            initValidation: function() {
+                $('#validation-form').validate({
+                    rules: {
+                        'companyName': {
+                            required: true
+                        }
+                    },
+                    errorPlacement: function errorPlacement(error, element) {
+                        var $parent = $(element).parents('.right-side');
+                        if ($parent.find('.jquery-validation-error').length) { return; }
+                        $parent.append(
+                            error.addClass('jquery-validation-error small form-text invalid-feedback')
+                        );
+                    },
+                    highlight: function(element) {
+                        var $el = $(element);
+                        $el.addClass('is-invalid');
+                    },
+                    unhighlight: function(element) {
+                        $(element).parents('.right-side').find('.is-invalid').removeClass('is-invalid');
+                    }
+                });
+            },
             selectLogo() {
                 this.logo = this.$refs.logo.files[0];
                 const reader = new FileReader();
@@ -117,6 +145,10 @@
                 }
             },
             saveProfile() {
+                if (!$('#validation-form').valid()) {
+                    return;
+                }
+
                 let formData = new FormData();
                 if (this.logo) {
                     formData.append("logo", this.logo);
@@ -224,6 +256,16 @@
             color: #ffc600;
             margin-bottom: 25px;
             padding-left: 232px;
+        }
+        .invalid-feedback {
+            align-self: baseline;
+        }
+        .is-invalid {
+            border-color: #d9534f !important;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
         }
     }
 </style>

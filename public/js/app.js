@@ -6642,6 +6642,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -6656,12 +6660,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             require: true
         }
     },
+    mounted: function mounted() {
+        this.initValidation();
+    },
     computed: {
         logoUrl: function logoUrl() {
             return this.sponsor.logo ? this.sponsor.logo : this.defaultLogo;
         }
     },
     methods: {
+        initValidation: function initValidation() {
+            $('#validation-form').validate({
+                rules: {
+                    'companyName': {
+                        required: true
+                    }
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    var $parent = $(element).parents('.right-side');
+                    if ($parent.find('.jquery-validation-error').length) {
+                        return;
+                    }
+                    $parent.append(error.addClass('jquery-validation-error small form-text invalid-feedback'));
+                },
+                highlight: function highlight(element) {
+                    var $el = $(element);
+                    $el.addClass('is-invalid');
+                },
+                unhighlight: function unhighlight(element) {
+                    $(element).parents('.right-side').find('.is-invalid').removeClass('is-invalid');
+                }
+            });
+        },
         selectLogo: function selectLogo() {
             this.logo = this.$refs.logo.files[0];
             var reader = new FileReader();
@@ -6670,7 +6700,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
             reader.readAsDataURL(this.logo);
         },
+
+        prepareHashtags: function prepareHashtags(e) {
+            var sanitized = e.target.value;
+            if (sanitized) {
+                sanitized = sanitized.trim().split(',').map(function (item) {
+                    return item.trim();
+                }).join(', ');
+                this.$refs.hashtag.value = sanitized;
+            }
+        },
         saveProfile: function saveProfile() {
+            if (!$('#validation-form').valid()) {
+                return;
+            }
+
             var formData = new FormData();
             if (this.logo) {
                 formData.append("logo", this.logo);
@@ -9798,7 +9842,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.sponsor-common .save-btn[data-v-29c258f6] {\n  size: 28px;\n  color: #444444;\n  width: 132px;\n  height: 33px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid black;\n  font-weight: bold;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  margin-top: 30px;\n}\n.sponsor-common .edit-profile[data-v-29c258f6] {\n  font-size: 25px;\n  font-family: HelveticaNeue, sans-serif;\n  font-weight: bold;\n  color: #ffc600;\n  margin-bottom: 25px;\n  padding-left: 232px;\n}\n", ""]);
+exports.push([module.i, "\n.sponsor-common .save-btn[data-v-29c258f6] {\n  size: 28px;\n  color: #444444;\n  width: 132px;\n  height: 33px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid black;\n  font-weight: bold;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  margin-top: 30px;\n}\n.sponsor-common .edit-profile[data-v-29c258f6] {\n  font-size: 25px;\n  font-family: HelveticaNeue, sans-serif;\n  font-weight: bold;\n  color: #ffc600;\n  margin-bottom: 25px;\n  padding-left: 232px;\n}\n.sponsor-common .invalid-feedback[data-v-29c258f6] {\n  -ms-flex-item-align: baseline;\n      align-self: baseline;\n}\n.sponsor-common .is-invalid[data-v-29c258f6] {\n  border-color: #d9534f !important;\n}\n.sponsor-common form[data-v-29c258f6] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n", ""]);
 
 // exports
 
@@ -9933,7 +9977,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.sponsor-common[data-v-4fa041b7] {\n  padding: 0;\n  background-color: white;\n}\n.sponsor-common .main-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: start;\n        -ms-flex-align: start;\n            align-items: flex-start;\n}\n.sponsor-common .image-wrapper[data-v-4fa041b7] {\n    height: 431px;\n    width: 100%;\n    margin-bottom: 59px;\n    position: relative;\n}\n.sponsor-common .input-cover-wrap[data-v-4fa041b7] {\n    position: absolute;\n    bottom: 19px;\n    right: 76px;\n}\n.sponsor-common .input-cover-wrap input[data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .input-cover-wrap label[data-v-4fa041b7] {\n      size: 18px;\n      color: #444444;\n      padding: 6px 7px;\n      background-color: white;\n      border-radius: 3px;\n      font-weight: bold;\n}\n.sponsor-common .nav-links[data-v-4fa041b7] {\n    padding: 0 15px 67px 28px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    border-right: solid 2px #cccccc;\n}\n.sponsor-common .nav-links > *[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 14px;\n}\n.sponsor-common .navigation-link[data-v-4fa041b7] {\n    font-family: HelveticaNeue, sans-serif;\n    font-size: 20px;\n    cursor: pointer;\n    color: #444444;\n    font-weight: regular;\n}\n.sponsor-common .navigation-link.active[data-v-4fa041b7] {\n      font-weight: bold;\n      color: #ffc600;\n}\n.sponsor-common .tab-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    padding-top: 11px;\n}\n.sponsor-common .left-side[data-v-4fa041b7] {\n    margin-right: 40px;\n    max-width: 189px;\n    width: 100%;\n    padding-top: 14px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n}\n.sponsor-common .left-side label[data-v-4fa041b7] {\n      font-family: HelveticaNeue, sans-serif;\n      font-size: 22px;\n      font-weight: 500;\n      color: #444444;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side[data-v-4fa041b7] {\n    max-width: 348px;\n    width: 100%;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.sponsor-common .right-side .input-label[data-v-4fa041b7] {\n      font-size: 18px;\n      color: #444444;\n      width: 117px;\n      height: 33px;\n      border: solid 1px #d4d4d4;\n      display: -moz-inline-flex;\n      display: -ms-inline-flex;\n      display: -o-inline-flex;\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side .logo[data-v-4fa041b7] {\n      height: 49px;\n      width: 49px;\n      border-radius: 50%;\n      margin-right: 20px;\n      background-color: #ffc600;\n}\n.sponsor-common .right-side input[type=\"file\"][data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .right-side input[type=\"text\"][data-v-4fa041b7], .sponsor-common .right-side textarea[data-v-4fa041b7] {\n      border: solid 2px rgba(212, 212, 212, 0.89);\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: HelveticaNeue, sans-serif;\n      font-weight: regular;\n      color: #444444;\n      width: 100%;\n}\n.sponsor-common .right-side textarea[data-v-4fa041b7] {\n      resize: none;\n      height: 122px;\n}\n.sponsor-common .background-image[data-v-4fa041b7] {\n    background-color: #ffc600;\n    width: 100%;\n    height: 100%;\n    display: block;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 13px;\n}\n", ""]);
+exports.push([module.i, "\n.sponsor-common[data-v-4fa041b7] {\n  padding: 0;\n  background-color: white;\n}\n.sponsor-common .main-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: start;\n        -ms-flex-align: start;\n            align-items: flex-start;\n}\n.sponsor-common .image-wrapper[data-v-4fa041b7] {\n    height: 431px;\n    width: 100%;\n    margin-bottom: 59px;\n    position: relative;\n}\n.sponsor-common .input-cover-wrap[data-v-4fa041b7] {\n    position: absolute;\n    bottom: 19px;\n    right: 76px;\n}\n.sponsor-common .input-cover-wrap input[data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .input-cover-wrap label[data-v-4fa041b7] {\n      size: 18px;\n      color: #444444;\n      padding: 6px 7px;\n      background-color: white;\n      border-radius: 3px;\n      font-weight: bold;\n}\n.sponsor-common .nav-links[data-v-4fa041b7] {\n    padding: 0 15px 67px 28px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    border-right: solid 2px #cccccc;\n}\n.sponsor-common .nav-links > *[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 14px;\n}\n.sponsor-common .navigation-link[data-v-4fa041b7] {\n    font-family: HelveticaNeue, sans-serif;\n    font-size: 20px;\n    cursor: pointer;\n    color: #444444;\n    font-weight: regular;\n}\n.sponsor-common .navigation-link.active[data-v-4fa041b7] {\n      font-weight: bold;\n      color: #ffc600;\n}\n.sponsor-common .tab-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    padding-top: 11px;\n}\n.sponsor-common .left-side[data-v-4fa041b7] {\n    margin-right: 40px;\n    max-width: 189px;\n    width: 100%;\n    padding-top: 14px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n}\n.sponsor-common .left-side label[data-v-4fa041b7] {\n      font-family: HelveticaNeue, sans-serif;\n      font-size: 22px;\n      font-weight: 500;\n      color: #444444;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side[data-v-4fa041b7] {\n    max-width: 348px;\n    width: 100%;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -ms-flex-wrap: wrap;\n        flex-wrap: wrap;\n}\n.sponsor-common .right-side .input-label[data-v-4fa041b7] {\n      font-size: 18px;\n      color: #444444;\n      width: 117px;\n      height: 33px;\n      border: solid 1px #d4d4d4;\n      display: -moz-inline-flex;\n      display: -ms-inline-flex;\n      display: -o-inline-flex;\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side .logo[data-v-4fa041b7] {\n      height: 49px;\n      width: 49px;\n      border-radius: 50%;\n      margin-right: 20px;\n      background-color: #ffc600;\n}\n.sponsor-common .right-side input[type=\"file\"][data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .right-side input[type=\"text\"][data-v-4fa041b7], .sponsor-common .right-side textarea[data-v-4fa041b7] {\n      border: solid 2px rgba(212, 212, 212, 0.89);\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: HelveticaNeue, sans-serif;\n      font-weight: regular;\n      color: #444444;\n      width: 100%;\n}\n.sponsor-common .right-side textarea[data-v-4fa041b7] {\n      resize: none;\n      height: 122px;\n}\n.sponsor-common .background-image[data-v-4fa041b7] {\n    background-color: #ffc600;\n    width: 100%;\n    height: 100%;\n    display: block;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 13px;\n}\n", ""]);
 
 // exports
 
@@ -36621,488 +36665,545 @@ var render = function() {
         key: "setting-content",
         fn: function() {
           return [
-            _c("span", { staticClass: "edit-profile" }, [
-              _vm._v("Edit Profile")
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row edit-profile-row" }, [
-              _c("div", { staticClass: "col-6" }, [
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "imageProfile" } }, [
-                      _vm._v("Profile Picture")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("img", {
-                      staticClass: "logo",
-                      attrs: { id: "logo-image", src: _vm.logoUrl, alt: "logo" }
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      ref: "logo",
-                      attrs: { id: "imageProfile", type: "file" },
-                      on: { change: _vm.selectLogo }
-                    }),
-                    _vm._v(" "),
-                    _c(
-                      "label",
-                      {
-                        staticClass: "input-label",
-                        attrs: { for: "imageProfile" }
-                      },
-                      [_vm._v("Choose File")]
-                    )
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "companyName" } }, [
-                      _vm._v("Company Name")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.name,
-                          expression: "sponsor.name"
-                        }
-                      ],
-                      attrs: { id: "companyName", type: "text" },
-                      domProps: { value: _vm.sponsor.name },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "name", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "bio" } }, [_vm._v("Bio")])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.bio,
-                          expression: "sponsor.bio"
-                        }
-                      ],
-                      attrs: { id: "bio", name: "bio" },
-                      domProps: { value: _vm.sponsor.bio },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "bio", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "website" } }, [
-                      _vm._v("Website")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.website,
-                          expression: "sponsor.website"
-                        }
-                      ],
-                      attrs: { id: "website", type: "text" },
-                      domProps: { value: _vm.sponsor.website },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "website", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "instagram" } }, [
-                      _vm._v("Instagram")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.instagram,
-                          expression: "sponsor.instagram"
-                        }
-                      ],
-                      attrs: { id: "instagram", type: "text" },
-                      domProps: { value: _vm.sponsor.instagram },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.sponsor,
-                            "instagram",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "facebook" } }, [
-                      _vm._v("Facebook")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.facebook,
-                          expression: "sponsor.facebook"
-                        }
-                      ],
-                      attrs: { id: "facebook", type: "text" },
-                      domProps: { value: _vm.sponsor.facebook },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "facebook", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "twitter" } }, [
-                      _vm._v("Twitter")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.twitter,
-                          expression: "sponsor.twitter"
-                        }
-                      ],
-                      attrs: { id: "twitter", type: "text" },
-                      domProps: { value: _vm.sponsor.twitter },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "twitter", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "hashtags" } }, [
-                      _vm._v("Hashtags")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.hashtags,
-                          expression: "sponsor.hashtags"
-                        }
-                      ],
-                      attrs: { id: "hashtags", type: "text" },
-                      domProps: { value: _vm.sponsor.hashtags },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "hashtags", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-6" }, [
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "companyAddress" } }, [
-                      _vm._v("Company Address")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.company_address,
-                          expression: "sponsor.company_address"
-                        }
-                      ],
-                      attrs: { id: "companyAddress", type: "text" },
-                      domProps: { value: _vm.sponsor.company_address },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.sponsor,
-                            "company_address",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "city" } }, [_vm._v("City")])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.city,
-                          expression: "sponsor.city"
-                        }
-                      ],
-                      attrs: { id: "city", type: "text" },
-                      domProps: { value: _vm.sponsor.city },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "city", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "state" } }, [_vm._v("State")])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.state,
-                          expression: "sponsor.state"
-                        }
-                      ],
-                      attrs: { id: "state", type: "text" },
-                      domProps: { value: _vm.sponsor.state },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "state", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "zipCode" } }, [
-                      _vm._v("Zip Code")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.zip,
-                          expression: "sponsor.zip"
-                        }
-                      ],
-                      attrs: { id: "zipCode", type: "text" },
-                      domProps: { value: _vm.sponsor.zip },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "zip", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "country" } }, [
-                      _vm._v("Country")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.country,
-                          expression: "sponsor.country"
-                        }
-                      ],
-                      attrs: { id: "country", type: "text" },
-                      domProps: { value: _vm.sponsor.country },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "country", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "companyPhone" } }, [
-                      _vm._v("Company Phone")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.company_phone,
-                          expression: "sponsor.company_phone"
-                        }
-                      ],
-                      attrs: { id: "companyPhone", type: "text" },
-                      domProps: { value: _vm.sponsor.company_phone },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            _vm.sponsor,
-                            "company_phone",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "input-wrap" }, [
-                  _c("div", { staticClass: "left-side" }, [
-                    _c("label", { attrs: { for: "email" } }, [_vm._v("Email")])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "right-side" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.sponsor.email,
-                          expression: "sponsor.email"
-                        }
-                      ],
-                      attrs: { id: "email", type: "text" },
-                      domProps: { value: _vm.sponsor.email },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.sponsor, "email", $event.target.value)
-                        }
-                      }
-                    })
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
             _c(
-              "button",
-              { staticClass: "save-btn", on: { click: _vm.saveProfile } },
-              [_vm._v("Save")]
+              "form",
+              {
+                attrs: { id: "validation-form" },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                  }
+                }
+              },
+              [
+                _c("span", { staticClass: "edit-profile" }, [
+                  _vm._v("Edit Profile")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "row edit-profile-row" }, [
+                  _c("div", { staticClass: "col-6" }, [
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "imageProfile" } }, [
+                          _vm._v("Profile Picture")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("img", {
+                          staticClass: "logo",
+                          attrs: {
+                            id: "logo-image",
+                            src: _vm.logoUrl,
+                            alt: "logo"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("input", {
+                          ref: "logo",
+                          attrs: { id: "imageProfile", type: "file" },
+                          on: { change: _vm.selectLogo }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "label",
+                          {
+                            staticClass: "input-label",
+                            attrs: { for: "imageProfile" }
+                          },
+                          [_vm._v("Choose File")]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "companyName" } }, [
+                          _vm._v("Company Name")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.name,
+                              expression: "sponsor.name"
+                            }
+                          ],
+                          attrs: {
+                            id: "companyName",
+                            name: "companyName",
+                            type: "text"
+                          },
+                          domProps: { value: _vm.sponsor.name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.sponsor, "name", $event.target.value)
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "bio" } }, [_vm._v("Bio")])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("textarea", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.bio,
+                              expression: "sponsor.bio"
+                            }
+                          ],
+                          attrs: { id: "bio", name: "bio" },
+                          domProps: { value: _vm.sponsor.bio },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.sponsor, "bio", $event.target.value)
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "website" } }, [
+                          _vm._v("Website")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.website,
+                              expression: "sponsor.website"
+                            }
+                          ],
+                          attrs: { id: "website", type: "text" },
+                          domProps: { value: _vm.sponsor.website },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.sponsor,
+                                "website",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "instagram" } }, [
+                          _vm._v("Instagram")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.instagram,
+                              expression: "sponsor.instagram"
+                            }
+                          ],
+                          attrs: { id: "instagram", type: "text" },
+                          domProps: { value: _vm.sponsor.instagram },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.sponsor,
+                                "instagram",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "facebook" } }, [
+                          _vm._v("Facebook")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.facebook,
+                              expression: "sponsor.facebook"
+                            }
+                          ],
+                          attrs: { id: "facebook", type: "text" },
+                          domProps: { value: _vm.sponsor.facebook },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.sponsor,
+                                "facebook",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "twitter" } }, [
+                          _vm._v("Twitter")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.twitter,
+                              expression: "sponsor.twitter"
+                            }
+                          ],
+                          attrs: { id: "twitter", type: "text" },
+                          domProps: { value: _vm.sponsor.twitter },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.sponsor,
+                                "twitter",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "hashtags" } }, [
+                          _vm._v("Hashtags")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.hashtags,
+                              expression: "sponsor.hashtags"
+                            }
+                          ],
+                          ref: "hashtag",
+                          attrs: { id: "hashtags", type: "text" },
+                          domProps: { value: _vm.sponsor.hashtags },
+                          on: {
+                            keyup: _vm.prepareHashtags,
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.sponsor,
+                                "hashtags",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-6" }, [
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "companyAddress" } }, [
+                          _vm._v("Company Address")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.company_address,
+                              expression: "sponsor.company_address"
+                            }
+                          ],
+                          attrs: { id: "companyAddress", type: "text" },
+                          domProps: { value: _vm.sponsor.company_address },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.sponsor,
+                                "company_address",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "city" } }, [
+                          _vm._v("City")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.city,
+                              expression: "sponsor.city"
+                            }
+                          ],
+                          attrs: { id: "city", type: "text" },
+                          domProps: { value: _vm.sponsor.city },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.sponsor, "city", $event.target.value)
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "state" } }, [
+                          _vm._v("State")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.state,
+                              expression: "sponsor.state"
+                            }
+                          ],
+                          attrs: { id: "state", type: "text" },
+                          domProps: { value: _vm.sponsor.state },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.sponsor,
+                                "state",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "zipCode" } }, [
+                          _vm._v("Zip Code")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.zip,
+                              expression: "sponsor.zip"
+                            }
+                          ],
+                          attrs: { id: "zipCode", type: "text" },
+                          domProps: { value: _vm.sponsor.zip },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.sponsor, "zip", $event.target.value)
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "country" } }, [
+                          _vm._v("Country")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.country,
+                              expression: "sponsor.country"
+                            }
+                          ],
+                          attrs: { id: "country", type: "text" },
+                          domProps: { value: _vm.sponsor.country },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.sponsor,
+                                "country",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "companyPhone" } }, [
+                          _vm._v("Company Phone")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.company_phone,
+                              expression: "sponsor.company_phone"
+                            }
+                          ],
+                          attrs: { id: "companyPhone", type: "text" },
+                          domProps: { value: _vm.sponsor.company_phone },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.sponsor,
+                                "company_phone",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "input-wrap" }, [
+                      _c("div", { staticClass: "left-side" }, [
+                        _c("label", { attrs: { for: "companyEmail" } }, [
+                          _vm._v("Email")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "right-side" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.sponsor.email,
+                              expression: "sponsor.email"
+                            }
+                          ],
+                          attrs: { id: "companyEmail", type: "text" },
+                          domProps: { value: _vm.sponsor.email },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.sponsor,
+                                "email",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  { staticClass: "save-btn", on: { click: _vm.saveProfile } },
+                  [_vm._v("Save")]
+                )
+              ]
             )
           ]
         },
