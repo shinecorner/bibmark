@@ -6,66 +6,67 @@
                 <div class="col-6">
                     <div class="input-wrap">
                         <div class="left-side"><label for="imageProfile">Profile Picture</label></div>
-                        <div class="right-side"><img id="logo-image" :src="logoUrl" alt="logo" class="logo"><input v-on:change="selectLogo" ref="logo" id="imageProfile" type="file">
+                        <div class="right-side"><img id="logo-image" :src="logoUrl" alt="logo" class="logo">
+                            <input v-on:change="selectLogo" ref="logo" id="imageProfile" type="file">
                             <label class="input-label" for="imageProfile">Choose File</label></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="companyName">Company Name</label></div>
-                        <div class="right-side"><input id="companyName" type="text"></div>
+                        <div class="right-side"><input id="companyName" type="text" v-model="sponsor.name"></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="bio">Bio</label></div>
-                        <div class="right-side"><textarea id="bio" name="bio"></textarea></div>
+                        <div class="right-side"><textarea id="bio" name="bio" v-model="sponsor.bio"></textarea></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="website">Website</label></div>
-                        <div class="right-side"><input id="website" type="text"></div>
+                        <div class="right-side"><input id="website" type="text" v-model="sponsor.website"></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="instagram">Instagram</label></div>
-                        <div class="right-side"><input id="instagram" type="text"></div>
+                        <div class="right-side"><input id="instagram" type="text" v-model="sponsor.instagram"></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="facebook">Facebook</label></div>
-                        <div class="right-side"><input id="facebook" type="text"></div>
+                        <div class="right-side"><input id="facebook" type="text" v-model="sponsor.facebook"></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="twitter">Twitter</label></div>
-                        <div class="right-side"><input id="twitter" type="text"></div>
+                        <div class="right-side"><input id="twitter" type="text"  v-model="sponsor.twitter"></div>
                     </div>
                     <div class="input-wrap">
-                        <div class="left-side"><label for="hashtag">Hashtag</label></div>
-                        <div class="right-side"><input id="hashtag" type="text"></div>
+                        <div class="left-side"><label for="hashtags">Hashtags</label></div>
+                        <div class="right-side"><input id="hashtags" type="text" v-model="sponsor.hashtags"></div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="input-wrap">
                         <div class="left-side"><label for="companyAddress">Company Address</label></div>
-                        <div class="right-side"><input id="companyAddress" type="text"></div>
+                        <div class="right-side"><input id="companyAddress" type="text" v-model="sponsor.company_address"></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="city">City</label></div>
-                        <div class="right-side"><input id="city" type="text"></div>
+                        <div class="right-side"><input id="city" type="text" v-model="sponsor.city"></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="state">State</label></div>
-                        <div class="right-side"><input id="state" type="text"></div>
+                        <div class="right-side"><input id="state" type="text" v-model="sponsor.state"></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="zipCode">Zip Code</label></div>
-                        <div class="right-side"><input id="zipCode" type="text"></div>
+                        <div class="right-side"><input id="zipCode" type="text" v-model="sponsor.zip"></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="country">Country</label></div>
-                        <div class="right-side"><input id="country" type="text"></div>
+                        <div class="right-side"><input id="country" type="text" v-model="sponsor.country"></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="companyPhone">Company Phone</label></div>
-                        <div class="right-side"><input id="companyPhone" type="text"></div>
+                        <div class="right-side"><input id="companyPhone" type="text" v-model="sponsor.company_phone"></div>
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="email">Email</label></div>
-                        <div class="right-side"><input id="email" type="text"></div>
+                        <div class="right-side"><input id="email" type="text" v-model="sponsor.email"></div>
                     </div>
                 </div>
             </div>
@@ -115,6 +116,49 @@
                     width: 128,
                     height: 128
                 });
+                formData.append("id", this.sponsor.id);
+                if(this.sponsor.name){
+                    formData.append("name", this.sponsor.name);
+                }
+                if(this.sponsor.hashtags){
+                    formData.append("hashtags", this.sponsor.hashtags);
+                }
+                if(this.sponsor.bio){
+                    formData.append("bio", null);
+                }
+                if(this.sponsor.website){
+                    formData.append("website", this.sponsor.website);
+                }
+                if(this.sponsor.instagram){
+                    formData.append("instagram", this.sponsor.instagram);
+                }
+                if(this.sponsor.twitter){
+                    formData.append("twitter", this.sponsor.twitter);
+                }
+                if(this.sponsor.facebook){
+                    formData.append("facebook", this.sponsor.facebook);
+                }
+                if(this.sponsor.company_address){
+                    formData.append("company_address", this.sponsor.company_address);
+                }
+                if(this.sponsor.city){
+                    formData.append("city", this.sponsor.city);
+                }
+                if(this.sponsor.state){
+                    formData.append("state", this.sponsor.state);
+                }
+                if(this.sponsor.zip){
+                    formData.append("zip", this.sponsor.zip);
+                }
+                if(this.sponsor.country){
+                    formData.append("country", this.sponsor.country);
+                }
+                if(this.sponsor.company_phone){
+                    formData.append("company_phone", this.sponsor.company_phone);
+                }
+                if(this.sponsor.email){
+                    formData.append("email", this.sponsor.email);
+                }
 
                 axios
                     .post(`/sponsors/${this.sponsor.id}/profile/edit`, formData, {
