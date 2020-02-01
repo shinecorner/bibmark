@@ -89,8 +89,8 @@
                         });
                 }
             },
-            redirect(url){
-                if(window.sponsor_id){
+            redirect(url) {
+                if (window.sponsor_id) {
                     url = url.replace('{0}', window.sponsor_id);
                     console.log(url);
                     window.location = url;
@@ -212,8 +212,84 @@
             }
         }
 
+        .left-side2 {
+            margin-right: 40px;
+            max-width: 300px;
+            width: 100%;
+            padding-top: 14px;
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: -ms-flex;
+            display: -o-flex;
+            display: flex;
+            justify-content: flex-end;
+
+            label {
+                font-family: HelveticaNeue, sans-serif;
+                font-size: 22px;
+                font-weight: 500;
+                color: #444444;
+                margin-bottom: 0;
+            }
+        }
+
         .right-side {
             max-width: 348px;
+            width: 100%;
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: -ms-flex;
+            display: -o-flex;
+            display: flex;
+            align-items: center;
+
+            .input-label {
+                font-size: 18px;
+                color: #444444;
+                width: 117px;
+                height: 33px;
+                border: solid 1px #d4d4d4;
+                display: -webkit-inline-flex;
+                display: -moz-inline-flex;
+                display: -ms-inline-flex;
+                display: -o-inline-flex;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 0;
+            }
+
+            .logo {
+                $size: 49px;
+                height: $size;
+                width: $size;
+                border-radius: 50%;
+                margin-right: 20px;
+                background-color: #ffc600;
+            }
+
+            input[type="file"] {
+                display: none;
+            }
+
+            input[type="text"], select, textarea {
+                border: solid 2px rgba(212, 212, 212, 0.89);
+                padding: 13px 11px;
+                font-size: 20px;
+                font-family: HelveticaNeue, sans-serif;
+                font-weight: normal;
+                color: #444444;
+                width: 100%;
+            }
+
+            textarea {
+                resize: none;
+                height: 122px;
+            }
+        }
+
+        .right-side2 {
+            max-width: 600px;
             width: 100%;
             display: -webkit-flex;
             display: -moz-flex;
@@ -256,9 +332,20 @@
                 padding: 13px 11px;
                 font-size: 20px;
                 font-family: HelveticaNeue, sans-serif;
-                font-weight: regular;
+                font-weight: normal;
                 color: #444444;
-                width: 100%;
+                width: 50%;
+            }
+
+            select {
+                border: solid 2px rgba(212, 212, 212, 0.89);
+                padding: 13px 11px;
+                font-size: 20px;
+                font-family: HelveticaNeue, sans-serif;
+                font-weight: normal;
+                color: #444444;
+                width: 50%;
+                height: 58px;
             }
 
             textarea {
@@ -286,8 +373,28 @@
             }
         }
 
-        .table{
+        .table {
             font-size: 20px;
+        }
+
+        .save-btn {
+            size: 28px;
+            color: #444444;
+            width: 100px;
+            height: 33px;
+            background-color: white;
+            border-radius: 3px;
+            border: 1px solid black;
+            font-weight: bold;
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: -ms-flex;
+            display: -o-flex;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-self: center;
+            margin-top: 30px;
         }
     }
 </style>

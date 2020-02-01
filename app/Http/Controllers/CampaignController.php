@@ -37,4 +37,13 @@ class CampaignController extends Controller
             'sponsor' => $sponsor,
         ]);
     }
+
+    public function add($id)
+    {
+        $sponsor = Sponsor::find($id);
+        return view('front.add-campaign')->with([
+            'id' => $id,
+            'sponsor' => $sponsor,
+        ]);
+    }
 }

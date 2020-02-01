@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="caption">
-                <a href="#" class="round-button yellow">+</a>
+                <a :href="`/sponsors/${sponsor.id}/campaign/add`" class="round-button yellow">+</a>
             </div>
         </template>
     </sponsor-common>
@@ -85,29 +85,6 @@
         color: #444444;
     }
 
-    .round-button {
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        color: #f5f5f5;
-        text-align: center;
-        text-decoration: none;
-        font-size: 17px;
-        font-weight: bold;
-        margin-right:24px;
-    }
 
-    .yellow {
-        background-color: #ffc600;
-    }
-
-    .black {
-        background-color: #444444;
-    }
-
-    .red {
-        background-color: #ff3200;
-    }
 
 </style>
