@@ -36,7 +36,9 @@
                     </div>
                     <div class="input-wrap">
                         <div class="left-side"><label for="hashtags">Hashtags</label></div>
-                        <div class="right-side"><input id="hashtags" type="text" v-model="sponsor.hashtags"></div>
+                        <div class="right-side">
+                            <input @keyup="prepareHashtags" ref="hashtag" id="hashtags" type="text" v-model="sponsor.hashtags">
+                        </div>
                     </div>
                 </div>
                 <div class="col-6">
@@ -101,6 +103,18 @@
                     $('#logo-image').attr('src', e.target.result);
                 };
                 reader.readAsDataURL(this.logo);
+            },
+            prepareHashtags: function(e){
+                let sanitized = e.target.value;
+                if(sanitized){
+                    sanitized = sanitized
+                        .trim()
+                        .split(',').map(item => {
+                        return  item.trim();
+                    })
+                .join(', ');
+                    this.$refs.hashtag.value = sanitized;
+                }
             },
             saveProfile() {
                 let formData = new FormData();
