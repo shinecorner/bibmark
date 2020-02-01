@@ -16,5 +16,8 @@ export default {
         }
     },
     methods: {
+        addCampaign() {
+            window.location.href = `/sponsors/${this.sponsor.id}/campaign/add`;
+        }
     }
 }

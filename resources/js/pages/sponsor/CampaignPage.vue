@@ -25,8 +25,10 @@
                             <td>{{campaign.budget}}</td>
                             <td>{{campaign.status}}</td>
                             <td>
-                                <a href="#" class="round-button black">[]</a>
-                                <a href="#" class="round-button red">-</a>
+                                <button type="button" class="btn btn-info btn-circle black"><i
+                                    class="fa fa-pen"></i></button>
+                                <button type="button" class="btn btn-info btn-circle red"><i
+                                    class="fa fa-minus"></i></button>
                             </td>
                         </tr>
                         </tbody>
@@ -34,7 +36,9 @@
                 </div>
             </div>
             <div class="caption">
-                <a :href="`/sponsors/${sponsor.id}/campaign/add`" class="round-button yellow">+</a>
+                <button @click='addCampaign' type="button"
+                        class="btn btn-info btn-circle yellow"><i
+                    class="fa fa-plus"></i></button>
             </div>
         </template>
     </sponsor-common>
