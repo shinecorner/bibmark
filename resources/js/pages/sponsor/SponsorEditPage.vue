@@ -74,7 +74,9 @@
     export default {
         data() {
             return {
-                navLink: 'Edit Profile'
+                navLink: 'Edit Profile',
+                defaultLogo: "/img/profile/profile-fit.png",
+                logo: null,
             };
         },
         props: {

@@ -18,8 +18,12 @@ class CreateCampaignsTable extends Migration
             $table->unsignedInteger('sponsor_id');
             $table->string('name');
             $table->string('logo')->nullable();
-            $table->decimal('budget');
+            $table->decimal('budget')->nullable();
             $table->string('hashtags')->nullable();
+            $table->string('exclude_companies')->nullable();
+            $table->string('age_range')->nullable();
+            $table->string('exclude_sponsor_organization')->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
 
             $table->foreign('sponsor_id')->references('id')->on('sponsors')->onDelete('cascade');

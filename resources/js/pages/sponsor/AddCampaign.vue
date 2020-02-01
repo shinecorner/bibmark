@@ -17,9 +17,9 @@
                     </div>
                     <div class="input-wrap">
                         <div class="left-side2"><label for="logo">Logo</label></div>
-                        <div class="right-side2"><img id="logo" alt="logo" class="logo"
-                                                      src="/img/profile/profile-fit.png">
-                            <input ref="logo" id="imageProfile" type="file"/>
+                        <div class="right-side2">
+                            <img id="logo" alt="logo" class="logo" :src="logoUrl">
+                            <input ref="logo" id="imageProfile" v-on:change="selectLogo" type="file"/>
                             <label class="input-label" for="imageProfile">Choose File</label>
                         </div>
                     </div>

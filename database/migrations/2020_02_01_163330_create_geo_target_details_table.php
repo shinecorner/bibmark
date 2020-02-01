@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCampaignGeoTargetsTable extends Migration
+class CreateGeoTargetDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateCampaignGeoTargetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('campaign_geo_targets', function (Blueprint $table) {
+        Schema::create('geo_target_details', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ class CreateCampaignGeoTargetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('campaign_geo_targets');
+        Schema::dropIfExists('geo_target_details');
     }
 }
