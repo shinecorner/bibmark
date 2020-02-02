@@ -2,12 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Sponsor\CreateOrUpdateCampaignRequest;
+use App\Http\Resources\CampaignResource;
 use App\Models\Sponsor;
-use Illuminate\Http\Request;
+use App\Services\CampaignService;
+use App\Services\ExtraService;
+use App\Services\SponsorService;
 use Illuminate\Http\Response;
 
 class CampaignController extends Controller
 {
+    protected $service;
+    protected $extraService;
+    public function __construct(CampaignService $campaignService, ExtraService $extraService)
+    {
+        $this->service = $campaignService;
+        $this->extraService = $extraService;
+    }
+
     /**
      * Display the Campaign resource.
      *
@@ -17,33 +29,34 @@ class CampaignController extends Controller
     public function list($id)
     {
         $sponsor = Sponsor::find($id);
+        $campaigns = $this->service->getBySponsorId($id);
 
         return view('front.campaign')->with([
-            'campaigns' => [
-                '0' => [
-                    'name' => 'Holiday Starbucks',
-                    'logo' => 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/1200px-Starbucks_Corporation_Logo_2011.svg.png',
-                    'budget' => '$350,000',
-                    'status' => 'Active',
-                ],
-                '1' => [
-                    'name' => 'Starbucks',
-                    'logo' => 'https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/1200px-Starbucks_Corporation_Logo_2011.svg.png',
-                    'budget' => '$175,000',
-                    'status' => 'InActive',
-                ],
-            ],
+            'campaigns' => $campaigns,
             'id' => $id,
             'sponsor' => $sponsor,
         ]);
     }
 
-    public function add($id)
+    public function create($id)
     {
         $sponsor = Sponsor::find($id);
         return view('front.add-campaign')->with([
             'id' => $id,
             'sponsor' => $sponsor,
         ]);
+    }
+
+    public function createOrUpdate(CreateOrUpdateCampaignRequest $request, CampaignService $campaignService){
+        if (!empty($request['logo_url'])) {
+            $request['logo'] = $this->extraService->uploadImage(
+                [
+                    'image' => $request['logo_url'],
+                    'type' => 'campaign'
+                ]
+            );
+        }
+        $result = new CampaignResource($this->service->createOrUpdate($request->all()));
+        return response()->json($result, 200);
     }
 }

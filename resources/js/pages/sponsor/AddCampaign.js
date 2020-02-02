@@ -22,7 +22,7 @@ export default {
     },
     computed: {
         logoUrl() {
-            return this.sponsor.logo ? this.sponsor.logo : this.defaultLogo
+            return this.campaign.logo ? this.campaign.logo : this.defaultLogo
         },
     },
     mounted: function () {
@@ -32,12 +32,12 @@ export default {
         initValidation: function() {
             $('#validation-form').validate({
                 rules: {
-                    'campaignName': {
+                    'name': {
                         required: true
-                    }
+                    },
                 },
                 errorPlacement: function errorPlacement(error, element) {
-                    var $parent = $(element).parents('.right-side2');
+                    var $parent = $(element).parents('.add-input-group');
                     if ($parent.find('.jquery-validation-error').length) { return; }
                     $parent.append(
                         error.addClass('jquery-validation-error small form-text invalid-feedback')
@@ -48,29 +48,31 @@ export default {
                     $el.addClass('is-invalid');
                 },
                 unhighlight: function(element) {
-                    $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+                    $(element).parents('.right-side2').find('.is-invalid').removeClass('is-invalid');
                 }
             });
         },
         selectLogo() {
-            this.logo = this.$refs.logo.files[0];
+            this.campaign.logo = this.$refs.logo.files[0];
             const reader = new FileReader();
             reader.onload = function(e) {
-                $('#logo-image').attr('src', e.target.result);
+                $('#logo').attr('src', e.target.result);
             };
-            reader.readAsDataURL(this.logo);
+            reader.readAsDataURL(this.campaign.logo);
         },
         save() {
             if (!$('#validation-form').valid()) {
                 return;
             }
 
-            console.log($('#validation-form').valid());
-            return;
-
             let formData = new FormData();
-            if (this.logo) {
-                formData.append("logo", this.logo);
+            formData.append('name', this.campaign.name);
+            formData.append('budget', this.campaign.budget);
+            formData.append('sponsor_id', this.sponsor.id);
+            formData.append('status', this.campaign.status ? 1 : 0);
+
+            if (this.campaign.logo) {
+                formData.append("logo_url", this.campaign.logo);
             }
             formData.append("_method", "post");
 
@@ -83,13 +85,13 @@ export default {
             });
 
             axios
-                .post(`/sponsors/${this.sponsor.id}/campaign/store`, formData, {
+                .post(`/sponsors/${this.sponsor.id}/campaign/save`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
                 .then(response => {
-                    console.log(response);
+                    window.history.go(-1);
                 })
                 .catch(error => {
                     console.log(error.response.data.errors);

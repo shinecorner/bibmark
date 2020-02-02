@@ -13,10 +13,11 @@
                             <div class="right-side2"><span class="caption">Create New Campaign</span></div>
                         </div>
                         <div class="input-wrap">
-                            <div class="left-side2"><label for="campaignName">Campaign Name</label></div>
+                            <div class="left-side2"><label for="name">Campaign Name</label></div>
                             <div class="right-side2">
-                                <input id="campaignName" name="campaignName" type="text" v-model="campaign.name">
-                                <div class="w-50"></div>
+                                <div class="w-50 add-input-group">
+                                    <input id="name" name="name" type="text" v-model="campaign.name" class="w-100">
+                                </div>
                             </div>
                         </div>
                         <div class="input-wrap">
@@ -29,7 +30,11 @@
                         </div>
                         <div class="input-wrap">
                             <div class="left-side2"><label for="budget">Budget</label></div>
-                            <div class="right-side2"><input id="budget" type="text"/></div>
+                            <div class="right-side2">
+                                <div class="w-50 add-input-group">
+                                    <input id="budget" name="budget" v-model="campaign.budget" type="text" class="w-100"/>
+                                </div>
+                            </div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side2"><label>Logo Size & Price</label></div>
@@ -65,7 +70,7 @@
                                                     <input type="checkbox" class="custom-control-input" :id="index">
                                                     <label class="custom-control-label" :for="index"></label>
                                                 </div>
-                                                <input type="range" min="1" max="100" value="50" class="slider"
+                                                <input type="range" min="1" max="100" value="1" class="slider"
                                                        style="width:150px; position: relative; top:-5px"></td>
                                         </tr>
                                         </tbody>
@@ -166,7 +171,7 @@
                                 <div class="row w-100">
                                     <div class="col">
                                         <label class="switch">
-                                            <input type="checkbox" class="default"/>
+                                            <input type="checkbox" class="default" v-model="campaign.status"/>
                                             <span class="toggle-slider round"></span>
                                         </label>
                                     </div>

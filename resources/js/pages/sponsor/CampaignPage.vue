@@ -8,7 +8,7 @@
 
             <div class="table">
                 <div>
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered mb-0">
                         <thead class="rectangle-header">
                         <tr>
                             <th>Campaign Name</th>
@@ -23,7 +23,7 @@
                             <td>{{campaign.name}}</td>
                             <td><img :src="campaign.logo" width="50px"></td>
                             <td>{{campaign.budget}}</td>
-                            <td>{{campaign.status}}</td>
+                            <td>{{campaign.status ? 'Acitve' : 'Inactive'}}</td>
                             <td>
                                 <button type="button" class="btn btn-info btn-circle black"><i
                                     class="fa fa-pen"></i></button>

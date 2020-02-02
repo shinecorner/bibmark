@@ -81,7 +81,8 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/sponsors/{id}/profile/updateCover', 'SponsorController@updateCover');
 
     Route::get('/sponsors/{id}/campaign/list', 'CampaignController@list');
-    Route::get('/sponsors/{id}/campaign/add', 'CampaignController@add');
+    Route::get('/sponsors/{id}/campaign/create', 'CampaignController@create');
+    Route::post('/sponsors/{id}/campaign/save', 'CampaignController@createOrUpdate');
 
 });
 
