@@ -5,6 +5,7 @@ export default {
             default: function() {
                 return {
                     name: '',
+                    hashtags: '',
                     logo: '',
                     background_image: '',
                 };
@@ -24,6 +25,18 @@ export default {
 
     },
     methods: {
+        prepareHashtags: function(e){
+            let sanitized = e.target.value;
+            if(sanitized){
+                sanitized = sanitized
+                    .trim()
+                    .split(',').map(item => {
+                    return  item.trim();
+                })
+                    .join(', ');
+                this.$refs.hashtag.value = sanitized;
+            }
+        },
         showToast: function(type, title, msg) {
             toastr[type](msg, title, {
                 positionClass: 'toast-top-right',

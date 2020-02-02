@@ -35,7 +35,7 @@
 
 .sponsor-common {
     .table {
-        padding-left: 232px !important;
+        padding-left: 153px !important;
     }
 
     .history {
@@ -43,8 +43,8 @@
         font-family: HelveticaNeue, sans-serif;
         font-weight: bold;
         color: #ffc600;
-        margin-bottom: 25px;
-        padding-left: 232px;
+        margin-bottom: 60px;
+        padding-left: 153px;
     }
 }
 </style>

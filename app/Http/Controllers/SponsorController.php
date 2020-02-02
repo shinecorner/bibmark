@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sponsor;
 use App\Services\SponsorService;
 use Illuminate\Http\Request;
+use App\Http\Resources\SponsorResource;
 
 class SponsorController extends Controller
 {
@@ -78,8 +79,10 @@ class SponsorController extends Controller
      * @param  \App\Models\Sponsor  $sponsor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, SponsorService $sponsorService)
     {
+        $result = new SponsorResource($sponsorService->createOrUpdateSponsor($request->all()));
+
         $sponsor = Sponsor::find($id);
         $logo= $request['logo'] ? $this->service->uploadImage($request['logo'], 'profile') : $sponsor->logo;
 

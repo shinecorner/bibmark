@@ -1,0 +1,236 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito);/* Slider */
+.slick-slider
+{
+    position: relative;
+
+    display: block;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+
+    -webkit-touch-callout: none;
+    -khtml-user-select: none;
+    -ms-touch-action: pan-y;
+        touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.slick-list
+{
+    position: relative;
+
+    display: block;
+    overflow: hidden;
+
+    margin: 0;
+    padding: 0;
+}
+.slick-list:focus
+{
+    outline: none;
+}
+.slick-list.dragging
+{
+    cursor: pointer;
+    cursor: hand;
+}
+
+.slick-slider .slick-track,
+.slick-slider .slick-list
+{
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+}
+
+.slick-track
+{
+    position: relative;
+    top: 0;
+    left: 0;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.slick-track:before,
+.slick-track:after
+{
+    display: table;
+
+    content: '';
+}
+.slick-track:after
+{
+    clear: both;
+}
+.slick-loading .slick-track
+{
+    visibility: hidden;
+}
+
+.slick-slide
+{
+    display: none;
+    float: left;
+
+    height: 100%;
+    min-height: 1px;
+}
+[dir='rtl'] .slick-slide
+{
+    float: right;
+}
+.slick-slide img
+{
+    display: block;
+}
+.slick-slide.slick-loading img
+{
+    display: none;
+}
+.slick-slide.dragging img
+{
+    pointer-events: none;
+}
+.slick-initialized .slick-slide
+{
+    display: block;
+}
+.slick-loading .slick-slide
+{
+    visibility: hidden;
+}
+.slick-vertical .slick-slide
+{
+    display: block;
+
+    height: auto;
+
+    border: 1px solid transparent;
+}
+.slick-arrow.slick-hidden {
+    display: none;
+}
+.navbar-laravel {
+  background-color: #fff;
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.auth-login {
+  background: white;
+  padding: 94px 0;
+  min-height: 1000px;
+}
+
+.auth-login-container {
+  max-width: 768px;
+}
+
+.auth-login-form .form-title {
+  font-family: "SFProDisplay", "San Francisco", sans-serif;
+  font-size: 42px;
+  font-weight: bold;
+  color: #444444;
+}
+
+.auth-login-form .reset-password-cta {
+  font-family: HelveticaNeue;
+  font-size: 18px;
+  font-weight: bold;
+  color: #4a90e2;
+}
+
+.auth-login-form .form-group label {
+  color: #444444;
+  font-family: HelveticaNeue;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.auth-login-form .form-group input[type=checkbox] {
+  font-size: 24px;
+  margin-top: 6px;
+}
+
+.auth-login-form .form-group input {
+  border: 0 none;
+  border-bottom: solid 2px #cccccc;
+  border-radius: 0;
+  font-family: HelveticaNeue;
+  font-size: 18px;
+  margin-top: 0.5rem;
+}
+
+.auth-login-form .form-group input:focus {
+  border-color: #26B4FF !important;
+  -webkit-box-shadow: none !important;
+          box-shadow: none !important;
+}
+
+.auth-login-form .form-group input.is-invalid {
+  border-color: #d9534f !important;
+}
+
+.auth-login-form .form-group .error {
+  height: 25px;
+  margin-top: 0.25rem;
+}
+
+.auth-login-form .form-group .error .invalid-feedback {
+  display: block;
+  margin: 0;
+}
+
+.auth-login-form .login-cta-element {
+  cursor: pointer;
+}
+
+.auth-login-form .login-cta-element i {
+  margin-right: 1rem;
+}
+
+.auth-login-form .login-cta-element .login-cta-labels .login-cta-label-desc {
+  font-family: "SFProDisplay", "San Francisco", sans-serif;
+  opacity: 0.6;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.auth-login-form .login-cta-element .login-cta-labels .login-cta-label {
+  font-family: "SFProDisplay", "San Francisco", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.login-cta-element {
+  background-color: transparent !important;
+  border: 0 !important;
+}
+
+.d-flex button:focus {
+  outline: 1px dotted;
+  outline: none;
+}
+
+@media only screen and (min-width: 321px) {
+  .d-flex {
+    padding-bottom: 13px;
+    padding-left: 0;
+  }
+}
+
+.sweet-modal {
+  padding-top: 22px !important;
+}
+
+.sweet-modal .sweet-box-actions .sweet-action-close:hover {
+  background: #ffe100 !important;
+}
+

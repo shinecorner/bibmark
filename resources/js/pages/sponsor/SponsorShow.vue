@@ -21,6 +21,10 @@
                             <td>{{ sponsor.name }}</td>
                         </tr>
                         <tr>
+                            <td>Hashtags:</td>
+                            <td>{{ sponsor.hashtags }}</td>
+                        </tr>
+                        <tr>
                             <td>Logo Image:</td>
                             <td><img style="width: 80px; height: 80px; object-fit: contain;" v-bind:src="sponsor.logo" v-if="sponsor.logo" /></td>
                         </tr>
