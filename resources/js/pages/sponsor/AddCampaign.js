@@ -5,6 +5,7 @@ export default {
             navLink: 'Campaigns',
             defaultLogo: "/img/profile/profile-fit.png",
             logo: null,
+            campaign: {},
             sizes: [
                 {size: 'Small', price: '$3'},
                 {size: 'Medium', price: '$6'},
@@ -24,7 +25,33 @@ export default {
             return this.sponsor.logo ? this.sponsor.logo : this.defaultLogo
         },
     },
+    mounted: function () {
+        this.initValidation();
+    },
     methods: {
+        initValidation: function() {
+            $('#validation-form').validate({
+                rules: {
+                    'campaignName': {
+                        required: true
+                    }
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    var $parent = $(element).parents('.right-side2');
+                    if ($parent.find('.jquery-validation-error').length) { return; }
+                    $parent.append(
+                        error.addClass('jquery-validation-error small form-text invalid-feedback')
+                    );
+                },
+                highlight: function(element) {
+                    var $el = $(element);
+                    $el.addClass('is-invalid');
+                },
+                unhighlight: function(element) {
+                    $(element).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+                }
+            });
+        },
         selectLogo() {
             this.logo = this.$refs.logo.files[0];
             const reader = new FileReader();
@@ -33,7 +60,14 @@ export default {
             };
             reader.readAsDataURL(this.logo);
         },
-        saveCampaign() {
+        save() {
+            if (!$('#validation-form').valid()) {
+                return;
+            }
+
+            console.log($('#validation-form').valid());
+            return;
+
             let formData = new FormData();
             if (this.logo) {
                 formData.append("logo", this.logo);
