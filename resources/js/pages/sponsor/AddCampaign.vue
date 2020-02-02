@@ -97,9 +97,11 @@
                                 </div>
                                 <div class="w-100"></div>
                                 <div class="col mt-1">
-                                    <button type="button" class="btn btn-info btn-circle yellow"><i
-                                        class="fa fa-plus"></i></button>
-                                    <span class="button-caption">Add New Target Audience</span>
+                                    <button type="button" class="btn btn-info btn-circle yellow"
+                                            @click="$modal.show('add-geo-target-modal')">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <span class="button-caption"> Add New Target Audience</span>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +118,7 @@
                                 <div class="w-100"></div>
                                 <div class="col">
                                     <div class="row ml-0 mt-2 mb-2 px-2 py-2 company-select-container">
-                                        <div class="mx-1 mb-2 company-selected-list row" >
+                                        <div class="mx-1 mb-2 company-selected-list row">
                                             <div class="col-2 mx-2 my-2" v-for="n in 3">
                                                 <img width="45px" src="/img/companies/cocacola.png"/>
                                                 <button type="button" class="btn btn-info btn-circle small red"><i
@@ -176,6 +178,60 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal -->
+            <modal
+                name="add-geo-target-modal"
+                transition="nice-modal-fade"
+                width="620"
+                height="450"
+                :delay="100"
+                scrollable
+                classes="v--modal radius-modal"
+            >
+                <span class="close-button topright" @click="$modal.hide('add-geo-target-modal')">&times;</span>
+
+                <div class="add-target-modal">
+                    <div class="row w-90 my-5" style="margin-left: 50px; margin-right: 50px">
+                        <div class="col mb-2 text-center" >
+                            <span class="title">Target Audience</span>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col mb-0">
+                            <input id="target-name" type="text" value="Newyork" style="width: 96%; margin-left: 10px; margin-right: 10px"/>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="col mb-2">
+                            <table class="table table-borderless mb-0">
+                                <thead class="rectangle-header">
+                                <tr>
+                                    <th width="50%">Zip Code</th>
+                                    <th width="50%">Radius</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="table-row" v-for="n in 2">
+                                    <td class="px-0 py-0"><input type="text" placeholder="Zip Code"/></td>
+                                    <td class="px-0 py-0">
+                                        <select class="form-control form-control-lg">
+                                        <option>10  Miles</option>
+                                        <option>20  Miles</option>
+                                        <option>30  Miles</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn btn-info btn-circle yellow ml-2">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <button class="save-btn btn-primary mr-2">Save</button>
+                        </div>
+
+                    </div>
+                </div>
+            </modal>
+            <!--end modal-->
         </template>
     </sponsor-common>
 </template>
@@ -234,5 +290,77 @@
         width: 100%;
         height: 80px;
     }
+
+    .add-target-modal {
+        .title {
+            font-family: HelveticaNeue, sans-serif;
+            font-size: 34px;
+            font-weight: 500;
+            color: #444444;
+            margin-bottom: 0;
+        }
+
+        .table{
+            padding-left: 0px !important;
+            border-collapse: separate;
+            border-spacing: 10px 10px;
+        }
+
+        input[type="text"], select {
+            border: solid 2px rgba(212, 212, 212, 0.89);
+            padding: 13px 11px;
+            font-size: 20px;
+            font-family: HelveticaNeue, sans-serif;
+            font-weight: normal;
+            color: #444444;
+            width: 100%;
+            height: 48px;
+        }
+
+        .save-btn {
+            size: 28px;
+            color: #444444;
+            width: 100px;
+            height: 33px;
+            background-color: white;
+            border-radius: 3px;
+            border: 1px solid black;
+            font-weight: bold;
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: -ms-flex;
+            display: -o-flex;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-self: center;
+            margin-top: 30px;
+            float: right;
+        }
+    }
+
+    .close-button {
+        border: none;
+        display: inline-block;
+        padding: 8px 16px;
+        vertical-align: middle;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        background-color: inherit;
+        text-align: center;
+        cursor: pointer;
+        white-space: nowrap;
+        font-size:40px;
+        font-weight: 100;
+    }
+
+    .topright {
+        position: absolute;
+        right: -5px;
+        top: -15px;
+    }
+
+
 
 </style>
