@@ -79,20 +79,16 @@
                             </div>
                         </div>
                         <div class="input-wrap">
-                            <div class="left-side2"><label for="hashtags">Hashtags</label></div>
+                            <div class="left-side2"><label>Hashtags</label></div>
                             <div class="right-side2">
                                 <div class="row w-100">
-                                    <div class="col"><input id="hashtags" type="text"/></div>
+                                    <div class="col"><hash-tag v-model="campaign.hashtags"></hash-tag></div>
                                     <div class="w-100"></div>
-                                    <div class="col mt-1">
-                                        <button type="button" class="btn btn-info btn-circle yellow"><i
-                                            class="fa fa-plus"></i></button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="input-wrap">
-                            <div class="left-side2"><label for="hashtags">Geo Target</label></div>
+                            <div class="left-side2"><label>Geo Target</label></div>
                             <div class="right-side2">
                                 <div class="row w-100">
                                     <div class="col custom-control custom-checkbox mid-checkbox">
