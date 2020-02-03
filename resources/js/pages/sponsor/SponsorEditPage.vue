@@ -6,13 +6,14 @@
                 <div class="row edit-profile-row">
                     <div class="col-6">
                         <div class="input-wrap">
-                            <div class="left-side"><label for="imageProfile">Profile Picture</label></div>
-                            <div class="right-side"><img id="logo-image" :src="logoUrl" alt="logo" class="logo">
+                            <div class="left-side"><label for="imageProfile">Profile&nbsp;Picture</label></div>
+                            <div class="right-side">
+                                <img v-show="showProfilePic" id="logo-image" :src="logoUrl" alt="logo" class="logo">
                                 <input v-on:change="selectLogo" ref="logo" id="imageProfile" type="file">
                                 <label class="input-label" for="imageProfile">Choose File</label></div>
                         </div>
                         <div class="input-wrap">
-                            <div class="left-side"><label for="companyName">Company Name</label></div>
+                            <div class="left-side"><label for="companyName">Full&nbsp;Name</label></div>
                             <div class="right-side"><input id="companyName" name="companyName" type="text" v-model="sponsor.name"></div>
                         </div>
                         <div class="input-wrap">
@@ -38,13 +39,13 @@
                         <div class="input-wrap">
                             <div class="left-side"><label for="hashtags">Hashtags</label></div>
                             <div class="right-side">
-                                <input @keyup="prepareHashtags" ref="hashtag" id="hashtags" type="text" v-model="sponsor.hashtags">
+                                <input @keyup="onHashtagChange" ref="hashtag" id="hashtags" type="text" v-model="sponsor.hashtags">
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="input-wrap">
-                            <div class="left-side"><label for="companyAddress">Company Address</label></div>
+                            <div class="left-side"><label for="companyAddress">Company&nbsp;Address</label></div>
                             <div class="right-side"><input id="companyAddress" type="text" v-model="sponsor.company_address"></div>
                         </div>
                         <div class="input-wrap">
@@ -56,7 +57,7 @@
                             <div class="right-side"><input id="state" type="text" v-model="sponsor.state"></div>
                         </div>
                         <div class="input-wrap">
-                            <div class="left-side"><label for="zipCode">Zip Code</label></div>
+                            <div class="left-side"><label for="zipCode">Zip&nbsp;Code</label></div>
                             <div class="right-side"><input id="zipCode" type="text" v-model="sponsor.zip"></div>
                         </div>
                         <div class="input-wrap">
@@ -64,7 +65,7 @@
                             <div class="right-side"><input id="country" type="text" v-model="sponsor.country"></div>
                         </div>
                         <div class="input-wrap">
-                            <div class="left-side"><label for="companyPhone">Company Phone</label></div>
+                            <div class="left-side"><label for="companyPhone">Phone</label></div>
                             <div class="right-side"><input id="companyPhone" type="text" v-model="sponsor.company_phone"></div>
                         </div>
                         <div class="input-wrap">
@@ -84,8 +85,7 @@
         data() {
             return {
                 navLink: 'Edit Profile',
-                defaultLogo: "/img/profile/profile-fit.png",
-                logo: null,
+                showProfilePic:false
             };
         },
         props: {
@@ -96,6 +96,8 @@
         },
         mounted: function() {
             this.initValidation();
+            this.showProfilePic = this.sponsor.logo;
+            this.sponsor.hashtags = this.prepareHashtags(this.$refs.hashtag.value);
         },
         computed: {
             logoUrl() {
@@ -129,22 +131,36 @@
             selectLogo() {
                 this.logo = this.$refs.logo.files[0];
                 const reader = new FileReader();
+                this.showProfilePic = true;
                 reader.onload = function(e) {
                     $('#logo-image').attr('src', e.target.result);
                 };
                 reader.readAsDataURL(this.logo);
             },
-            prepareHashtags: function(e){
-                let sanitized = e.target.value;
-                if(sanitized){
-                    sanitized = sanitized
+            onHashtagChange: function(e){
+                let str = e.target.value;
+
+                var key = event.keyCode || event.charCode;
+                if( key == 8 || key == 46 )
+                    return false;
+
+                if(str){
+                    this.$refs.hashtag.value = this.prepareHashtags(str);
+                }
+            },
+            prepareHashtags: function(str){
+                if(str){
+                    str = str
+                        .replace(/#,/g, '')
+                        .replace(/#/g, '')
                         .trim()
                         .split(',').map(item => {
-                        return  item.trim();
+                        return  '#' + item.trim();
                     })
                 .join(', ');
-                    this.$refs.hashtag.value = sanitized;
+                    return str;
                 }
+                return str;
             },
             saveProfile() {
                 if (!$('#validation-form').valid()) {
@@ -169,7 +185,7 @@
                     formData.append("name", this.sponsor.name);
                 }
                 if(this.sponsor.hashtags){
-                    formData.append("hashtags", this.sponsor.hashtags);
+                    formData.append("hashtags", this.sponsor.hashtags.replace(/#/g, ''));
                 }
                 if(this.sponsor.bio){
                     formData.append("bio", null);
@@ -268,6 +284,13 @@
         form {
             display: flex;
             flex-direction: column;
+            input[type="text"], textarea{
+                border-radius: 3px;
+                border: solid 2px rgba(212, 212, 212, 0.33) !important;
+                &:focus{
+                     outline: none;
+                 }
+            }
         }
     }
 </style>

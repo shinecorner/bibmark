@@ -15,7 +15,7 @@ export default {
         });
     },
     watch: {
-
+        
     },
     methods: {
         getSponsors: function(callback) {

@@ -9,7 +9,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Hashtags</label>
-                        <input @change="prepareHashtags" type="text" class="form-control" name="input-name" ref="hashtag" v-model="sponsor.hashtags">
+                        <input @keyup="onHashtagChange" type="text" class="form-control" name="input-name" ref="hashtag" v-model="sponsor.hashtags">
                     </div>
                     <div class="form-group media" style="min-height:1px">
 
