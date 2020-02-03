@@ -40,7 +40,7 @@
                             <div class="left-side2"><label>Logo Size & Price</label></div>
                             <div class="right-side2">
                                 <div class="col-7 pl-0 pr-0">
-                                    <table class="table table-striped table-bordered">
+                                    <table class="table table-bordered">
                                         <thead class="rectangle-header">
                                         <tr>
                                             <th width="180px">Size</th>
@@ -91,19 +91,19 @@
                             <div class="left-side2"><label>Geo Target</label></div>
                             <div class="right-side2">
                                 <div class="row w-100">
-                                    <div class="col custom-control custom-checkbox mid-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="1">
-                                        <label class="custom-control-label" for="1">National Campaign</label>
-                                    </div>
-                                    <div class="w-100"></div>
-                                    <div class="col custom-control custom-checkbox mid-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="2">
-                                        <label class="custom-control-label" for="2">Boston</label>
-                                    </div>
+                                    <template
+                                        v-if="campaign.geoTargets.length > 0"
+                                        v-for="(target, index) in campaign.geoTargets">
+                                        <div class="col custom-control custom-checkbox mid-checkbox">
+                                            <input type="checkbox" class="custom-control-input" :id="`target-${index}`">
+                                            <label class="custom-control-label" :for="`target-${index}`">{{target.name}}</label>
+                                        </div>
+                                        <div class="w-100"></div>
+                                    </template>
                                     <div class="w-100"></div>
                                     <div class="col mt-1">
                                         <button type="button" class="btn btn-info btn-circle yellow"
-                                                @click="$modal.show('add-geo-target-modal')">
+                                                @click="showAddGeoTargetModal">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                         <span class="button-caption"> Add New Target Audience</span>
@@ -192,19 +192,19 @@
                 width="620"
                 height="450"
                 :delay="100"
-                scrollable
+                adaptive
                 classes="v--modal radius-modal"
             >
                 <span class="close-button topright" @click="$modal.hide('add-geo-target-modal')">&times;</span>
 
                 <div class="add-target-modal">
-                    <div class="row w-90 my-5" style="margin-left: 50px; margin-right: 50px">
+                    <div class="row w-90 my-5" style="margin-left: 50px; margin-right: 50px; max-height: 350px; overflow:auto">
                         <div class="col mb-2 text-center" >
                             <span class="title">Target Audience</span>
                         </div>
                         <div class="w-100"></div>
                         <div class="col mb-0">
-                            <input id="target-name" type="text" value="Newyork" style="width: 96%; margin-left: 10px; margin-right: 10px"/>
+                            <input id="target-name" type="text" v-model="newGeoTarget.name" style="width: 96%; margin-left: 10px; margin-right: 10px"/>
                         </div>
                         <div class="w-100"></div>
                         <div class="col mb-2">
@@ -216,22 +216,23 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="table-row" v-for="n in 2">
-                                    <td class="px-0 py-0"><input type="text" placeholder="Zip Code"/></td>
+                                <tr class="table-row" v-for="zipcode in newGeoTarget.zipcodes">
                                     <td class="px-0 py-0">
-                                        <select class="form-control form-control-lg">
-                                        <option>10  Miles</option>
-                                        <option>20  Miles</option>
-                                        <option>30  Miles</option>
+                                        <input type="text" placeholder="Zip Code" v-model="zipcode.code"/></td>
+                                    <td class="px-0 py-0">
+                                        <select class="form-control form-control-lg" v-model="zipcode.radius">
+                                            <option value="10">10 Miles</option>
+                                            <option value="20">20 Miles</option>
+                                            <option value="30">30 Miles</option>
                                         </select>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
-                            <button type="button" class="btn btn-info btn-circle yellow ml-2">
+                            <button type="button" class="btn btn-info btn-circle yellow ml-2" @click="addGeoZipcode">
                                 <i class="fa fa-plus"></i>
                             </button>
-                            <button class="save-btn btn-primary mr-2" >Save</button>
+                            <button class="save-btn btn-primary mr-2" @click="saveGeoTarget">Save</button>
                         </div>
 
                     </div>

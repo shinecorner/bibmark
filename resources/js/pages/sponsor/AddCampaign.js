@@ -5,7 +5,10 @@ export default {
             navLink: 'Campaigns',
             defaultLogo: "/img/profile/profile-fit.png",
             logo: null,
-            campaign: {},
+            campaign: {
+                geoTargets: [],
+            },
+            newGeoTarget: {},
             sizes: [
                 {size: 'Small', price: '$3'},
                 {size: 'Medium', price: '$6'},
@@ -29,7 +32,7 @@ export default {
         this.initValidation();
     },
     methods: {
-        initValidation: function() {
+        initValidation: function () {
             $('#validation-form').validate({
                 rules: {
                     'name': {
@@ -38,16 +41,18 @@ export default {
                 },
                 errorPlacement: function errorPlacement(error, element) {
                     var $parent = $(element).parents('.add-input-group');
-                    if ($parent.find('.jquery-validation-error').length) { return; }
+                    if ($parent.find('.jquery-validation-error').length) {
+                        return;
+                    }
                     $parent.append(
                         error.addClass('jquery-validation-error small form-text invalid-feedback')
                     );
                 },
-                highlight: function(element) {
+                highlight: function (element) {
                     var $el = $(element);
                     $el.addClass('is-invalid');
                 },
-                unhighlight: function(element) {
+                unhighlight: function (element) {
                     $(element).parents('.right-side2').find('.is-invalid').removeClass('is-invalid');
                 }
             });
@@ -55,7 +60,7 @@ export default {
         selectLogo() {
             this.campaign.logo = this.$refs.logo.files[0];
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('#logo').attr('src', e.target.result);
             };
             reader.readAsDataURL(this.campaign.logo);
@@ -99,6 +104,22 @@ export default {
                 .finally(() => {
                     loader.hide()
                 });
+        },
+        showAddGeoTargetModal() {
+            // Refesh modal data
+            this.newGeoTarget = {
+                name: '',
+                zipcodes: [],
+            };
+            this.newGeoTarget.zipcodes.push({code: '', radius: '10'})
+            this.$modal.show('add-geo-target-modal');
+        },
+        addGeoZipcode() {
+            this.newGeoTarget.zipcodes.push({code: '', radius: '10'})
+        },
+        saveGeoTarget() {
+            this.campaign.geoTargets.push(this.newGeoTarget);
+            this.$modal.hide('add-geo-target-modal');
         }
     }
 }
