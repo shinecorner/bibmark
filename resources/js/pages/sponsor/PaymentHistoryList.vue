@@ -15,8 +15,8 @@
                     <td>{{history.Last4}}</td>
                     <td>{{history.MonthYear}}</td>
                     <td>{{history.TransactionDate}}</td>
-                    <td>{{history.Amount}}</td>
-                    <td>{{history.Status}}</td>
+                    <td>${{history.Amount | formatPrice}}</td>
+                    <td>{{history.Status | capitalize }}</td>
                 </tr>
             </tbody>
         </table>
@@ -31,6 +31,17 @@
                 require: true
             }
         },
+        filters: {
+            capitalize: function (value) {
+                if (!value) return ''
+                value = value.toString()
+                return value.charAt(0).toUpperCase() + value.slice(1)
+            },
+            formatPrice: function(value) {
+                let val = (value/1).toFixed(2).replace('.', ',')
+                return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+            }
+        }
     }
 </script>
 

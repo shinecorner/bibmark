@@ -20,22 +20,37 @@ export default {
     },
     mounted: function () {
         this.initValidation();
+        this.$refs.hashtag.value = this.prepareHashtags(this.$refs.hashtag.value);
     },
     watch: {
 
     },
     methods: {
-        prepareHashtags: function(e){
-            let sanitized = e.target.value;
-            if(sanitized){
-                sanitized = sanitized
-                    .trim()
-                    .split(',').map(item => {
-                    return  item.trim();
-                })
-                    .join(', ');
-                this.$refs.hashtag.value = sanitized;
+        onHashtagChange: function(e){
+            let str = e.target.value;
+
+            var key = event.keyCode || event.charCode;
+            if( key == 8 || key == 46 )
+                return false;
+
+            if(str){
+                this.$refs.hashtag.value = this.prepareHashtags(str);
             }
+        },
+        prepareHashtags: function(str){
+            if(str){
+                str = str
+                    .replace(/#,/g, '')
+                    .replace(/#/g, '')
+                    .trim()
+                    .split(',')
+                    .map(item => {
+                        return  '#' + item.trim();
+                    })
+                    .join(', ');
+                return str;
+            }
+            return str;
         },
         showToast: function(type, title, msg) {
             toastr[type](msg, title, {
@@ -168,6 +183,9 @@ export default {
                 if (success) {
                     self.uploadBackground(function(success) {
                         if (success) {
+                            if(self.sponsor.hashtags){
+                                self.sponsor.hashtags = self.sponsor.hashtags.replace(/#/g, '');
+                            }
                             axios.post('/internal/sponsor', self.sponsor)
                                 .then((response) => {
                                     $('#input-form').unblock();

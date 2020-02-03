@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sponsor;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
@@ -22,16 +23,16 @@ class PaymentController extends Controller
                 '1'=>
                 [
                 'Last4' => 'XXX-XXX-XXX-4444',
-                'MonthYear'=> '02/22',
-                'TransactionDate' => '2222',
+                'MonthYear'=> (new Carbon())->format('F Y'),
+                'TransactionDate' => (new Carbon())->format('F d, Y'),
                 'Amount' => '18',
                 'Status' => 'completed'
                 ],
                 '2'=>
                 [
                 'Last4' => 'XXX-XXX-XXX-4444',
-                'MonthYear'=> '02/22',
-                'TransactionDate' => '2222',
+                'MonthYear'=> (new Carbon())->format('F Y') ,
+                'TransactionDate' =>  (new Carbon())->format('F d, Y') ,
                 'Amount' => '18',
                 'Status' => 'completed'
                 ]
