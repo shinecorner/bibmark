@@ -1,5 +1,5 @@
 <template>
-    <input @keyup="prepareHashtags" ref="hashtag" type="text" v-model="value">
+    <input @keyup="prepareHashtags" ref="hashtag" type="text">
 </template>
 <script>
     export default {
@@ -7,11 +7,6 @@
         props: [
             'value'
         ],
-        data() {
-            return {
-                content: ''
-            }
-        },
         methods: {
             prepareHashtags: function (e) {
                 let sanitized = e.target.value;
@@ -27,6 +22,7 @@
                         })
                         .join(', ');
                     this.$refs.hashtag.value = sanitized;
+                    this.$emit('input', sanitized);
                 }
             },
         }
