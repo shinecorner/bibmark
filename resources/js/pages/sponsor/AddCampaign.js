@@ -17,6 +17,33 @@ export default {
                 {size: 'Medium', price: '$6'},
                 {size: 'Large', price: '$10'},
                 {size: 'Full', price: '$14'},
+            ],
+            excludeCompanies: [],
+            mockupCompanies: [
+                {id : 1, logo: '/img/companies/cocacola.png'},
+                {id : 2, logo: '/img/companies/cocacola.png'},
+                {id : 3, logo: '/img/companies/cocacola.png'},
+                {id : 4, logo: '/img/companies/cocacola.png'},
+                {id : 5, logo: '/img/companies/cocacola.png'},
+                {id : 6, logo: '/img/companies/cocacola.png'},
+            ],
+            ageRanges: [
+                '14 and under',
+                '15-19',
+                '20-24',
+                '25-29',
+                '30-34',
+                '35-39',
+                '40-44',
+                '45-49',
+                '50-54',
+                '55-59',
+                '60-64',
+                '70-74',
+                '75-79',
+                '80-84',
+                '85-89',
+                '90 and over',
             ]
         };
     },
@@ -161,5 +188,11 @@ export default {
         hideButton() {
             this.displayGeoEditIndex = '';
         },
+        addExcludeCompany(company){
+            this.excludeCompanies.push(company);
+        },
+        removeExcludeCompany(index){
+            this.excludeCompanies.splice(index, 1);
+        }
     }
 }

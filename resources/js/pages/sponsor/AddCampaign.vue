@@ -146,14 +146,15 @@
                                     <div class="col">
                                         <div class="row ml-0 mt-2 mb-2 px-2 py-2 company-select-container">
                                             <div class="mx-1 mb-2 company-selected-list row">
-                                                <div class="col-2 mx-2 my-2" v-for="n in 3">
-                                                    <img width="45px" src="/img/companies/cocacola.png"/>
-                                                    <button type="button" class="btn btn-info btn-circle small red"><i
+                                                <div class="col-2 mx-1 my-1" v-for="(n, index) in excludeCompanies">
+                                                    <img width="45px" :src="n.logo"/>
+                                                    <button type="button" class="btn btn-info btn-circle small red"
+                                                            @click.stop="removeExcludeCompany(index)"><i
                                                         class="fa fa-minus"></i></button>
                                                 </div>
                                             </div>
-                                            <div class="col-2 mb-2" v-for="n in 20">
-                                                <img width="80px" src="/img/companies/cocacola.png"/>
+                                            <div class="col-2 mb-2" v-for="c in mockupCompanies">
+                                                <img width="80px" :src="c.logo" @click="addExcludeCompany(c)"/>
                                             </div>
                                         </div>
                                     </div>
@@ -164,9 +165,7 @@
                                     <div class="w-100"></div>
                                     <div class="col">
                                         <select class="form-control form-control-lg">
-                                            <option>Test 1</option>
-                                            <option>Test 2</option>
-                                            <option>Test 3</option>
+                                            <option v-for="age in ageRanges" :value="age">{{age}}</option>
                                         </select>
                                     </div>
                                     <div class="w-100"></div>
@@ -260,7 +259,8 @@
                                         @click="addGeoZipcode">
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <div v-if="addGeoTargetError" class="is-invalid ml-2 mt-1 text-danger" v-html="addGeoTargetError"></div>
+                                <div v-if="addGeoTargetError" class="is-invalid ml-2 mt-1 text-danger"
+                                     v-html="addGeoTargetError"></div>
                                 <button type="button" class="save-btn btn-primary mr-2" @click="saveGeoTarget">Save
                                 </button>
                             </div>
