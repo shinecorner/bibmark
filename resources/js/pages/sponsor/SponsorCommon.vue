@@ -112,6 +112,7 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '~@/_variables.scss';
 
     .sponsor-common {
         padding: 0;
@@ -209,7 +210,7 @@
             justify-content: flex-end;
 
             label {
-                font-family: helvetica-neue;
+                font-family: $font-family-helvetica-neue;
                 font-size: 22px;
                 font-weight: 600;
                 font-stretch: normal;
