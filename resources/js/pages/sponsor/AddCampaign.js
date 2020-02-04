@@ -8,7 +8,10 @@ export default {
             campaign: {
                 geoTargets: [],
             },
-            newGeoTarget: {},
+            tempGeoTarget: {},
+            addGeoTargetError: '',
+            displayGeoEditIndex: '',
+            editGeoTargetIndex: -1,
             sizes: [
                 {size: 'Small', price: '$3'},
                 {size: 'Medium', price: '$6'},
@@ -41,6 +44,33 @@ export default {
                 },
                 errorPlacement: function errorPlacement(error, element) {
                     var $parent = $(element).parents('.add-input-group');
+                    if ($parent.find('.jquery-validation-error').length) {
+                        return;
+                    }
+                    $parent.append(
+                        error.addClass('jquery-validation-error small form-text invalid-feedback')
+                    );
+                },
+                highlight: function (element) {
+                    var $el = $(element);
+                    $el.addClass('is-invalid');
+                },
+                unhighlight: function (element) {
+                    $(element).parents('.right-side2').find('.is-invalid').removeClass('is-invalid');
+                }
+            });
+
+            $('#add-target-validation-form').validate({
+                rules: {
+                    'target-name': {
+                        required: true
+                    },
+                    'code': {
+                        required: true
+                    },
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    var $parent = $(element).parents('td');
                     if ($parent.find('.jquery-validation-error').length) {
                         return;
                     }
@@ -106,20 +136,53 @@ export default {
                 });
         },
         showAddGeoTargetModal() {
+            this.editGeoTargetIndex = -1;
+
             // Refesh modal data
-            this.newGeoTarget = {
+            this.tempGeoTarget = {
                 name: '',
                 zipcodes: [],
             };
-            this.newGeoTarget.zipcodes.push({code: '', radius: '10'})
+            this.tempGeoTarget.zipcodes.push({code: '', radius: '10'})
             this.$modal.show('add-geo-target-modal');
         },
         addGeoZipcode() {
-            this.newGeoTarget.zipcodes.push({code: '', radius: '10'})
+            this.tempGeoTarget.zipcodes.push({code: '', radius: '10'})
         },
         saveGeoTarget() {
-            this.campaign.geoTargets.push(this.newGeoTarget);
-            this.$modal.hide('add-geo-target-modal');
-        }
+            if (!$('#add-target-validation-form').valid()) {
+                console.log('invalid');
+                return;
+            }
+
+            let isValid = true;
+            this.tempGeoTarget.zipcodes.forEach(function (value) {
+                if (!value.code) {
+                    isValid = false;
+                }
+            });
+            if (isValid) {
+                if (this.editGeoTargetIndex >= 0) {
+                    this.campaign.geoTargets[this.editGeoTargetIndex] = this.tempGeoTarget;
+                } else {
+                    this.campaign.geoTargets.push(this.tempGeoTarget);
+                }
+
+                this.$modal.hide('add-geo-target-modal');
+            } else {
+                this.addGeoTargetError = 'The zipcode must be filled.';
+            }
+        },
+        editGeoTarget(target, index) {
+            this.editGeoTargetIndex = index;
+            this.tempGeoTarget = target;
+            this.$modal.show('add-geo-target-modal');
+        },
+        displayButton(index) {
+            this.displayGeoEditIndex = index;
+        },
+        hideButton() {
+            this.displayGeoEditIndex = '';
+        },
     }
 }

@@ -32,7 +32,8 @@
                             <div class="left-side2"><label for="budget">Budget</label></div>
                             <div class="right-side2">
                                 <div class="w-50 add-input-group">
-                                    <input id="budget" name="budget" v-model="campaign.budget" type="text" class="w-100"/>
+                                    <input id="budget" name="budget" v-model="campaign.budget" type="text"
+                                           class="w-100"/>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +83,9 @@
                             <div class="left-side2"><label>Hashtags</label></div>
                             <div class="right-side2">
                                 <div class="row w-100">
-                                    <div class="col"><hash-tag v-model="campaign.hashtags"></hash-tag></div>
+                                    <div class="col">
+                                        <hash-tag v-model="campaign.hashtags"></hash-tag>
+                                    </div>
                                     <div class="w-100"></div>
                                 </div>
                             </div>
@@ -95,11 +98,30 @@
                                         v-if="campaign.geoTargets.length > 0"
                                         v-for="(target, index) in campaign.geoTargets">
                                         <div class="col custom-control custom-checkbox mid-checkbox">
-                                            <input type="checkbox" class="custom-control-input" :id="`target-${index}`">
-                                            <label class="custom-control-label" :for="`target-${index}`">{{target.name}}</label>
+                                            <input type="checkbox" class="custom-control-input" :id="`target-${index}`"
+                                                   v-model="target.status">
+                                            <label
+                                                v-on:mouseover="displayButton(index)"
+                                                v-on:mouseleave="hideButton()"
+                                                class="custom-control-label"
+                                                :for="`target-${index}`"
+
+                                            >
+                                                {{target.name}}
+                                                <button v-if="displayGeoEditIndex===index"
+                                                        type="button"
+                                                        class="ml-2 btn btn-info btn-circle black"
+                                                        @click.prevent="editGeoTarget(target, index)"
+                                                ><i
+                                                    class="fa fa-pen"></i></button>
+                                            </label>
                                         </div>
                                         <div class="w-100"></div>
                                     </template>
+                                    <div class="w-100"></div>
+                                    <div class="row w-100">
+                                        <span class="jquery-validation-error small form-text invalid-feedback">{{addGeoTargetError}}}</span>
+                                    </div>
                                     <div class="w-100"></div>
                                     <div class="col mt-1">
                                         <button type="button" class="btn btn-info btn-circle yellow"
@@ -136,7 +158,8 @@
                                         </div>
                                     </div>
                                     <div class="w-100"></div>
-                                    <div class="col">Are there any specific age ranges that <br>you would like to execute?
+                                    <div class="col">Are there any specific age ranges that <br>you would like to
+                                        execute?
                                     </div>
                                     <div class="w-100"></div>
                                     <div class="col">
@@ -198,44 +221,52 @@
                 <span class="close-button topright" @click="$modal.hide('add-geo-target-modal')">&times;</span>
 
                 <div class="add-target-modal">
-                    <div class="row w-90 my-5" style="margin-left: 50px; margin-right: 50px; max-height: 350px; overflow:auto">
-                        <div class="col mb-2 text-center" >
-                            <span class="title">Target Audience</span>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col mb-0">
-                            <input id="target-name" type="text" v-model="newGeoTarget.name" style="width: 96%; margin-left: 10px; margin-right: 10px"/>
-                        </div>
-                        <div class="w-100"></div>
-                        <div class="col mb-2">
-                            <table class="table table-borderless mb-0">
-                                <thead class="rectangle-header">
-                                <tr>
-                                    <th width="50%">Zip Code</th>
-                                    <th width="50%">Radius</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="table-row" v-for="zipcode in newGeoTarget.zipcodes">
-                                    <td class="px-0 py-0">
-                                        <input type="text" placeholder="Zip Code" v-model="zipcode.code"/></td>
-                                    <td class="px-0 py-0">
-                                        <select class="form-control form-control-lg" v-model="zipcode.radius">
-                                            <option value="10">10 Miles</option>
-                                            <option value="20">20 Miles</option>
-                                            <option value="30">30 Miles</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <button type="button" class="btn btn-info btn-circle yellow ml-2" @click="addGeoZipcode">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            <button class="save-btn btn-primary mr-2" @click="saveGeoTarget">Save</button>
-                        </div>
+                    <form id="add-target-validation-form">
+                        <div class="row w-90 my-5"
+                             style="margin-left: 50px; margin-right: 50px; max-height: 400px; overflow:auto">
+                            <div class="col mb-2 text-center">
+                                <span class="title">Target Audience</span>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col mb-0">
+                                <input id="target-name" name="target-name" type="text" v-model="tempGeoTarget.name"
+                                       style="width: 96%; margin-left: 10px; margin-right: 10px"/>
+                            </div>
+                            <div class="w-100"></div>
+                            <div class="col mb-2">
+                                <table class="table table-borderless mb-0">
+                                    <thead class="rectangle-header">
+                                    <tr>
+                                        <th width="50%">Zip Code</th>
+                                        <th width="50%">Radius</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr class="table-row" v-for="zipcode in tempGeoTarget.zipcodes">
+                                        <td class="px-0 py-0">
+                                            <input type="text" name="code" placeholder="Zip Code"
+                                                   v-model="zipcode.code"/></td>
+                                        <td class="px-0 py-0">
+                                            <select class="form-control form-control-lg" name="radius"
+                                                    v-model="zipcode.radius">
+                                                <option value="10">10 Miles</option>
+                                                <option value="20">20 Miles</option>
+                                                <option value="30">30 Miles</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <button type="button" class="btn btn-info btn-circle yellow ml-2"
+                                        @click="addGeoZipcode">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="save-btn btn-primary mr-2" @click="saveGeoTarget">Save
+                                </button>
+                            </div>
 
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </modal>
             <!--end modal-->
@@ -307,7 +338,7 @@
             margin-bottom: 0;
         }
 
-        .table{
+        .table {
             padding-left: 0px !important;
             border-collapse: separate;
             border-spacing: 10px 10px;
@@ -358,7 +389,7 @@
         text-align: center;
         cursor: pointer;
         white-space: nowrap;
-        font-size:40px;
+        font-size: 40px;
         font-weight: 100;
     }
 
