@@ -128,7 +128,7 @@
                                                 @click="showAddGeoTargetModal">
                                             <i class="fa fa-plus"></i>
                                         </button>
-                                        <span class="button-caption"> Add New Target Audience</span>
+                                        <span class="button-caption" @click="showAddGeoTargetModal"> Add New Target Audience</span>
                                     </div>
                                 </div>
                             </div>
@@ -213,9 +213,8 @@
                 name="add-geo-target-modal"
                 transition="nice-modal-fade"
                 width="620"
-                height="450"
+                height="auto"
                 :delay="100"
-                adaptive
                 classes="v--modal radius-modal"
             >
                 <span class="close-button topright" @click="$modal.hide('add-geo-target-modal')">&times;</span>
@@ -223,13 +222,13 @@
                 <div class="add-target-modal">
                     <form id="add-target-validation-form">
                         <div class="row w-90 my-5"
-                             style="margin-left: 50px; margin-right: 50px; max-height: 400px; overflow:auto">
+                             style="margin-left: 50px; margin-right: 50px; max-height: 500px; overflow:auto">
                             <div class="col mb-2 text-center">
                                 <span class="title">Target Audience</span>
                             </div>
                             <div class="w-100"></div>
                             <div class="col mb-0">
-                                <input id="target-name" name="target-name" type="text" v-model="tempGeoTarget.name"
+                                <input id="targetname" name="targetname" type="text" v-model="tempGeoTarget.name"
                                        style="width: 96%; margin-left: 10px; margin-right: 10px"/>
                             </div>
                             <div class="w-100"></div>
@@ -261,6 +260,7 @@
                                         @click="addGeoZipcode">
                                     <i class="fa fa-plus"></i>
                                 </button>
+                                <div v-if="addGeoTargetError" class="is-invalid ml-2 mt-1 text-danger" v-html="addGeoTargetError"></div>
                                 <button type="button" class="save-btn btn-primary mr-2" @click="saveGeoTarget">Save
                                 </button>
                             </div>
@@ -372,7 +372,6 @@
             justify-content: center;
             align-items: center;
             align-self: center;
-            margin-top: 30px;
             float: right;
         }
     }

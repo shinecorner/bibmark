@@ -59,33 +59,6 @@ export default {
                     $(element).parents('.right-side2').find('.is-invalid').removeClass('is-invalid');
                 }
             });
-
-            $('#add-target-validation-form').validate({
-                rules: {
-                    'target-name': {
-                        required: true
-                    },
-                    'code': {
-                        required: true
-                    },
-                },
-                errorPlacement: function errorPlacement(error, element) {
-                    var $parent = $(element).parents('td');
-                    if ($parent.find('.jquery-validation-error').length) {
-                        return;
-                    }
-                    $parent.append(
-                        error.addClass('jquery-validation-error small form-text invalid-feedback')
-                    );
-                },
-                highlight: function (element) {
-                    var $el = $(element);
-                    $el.addClass('is-invalid');
-                },
-                unhighlight: function (element) {
-                    $(element).parents('.right-side2').find('.is-invalid').removeClass('is-invalid');
-                }
-            });
         },
         selectLogo() {
             this.campaign.logo = this.$refs.logo.files[0];
@@ -136,6 +109,7 @@ export default {
                 });
         },
         showAddGeoTargetModal() {
+            this.addGeoTargetError = '';
             this.editGeoTargetIndex = -1;
 
             // Refesh modal data
@@ -150,30 +124,33 @@ export default {
             this.tempGeoTarget.zipcodes.push({code: '', radius: '10'})
         },
         saveGeoTarget() {
-            if (!$('#add-target-validation-form').valid()) {
-                console.log('invalid');
-                return;
+            this.addGeoTargetError = '';
+            let isValid = true;
+
+            if(this.tempGeoTarget.name === '' ){
+                isValid = false;
+                this.addGeoTargetError += 'The target name must be filled. <br/>';
             }
 
-            let isValid = true;
+            let that = this;
             this.tempGeoTarget.zipcodes.forEach(function (value) {
-                if (!value.code) {
+                if (value.code === '') {
                     isValid = false;
+                    that.addGeoTargetError += 'The zip code must be filled.';
                 }
             });
+
             if (isValid) {
                 if (this.editGeoTargetIndex >= 0) {
                     this.campaign.geoTargets[this.editGeoTargetIndex] = this.tempGeoTarget;
                 } else {
                     this.campaign.geoTargets.push(this.tempGeoTarget);
                 }
-
                 this.$modal.hide('add-geo-target-modal');
-            } else {
-                this.addGeoTargetError = 'The zipcode must be filled.';
             }
         },
         editGeoTarget(target, index) {
+            this.addGeoTargetError = '';
             this.editGeoTargetIndex = index;
             this.tempGeoTarget = target;
             this.$modal.show('add-geo-target-modal');
