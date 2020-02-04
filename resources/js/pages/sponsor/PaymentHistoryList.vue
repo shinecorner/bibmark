@@ -3,11 +3,11 @@
         <table  class="table table-striped table-bordered">
             <thead class="rectangle-header">
                 <tr>
-                    <th>Credit Card Number</th>
-                    <th>Billed Month</th>
-                    <th>Paid On</th>
-                    <th>Amount Paid</th>
-                    <th>Status</th>
+                    <th class="label">Credit Card Number</th>
+                    <th class="label">Billed Month</th>
+                    <th class="label">Paid On</th>
+                    <th class="label">Amount Paid</th>
+                    <th class="label">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,20 +48,35 @@
 <style lang="scss" scoped>
 
 .table-row {
+    font-family: helvetica-neue;
     text-align: center;
+    font-size: 20px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #444444;
 }
 
 .rectangle-header {
     background-color: #ffc600;
-    font-family: HelveticaNeue;
-    font-size: 22px;
-    font-weight: 500;
+    font-family: helvetica-neue;
+    font-size: 20px;
+    font-weight: 600 !important;
     font-stretch: normal;
     font-style: normal;
     line-height: normal;
     letter-spacing: normal;
     text-align: center;
     color: #444444;
+
+    tr {
+        th {
+            font-weight: 500 !important;
+            font-size: 22px;
+        }
+    }
 }
 
 </style>

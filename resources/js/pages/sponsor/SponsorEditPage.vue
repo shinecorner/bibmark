@@ -269,7 +269,7 @@
 
         .edit-profile {
             font-size: 25px;
-            font-family: HelveticaNeue, sans-serif;
+            font-family: helvetica-neue;
             font-weight: bold;
             color: #ffc600;
             margin-bottom: 25px;

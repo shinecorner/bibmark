@@ -121,7 +121,7 @@ thead{
     }
 thead th{
     padding: 5px;
-    font-family: SFProText;
+    font-family: sf-pro-text;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;
@@ -135,7 +135,7 @@ thead th{
 }
 .product-title{
     /* display: block; */
-    font-family: SFProText;
+    font-family: sf-pro-text;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;
@@ -146,7 +146,7 @@ thead th{
 }
 .product-sub-title{
     /* display: block; */
-    font-family: SFProText;
+    font-family: sf-pro-text;
     font-size: 18px;
     font-weight: normal;
     font-style: normal;
@@ -156,7 +156,7 @@ thead th{
     color: #000000;
 }
 .price{
-    font-family: SFProText;
+    font-family: sf-pro-text;
     font-size: 18px;
     font-weight: normal;
     font-style: normal;
@@ -174,7 +174,7 @@ thead th{
     margin-top:25px;
 }
 .total-label{
-    font-family: SFProText;
+    font-family: sf-pro-text;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;
@@ -186,7 +186,7 @@ thead th{
     margin-top: 7px;
 }
 .total{
-    font-family: SFProText;
+    font-family: sf-pro-text;
     font-size: 18px;
     font-weight: normal;
     font-style: normal;
@@ -230,7 +230,7 @@ thead th{
 .counter {
     padding: 3px;
     display: block;
-    font-family: SFProText;
+    font-family: sf-pro-text;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;
@@ -240,7 +240,7 @@ thead th{
     color: #000000;
 }
 .counter-new{
-    font-family: SFProText;
+    font-family: sf-pro-text;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;

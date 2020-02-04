@@ -376,7 +376,7 @@ export default {
   transition: background-color 0.3s;
 } */
 .join-cta-label{
-  font-family: SFProDisplay;
+  font-family: sf-pro-display;
   font-size: 24px;
   font-weight: 500;
   font-style: normal;
@@ -387,7 +387,7 @@ export default {
 }
 .join-cta-label-desc{
   opacity: 0.6;
-  font-family: SFProDisplay;
+  font-family: sf-pro-display;
   font-size: 16px;
   font-weight: 500;
   font-style: normal;

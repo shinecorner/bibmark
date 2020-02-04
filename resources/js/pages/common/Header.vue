@@ -117,9 +117,9 @@
         /*padding: 1.625rem 0.5vw;*/
         position: relative;
         opacity: 0.9;
-        font-family: SFProText;
-        font-size: calc(8px + 0.41vw);
-        font-weight: 500;
+        font-family: sf-pro-display;
+        font-size: calc(12px + 0.41vw);
+        font-weight: 520;
         font-style: normal;
         font-stretch: normal;
         line-height: normal;

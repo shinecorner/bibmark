@@ -190,7 +190,7 @@ import { random as fetchRandomProduct } from '../../services/product';
     }
 
     .welcome {
-        font-family: SFProDisplay;
+        font-family: sf-pro-display;
         font-size: 42px;
         font-weight: bold;
         font-style: normal;
@@ -219,7 +219,7 @@ import { random as fetchRandomProduct } from '../../services/product';
 
     .content {
         margin-bottom: 58px;
-        font-family: SFProText;
+        font-family: sf-pro-text;
         font-size: 18px;
         font-weight: normal;
         font-style: normal;

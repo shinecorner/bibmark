@@ -65,7 +65,7 @@
         /*padding: 1.625rem 0.5vw;*/
         position: relative;
         opacity: 0.9;
-        font-family: "SFProDisplay", "San Francisco", sans-serif;
+        font-family: sf-pro-display;
         font-size: calc(8px + 0.41vw);
         font-weight: 500;
         font-style: normal;

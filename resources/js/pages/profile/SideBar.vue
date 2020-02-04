@@ -194,11 +194,11 @@
         /*border-bottom: solid 1px #cccccc;*/
         height: 19px;
         opacity: 0.9;
-        font-family: SFProDisplay;
+        font-family: sf-pro-display;
     }
 
     .profile-usermenu ul li a {
-        font-family: HelveticaNeue;
+        font-family: helvetica-neue;
         font-size: 18px;
         font-weight: bold;
         font-style: normal;
@@ -242,7 +242,7 @@
         margin-left: 130px;
         margin-bottom: 275px;
         height: 22px;
-        font-family: HelveticaNeue;
+        font-family: helvetica-neue;
         font-size: 18px;
         font-weight: bold;
         font-style: normal;
@@ -264,7 +264,7 @@
 
     .content {
         margin-bottom: 58px;
-        font-family: SFProText;
+        font-family: sf-pro-text;
         font-size: 18px;
         font-weight: normal;
         font-style: normal;

@@ -364,7 +364,7 @@ export default {
     .form-group {
         label {
             color: #444444;
-            font-family: HelveticaNeue;
+            font-family: helvetica-neue;
             font-size: 18px;
             font-weight: bold;
         }
@@ -373,7 +373,7 @@ export default {
             border: 0 none;
             border-bottom: solid 2px #cccccc;
             border-radius: 0;
-            font-family: HelveticaNeue;
+            font-family: helvetica-neue;
             font-size: 18px;
             margin-top: 0.5rem;
 
@@ -474,7 +474,7 @@ export default {
         vertical-align: middle;
         border-radius: 5px;
         background-color: #ffe100;
-        font-family: SFProText;
+        font-family: sf-pro-text;
         font-size: 14px;
         font-weight: bold;
         font-style: normal;
@@ -491,7 +491,7 @@ export default {
     .pay-with-stripe{
         border-radius: 5px;
         background-color: #ffe100;
-        font-family: SFProText;
+        font-family: sf-pro-text;
         font-weight: bold;
         font-style: normal;
         font-stretch: normal;
@@ -510,7 +510,7 @@ export default {
         // width:20%;
         border-radius: 5px;
         background-color: #ffe100;
-        font-family: SFProText;
+        font-family: sf-pro-text;
         font-weight: bold;
         font-style: normal;
         font-stretch: normal;
@@ -526,7 +526,7 @@ export default {
     .new-card{
         border-radius: 5px;
         background-color: #ffe100;
-        font-family: SFProText;
+        font-family: sf-pro-text;
         font-weight: bold;
         font-style: normal;
         font-stretch: normal;
