@@ -8,7 +8,7 @@
         <!-- end section 1 slider -->
 
         <!-- section 2 placeholder -->
-        <div class="placeholder-text default-text-style">Technology x Design x Sponsorship</div>
+        <div class="placeholder-text default-text-style section-carousel-main-text">Technology x Design x Sponsorship</div>
         <div>
             <img src="img/place-holder-image.jpg" class="w-100">
             <!--<div class="chicagofire">-->
@@ -262,15 +262,17 @@
         line-height: normal;
         font-stretch: normal;
         letter-spacing: normal;
-        font-family: "SFProDisplay", "San Francisco", sans-serif;
+        font-family: sf-pro-text, helvetica-neue;
     }
     /*section 4*/
     .section-carousel-main-text {
+        font-family: sf-pro-display;
         color: #444444;
         font-weight: bold;
         text-align: center;
-        font-size: calc(12px + 1.56vw);
+        font-size: calc(18px + 1.56vw);
     }
+
 
     .section-carousel-subtext {
         color: #000000;

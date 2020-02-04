@@ -168,11 +168,16 @@
         }
 
         .navigation-link {
-            font-family: HelveticaNeue, sans-serif;
+            font-family: helvetica-neue;
             font-size: 20px;
             cursor: pointer;
             color: #444444;
             font-weight: regular;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            color: #444444;
 
             &.active {
                 font-weight: bold;
@@ -204,9 +209,14 @@
             justify-content: flex-end;
 
             label {
-                font-family: HelveticaNeue, sans-serif;
+                font-family: helvetica-neue;
                 font-size: 22px;
-                font-weight: 500;
+                font-weight: 600;
+                font-stretch: normal;
+                font-style: normal;
+                line-height: normal;
+                letter-spacing: normal;
+                text-align: right;
                 color: #444444;
                 margin-bottom: 0;
             }
@@ -255,7 +265,7 @@
                 border: solid 2px rgba(212, 212, 212, 0.89);
                 padding: 13px 11px;
                 font-size: 20px;
-                font-family: HelveticaNeue, sans-serif;
+                font-family: helvetica-neue;
                 font-weight: regular;
                 color: #444444;
                 width: 100%;

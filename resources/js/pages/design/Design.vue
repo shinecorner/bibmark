@@ -400,7 +400,7 @@ export default {
     padding-left: 0;
     padding-right: 0.85rem;
     padding-bottom: 0.3rem;
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
@@ -411,7 +411,7 @@ export default {
 }
 
 .title-right{
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 34px;
     font-weight: 600;
     font-style: normal;
@@ -436,7 +436,7 @@ export default {
 }
 .brand{
     opacity: 0.7;
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 16px;
     font-weight: 500;
     font-style: normal;
@@ -446,7 +446,7 @@ export default {
     color: #000000;
 }
 .tank{
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 36px;
     font-weight: 500;
     font-style: normal;
@@ -457,7 +457,7 @@ export default {
 }
 .switch{
     opacity: 0.7;
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 16px;
     font-weight: 500;
     font-style: normal;
@@ -467,7 +467,7 @@ export default {
     color: #7c7c7c;
 }
 .size{
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 30px;
     font-weight: 500;
     font-style: normal;
@@ -478,7 +478,7 @@ export default {
 }
 .sizing{
     opacity: 0.7;
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 16px;
     font-weight: 500;
     font-style: normal;
@@ -488,7 +488,7 @@ export default {
     color: #7c7c7c;
 }
 .small{
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 18px;
     font-weight: 500;
     font-style: normal;
@@ -498,7 +498,7 @@ export default {
     color: #444444;
 }
 .join-cta-label{
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 24px;
     font-weight: 500;
     font-style: normal;
@@ -509,7 +509,7 @@ export default {
 }
 .join-cta-label-desc{
     opacity: 0.6;
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 16px;
     font-weight: 500;
     font-style: normal;

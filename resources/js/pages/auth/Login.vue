@@ -108,23 +108,23 @@ export default {
 
 .auth-login-form {
     .form-title {
-        font-family: "SFProDisplay", "San Francisco", sans-serif;
+        font-family: sf-pro-display, sans-serif;
         font-size: 42px;
         font-weight: bold;
         color: #444444;
     }
 
     .reset-password-cta {
-        font-family: HelveticaNeue;
+        font-family: helvetica-neue;
         font-size: 18px;
         font-weight: bold;
-        color: #4a90e2;
+        color: h-blue;
     }
 
     .form-group {
         label {
             color: #444444;
-            font-family: HelveticaNeue;
+            font-family: helvetica-neue;
             font-size: 18px;
             font-weight: bold;
         }
@@ -138,7 +138,7 @@ export default {
             border: 0 none;
             border-bottom: solid 2px #cccccc;
             border-radius: 0;
-            font-family: HelveticaNeue;
+            font-family: helvetica-neue;
             font-size: 18px;
             margin-top: 0.5rem;
 
@@ -172,7 +172,7 @@ export default {
 
         .login-cta-labels {
             .login-cta-label-desc {
-                font-family: "SFProDisplay", "San Francisco", sans-serif;
+                font-family: sf-pro-display, sans-serif;
                 opacity: 0.6;
                 font-size: 16px;
                 font-weight: 500;
@@ -180,7 +180,7 @@ export default {
             }
 
             .login-cta-label {
-                font-family: "SFProDisplay", "San Francisco", sans-serif;
+                font-family: sf-pro-display, sans-serif;
                 font-size: 24px;
                 font-weight: 500;
                 color: #000000;

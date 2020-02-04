@@ -181,7 +181,7 @@
             .first-row {
                 .footer-description {
                     padding-top: 10px;
-                    font-family: SFProDisplay;
+                    font-family: sf-pro-display;
                     font-size: 26px;
                     font-style: normal;
                     font-stretch: normal;
@@ -208,7 +208,7 @@
                         border-radius: 5px;
                         background-color: #ffe100;
                         margin-left: 15px;
-                        font-family: SFProText;
+                        font-family: sf-pro-text;
                         font-size: 17px;
                         font-weight: bold;
                         font-style: normal;
@@ -244,7 +244,7 @@
                 }
 
                 .pane-title {
-                    font-family: SFProText;
+                    font-family: sf-pro-text;
                     font-size: 14px;
                     font-weight: bold;
                     font-style: normal;
@@ -265,7 +265,7 @@
             .footer-copyright {
                 padding-top: 31px;
                 padding-bottom: 13px;
-                font-family: SFProText, "San Francisco", sans-serif;
+                font-family: sf-pro-text, "San Francisco", sans-serif;
                 font-size: 14px;
                 font-weight: normal;
                 font-style: normal;

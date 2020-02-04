@@ -199,7 +199,7 @@
     }
 
         .welcome {
-            font-family: SFProDisplay;
+            font-family: sf-pro-display;
             font-size: 42px;
             font-weight: bold;
             font-style: normal;
@@ -211,7 +211,7 @@
         }
 
         .subtitle {
-            font-family: SFProDisplay;
+            font-family: sf-pro-display;
             font-size: 24px;
             font-weight: bold;
             font-style: normal;
@@ -224,7 +224,7 @@
         }
 
         .no-results {
-            font-family: SFProText;
+            font-family: sf-pro-text;
             font-style: normal;
             font-stretch: normal;
             line-height: normal;
@@ -243,7 +243,7 @@
 
         .content {
             margin-bottom: 58px;
-            font-family: SFProText;
+            font-family: sf-pro-text;
             font-size: 18px;
             font-weight: normal;
             font-style: normal;
@@ -258,7 +258,7 @@
                 vertical-align: bottom !important;
                 border-top: none !important;
                 border-bottom: 1px solid #f1f1f2 !important;
-                font-family: SFProText;
+                font-family: sf-pro-text;
                 font-size: 18px;
                 font-weight: normal;
                 font-style: normal;
@@ -273,7 +273,7 @@
                 height: 30px;
                 border-radius: 5px;
                 background-color: #ffe100 !important;
-                font-family: SFProText;
+                font-family: sf-pro-text;
                 font-size: 14px;
                 font-weight: bold;
                 font-style: normal;
@@ -308,14 +308,14 @@
                 }
                 .login-cta-labels {
                     .login-cta-label-desc {
-                        font-family: SFProDisplay;
+                        font-family: sf-pro-display;
                         opacity: 0.6;
                         font-size: 16px;
                         font-weight: 500;
                         color: #000000;
                     }
                     .login-cta-label {
-                        font-family: SFProDisplay;
+                        font-family: sf-pro-display;
                         font-size: 24px;
                         font-weight: 500;
                         color: #000000;
@@ -326,7 +326,7 @@
             .form-group {
                 label {
                     color: #444444;
-                    font-family: HelveticaNeue;
+                    font-family: helvetica-neue;
                     font-size: 18px;
                     font-weight: bold;
                 }
@@ -335,7 +335,7 @@
                     border: 0 none;
                     border-bottom: solid 2px #cccccc;
                     border-radius: 0;
-                    font-family: HelveticaNeue;
+                    font-family: helvetica-neue;
                     font-size: 18px;
                     margin-top: 0.5rem;
 
@@ -372,7 +372,7 @@
         }
 
         .modal-title {
-            font-family: SFProDisplay;
+            font-family: sf-pro-display;
             font-size: 24px;
             font-weight: bold;
             font-style: normal;
@@ -384,7 +384,7 @@
         }
 
         .modal-detail {
-            font-family: SFProText;
+            font-family: sf-pro-text;
             font-size: 18px;
             font-weight: normal;
             font-style: normal;
@@ -396,7 +396,7 @@
         }
 
         .modal-subtitle {
-            font-family: HelveticaNeue;
+            font-family: helvetica-neue;
             font-size: 18px;
             font-weight: bold;
             font-style: normal;
@@ -416,7 +416,7 @@
 
         .my-events-cta-labels {
             .my-events-cta-label-desc {
-                font-family: "SFProDisplay", "San Francisco", sans-serif;
+                font-family: sf-pro-display, sans-serif;
                 opacity: 0.6;
                 font-size: 16px;
                 font-weight: 500;
@@ -424,7 +424,7 @@
             }
 
             .my-events-cta-label {
-                font-family: "SFProDisplay", "San Francisco", sans-serif;
+                font-family: sf-pro-display, sans-serif;
                 font-size: 24px;
                 font-weight: 500;
                 color: #000000;

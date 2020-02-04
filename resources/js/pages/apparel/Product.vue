@@ -76,7 +76,7 @@ export default {
 
 .brand{
     opacity: 0.7;
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 16px;
     font-weight: 500;
     font-style: normal;
@@ -87,7 +87,7 @@ export default {
     margin-bottom: 5px;
 }
 .tank{
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 36px;
     font-weight: 500;
     font-style: normal;
@@ -98,7 +98,7 @@ export default {
 }
 
 .join-cta-label{
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 24px;
     font-weight: 500;
     font-style: normal;
@@ -109,7 +109,7 @@ export default {
 }
 .join-cta-label-desc{
     opacity: 0.6;
-    font-family: SFProDisplay;
+    font-family: sf-pro-display;
     font-size: 16px;
     font-weight: 500;
     font-style: normal;
@@ -128,7 +128,7 @@ ul {
   margin-right: 0;
   margin-top: 35px;
   padding-left: 20px;
-  font-family: SFProDisplay;
+  font-family: sf-pro-display;
   font-size: 17px;
 }
 li:not(:last-child) {

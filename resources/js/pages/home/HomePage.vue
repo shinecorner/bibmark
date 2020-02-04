@@ -275,7 +275,7 @@
         line-height: normal;
         font-stretch: normal;
         letter-spacing: normal;
-        font-family: "SFProDisplay", "San Francisco", sans-serif;
+        font-family: sf-pro-display, sans-serif;
     }
     /*section 4*/
     .section-carousel-main-text {
@@ -291,7 +291,7 @@
         font-weight: normal;
         background-color: white;
         font-size: calc(8px + 0.52vw);
-        font-family: "SFProText", "San Francisco", sans-serif;
+        font-family: sf-pro-text;
     }
 
     /*carousel*/

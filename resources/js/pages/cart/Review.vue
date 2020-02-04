@@ -57,7 +57,7 @@ export default {
 </script>
 <style scoped>
 .shipping{
-    font-family: SFProText;
+    font-family: sf-pro-text;
     font-size: 18px;
     font-weight: normal;
     font-style: normal;
