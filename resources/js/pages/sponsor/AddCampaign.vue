@@ -315,7 +315,7 @@
     }
 
     .company-select-container {
-        border: solid 2px rgba(212, 212, 212, 0.89);
+        border: solid 2px #f2f2f2;
         border-radius: 5px;
         max-height: 180px;
         overflow: auto;
@@ -344,7 +344,7 @@
         }
 
         input[type="text"], select {
-            border: solid 2px rgba(212, 212, 212, 0.89);
+            border: solid 2px #f2f2f2;
             padding: 13px 11px;
             font-size: 20px;
             font-family: HelveticaNeue, sans-serif;
