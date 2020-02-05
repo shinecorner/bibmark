@@ -276,6 +276,8 @@
 <script src="./AddCampaign.js"></script>
 
 <style lang="scss" scoped>
+    @import '~@/_variables.scss';
+
     .table {
         padding-left: 154px !important;
     }
@@ -287,7 +289,7 @@
 
     .campaign {
         font-size: 25px;
-        font-family: HelveticaNeue, sans-serif;
+        font-family: $font-family-helvetica-neue, sans-serif;
         font-weight: bold;
         color: #ffc600;
     }
@@ -303,7 +305,7 @@
 
     .rectangle-header {
         background-color: #ffc600;
-        font-family: HelveticaNeue;
+        font-family: $font-family-helvetica-neue;
         font-size: 22px;
         font-weight: 500;
         font-stretch: normal;
@@ -330,7 +332,7 @@
 
     .add-target-modal {
         .title {
-            font-family: 'Helvetica Neue', sans-serif;
+            font-family: $font-family-helvetica-neue, sans-serif;
             font-size: 34px;
             font-weight: 500;
             color: #444444;
@@ -344,14 +346,14 @@
         }
 
         .table th {
-            font-family: 'Helvetica Neue', sans-serif;
+            font-family: $font-family-helvetica-neue, sans-serif;
         }
 
         input[type="text"], select {
             border: solid 2px #f2f2f2;
             padding: 13px 11px;
             font-size: 20px;
-            font-family: 'Helvetica Neue', sans-serif;
+            font-family: $font-family-helvetica-neue, sans-serif;
             font-weight: normal;
             color: #444444;
             width: 100%;
