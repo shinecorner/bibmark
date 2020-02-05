@@ -372,7 +372,7 @@
             justify-content: center;
             align-items: center;
             align-self: center;
-            margin-top: 30px;
+            margin-top: 10px;
         }
     }
 </style>
