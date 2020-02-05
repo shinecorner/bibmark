@@ -198,8 +198,8 @@
                         <div class="input-wrap">
                             <div class="left-side2"></div>
                             <div class="right-side2">
-                                <button class="save-btn btn-primary" type="button" @click.stop="save">Save</button>
-                                <button class="save-btn ml-4" type="button">Cancel</button>
+                                <button class="save-btn btn-primary" type="button" @click.stop="save" style="font-size:18px">Save</button>
+                                <button class="save-btn ml-2" type="button" style="font-size:18px">Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -260,7 +260,7 @@
                                 </button>
                                 <div v-if="addGeoTargetError" class="is-invalid ml-2 mt-1 text-danger"
                                      v-html="addGeoTargetError"></div>
-                                <button type="button" class="save-btn btn-primary mr-2" @click="saveGeoTarget">Save
+                                <button type="button" class="save-btn btn-primary mr-2" @click="saveGeoTarget" style="font-size:18px">Save
                                 </button>
                             </div>
 
@@ -361,10 +361,11 @@
         }
 
         .save-btn {
-            size: 28px;
+            size: 18px !important;;
             color: #444444;
             width: 100px;
-            height: 43px;
+            height: 35px;
+            font-family: $font-family-helvetica-neue, sans-serif;
             background-color: white;
             border-radius: 3px;
             border: 1px solid  #f2f2f2;

@@ -356,10 +356,10 @@
             font-size: 20px;
         }
         .save-btn {
-            size: 28px;
+            size: 18px !important;
             color: #444444;
             width: 100px;
-            height: 43px;
+            height: 35px;
             background-color: white;
             border-radius: 3px;
             border: 1px solid  #f2f2f2;
@@ -373,6 +373,7 @@
             align-items: center;
             align-self: center;
             margin-top: 10px;
+            font-family: $font-family-helvetica-neue, sans-serif;
         }
     }
 </style>
