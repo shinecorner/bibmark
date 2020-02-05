@@ -79,6 +79,7 @@
 </script>
 
 <style lang="scss">
+    @import '~@/_variables.scss';
     .validate_error {
         color:#d9534f;
         font-size: 14px;
@@ -109,7 +110,7 @@
 
     .auth-reset-password-form {
         .form-title {
-            font-family: SFProDisplay;
+            font-family: $font-family-sf-pro-display;
             font-size: 42px;
             font-weight: bold;
             color: #444444;
@@ -122,7 +123,7 @@
         .form-group {
             label {
                 color: #444444;
-                font-family: HelveticaNeue;
+                font-family: $font-family-helvetica-neue;
                 font-size: 18px;
                 font-weight: bold;
             }
@@ -131,7 +132,7 @@
                 border: 0 none;
                 border-bottom: solid 2px #cccccc;
                 border-radius: 0;
-                font-family: HelveticaNeue;
+                font-family: $font-family-helvetica-neue;
                 font-size: 18px;
                 margin-top: 0.5rem;
 
@@ -161,14 +162,14 @@
             }
             .login-cta-labels {
                 .login-cta-label-desc {
-                    font-family: SFProDisplay;
+                    font-family: $font-family-sf-pro-display;
                     opacity: 0.6;
                     font-size: 16px;
                     font-weight: 500;
                     color: #000000;
                 }
                 .login-cta-label {
-                    font-family: SFProDisplay;
+                    font-family: $font-family-sf-pro-display;
                     font-size: 24px;
                     font-weight: 500;
                     color: #000000;

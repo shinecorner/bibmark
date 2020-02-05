@@ -96,6 +96,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@/_variables.scss';
 .auth-login {
     background: white;
     padding: 94px 0;
@@ -108,14 +109,14 @@ export default {
 
 .auth-login-form {
     .form-title {
-        font-family: sf-pro-display, sans-serif;
+        font-family: $font-family-sf-pro-display, sans-serif;
         font-size: 42px;
         font-weight: bold;
         color: #444444;
     }
 
     .reset-password-cta {
-        font-family: helvetica-neue;
+        font-family: $font-family-helvetica-neue;
         font-size: 18px;
         font-weight: bold;
         color: h-blue;
@@ -124,7 +125,7 @@ export default {
     .form-group {
         label {
             color: #444444;
-            font-family: helvetica-neue;
+            font-family: $font-family-helvetica-neue;
             font-size: 18px;
             font-weight: bold;
         }
@@ -138,7 +139,7 @@ export default {
             border: 0 none;
             border-bottom: solid 2px #cccccc;
             border-radius: 0;
-            font-family: helvetica-neue;
+            font-family: $font-family-helvetica-neue;
             font-size: 18px;
             margin-top: 0.5rem;
 
@@ -172,7 +173,7 @@ export default {
 
         .login-cta-labels {
             .login-cta-label-desc {
-                font-family: sf-pro-display, sans-serif;
+                font-family: $font-family-sf-pro-display;
                 opacity: 0.6;
                 font-size: 16px;
                 font-weight: 500;
@@ -180,7 +181,7 @@ export default {
             }
 
             .login-cta-label {
-                font-family: sf-pro-display, sans-serif;
+                font-family: $font-family-sf-pro-display;
                 font-size: 24px;
                 font-weight: 500;
                 color: #000000;

@@ -122,6 +122,7 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '~@/_variables.scss';
     @font-face {
         font-family: "HelveticaNeue";
         src: url("/fonts/HelveticaNeueCyr-Bold.eot");
@@ -194,11 +195,11 @@
         /*border-bottom: solid 1px #cccccc;*/
         height: 19px;
         opacity: 0.9;
-        font-family: sf-pro-display;
+        font-family: $font-family-sf-pro-display;
     }
 
     .profile-usermenu ul li a {
-        font-family: HelveticaNeue;
+        font-family: $font-family-helvetica-neue;
         font-size: 18px;
         font-weight: bold;
         font-style: normal;
@@ -238,7 +239,7 @@
     }
 
     .welcome {
-        font-family: sf-pro-display;
+        font-family: $font-family-sf-pro-display;
         font-size: 42px;
         font-weight: bold;
         font-style: normal;
@@ -254,7 +255,7 @@
         margin-left: 130px;
         margin-bottom: 275px;
         height: 22px;
-        font-family: helvetica-neue;
+        font-family: $font-family-helvetica-neue;
         font-size: 18px;
         font-weight: bold;
         font-style: normal;
@@ -280,7 +281,7 @@
 
     .content {
         margin-bottom: 58px;
-        font-family: SFProText;
+        font-family: $font-family-sf-pro-text;
         font-size: 18px;
         font-weight: normal;
         font-style: normal;
@@ -368,7 +369,7 @@
 
 .auth-join-form {
     .form-title {
-        font-family: sf-pro-display, sans-serif;
+        font-family: $font-family-sf-pro-display;
         font-size: 42px;
         font-weight: bold;
         color: #444444;
@@ -377,7 +378,7 @@
     .form-group {
         label {
             color: #444444;
-            font-family: helvetica-neue;
+            font-family: $font-family-helvetica-neue;
             font-size: 18px;
             font-weight: bold;
         }
@@ -386,7 +387,7 @@
             border: 0 none;
             border-bottom: solid 2px #cccccc;
             border-radius: 0;
-            font-family: helvetica-neue;
+            font-family: $font-family-helvetica-neue;
             font-size: 18px;
             margin-top: 0.5rem;
 
@@ -420,7 +421,7 @@
 
         .join-cta-labels {
             .join-cta-label-desc {
-                font-family: sf-pro-display, sans-serif;
+                font-family: $font-family-sf-pro-display;
                 opacity: 0.6;
                 font-size: 16px;
                 font-weight: 500;
@@ -428,7 +429,7 @@
             }
 
             .join-cta-label {
-                font-family: sf-pro-display, sans-serif;
+                font-family: $font-family-sf-pro-display;
                 font-size: 24px;
                 font-weight: 500;
                 color: #000000;
@@ -457,13 +458,13 @@
 .card-title{
     font-size: 24px;
     color: #444444;
-    font-family: sf-pro-display;
+    font-family: $font-family-sf-pro-display;
 }
 .card-subtitle{
     font-size: 17px;
     // color: #000000;
     margin-top: 10px;
-    font-family: sf-pro-text;
+    font-family: $font-family-sf-pro-text;
     line-height: 28px;
 }
 .reset-btn {

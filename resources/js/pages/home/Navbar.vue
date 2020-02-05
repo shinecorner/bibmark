@@ -49,7 +49,8 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    @import '~@/_variables.scss';
     /* navbar */
     .Rectangle {
         max-width: 100%;
@@ -65,8 +66,8 @@
         /*padding: 1.625rem 0.5vw;*/
         position: relative;
         opacity: 0.9;
-        font-family: sf-pro-display;
-        font-size: calc(8px + 0.41vw);
+        font-family: $font-family-sf-pro-display;
+        font-size: calc(9px + 0.41vw);
         font-weight: 500;
         font-style: normal;
         font-stretch: normal;

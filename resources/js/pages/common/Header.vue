@@ -73,7 +73,8 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    @import '~@/_variables.scss';
     /* font */
 
     @font-face {
@@ -117,9 +118,9 @@
         /*padding: 1.625rem 0.5vw;*/
         position: relative;
         opacity: 0.9;
-        font-family: sf-pro-display;
-        font-size: calc(12px + 0.41vw);
-        font-weight: 520;
+        font-family: $font-family-sf-pro-display;
+        font-size: calc(9px + 0.41vw);
+        font-weight: 500;
         font-style: normal;
         font-stretch: normal;
         line-height: normal;
@@ -200,7 +201,7 @@
 
     .hello {
         opacity: 0.9;
-        font-family: SFProText;
+        font-family: $font-family-sf-pro-text;
         font-size: 14px;
         font-weight: 500;
         font-style: normal;

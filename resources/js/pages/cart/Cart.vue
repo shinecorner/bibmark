@@ -152,8 +152,8 @@ import { random as fetchRandomProduct } from '../../services/product';
 
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    @import '~@/_variables.scss';
     @font-face {
         font-family: "HelveticaNeue";
         src: url("/fonts/HelveticaNeueCyr-Bold.eot");
@@ -190,7 +190,7 @@ import { random as fetchRandomProduct } from '../../services/product';
     }
 
     .welcome {
-        font-family: sf-pro-display;
+        font-family: $font-family-sf-pro-display;
         font-size: 42px;
         font-weight: bold;
         font-style: normal;
@@ -219,7 +219,7 @@ import { random as fetchRandomProduct } from '../../services/product';
 
     .content {
         margin-bottom: 58px;
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 18px;
         font-weight: normal;
         font-style: normal;

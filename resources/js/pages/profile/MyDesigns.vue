@@ -93,7 +93,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+    @import '~@/_variables.scss';
     @font-face {
         font-family: "HelveticaNeue";
         src: url("/fonts/HelveticaNeueCyr-Bold.eot");
@@ -166,11 +166,11 @@
         /*border-bottom: solid 1px #cccccc;*/
         height: 19px;
         opacity: 0.9;
-        font-family: sf-pro-display;
+        font-family: $font-family-sf-pro-display;
     }
 
     .profile-usermenu ul li a {
-        font-family: helvetica-neue;
+        font-family: $font-family-helvetica-neue;
         font-size: 18px;
         font-weight: bold;
         font-style: normal;
@@ -210,7 +210,7 @@
     }
 
     .welcome {
-        font-family: sf-pro-display;
+        font-family: $font-family-sf-pro-display;
         font-size: 42px;
         font-weight: bold;
         font-style: normal;
@@ -226,7 +226,7 @@
         margin-left: 130px;
         margin-bottom: 275px;
         height: 22px;
-        font-family: helvetica-neue;
+        font-family: $font-family-helvetica-neue;
         font-size: 18px;
         font-weight: bold;
         font-style: normal;
@@ -252,7 +252,7 @@
 
     .content {
         margin-bottom: 58px;
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 18px;
         font-weight: normal;
         font-style: normal;
@@ -324,7 +324,7 @@
     .title{
         width: 200px;
         height: 21px;
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 18px;
         font-weight: bold;
         font-style: normal;
@@ -336,7 +336,7 @@
     .sub-title{
         width: 200px;
         height: 21px;
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 18px;
         font-weight: normal;
         font-style: normal;
@@ -372,7 +372,7 @@
     .join-cta-label{
     width: 95px;
     height: 29px;
-    font-family: sf-pro-display;
+    font-family: $font-family-sf-pro-display;
     font-size: 24px;
     font-weight: 500;
     font-style: normal;
@@ -385,7 +385,7 @@
     width: 93px;
     height: 19px;
     opacity: 0.6;
-    font-family: sf-pro-display;
+    font-family: $font-family-sf-pro-display;
     font-size: 16px;
     font-weight: 500;
     font-style: normal;

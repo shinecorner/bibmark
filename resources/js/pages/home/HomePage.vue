@@ -206,8 +206,8 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    @import '~@/_variables.scss';
     .main-field {
         width: 100vw;
         margin: 0 auto;
@@ -275,7 +275,7 @@
         line-height: normal;
         font-stretch: normal;
         letter-spacing: normal;
-        font-family: sf-pro-display, sans-serif;
+        font-family: $font-family-sf-pro-display;
     }
     /*section 4*/
     .section-carousel-main-text {
@@ -291,7 +291,7 @@
         font-weight: normal;
         background-color: white;
         font-size: calc(8px + 0.52vw);
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
     }
 
     /*carousel*/

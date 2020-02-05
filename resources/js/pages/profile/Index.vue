@@ -94,7 +94,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+@import '~@/_variables.scss';
 #sidebar-wrapper {
     min-height: 100vh;
     margin-left: -15rem;

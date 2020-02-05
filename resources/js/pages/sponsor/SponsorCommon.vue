@@ -69,12 +69,10 @@
                     $('#cover-image').attr('src', e.target.result);
                 };
                 reader.readAsDataURL(this.cover);
-
                 if (this.cover) {
                     let formData = new FormData();
                     formData.append("cover", this.cover);
                     formData.append("_method", "put");
-
                     axios
                         .post(`/sponsors/${window.sponsor_id}/profile/updateCover`, formData, {
                             headers: {
@@ -113,11 +111,9 @@
 
 <style lang="scss" scoped>
     @import '~@/_variables.scss';
-
     .sponsor-common {
         padding: 0;
         background-color: white;
-
         .main-section {
             display: -webkit-flex;
             display: -moz-flex;
@@ -126,23 +122,19 @@
             display: flex;
             align-items: flex-start;
         }
-
         .image-wrapper {
             height: 431px;
             width: 100%;
             margin-bottom: 59px;
             position: relative;
         }
-
         .input-cover-wrap {
             position: absolute;
             bottom: 19px;
             right: 76px;
-
             input {
                 display: none;
             }
-
             label {
                 size: 18px;
                 color: #444444;
@@ -152,7 +144,6 @@
                 font-weight: bold;
             }
         }
-
         .nav-links {
             padding: 0 15px 67px 28px;
             display: -webkit-flex;
@@ -162,30 +153,26 @@
             display: flex;
             flex-direction: column;
             border-right: solid 2px #cccccc;
-
             & > *:not(:last-child) {
                 margin-bottom: 14px;
             }
         }
-
         .navigation-link {
-            font-family: helvetica-neue;
+            font-family: $font-family-helvetica-neue;
             font-size: 20px;
             cursor: pointer;
             color: #444444;
-            font-weight: regular;
+            font-weight: normal;
             font-stretch: normal;
             font-style: normal;
             line-height: normal;
             letter-spacing: normal;
             color: #444444;
-
             &.active {
-                font-weight: bold;
                 color: #ffc600;
+                font-weight: bold;
             }
         }
-
         .tab-section {
             display: -webkit-flex;
             display: -moz-flex;
@@ -195,8 +182,6 @@
             flex-direction: column;
             padding-top: 11px;
         }
-
-
         .left-side {
             margin-right: 40px;
             max-width: 189px;
@@ -208,11 +193,10 @@
             display: -o-flex;
             display: flex;
             justify-content: flex-end;
-
             label {
                 font-family: $font-family-helvetica-neue;
                 font-size: 22px;
-                font-weight: 600;
+                font-weight: 500;
                 font-stretch: normal;
                 font-style: normal;
                 line-height: normal;
@@ -222,7 +206,6 @@
                 margin-bottom: 0;
             }
         }
-
         .left-side2 {
             margin-right: 40px;
             max-width: 300px;
@@ -234,7 +217,6 @@
             display: -o-flex;
             display: flex;
             justify-content: flex-end;
-
             label {
                 font-family: HelveticaNeue, sans-serif;
                 font-size: 22px;
@@ -243,7 +225,6 @@
                 margin-bottom: 0;
             }
         }
-
         .right-side {
             max-width: 348px;
             width: 100%;
@@ -269,7 +250,6 @@
                 align-items: center;
                 margin-bottom: 0;
             }
-
             .logo {
                 $size: 49px;
                 height: $size;
@@ -278,11 +258,9 @@
                 margin-right: 20px;
                 background-color: #ffc600;
             }
-
             input[type="file"] {
                 display: none;
             }
-
             input[type="text"], select, textarea {
                 border: solid 2px rgba(212, 212, 212, 0.89);
                 padding: 13px 11px;
@@ -292,13 +270,11 @@
                 color: #444444;
                 width: 100%;
             }
-
             textarea {
                 resize: none;
                 height: 122px;
             }
         }
-
         .right-side2 {
             max-width: 600px;
             width: 100%;
@@ -308,7 +284,6 @@
             display: -o-flex;
             display: flex;
             align-items: center;
-
             .input-label {
                 font-size: 18px;
                 color: #444444;
@@ -324,7 +299,6 @@
                 align-items: center;
                 margin-bottom: 0;
             }
-
             .logo {
                 $size: 49px;
                 height: $size;
@@ -333,11 +307,9 @@
                 margin-right: 20px;
                 background-color: #ffc600;
             }
-
             input[type="file"] {
                 display: none;
             }
-
             input[type="text"], textarea {
                 border: solid 2px rgba(212, 212, 212, 0.89);
                 padding: 13px 11px;
@@ -347,7 +319,6 @@
                 color: #444444;
                 width: 50%;
             }
-
             select {
                 border: solid 2px rgba(212, 212, 212, 0.89);
                 padding: 13px 11px;
@@ -358,36 +329,30 @@
                 width: 50%;
                 height: 58px;
             }
-
             textarea {
                 resize: none;
                 height: 122px;
             }
         }
-
         .background-image {
             background-color: #ffc600;
             width: 100%;
             height: 100%;
             display: block;
         }
-
         .input-wrap {
             display: -webkit-flex;
             display: -moz-flex;
             display: -ms-flex;
             display: -o-flex;
             display: flex;
-
             &:not(:last-child) {
                 margin-bottom: 13px;
             }
         }
-
         .table {
             font-size: 20px;
         }
-
         .save-btn {
             size: 28px;
             color: #444444;

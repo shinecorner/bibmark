@@ -46,9 +46,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+@import '~@/_variables.scss';
 .table-row {
-    font-family: helvetica-neue;
+    font-family: $font-family-helvetica-neue;
     text-align: center;
     font-size: 20px;
     font-weight: normal;
@@ -61,7 +61,7 @@
 
 .rectangle-header {
     background-color: #ffc600;
-    font-family: helvetica-neue;
+    font-family: $font-family-helvetica-neue;
     font-size: 20px;
     font-weight: 600 !important;
     font-stretch: normal;
