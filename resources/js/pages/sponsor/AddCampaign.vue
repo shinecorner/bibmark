@@ -15,8 +15,8 @@
                         <div class="input-wrap">
                             <div class="left-side2"><label for="name">Campaign Name</label></div>
                             <div class="right-side2">
-                                <div class="w-50 add-input-group">
-                                    <input id="name" name="name" type="text" v-model="campaign.name" class="w-100">
+                                <div class="w-100 add-input-group">
+                                    <input id="name" name="name" type="text" v-model="campaign.name" class="w-80">
                                 </div>
                             </div>
                         </div>
@@ -31,9 +31,8 @@
                         <div class="input-wrap">
                             <div class="left-side2"><label for="budget">Budget</label></div>
                             <div class="right-side2">
-                                <div class="w-50 add-input-group">
-                                    <input id="budget" name="budget" v-model="campaign.budget" type="text"
-                                           class="w-100"/>
+                                <div class="w-100 add-input-group">
+                                    <input id="budget" name="budget" v-model="campaign.budget" type="text"/>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +56,7 @@
                                     </table>
                                 </div>
                                 <div class="col-5 col-7 pl-0 pr-0">
-                                    <table class="table table-borderless">
+                                    <table class="table table-borderless" style="width:368px">
                                         <thead>
                                         <tr>
                                             <th>&nbsp</th>

@@ -317,7 +317,7 @@
                 font-family: HelveticaNeue, sans-serif;
                 font-weight: normal;
                 color: #444444;
-                width: 50%;
+                width: 368px;
             }
             select {
                 border: solid 2px rgba(212, 212, 212, 0.89);
@@ -326,7 +326,7 @@
                 font-family: HelveticaNeue, sans-serif;
                 font-weight: normal;
                 color: #444444;
-                width: 50%;
+                width: 368px;
                 height: 58px;
             }
             textarea {
