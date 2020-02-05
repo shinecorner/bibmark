@@ -55,9 +55,10 @@ export default {
     },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import '~@/_variables.scss';
 .shipping{
-    font-family: sf-pro-text;
+    font-family: $font-family-sf-pro-text;
     font-size: 18px;
     font-weight: normal;
     font-style: normal;

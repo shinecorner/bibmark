@@ -163,6 +163,7 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '~@/_variables.scss';
     @font-face {
         font-family: "SFProDisplay";
         src: url("/fonts/SF-Pro-Display-Regular.otf") format('truetype');
@@ -181,7 +182,7 @@
             .first-row {
                 .footer-description {
                     padding-top: 10px;
-                    font-family: sf-pro-display;
+                    font-family: $font-family-sf-pro-display;
                     font-size: 26px;
                     font-style: normal;
                     font-stretch: normal;
@@ -208,7 +209,7 @@
                         border-radius: 5px;
                         background-color: #ffe100;
                         margin-left: 15px;
-                        font-family: sf-pro-text;
+                        font-family: $font-family-sf-pro-text;
                         font-size: 17px;
                         font-weight: bold;
                         font-style: normal;
@@ -244,7 +245,7 @@
                 }
 
                 .pane-title {
-                    font-family: sf-pro-text;
+                    font-family: $font-family-sf-pro-text;
                     font-size: 14px;
                     font-weight: bold;
                     font-style: normal;
@@ -265,7 +266,7 @@
             .footer-copyright {
                 padding-top: 31px;
                 padding-bottom: 13px;
-                font-family: sf-pro-text, "San Francisco", sans-serif;
+                font-family: $font-family-sf-pro-text;
                 font-size: 14px;
                 font-weight: normal;
                 font-style: normal;

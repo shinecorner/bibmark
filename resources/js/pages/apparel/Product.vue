@@ -60,7 +60,8 @@ export default {
     },
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import '~@/_variables.scss';
 @font-face {
         font-family: "SFProDisplay";
         src: url("/fonts/SF-Pro-Display-Regular.otf") format('truetype');
@@ -68,15 +69,15 @@ export default {
     .container-fluid{
         padding: 0 4.9vw;
     }
-    @media(max-width:992px){
-.wrapper{
-    width:100%;
-    } 
+@media(max-width:992px){
+    .wrapper{
+        width:100%;
+        } 
 }
 
 .brand{
     opacity: 0.7;
-    font-family: sf-pro-display;
+    font-family: $font-family-sf-pro-display;
     font-size: 16px;
     font-weight: 500;
     font-style: normal;
@@ -87,7 +88,7 @@ export default {
     margin-bottom: 5px;
 }
 .tank{
-    font-family: sf-pro-display;
+    font-family: $font-family-sf-pro-display;
     font-size: 36px;
     font-weight: 500;
     font-style: normal;
@@ -98,7 +99,7 @@ export default {
 }
 
 .join-cta-label{
-    font-family: sf-pro-display;
+    font-family: $font-family-sf-pro-display;
     font-size: 24px;
     font-weight: 500;
     font-style: normal;
@@ -109,7 +110,7 @@ export default {
 }
 .join-cta-label-desc{
     opacity: 0.6;
-    font-family: sf-pro-display;
+    font-family: $font-family-sf-pro-display;
     font-size: 16px;
     font-weight: 500;
     font-style: normal;
@@ -128,8 +129,8 @@ ul {
   margin-right: 0;
   margin-top: 35px;
   padding-left: 20px;
-  font-family: sf-pro-display;
-  font-size: 17px;
+  font-family: $font-family-sf-pro-display;
+  font-size: 20px;
 }
 li:not(:last-child) {
     margin-bottom: 5px;

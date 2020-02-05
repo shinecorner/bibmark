@@ -68,7 +68,7 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     /* section 1 slider */
     .slider-image-1 {
         position: relative;

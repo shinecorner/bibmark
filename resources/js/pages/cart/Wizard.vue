@@ -198,6 +198,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+@import '~@/_variables.scss';
 @font-face {
         font-family: "SFProDisplay";
         src: url("/fonts/SF-Pro-Display-Bold.otf") format('truetype');
@@ -289,7 +290,7 @@ export default {
 
 .wizard__step__label{
   padding-left: 10px;
-  font-family: SFProDisplay;
+  font-family: $font-family-sf-pro-display;
   font-size: 14px;
   font-weight: bold;
   font-style: normal;
@@ -376,7 +377,7 @@ export default {
   transition: background-color 0.3s;
 } */
 .join-cta-label{
-  font-family: sf-pro-display;
+  font-family: $font-family-sf-pro-display;
   font-size: 24px;
   font-weight: 500;
   font-style: normal;
@@ -387,7 +388,7 @@ export default {
 }
 .join-cta-label-desc{
   opacity: 0.6;
-  font-family: sf-pro-display;
+  font-family: $font-family-sf-pro-display;
   font-size: 16px;
   font-weight: 500;
   font-style: normal;

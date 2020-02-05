@@ -70,6 +70,7 @@
 <script src="./SponsorDetailPage.js"></script>
 
 <style lang="scss" scoped>
+    @import '~@/_variables.scss';
     body {
         width: 120%;
         margin: 150px 0 50px;

@@ -157,6 +157,7 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '~@/_variables.scss';
     @font-face {
         font-family: "HelveticaNeue";
         src: url("/fonts/HelveticaNeueCyr-Bold.eot");
@@ -199,7 +200,7 @@
     }
 
         .welcome {
-            font-family: sf-pro-display;
+            font-family: $font-family-sf-pro-display;
             font-size: 42px;
             font-weight: bold;
             font-style: normal;
@@ -211,7 +212,7 @@
         }
 
         .subtitle {
-            font-family: sf-pro-display;
+            font-family: $font-family-sf-pro-display;
             font-size: 24px;
             font-weight: bold;
             font-style: normal;
@@ -224,7 +225,7 @@
         }
 
         .no-results {
-            font-family: sf-pro-text;
+            font-family: $font-family-sf-pro-text;
             font-style: normal;
             font-stretch: normal;
             line-height: normal;
@@ -243,7 +244,7 @@
 
         .content {
             margin-bottom: 58px;
-            font-family: sf-pro-text;
+            font-family: $font-family-sf-pro-text;
             font-size: 18px;
             font-weight: normal;
             font-style: normal;
@@ -308,14 +309,14 @@
                 }
                 .login-cta-labels {
                     .login-cta-label-desc {
-                        font-family: sf-pro-display;
+                        font-family: $font-family-sf-pro-display;
                         opacity: 0.6;
                         font-size: 16px;
                         font-weight: 500;
                         color: #000000;
                     }
                     .login-cta-label {
-                        font-family: sf-pro-display;
+                        font-family: $font-family-sf-pro-display;
                         font-size: 24px;
                         font-weight: 500;
                         color: #000000;
@@ -326,7 +327,7 @@
             .form-group {
                 label {
                     color: #444444;
-                    font-family: helvetica-neue;
+                    font-family: $font-family-helvetica-neue;
                     font-size: 18px;
                     font-weight: bold;
                 }
@@ -335,7 +336,7 @@
                     border: 0 none;
                     border-bottom: solid 2px #cccccc;
                     border-radius: 0;
-                    font-family: helvetica-neue;
+                    font-family: $font-family-helvetica-neue;
                     font-size: 18px;
                     margin-top: 0.5rem;
 
@@ -372,7 +373,7 @@
         }
 
         .modal-title {
-            font-family: sf-pro-display;
+            font-family: $font-family-sf-pro-display;
             font-size: 24px;
             font-weight: bold;
             font-style: normal;
@@ -384,7 +385,7 @@
         }
 
         .modal-detail {
-            font-family: sf-pro-text;
+            font-family: $font-family-sf-pro-text;
             font-size: 18px;
             font-weight: normal;
             font-style: normal;
@@ -396,7 +397,7 @@
         }
 
         .modal-subtitle {
-            font-family: helvetica-neue;
+            font-family: $font-family-helvetica-neue;
             font-size: 18px;
             font-weight: bold;
             font-style: normal;
@@ -416,7 +417,7 @@
 
         .my-events-cta-labels {
             .my-events-cta-label-desc {
-                font-family: sf-pro-display, sans-serif;
+                font-family: $font-family-sf-pro-display;
                 opacity: 0.6;
                 font-size: 16px;
                 font-weight: 500;
@@ -424,7 +425,7 @@
             }
 
             .my-events-cta-label {
-                font-family: sf-pro-display, sans-serif;
+                font-family: $font-family-sf-pro-display;
                 font-size: 24px;
                 font-weight: 500;
                 color: #000000;

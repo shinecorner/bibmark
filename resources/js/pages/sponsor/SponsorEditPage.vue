@@ -139,11 +139,9 @@
             },
             onHashtagChange: function(e){
                 let str = e.target.value;
-
                 var key = event.keyCode || event.charCode;
                 if( key == 8 || key == 46 )
                     return false;
-
                 if(str){
                     this.$refs.hashtag.value = this.prepareHashtags(str);
                 }
@@ -166,13 +164,11 @@
                 if (!$('#validation-form').valid()) {
                     return;
                 }
-
                 let formData = new FormData();
                 if (this.logo) {
                     formData.append("logo", this.logo);
                 }
                 formData.append("_method", "put");
-
                 let loader = this.$loading.show({
                     // Optional parameters
                     container: null,
@@ -223,7 +219,6 @@
                 if(this.sponsor.email){
                     formData.append("email", this.sponsor.email);
                 }
-
                 axios
                     .post(`/sponsors/${this.sponsor.id}/profile/edit`, formData, {
                         headers: {
@@ -244,9 +239,8 @@
     }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import '~@/_variables.scss';
-
     .sponsor-common {
         .save-btn {
             size: 28px;
@@ -267,10 +261,9 @@
             align-self: center;
             margin-top: 30px;
         }
-
         .edit-profile {
             font-size: 25px;
-            font-family: $font-family-helvetica-neue;
+            font-family: font-family-helvetica-neue;
             font-weight: bold;
             color: #ffc600;
             margin-bottom: 25px;

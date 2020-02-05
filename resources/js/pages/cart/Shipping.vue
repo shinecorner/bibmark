@@ -285,6 +285,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+    @import '~@/_variables.scss';
     @font-face {
             font-family: "SFProText";
             src: url("/fonts/SFProText-Regular.ttf") format('truetype');
@@ -294,7 +295,7 @@ export default {
         margin-bottom: 40px;
     }
     .ship-title{
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 18px;
         font-weight: bold;
         font-style: normal;
@@ -307,7 +308,7 @@ export default {
     .form-group {
         label {
             color: #444444;
-            font-family: helvetica-neue;
+            font-family: $font-family-helvetica-neue;
             font-size: 18px;
             font-weight: bold;
         }
@@ -316,7 +317,7 @@ export default {
             border: 0 none;
             border-bottom: solid 2px #cccccc;
             border-radius: 0;
-            font-family: helvetica-neue;
+            font-family: $font-family-helvetica-neue;
             font-size: 18px;
             margin-top: 0.5rem;
 
@@ -353,7 +354,7 @@ export default {
         padding: 0.7rem !important;
     }
     .card-title{
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 18px;
         font-weight: bold;
         font-style: normal;
@@ -367,12 +368,12 @@ export default {
         font-size: 17px;
         // color: #000000;
         margin-top: 10px;
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         line-height: 28px;
     }
 
     .card-subtitle .name{
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 18px;
         font-weight: normal;
         font-style: normal;
@@ -382,7 +383,7 @@ export default {
         color: #000000;
     }
     .card-subtitle .adress{
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 18px;
         font-weight: normal;
         font-style: normal;
@@ -396,7 +397,7 @@ export default {
         vertical-align: middle;
         border-radius: 5px;
         background-color: #ffe100;
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 14px;
         font-weight: bold;
         font-style: normal;
@@ -413,7 +414,7 @@ export default {
     .btn-update{
         border-radius: 5px;
         background-color: #ffe100;
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 14px;
         font-weight: bold;
         font-style: normal;
@@ -507,7 +508,7 @@ export default {
     }
     }
     .radio label{
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 16px;
         font-weight: normal;
         font-style: normal;

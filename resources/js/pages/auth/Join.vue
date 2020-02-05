@@ -99,6 +99,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@/_variables.scss';
 .auth-join {
     background: white;
     padding: 94px 0;
@@ -111,7 +112,7 @@ export default {
 
 .auth-join-form {
     .form-title {
-        font-family: "SFProDisplay", "San Francisco", sans-serif;
+        font-family: $font-family-sf-pro-display;
         font-size: 42px;
         font-weight: bold;
         color: #444444;
@@ -120,7 +121,7 @@ export default {
     .form-group {
         label {
             color: #444444;
-            font-family: HelveticaNeue;
+            font-family: $font-family-helvetica-neue;
             font-size: 18px;
             font-weight: bold;
         }
@@ -129,7 +130,7 @@ export default {
             border: 0 none;
             border-bottom: solid 2px #cccccc;
             border-radius: 0;
-            font-family: HelveticaNeue;
+            font-family: $font-family-helvetica-neue;
             font-size: 18px;
             margin-top: 0.5rem;
 
@@ -163,7 +164,7 @@ export default {
 
         .join-cta-labels {
             .join-cta-label-desc {
-                font-family: "SFProDisplay", "San Francisco", sans-serif;
+                font-family: $font-family-sf-pro-display;
                 opacity: 0.6;
                 font-size: 16px;
                 font-weight: 500;
@@ -171,7 +172,7 @@ export default {
             }
 
             .join-cta-label {
-                font-family: "SFProDisplay", "San Francisco", sans-serif;
+                font-family: $font-family-sf-pro-display;
                 font-size: 24px;
                 font-weight: 500;
                 color: #000000;

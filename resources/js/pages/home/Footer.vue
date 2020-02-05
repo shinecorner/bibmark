@@ -190,7 +190,8 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    @import '~@/_variables.scss';
     /*footer*/
 
     .subscribe-text {
@@ -218,7 +219,7 @@
     }
 
     .search-btn-text {
-        font-family: "SFProDisplay", "San Francisco", sans-serif;
+        font-family: $font-family-sf-pro-display;
         font-size: calc(10px + 0.46vw);
         font-weight: bold;
         font-style: normal;
@@ -236,7 +237,7 @@
     }
 
     .font-columns-style {
-        font-family: "SFProDisplay", "San Francisco", sans-serif;;
+        font-family: $font-family-sf-pro-display;
         font-size: 14px;
         font-style: normal;
         font-stretch: normal;

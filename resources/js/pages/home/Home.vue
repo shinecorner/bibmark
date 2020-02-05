@@ -193,8 +193,8 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    @import '~@/_variables.scss';
     .main-field {
         width: 100vw;
         margin: 0 auto;
@@ -262,11 +262,11 @@
         line-height: normal;
         font-stretch: normal;
         letter-spacing: normal;
-        font-family: sf-pro-text, helvetica-neue;
+        font-family: $font-family-sf-pro-text, $font-family-helvetica-neue;
     }
     /*section 4*/
     .section-carousel-main-text {
-        font-family: sf-pro-display;
+        font-family: $font-family-sf-pro-display;
         color: #444444;
         font-weight: bold;
         text-align: center;
@@ -280,7 +280,7 @@
         font-weight: normal;
         background-color: white;
         font-size: calc(8px + 0.52vw);
-        font-family: "SFProText", "San Francisco", sans-serif;
+        font-family: $font-family-sf-pro-text;
     }
 
     /*carousel*/

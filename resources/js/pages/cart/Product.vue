@@ -110,7 +110,8 @@ export default {
 }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+@import '~@/_variables.scss';
 @font-face {
         font-family: "SFProText";
         src: url("/fonts/SFProText-Regular.ttf") format('truetype');
@@ -121,7 +122,7 @@ thead{
     }
 thead th{
     padding: 5px;
-    font-family: sf-pro-text;
+    font-family: $font-family-sf-pro-text;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;
@@ -135,7 +136,7 @@ thead th{
 }
 .product-title{
     /* display: block; */
-    font-family: sf-pro-text;
+    font-family: $font-family-sf-pro-text;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;
@@ -146,7 +147,7 @@ thead th{
 }
 .product-sub-title{
     /* display: block; */
-    font-family: sf-pro-text;
+    font-family: $font-family-sf-pro-text;
     font-size: 18px;
     font-weight: normal;
     font-style: normal;
@@ -156,7 +157,7 @@ thead th{
     color: #000000;
 }
 .price{
-    font-family: sf-pro-text;
+    font-family: $font-family-sf-pro-text;
     font-size: 18px;
     font-weight: normal;
     font-style: normal;
@@ -174,7 +175,7 @@ thead th{
     margin-top:25px;
 }
 .total-label{
-    font-family: sf-pro-text;
+    font-family: $font-family-sf-pro-text;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;
@@ -186,7 +187,7 @@ thead th{
     margin-top: 7px;
 }
 .total{
-    font-family: sf-pro-text;
+    font-family: $font-family-sf-pro-text;
     font-size: 18px;
     font-weight: normal;
     font-style: normal;
@@ -230,7 +231,7 @@ thead th{
 .counter {
     padding: 3px;
     display: block;
-    font-family: sf-pro-text;
+    font-family: $font-family-sf-pro-text;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;
@@ -240,7 +241,7 @@ thead th{
     color: #000000;
 }
 .counter-new{
-    font-family: sf-pro-text;
+    font-family: $font-family-sf-pro-text;
     font-size: 18px;
     font-weight: bold;
     font-style: normal;

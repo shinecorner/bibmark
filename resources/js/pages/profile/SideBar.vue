@@ -121,7 +121,7 @@
 
 
 <style lang="scss" scoped>
-
+    @import '~@/_variables.scss';
     @font-face {
         font-family: "HelveticaNeue";
         src: url("/fonts/HelveticaNeueCyr-Bold.eot");
@@ -194,7 +194,7 @@
         /*border-bottom: solid 1px #cccccc;*/
         height: 19px;
         opacity: 0.9;
-        font-family: sf-pro-display;
+        font-family: $font-family-sf-pro-display;
     }
 
     .profile-usermenu ul li a {
@@ -242,7 +242,7 @@
         margin-left: 130px;
         margin-bottom: 275px;
         height: 22px;
-        font-family: helvetica-neue;
+        font-family: $font-family-helvetica-neue;
         font-size: 18px;
         font-weight: bold;
         font-style: normal;
@@ -264,7 +264,7 @@
 
     .content {
         margin-bottom: 58px;
-        font-family: sf-pro-text;
+        font-family: $font-family-sf-pro-text;
         font-size: 18px;
         font-weight: normal;
         font-style: normal;

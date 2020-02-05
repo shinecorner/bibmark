@@ -32,7 +32,7 @@
 </script>
 
 <style lang="scss" scoped>
-
+@import '~@/_variables.scss';
 .sponsor-common {
     .table {
         padding-left: 153px !important;
@@ -40,7 +40,7 @@
 
     .history {
         font-size: 25px;
-        font-family: helvetica-neue;
+        font-family: $font-family-helvetica-neue;
         font-weight: bold;
         color: #ffc600;
         margin-bottom: 60px;
