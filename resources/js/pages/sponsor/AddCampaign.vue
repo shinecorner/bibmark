@@ -68,10 +68,10 @@
                                             <td style="float:left">
                                                 <div class="col custom-control custom-checkbox mid-checkbox"
                                                      style="display: inline-block; width:30px">
-                                                    <input type="checkbox" class="custom-control-input" :id="index">
+                                                    <input type="checkbox" class="custom-control-input" :id="index" v-model="enableSizePrice[index]">
                                                     <label class="custom-control-label" :for="index"></label>
                                                 </div>
-                                                <input type="range" min="1" max="100" value="1" class="slider"
+                                                <input :disabled="!enableSizePrice[index]" type="range" min="1" max="100" value="1" class="slider"
                                                        style="width:150px; position: relative; top:-5px"></td>
                                         </tr>
                                         </tbody>
@@ -128,7 +128,7 @@
                                                 @click="showAddGeoTargetModal">
                                             <i class="fa fa-plus"></i>
                                         </button>
-                                        <span class="button-caption" @click="showAddGeoTargetModal"> Add New Target Audience</span>
+                                        <span class="button-caption" @click="showAddGeoTargetModal" style="cursor: pointer"> Add New Target Audience</span>
                                     </div>
                                 </div>
                             </div>
@@ -362,7 +362,7 @@
             height: 33px;
             background-color: white;
             border-radius: 3px;
-            border: 1px solid black;
+            border: 1px solid lightgrey;
             font-weight: bold;
             display: -webkit-flex;
             display: -moz-flex;

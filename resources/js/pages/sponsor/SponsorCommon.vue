@@ -212,7 +212,7 @@
             label {
                 font-family: $font-family-helvetica-neue;
                 font-size: 22px;
-                font-weight: 600;
+                font-weight: 500;
                 font-stretch: normal;
                 font-style: normal;
                 line-height: normal;
@@ -395,7 +395,7 @@
             height: 33px;
             background-color: white;
             border-radius: 3px;
-            border: 1px solid black;
+            border: 1px solid lightgrey;
             font-weight: bold;
             display: -webkit-flex;
             display: -moz-flex;
