@@ -218,7 +218,7 @@
             display: flex;
             justify-content: flex-end;
             label {
-                font-family: HelveticaNeue, sans-serif;
+                font-family: 'Helvetica Neue', sans-serif;
                 font-size: 22px;
                 font-weight: 500;
                 color: #444444;
@@ -265,7 +265,7 @@
                 border: solid 2px #f2f2f2;
                 padding: 13px 11px;
                 font-size: 20px;
-                font-family: helvetica-neue;
+                font-family: 'Helvetica Neue';
                 font-weight: regular;
                 color: #444444;
                 width: 100%;
@@ -315,7 +315,7 @@
                 border: solid 2px #f2f2f2;
                 padding: 13px 11px;
                 font-size: 20px;
-                font-family: HelveticaNeue, sans-serif;
+                font-family: 'Helvetica Neue', sans-serif;
                 font-weight: normal;
                 color: #444444;
                 width: 368px;
@@ -325,7 +325,7 @@
                 border: solid 2px #f2f2f2;
                 padding: 13px 11px;
                 font-size: 20px;
-                font-family: HelveticaNeue, sans-serif;
+                font-family: 'Helvetica Neue', sans-serif;
                 font-weight: normal;
                 color: #444444;
                 width: 368px;
