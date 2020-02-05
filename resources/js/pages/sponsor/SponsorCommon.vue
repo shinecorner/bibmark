@@ -262,13 +262,14 @@
                 display: none;
             }
             input[type="text"], select, textarea {
-                border: solid 2px rgba(212, 212, 212, 0.89);
+                border: solid 2px #f2f2f2;
                 padding: 13px 11px;
                 font-size: 20px;
                 font-family: helvetica-neue;
                 font-weight: regular;
                 color: #444444;
                 width: 100%;
+                height: 48px;
             }
             textarea {
                 resize: none;
@@ -311,23 +312,24 @@
                 display: none;
             }
             input[type="text"], textarea {
-                border: solid 2px rgba(212, 212, 212, 0.89);
+                border: solid 2px #f2f2f2;
                 padding: 13px 11px;
                 font-size: 20px;
                 font-family: HelveticaNeue, sans-serif;
                 font-weight: normal;
                 color: #444444;
                 width: 368px;
+                height: 48px;
             }
             select {
-                border: solid 2px rgba(212, 212, 212, 0.89);
+                border: solid 2px #f2f2f2;
                 padding: 13px 11px;
                 font-size: 20px;
                 font-family: HelveticaNeue, sans-serif;
                 font-weight: normal;
                 color: #444444;
                 width: 368px;
-                height: 58px;
+                height: 48px;
             }
             textarea {
                 resize: none;

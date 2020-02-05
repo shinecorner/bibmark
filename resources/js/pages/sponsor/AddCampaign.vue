@@ -40,7 +40,7 @@
                             <div class="left-side2"><label>Logo Size & Price</label></div>
                             <div class="right-side2">
                                 <div class="col-7 pl-0 pr-0">
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered" style="width:368px">
                                         <thead class="rectangle-header">
                                         <tr>
                                             <th width="180px">Size</th>
@@ -55,8 +55,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-5 col-7 pl-0 pr-0">
-                                    <table class="table table-borderless" style="width:368px">
+                                <div class="col-5 col-7 pl-1 pr-0">
+                                    <table class="table table-borderless" >
                                         <thead>
                                         <tr>
                                             <th>&nbsp</th>
