@@ -15,14 +15,14 @@ use Illuminate\Support\Facades\Route;
 // frontend
 Route::get('/', 'WebController@homePage');
 
-// Header menus routes 
+// Header menus routes
 Route::get('/tech', 'WebController@techPage');
 Route::get('/apparel', 'WebController@apparelPage');
 Route::get('/sponsors', 'WebController@sponsorsPage');
 Route::get('/races', 'WebController@racesPage');
 Route::get('/charity', 'WebController@charityPage');
 
-// Footer menus routes 
+// Footer menus routes
 Route::get('/story', 'FooterPageController@storyPage');
 Route::get('/contact', 'FooterPageController@contactPage');
 Route::get('/press', 'FooterPageController@pressPage');
@@ -79,6 +79,11 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/sponsors/{id}/profile/edit', 'SponsorController@update');
     Route::get('/sponsors/{id}/payment/history', 'PaymentController@paymentHistoryShow');
     Route::put('/sponsors/{id}/profile/updateCover', 'SponsorController@updateCover');
+
+    Route::get('/sponsors/{id}/campaign/list', 'CampaignController@list');
+    Route::get('/sponsors/{id}/campaign/create', 'CampaignController@create');
+    Route::post('/sponsors/{id}/campaign/save', 'CampaignController@createOrUpdate');
+
 });
 
 Route::get('/reset-password/{token}/{email}', 'WebController@resetPasswordPage');

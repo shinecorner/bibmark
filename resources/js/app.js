@@ -77,6 +77,9 @@ Vue.component('sponsor-show', require('./pages/sponsor/SponsorShow.vue'))
 Vue.component('sponsor-detail-page', require('./pages/sponsor/SponsorDetailPage.vue'))
 Vue.component('sponsor-edit-page', require('./pages/sponsor/SponsorEditPage.vue'))
 
+Vue.component('campaign-page', require('./pages/sponsor/CampaignPage.vue'))
+Vue.component('add-campaign', require('./pages/sponsor/AddCampaign.vue'))
+
 Vue.component('payment-history-list', require('./pages/sponsor/PaymentHistoryList.vue'))
 Vue.component('payment-history-page', require('./pages/sponsor/PaymentHistoryPage.vue'))
 
@@ -117,6 +120,9 @@ Vue.component('cart', require('./pages/cart/Cart.vue'))
 Vue.component('Design', require('./pages/design/Design.vue'))
 
 Vue.component('Apparel', require('./pages/apparel/Product.vue'))
+
+// common component
+Vue.component('hash-tag', require('./pages/common/components/Hashtag.vue'))
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
