@@ -330,7 +330,7 @@
 
     .add-target-modal {
         .title {
-            font-family: HelveticaNeue, sans-serif;
+            font-family: 'Helvetica Neue', sans-serif;
             font-size: 34px;
             font-weight: 500;
             color: #444444;
@@ -343,11 +343,15 @@
             border-spacing: 10px 10px;
         }
 
+        .table th {
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
         input[type="text"], select {
             border: solid 2px #f2f2f2;
             padding: 13px 11px;
             font-size: 20px;
-            font-family: HelveticaNeue, sans-serif;
+            font-family: 'Helvetica Neue', sans-serif;
             font-weight: normal;
             color: #444444;
             width: 100%;
@@ -358,11 +362,11 @@
             size: 28px;
             color: #444444;
             width: 100px;
-            height: 33px;
+            height: 43px;
             background-color: white;
             border-radius: 3px;
-            border: 1px solid lightgrey;
-            font-weight: bold;
+            border: 1px solid  #f2f2f2;
+            font-weight: normal;
             display: -webkit-flex;
             display: -moz-flex;
             display: -ms-flex;
@@ -372,6 +376,7 @@
             align-items: center;
             align-self: center;
             float: right;
+            margin-top:20px;
         }
     }
 

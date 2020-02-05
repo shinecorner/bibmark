@@ -359,11 +359,11 @@
             size: 28px;
             color: #444444;
             width: 100px;
-            height: 33px;
+            height: 43px;
             background-color: white;
             border-radius: 3px;
-            border: 1px solid lightgrey;
-            font-weight: bold;
+            border: 1px solid  #f2f2f2;
+            font-weight: normal;
             display: -webkit-flex;
             display: -moz-flex;
             display: -ms-flex;
