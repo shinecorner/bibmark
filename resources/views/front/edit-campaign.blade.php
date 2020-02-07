@@ -10,5 +10,5 @@
 @endsection
 
 @section('content')
-    <edit-campaign :sponsor='@json($sponsor)', :campaign='@json($campaign)'></edit-campaign>
+    <campaign-edit :sponsor='@json($sponsor)' :campaign='@json($campaign)' :campaign-id='@json($campaignId)'></campaign-edit>
 @endsection

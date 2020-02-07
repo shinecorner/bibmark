@@ -15,7 +15,7 @@ export default {
             require: true
         }
     },
-    
+
     methods: {
         getCampaigns: function() {
             axios.get('/sponsors/' + this.sponsor.id + '/campaign/list-json')
