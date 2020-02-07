@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Sponsor\CreateOrUpdateCampaignRequest;
 use App\Http\Resources\CampaignResource;
 use App\Models\Sponsor;
+use App\Models\Campaign;
 use App\Services\CampaignService;
 use App\Services\ExtraService;
 use App\Services\SponsorService;
@@ -26,7 +27,7 @@ class CampaignController extends Controller
      * @param $id
      * @return Response
      */
-    public function list($id)
+    public function index($id)
     {
         $sponsor = Sponsor::find($id);
         $campaigns = $this->service->getBySponsorId($id);
@@ -38,12 +39,32 @@ class CampaignController extends Controller
         ]);
     }
 
+    public function list($id) {
+        $sponsor = Sponsor::find($id);
+        $campaigns = $this->service->getBySponsorId($id);
+
+        $result = ['campaigns' => $campaigns, 'id' => $id, 'sponsor' => $sponsor];
+        return response()->json($result, 200);
+    }
+
     public function create($id)
     {
         $sponsor = Sponsor::find($id);
         return view('front.add-campaign')->with([
             'id' => $id,
             'sponsor' => $sponsor,
+        ]);
+    }
+
+    public function edit($id, $campaignId)
+    {
+        $sponsor = Sponsor::find($id);
+        $campaign = Campaign::find($campaignId);
+        return view('front.edit-campaign')->with([
+            'id' => $id,
+            'campaignId' => $campaignId,
+            'sponsor' => $sponsor,
+            'campaign' => $campaign
         ]);
     }
 
@@ -58,5 +79,20 @@ class CampaignController extends Controller
         }
         $result = new CampaignResource($this->service->createOrUpdate($request->all()));
         return response()->json($result, 200);
+    }
+
+    public function destroy($id) 
+    {
+        $campaign = Campaign::find($id);
+        if($campaign) {
+            $result = $campaign->delete();
+        } else {
+            $result = 0;
+        }
+        return response()->json($result, 200);
+    }
+
+    private function getCampaigns($id) {
+
     }
 }

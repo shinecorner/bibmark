@@ -8,7 +8,7 @@
 
             <div class="table">
                 <div>
-                    <table class="table table-striped table-bordered mb-0">
+                    <table id="campaign-list" class="table table-striped table-bordered mb-0">
                         <thead class="rectangle-header">
                         <tr>
                             <th>Campaign Name</th>
@@ -26,9 +26,9 @@
                             <td>{{campaign.status ? 'Acitve' : 'Inactive'}}</td>
                             <td>
                                 <button type="button" class="btn btn-info btn-circle black"><i
-                                    class="fa fa-pen"></i></button>
+                                    class="fa fa-pen" @click='editCampaign(campaign.id)'></i></button>
                                 <button type="button" class="btn btn-info btn-circle red"><i
-                                    class="fa fa-minus"></i></button>
+                                    class="fa fa-minus" @click='removeCampaign(campaign.id)'></i></button>
                             </td>
                         </tr>
                         </tbody>
