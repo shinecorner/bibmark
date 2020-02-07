@@ -15,8 +15,8 @@
                         <div class="input-wrap">
                             <div class="left-side2"><label for="name">Campaign Name</label></div>
                             <div class="right-side2">
-                                <div class="w-50 add-input-group">
-                                    <input id="name" name="name" type="text" v-model="campaign.name" class="w-100">
+                                <div class="w-100 add-input-group">
+                                    <input id="name" name="name" type="text" v-model="campaign.name" class="w-80">
                                 </div>
                             </div>
                         </div>
@@ -31,9 +31,8 @@
                         <div class="input-wrap">
                             <div class="left-side2"><label for="budget">Budget</label></div>
                             <div class="right-side2">
-                                <div class="w-50 add-input-group">
-                                    <input id="budget" name="budget" v-model="campaign.budget" type="text"
-                                           class="w-100"/>
+                                <div class="w-100 add-input-group">
+                                    <input id="budget" name="budget" v-model="campaign.budget" type="text"/>
                                 </div>
                             </div>
                         </div>
@@ -41,7 +40,7 @@
                             <div class="left-side2"><label>Logo Size & Price</label></div>
                             <div class="right-side2">
                                 <div class="col-7 pl-0 pr-0">
-                                    <table class="table table-bordered">
+                                    <table class="table table-bordered" style="width:368px">
                                         <thead class="rectangle-header">
                                         <tr>
                                             <th width="180px">Size</th>
@@ -56,8 +55,8 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-5 col-7 pl-0 pr-0">
-                                    <table class="table table-borderless">
+                                <div class="col-5 col-7 pl-1 pr-0">
+                                    <table class="table table-borderless" >
                                         <thead>
                                         <tr>
                                             <th>&nbsp</th>
@@ -68,10 +67,10 @@
                                             <td style="float:left">
                                                 <div class="col custom-control custom-checkbox mid-checkbox"
                                                      style="display: inline-block; width:30px">
-                                                    <input type="checkbox" class="custom-control-input" :id="index">
+                                                    <input type="checkbox" class="custom-control-input" :id="index" v-model="enableSizePrice[index]">
                                                     <label class="custom-control-label" :for="index"></label>
                                                 </div>
-                                                <input type="range" min="1" max="100" value="1" class="slider"
+                                                <input :disabled="!enableSizePrice[index]" type="range" min="1" max="100" value="1" class="slider"
                                                        style="width:150px; position: relative; top:-5px"></td>
                                         </tr>
                                         </tbody>
@@ -128,7 +127,7 @@
                                                 @click="showAddGeoTargetModal">
                                             <i class="fa fa-plus"></i>
                                         </button>
-                                        <span class="button-caption" @click="showAddGeoTargetModal"> Add New Target Audience</span>
+                                        <span class="button-caption" @click="showAddGeoTargetModal" style="cursor: pointer"> Add New Target Audience</span>
                                     </div>
                                 </div>
                             </div>
@@ -199,8 +198,8 @@
                         <div class="input-wrap">
                             <div class="left-side2"></div>
                             <div class="right-side2">
-                                <button class="save-btn btn-primary" type="button" @click.stop="save">Save</button>
-                                <button class="save-btn ml-4" type="button">Cancel</button>
+                                <button class="save-btn btn-primary" type="button" @click.stop="save" style="font-size:18px">Save</button>
+                                <button class="save-btn ml-2" type="button" style="font-size:18px">Cancel</button>
                             </div>
                         </div>
                     </div>
@@ -261,7 +260,7 @@
                                 </button>
                                 <div v-if="addGeoTargetError" class="is-invalid ml-2 mt-1 text-danger"
                                      v-html="addGeoTargetError"></div>
-                                <button type="button" class="save-btn btn-primary mr-2" @click="saveGeoTarget">Save
+                                <button type="button" class="save-btn btn-primary mr-2" @click="saveGeoTarget" style="font-size:18px">Save
                                 </button>
                             </div>
 
@@ -277,6 +276,8 @@
 <script src="./AddCampaign.js"></script>
 
 <style lang="scss" scoped>
+    @import '~@/_variables.scss';
+
     .table {
         padding-left: 154px !important;
     }
@@ -288,7 +289,7 @@
 
     .campaign {
         font-size: 25px;
-        font-family: HelveticaNeue, sans-serif;
+        font-family: $font-family-helvetica-neue, sans-serif;
         font-weight: bold;
         color: #ffc600;
     }
@@ -304,7 +305,7 @@
 
     .rectangle-header {
         background-color: #ffc600;
-        font-family: HelveticaNeue;
+        font-family: $font-family-helvetica-neue;
         font-size: 22px;
         font-weight: 500;
         font-stretch: normal;
@@ -316,7 +317,7 @@
     }
 
     .company-select-container {
-        border: solid 2px rgba(212, 212, 212, 0.89);
+        border: solid 2px #f2f2f2;
         border-radius: 5px;
         max-height: 180px;
         overflow: auto;
@@ -331,7 +332,7 @@
 
     .add-target-modal {
         .title {
-            font-family: HelveticaNeue, sans-serif;
+            font-family: $font-family-helvetica-neue, sans-serif;
             font-size: 34px;
             font-weight: 500;
             color: #444444;
@@ -344,11 +345,15 @@
             border-spacing: 10px 10px;
         }
 
+        .table th {
+            font-family: $font-family-helvetica-neue, sans-serif;
+        }
+
         input[type="text"], select {
-            border: solid 2px rgba(212, 212, 212, 0.89);
+            border: solid 2px #f2f2f2;
             padding: 13px 11px;
             font-size: 20px;
-            font-family: HelveticaNeue, sans-serif;
+            font-family: $font-family-helvetica-neue, sans-serif;
             font-weight: normal;
             color: #444444;
             width: 100%;
@@ -356,14 +361,15 @@
         }
 
         .save-btn {
-            size: 28px;
+            size: 18px !important;;
             color: #444444;
             width: 100px;
-            height: 33px;
+            height: 35px;
+            font-family: $font-family-helvetica-neue, sans-serif;
             background-color: white;
             border-radius: 3px;
-            border: 1px solid black;
-            font-weight: bold;
+            border: 1px solid  #f2f2f2;
+            font-weight: normal;
             display: -webkit-flex;
             display: -moz-flex;
             display: -ms-flex;
@@ -373,6 +379,7 @@
             align-items: center;
             align-self: center;
             float: right;
+            margin-top:20px;
         }
     }
 

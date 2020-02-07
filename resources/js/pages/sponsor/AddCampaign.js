@@ -26,6 +26,18 @@ export default {
                 {id : 4, logo: '/img/companies/cocacola.png'},
                 {id : 5, logo: '/img/companies/cocacola.png'},
                 {id : 6, logo: '/img/companies/cocacola.png'},
+                {id : 1, logo: '/img/companies/cocacola.png'},
+                {id : 2, logo: '/img/companies/cocacola.png'},
+                {id : 3, logo: '/img/companies/cocacola.png'},
+                {id : 4, logo: '/img/companies/cocacola.png'},
+                {id : 5, logo: '/img/companies/cocacola.png'},
+                {id : 6, logo: '/img/companies/cocacola.png'},
+                {id : 1, logo: '/img/companies/cocacola.png'},
+                {id : 2, logo: '/img/companies/cocacola.png'},
+                {id : 3, logo: '/img/companies/cocacola.png'},
+                {id : 4, logo: '/img/companies/cocacola.png'},
+                {id : 5, logo: '/img/companies/cocacola.png'},
+                {id : 6, logo: '/img/companies/cocacola.png'},
             ],
             ageRanges: [
                 '14 and under',
@@ -44,7 +56,8 @@ export default {
                 '80-84',
                 '85-89',
                 '90 and over',
-            ]
+            ],
+            enableSizePrice: {},
         };
     },
     props: {

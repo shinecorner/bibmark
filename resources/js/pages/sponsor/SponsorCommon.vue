@@ -218,7 +218,7 @@
             display: flex;
             justify-content: flex-end;
             label {
-                font-family: HelveticaNeue, sans-serif;
+                font-family: $font-family-helvetica-neue, sans-serif;
                 font-size: 22px;
                 font-weight: 500;
                 color: #444444;
@@ -262,13 +262,14 @@
                 display: none;
             }
             input[type="text"], select, textarea {
-                border: solid 2px rgba(212, 212, 212, 0.89);
+                border: solid 2px #f2f2f2;
                 padding: 13px 11px;
                 font-size: 20px;
-                font-family: helvetica-neue;
+                font-family: $font-family-helvetica-neue;
                 font-weight: regular;
                 color: #444444;
                 width: 100%;
+                height: 48px;
             }
             textarea {
                 resize: none;
@@ -311,23 +312,24 @@
                 display: none;
             }
             input[type="text"], textarea {
-                border: solid 2px rgba(212, 212, 212, 0.89);
+                border: solid 2px #f2f2f2;
                 padding: 13px 11px;
                 font-size: 20px;
-                font-family: HelveticaNeue, sans-serif;
+                font-family: $font-family-helvetica-neue, sans-serif;
                 font-weight: normal;
                 color: #444444;
-                width: 50%;
+                width: 368px;
+                height: 48px;
             }
             select {
-                border: solid 2px rgba(212, 212, 212, 0.89);
+                border: solid 2px #f2f2f2;
                 padding: 13px 11px;
                 font-size: 20px;
-                font-family: HelveticaNeue, sans-serif;
+                font-family: $font-family-helvetica-neue, sans-serif;
                 font-weight: normal;
                 color: #444444;
-                width: 50%;
-                height: 58px;
+                width: 368px;
+                height: 48px;
             }
             textarea {
                 resize: none;
@@ -354,14 +356,14 @@
             font-size: 20px;
         }
         .save-btn {
-            size: 28px;
+            size: 18px !important;
             color: #444444;
             width: 100px;
-            height: 33px;
+            height: 35px;
             background-color: white;
             border-radius: 3px;
-            border: 1px solid black;
-            font-weight: bold;
+            border: 1px solid  #f2f2f2;
+            font-weight: normal;
             display: -webkit-flex;
             display: -moz-flex;
             display: -ms-flex;
@@ -370,7 +372,8 @@
             justify-content: center;
             align-items: center;
             align-self: center;
-            margin-top: 30px;
+            margin-top: 10px;
+            font-family: $font-family-helvetica-neue, sans-serif;
         }
     }
 </style>
