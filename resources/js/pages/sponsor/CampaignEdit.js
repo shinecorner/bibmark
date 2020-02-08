@@ -152,7 +152,7 @@ export default {
                     }
                 })
                 .then(response => {
-                    window.history.go(-1);
+                    window.location.href = `/sponsors/${this.sponsor.id}/campaign/list`;
                 })
                 .catch(error => {
                     console.log(error.response.data.errors);

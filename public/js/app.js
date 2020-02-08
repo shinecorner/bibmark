@@ -9102,6 +9102,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             reader.readAsDataURL(this.campaign.logo);
         },
         save: function save() {
+            var _this = this;
+
             if (!$('#validation-form').valid()) {
                 return;
             }
@@ -9130,7 +9132,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(function (response) {
-                window.history.go(-1);
+                window.location.href = '/sponsors/' + _this.sponsor.id + '/campaign/list';
             }).catch(function (error) {
                 console.log(error.response.data.errors);
             }).finally(function () {
@@ -9286,6 +9288,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             reader.readAsDataURL(this.campaign.logo);
         },
         save: function save() {
+            var _this = this;
+
             if (!$('#validation-form').valid()) {
                 return;
             }
@@ -9315,7 +9319,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(function (response) {
-                window.history.go(-1);
+                window.location.href = '/sponsors/' + _this.sponsor.id + '/campaign/list';
             }).catch(function (error) {
                 console.log(error.response.data.errors);
             }).finally(function () {
@@ -9456,7 +9460,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     beforeMounted: function beforeMounted() {
-        this.getCampaigns;
+        this.getCampaigns();
     }
 });
 
@@ -10340,7 +10344,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SF-Pro-Display-Regular.otf\") format(\"truetype\");\n}\n.container-fluid[data-v-28e5b594] {\n  padding: 0 4vw;\n}\n@media (max-width: 992px) {\n.wrapper[data-v-28e5b594] {\n    width: 100%;\n}\n}\n.panel-heading[data-v-28e5b594] {\n  padding: 0;\n  border: 0;\n}\n.panel-title > a[data-v-28e5b594], .panel-title > a[data-v-28e5b594]:active {\n  display: block;\n  /* padding:15px; */\n  text-decoration: none;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.panel-heading a[data-v-28e5b594]:before {\n  font-family: 'Glyphicons Halflings';\n  content: url(/img/Design/arrow.png);\n  float: right;\n  -webkit-transition: all 0.5s;\n  transition: all 0.5s;\n}\n.panel-heading.active a[data-v-28e5b594]:before {\n  /* -webkit-transform: rotate(180deg);\r\n\t-moz-transform: rotate(180deg);\r\n\ttransform: rotate(180deg); */\n}\n\n/* Tabs css*/\n.nav-tabs[data-v-28e5b594] {\n  border-bottom: 0;\n}\n.nav-tabs .nav-item.show .nav-link[data-v-28e5b594], .nav-tabs .nav-link.active[data-v-28e5b594] {\n  /* background: moccasin; */\n  border-bottom: solid 3px #ffc600;\n  font-weight: 600;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  /* padding-left: 0 !important;\r\n    padding-right: 0 !important; */\n  padding-bottom: 5px;\n}\n.nav-tabs .nav-link[data-v-28e5b594] {\n  border: 0px solid transparent;\n  padding-left: 0px;\n  padding-right: 0px;\n  margin-right: 10px !important;\n}\n.nav-link[data-v-28e5b594] {\n  padding-left: 0;\n  padding-right: 0.85rem;\n  padding-bottom: 0.3rem;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #777777;\n}\n.title-right[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 34px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.bar[data-v-28e5b594] {\n  border-bottom: solid 1.8px #cccccc;\n  margin-top: 0.5rem !important;\n  margin-bottom: 1.1rem !important;\n}\n.tab-content[data-v-28e5b594] {\n  padding-top: 15px;\n  padding-bottom: 10px;\n}\n#nav-tabContent .img-inline[data-v-28e5b594] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding-top: 20px;\n}\n.brand[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.tank[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 36px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.switch[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #7c7c7c;\n}\n.size[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 30px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.sizing[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #7c7c7c;\n}\n.small[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 18px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  color: #444444;\n}\n.join-cta-label[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-28e5b594] {\n  opacity: 0.6;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.send[data-v-28e5b594] {\n  padding-top: 25px;\n}\n.pt-10[data-v-28e5b594] {\n  padding-top: 20px;\n}\n.t-shirt[data-v-28e5b594] {\n  /* float:right; */\n  padding-left: 60px;\n}\n\n/* Custom scroll bar */\n.custom-scrollbar[data-v-28e5b594] {\n  position: relative;\n  /* width: 400px; */\n  height: 200px;\n  overflow: hidden;\n}\n.custom-scrollbar__inner[data-v-28e5b594] {\n  height: 200px;\n  width: calc(100% + 40px);\n  padding-right: 64px;\n  overflow-y: scroll;\n  -webkit-overflow-scrolling: touch;\n}\n.custom-scrollbar__bar[data-v-28e5b594] {\n  position: absolute;\n  top: 16px;\n  bottom: 16px;\n  background: #cccccc;\n  width: 6px;\n  right: 8px;\n  border-radius: 2px;\n}\n.custom-scrollbar__knob[data-v-28e5b594] {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 20px;\n  height: 20px;\n  border-radius: 18px;\n  border: solid 4px #757575;\n  background-color: #ffffff;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  will-change: top;\n}\n.img-template[data-v-28e5b594] {\n  /* width: 80%; */\n  /* padding-right:10px; */\n}\n@media (min-width: 768px) and (max-width: 1024px) {\n  /* .img-template{\r\n        width: 50%;\r\n        padding-right:10px;\r\n    } */\n}\n.avatars[data-v-28e5b594] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  /* justify-content: space-around; */\n  -ms-flex-line-pack: start;\n      align-content: flex-start;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.avatar[data-v-28e5b594] {\n  cursor: pointer;\n}\n.avatars[data-v-28e5b594] {\n  /* padding-left: 3%; */\n}\n.avatar[data-v-28e5b594] {\n  padding: 10px;\n}\n.avatars img[data-v-28e5b594]:hover {\n  border: 1px solid #26B4FF;\n}\n.name[data-v-28e5b594] {\n  text-align: center;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SF-Pro-Display-Regular.otf\") format(\"truetype\");\n}\n.container-fluid[data-v-28e5b594] {\n  padding: 0 4vw;\n}\n@media (max-width: 992px) {\n.wrapper[data-v-28e5b594] {\n    width: 100%;\n}\n}\n.panel-heading[data-v-28e5b594] {\n  padding: 0;\n  border: 0;\n}\n.panel-title > a[data-v-28e5b594], .panel-title > a[data-v-28e5b594]:active {\n  display: block;\n  /* padding:15px; */\n  text-decoration: none;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.panel-heading a[data-v-28e5b594]:before {\n  font-family: 'Glyphicons Halflings';\n  content: url(/img/Design/arrow.png);\n  float: right;\n  -webkit-transition: all 0.5s;\n  transition: all 0.5s;\n}\n.panel-heading.active a[data-v-28e5b594]:before {\n  /* -webkit-transform: rotate(180deg);\n\t-moz-transform: rotate(180deg);\n\ttransform: rotate(180deg); */\n}\n\n/* Tabs css*/\n.nav-tabs[data-v-28e5b594] {\n  border-bottom: 0;\n}\n.nav-tabs .nav-item.show .nav-link[data-v-28e5b594], .nav-tabs .nav-link.active[data-v-28e5b594] {\n  /* background: moccasin; */\n  border-bottom: solid 3px #ffc600;\n  font-weight: 600;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  /* padding-left: 0 !important;\n    padding-right: 0 !important; */\n  padding-bottom: 5px;\n}\n.nav-tabs .nav-link[data-v-28e5b594] {\n  border: 0px solid transparent;\n  padding-left: 0px;\n  padding-right: 0px;\n  margin-right: 10px !important;\n}\n.nav-link[data-v-28e5b594] {\n  padding-left: 0;\n  padding-right: 0.85rem;\n  padding-bottom: 0.3rem;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #777777;\n}\n.title-right[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 34px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.bar[data-v-28e5b594] {\n  border-bottom: solid 1.8px #cccccc;\n  margin-top: 0.5rem !important;\n  margin-bottom: 1.1rem !important;\n}\n.tab-content[data-v-28e5b594] {\n  padding-top: 15px;\n  padding-bottom: 10px;\n}\n#nav-tabContent .img-inline[data-v-28e5b594] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding-top: 20px;\n}\n.brand[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.tank[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 36px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.switch[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #7c7c7c;\n}\n.size[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 30px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.sizing[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #7c7c7c;\n}\n.small[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 18px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  color: #444444;\n}\n.join-cta-label[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-28e5b594] {\n  opacity: 0.6;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.send[data-v-28e5b594] {\n  padding-top: 25px;\n}\n.pt-10[data-v-28e5b594] {\n  padding-top: 20px;\n}\n.t-shirt[data-v-28e5b594] {\n  /* float:right; */\n  padding-left: 60px;\n}\n\n/* Custom scroll bar */\n.custom-scrollbar[data-v-28e5b594] {\n  position: relative;\n  /* width: 400px; */\n  height: 200px;\n  overflow: hidden;\n}\n.custom-scrollbar__inner[data-v-28e5b594] {\n  height: 200px;\n  width: calc(100% + 40px);\n  padding-right: 64px;\n  overflow-y: scroll;\n  -webkit-overflow-scrolling: touch;\n}\n.custom-scrollbar__bar[data-v-28e5b594] {\n  position: absolute;\n  top: 16px;\n  bottom: 16px;\n  background: #cccccc;\n  width: 6px;\n  right: 8px;\n  border-radius: 2px;\n}\n.custom-scrollbar__knob[data-v-28e5b594] {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 20px;\n  height: 20px;\n  border-radius: 18px;\n  border: solid 4px #757575;\n  background-color: #ffffff;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  will-change: top;\n}\n.img-template[data-v-28e5b594] {\n  /* width: 80%; */\n  /* padding-right:10px; */\n}\n@media (min-width: 768px) and (max-width: 1024px) {\n  /* .img-template{\n        width: 50%;\n        padding-right:10px;\n    } */\n}\n.avatars[data-v-28e5b594] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  /* justify-content: space-around; */\n  -ms-flex-line-pack: start;\n      align-content: flex-start;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.avatar[data-v-28e5b594] {\n  cursor: pointer;\n}\n.avatars[data-v-28e5b594] {\n  /* padding-left: 3%; */\n}\n.avatar[data-v-28e5b594] {\n  padding: 10px;\n}\n.avatars img[data-v-28e5b594]:hover {\n  border: 1px solid #26B4FF;\n}\n.name[data-v-28e5b594] {\n  text-align: center;\n}\n", ""]);
 
 // exports
 
@@ -10580,7 +10584,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n.form-group label[data-v-6572bb56] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.form-group input[data-v-6572bb56] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.form-group input[data-v-6572bb56]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.form-group input.is-invalid[data-v-6572bb56] {\n    border-color: #d9534f !important;\n}\n.form-group .error[data-v-6572bb56] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.form-group .error .invalid-feedback[data-v-6572bb56] {\n    display: block;\n    margin: 0;\n}\n.stripe-card[data-v-6572bb56] {\n  padding: 10px;\n}\n@media (min-width: 1025px) {\n  /* \r\n    ##Screen desktop = 1025px to higher resolution desktops\r\n    */\n.list-group[data-v-6572bb56] {\n    width: 70%;\n    margin: auto;\n}\n}\n.radio-list-group input[type=radio][data-v-6572bb56] {\n  display: none;\n}\n.radio-list-group .list-group-item[data-v-6572bb56] {\n  position: relative;\n  overflow: hidden;\n  border-style: hidden;\n}\n.radio-list-group .list-group-item label[data-v-6572bb56] {\n  display: block;\n  width: 100%;\n  font-weight: normal;\n}\n.radio-list-group .list-group-item input + span[data-v-6572bb56] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 100%;\n  border: 1px solid #ddd;\n  padding: 10px 15px;\n  margin-bottom: -1px;\n  z-index: 1;\n}\n.radio-list-group .list-group-item input + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F111\";\n  font-size: 20px;\n  line-height: 20px;\n  font-weight: bold;\n}\n.radio-list-group .list-group-item input:checked + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F10C\";\n}\n.radio-list-group .list-group-item:hover input + span[data-v-6572bb56] {\n  background-color: #f5f5f5;\n}\n.radio-list-group .list-group-item input:checked + span[data-v-6572bb56] {\n  border-color: #ffe100;\n  z-index: 10;\n}\n.list-group-item[data-v-6572bb56]:first-child {\n  border-top-left-radius: 0 !important;\n  border-top-right-radius: 0 !important;\n}\n.list-group-item[data-v-6572bb56]:last-child {\n  margin-bottom: 0;\n  border-bottom-right-radius: 0 !important;\n  border-bottom-left-radius: 0 !important;\n}\n.radio-list-group .list-group-item-success input:checked + span i.fa[data-v-6572bb56]:before {\n  color: #d0e9c6 !important;\n}\n.btn-edit[data-v-6572bb56] {\n  vertical-align: middle;\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-top: 10px;\n}\n.pay-with-stripe[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-bottom: 10px;\n  margin-right: 10px;\n}\n.btn-add[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: left;\n  margin-top: 10px;\n  margin-bottom: 25px;\n}\n.new-card[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  padding-left: 20px;\n  padding-right: 20px;\n  padding-top: 5px;\n  padding-bottom: 5px;\n  margin-bottom: 10px;\n  margin-top: 10px;\n}\n.edit-card[data-v-6572bb56] {\n  margin-left: 30px;\n  margin-top: 20px;\n}\n.payment[data-v-6572bb56] {\n  margin-bottom: 50px;\n}\n.list-group-item[data-v-6572bb56] {\n  margin: 5px;\n  padding: 20px;\n}\nimg[data-v-6572bb56] {\n  vertical-align: middle;\n  border-style: none;\n}\nbutton[data-v-6572bb56]:disabled,\nbutton[disabled][data-v-6572bb56] {\n  background-color: #cccccc;\n}\n.container-billing[data-v-6572bb56] {\n  margin-bottom: 20px;\n}\n*[data-v-6572bb56]:focus:not(a) {\n  outline: 2px solid none !important;\n  -webkit-box-shadow: none !important;\n          box-shadow: none !important;\n}\n.end[data-v-6572bb56] {\n  padding-left: 10px;\n}\n.nopayment[data-v-6572bb56] {\n  margin-bottom: 15px;\n}\n#card-errors[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n#card-errors2[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n.form-group label[data-v-6572bb56] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.form-group input[data-v-6572bb56] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.form-group input[data-v-6572bb56]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.form-group input.is-invalid[data-v-6572bb56] {\n    border-color: #d9534f !important;\n}\n.form-group .error[data-v-6572bb56] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.form-group .error .invalid-feedback[data-v-6572bb56] {\n    display: block;\n    margin: 0;\n}\n.stripe-card[data-v-6572bb56] {\n  padding: 10px;\n}\n@media (min-width: 1025px) {\n  /* \n    ##Screen desktop = 1025px to higher resolution desktops\n    */\n.list-group[data-v-6572bb56] {\n    width: 70%;\n    margin: auto;\n}\n}\n.radio-list-group input[type=radio][data-v-6572bb56] {\n  display: none;\n}\n.radio-list-group .list-group-item[data-v-6572bb56] {\n  position: relative;\n  overflow: hidden;\n  border-style: hidden;\n}\n.radio-list-group .list-group-item label[data-v-6572bb56] {\n  display: block;\n  width: 100%;\n  font-weight: normal;\n}\n.radio-list-group .list-group-item input + span[data-v-6572bb56] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 100%;\n  border: 1px solid #ddd;\n  padding: 10px 15px;\n  margin-bottom: -1px;\n  z-index: 1;\n}\n.radio-list-group .list-group-item input + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F111\";\n  font-size: 20px;\n  line-height: 20px;\n  font-weight: bold;\n}\n.radio-list-group .list-group-item input:checked + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F10C\";\n}\n.radio-list-group .list-group-item:hover input + span[data-v-6572bb56] {\n  background-color: #f5f5f5;\n}\n.radio-list-group .list-group-item input:checked + span[data-v-6572bb56] {\n  border-color: #ffe100;\n  z-index: 10;\n}\n.list-group-item[data-v-6572bb56]:first-child {\n  border-top-left-radius: 0 !important;\n  border-top-right-radius: 0 !important;\n}\n.list-group-item[data-v-6572bb56]:last-child {\n  margin-bottom: 0;\n  border-bottom-right-radius: 0 !important;\n  border-bottom-left-radius: 0 !important;\n}\n.radio-list-group .list-group-item-success input:checked + span i.fa[data-v-6572bb56]:before {\n  color: #d0e9c6 !important;\n}\n.btn-edit[data-v-6572bb56] {\n  vertical-align: middle;\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-top: 10px;\n}\n.pay-with-stripe[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-bottom: 10px;\n  margin-right: 10px;\n}\n.btn-add[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: left;\n  margin-top: 10px;\n  margin-bottom: 25px;\n}\n.new-card[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  padding-left: 20px;\n  padding-right: 20px;\n  padding-top: 5px;\n  padding-bottom: 5px;\n  margin-bottom: 10px;\n  margin-top: 10px;\n}\n.edit-card[data-v-6572bb56] {\n  margin-left: 30px;\n  margin-top: 20px;\n}\n.payment[data-v-6572bb56] {\n  margin-bottom: 50px;\n}\n.list-group-item[data-v-6572bb56] {\n  margin: 5px;\n  padding: 20px;\n}\nimg[data-v-6572bb56] {\n  vertical-align: middle;\n  border-style: none;\n}\nbutton[data-v-6572bb56]:disabled,\nbutton[disabled][data-v-6572bb56] {\n  background-color: #cccccc;\n}\n.container-billing[data-v-6572bb56] {\n  margin-bottom: 20px;\n}\n*[data-v-6572bb56]:focus:not(a) {\n  outline: 2px solid none !important;\n  -webkit-box-shadow: none !important;\n          box-shadow: none !important;\n}\n.end[data-v-6572bb56] {\n  padding-left: 10px;\n}\n.nopayment[data-v-6572bb56] {\n  margin-bottom: 15px;\n}\n#card-errors[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n#card-errors2[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n", ""]);
 
 // exports
 
@@ -10595,7 +10599,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\nthead[data-v-6eddf2c9] {\n  height: 33px !important;\n  background-color: #f2f2f2;\n}\nthead th[data-v-6eddf2c9] {\n  padding: 5px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.table > tbody > tr > td[data-v-6eddf2c9] {\n  vertical-align: middle;\n}\n.product-title[data-v-6eddf2c9] {\n  /* display: block; */\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.product-sub-title[data-v-6eddf2c9] {\n  /* display: block; */\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.price[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.remove .fa[data-v-6eddf2c9] {\n  color: #626469;\n  font-size: 14px;\n  font-weight: 600;\n}\n.cart[data-v-6eddf2c9] {\n  margin-top: 25px;\n}\n.total-label[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 7px;\n  margin-top: 7px;\n}\n.total[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 7px;\n  margin-top: 7px;\n}\n.border-bottom-total[data-v-6eddf2c9] {\n  border-bottom: solid 1px #cccccc;\n}\n.btn[data-v-6eddf2c9] {\n  display: inline-block;\n  font-weight: 400;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  border: 1px solid #979797;\n  /* padding: 0.2rem 0.6rem; */\n  padding: 0.2rem 0.4rem;\n  font-size: 0.894rem;\n  line-height: 1.54;\n  border-radius: 0;\n  -webkit-transition: all 0.2s ease-in-out;\n  transition: all 0.2s ease-in-out;\n}\n.counter-box[data-v-6eddf2c9] {\n  /* width: 43px;\r\n    height: 30px; */\n  width: 28px;\n  /* height: 28px; */\n  border: solid 1px #979797;\n  /* border-bottom: solid 1px #979797; */\n}\n.counter[data-v-6eddf2c9] {\n  padding: 3px;\n  display: block;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.counter-new[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  float: left;\n  margin-left: 35px;\n}\n.btn.fa[data-v-6eddf2c9] {\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n@media (min-width: 768px) {\n.table-responsive[data-v-6eddf2c9] {\n    display: inline-table;\n}\n}\n@media (max-width: 768px) {\n.counter-box[data-v-6eddf2c9] {\n    border: solid 1px #979797;\n    /* border-left: solid 1px #979797; */\n    /* border-top: 0;\r\n        border-bottom: 0; */\n    width: 28px;\n    height: 25px;\n    /* margin-left: 24px; */\n    margin-left: 17px;\n}\n.input-group[data-v-6eddf2c9] {\n    display: inline-block;\n}\n.cart[data-v-6eddf2c9] {\n    margin-top: 0;\n}\n  /* discrease a little bit the font size on mobile */\n.table thead th[data-v-6eddf2c9] {\n    font-size: 14px;\n}\n}\n.table td[data-v-6eddf2c9] {\n  padding-top: 1rem !important;\n  padding-bottom: 1rem !important;\n}\n.btn .btn-default[data-v-6eddf2c9]:disabled {\n  border: 1px solid #979797 !important;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\nthead[data-v-6eddf2c9] {\n  height: 33px !important;\n  background-color: #f2f2f2;\n}\nthead th[data-v-6eddf2c9] {\n  padding: 5px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.table > tbody > tr > td[data-v-6eddf2c9] {\n  vertical-align: middle;\n}\n.product-title[data-v-6eddf2c9] {\n  /* display: block; */\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.product-sub-title[data-v-6eddf2c9] {\n  /* display: block; */\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.price[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.remove .fa[data-v-6eddf2c9] {\n  color: #626469;\n  font-size: 14px;\n  font-weight: 600;\n}\n.cart[data-v-6eddf2c9] {\n  margin-top: 25px;\n}\n.total-label[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 7px;\n  margin-top: 7px;\n}\n.total[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 7px;\n  margin-top: 7px;\n}\n.border-bottom-total[data-v-6eddf2c9] {\n  border-bottom: solid 1px #cccccc;\n}\n.btn[data-v-6eddf2c9] {\n  display: inline-block;\n  font-weight: 400;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  border: 1px solid #979797;\n  /* padding: 0.2rem 0.6rem; */\n  padding: 0.2rem 0.4rem;\n  font-size: 0.894rem;\n  line-height: 1.54;\n  border-radius: 0;\n  -webkit-transition: all 0.2s ease-in-out;\n  transition: all 0.2s ease-in-out;\n}\n.counter-box[data-v-6eddf2c9] {\n  /* width: 43px;\n    height: 30px; */\n  width: 28px;\n  /* height: 28px; */\n  border: solid 1px #979797;\n  /* border-bottom: solid 1px #979797; */\n}\n.counter[data-v-6eddf2c9] {\n  padding: 3px;\n  display: block;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.counter-new[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  float: left;\n  margin-left: 35px;\n}\n.btn.fa[data-v-6eddf2c9] {\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n@media (min-width: 768px) {\n.table-responsive[data-v-6eddf2c9] {\n    display: inline-table;\n}\n}\n@media (max-width: 768px) {\n.counter-box[data-v-6eddf2c9] {\n    border: solid 1px #979797;\n    /* border-left: solid 1px #979797; */\n    /* border-top: 0;\n        border-bottom: 0; */\n    width: 28px;\n    height: 25px;\n    /* margin-left: 24px; */\n    margin-left: 17px;\n}\n.input-group[data-v-6eddf2c9] {\n    display: inline-block;\n}\n.cart[data-v-6eddf2c9] {\n    margin-top: 0;\n}\n  /* discrease a little bit the font size on mobile */\n.table thead th[data-v-6eddf2c9] {\n    font-size: 14px;\n}\n}\n.table td[data-v-6eddf2c9] {\n  padding-top: 1rem !important;\n  padding-bottom: 1rem !important;\n}\n.btn .btn-default[data-v-6eddf2c9]:disabled {\n  border: 1px solid #979797 !important;\n}\n", ""]);
 
 // exports
 
@@ -10760,7 +10764,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 exports.i(__webpack_require__("./node_modules/css-loader/index.js!./resources/sass/_variables.scss"), "");
 
 // module
-exports.push([module.i, "\n@font-face {\r\n        font-family: \"SFProDisplay\";\r\n        src: url(\"/fonts/SF-Pro-Display-Bold.otf\") format('truetype');\n}\r\n/* Utilities\r\n*******************************/\n.pull-left[data-v-bee530fe]{\r\n  float:  left !important;\n}\n.pull-right[data-v-bee530fe]{\r\n  float:  right !important;\n}\n.clearfix[data-v-bee530fe]::after {\r\n  display: block;\r\n  content: \"\";\r\n  clear: both;\n}\r\n\r\n/* Header Steps \r\n*******************************/\n.wizard[data-v-bee530fe] {\r\n  position: relative;\r\n  width:  100%;\n}\n.wizard__steps[data-v-bee530fe]{\r\n  list-style-type:  none;\r\n  text-align: justify;\r\n  -ms-text-justify: distribute-all-lines;\r\n  text-justify: distribute-all-lines;\r\n  padding:  0;\r\n  height:  70px;\r\n  position:  relative;\r\n  max-width: 700px;\r\n  margin-left: auto;\r\n  margin-right: auto;\n}\n.stretch[data-v-bee530fe] {\r\n  width: 100%;\r\n  display: inline-block;\r\n  font-size: 0;\r\n  line-height: 0\n}\n.wizard__step[data-v-bee530fe]{\r\n  height: 70px;\r\n  vertical-align: bottom;\r\n  display: inline-block;\r\n  text-align: center;\r\n  position:  relative;\n}\n.wizard__step:not(:first-child) .wizard__step__line[data-v-bee530fe]{\r\n  position: absolute;\r\n  width:  100%;\r\n  left:  -50%;\r\n  bottom:  12px;\r\n  height:  5px;\r\n  background-color: #d8d8d8;\r\n  margin-bottom: 5px;\n}\n.wizard__step__indicator[data-v-bee530fe]{\r\n  -webkit-box-sizing: content-box;\r\n          box-sizing: content-box;\r\n  display:  block;\r\n  width:  27px;\r\n  height:  27px;\r\n  background-color: #d8d8d8;\r\n  border-radius: 50%;\r\n  border: 0px solid #fff;\r\n  position:  absolute;\r\n  left:  50%;\r\n  margin-left:  -10px;\r\n  bottom:  6px;\r\n  z-index: 1;\n}\n.wizard__step.active .wizard__step__indicator[data-v-bee530fe]{\r\n  background-color: #ffe100;\n}\n.wizard__step.active:not(:first-child) .wizard__step__line[data-v-bee530fe]{\r\n  background-color: #ffe100; /* green */\n}\n.wizard__step__label[data-v-bee530fe]{\r\n  padding-left: 10px;\r\n  font-family: $font-family-sf-pro-display;\r\n  font-size: 14px;\r\n  font-weight: bold;\r\n  font-style: normal;\r\n  font-stretch: normal;\r\n  line-height: normal;\r\n  letter-spacing: normal;\r\n  text-align: center;\r\n  color: #444444;\n}\r\n\r\n/* Wizard body \r\n*******************************/\n.wizard__body[data-v-bee530fe]{\r\n  margin-top:  30px;\r\n  min-height:  400px;\r\n  /* margin-left:  50px;\r\n  margin-right:  50px; */\r\n  /* border:  1px solid #aebac4; */\r\n  background-color: #fff;\r\n  position: relative;\r\n  border-radius: 5px;\r\n  padding-bottom: 50px;\n}\n.wizard__body__step[data-v-bee530fe]{\r\n  padding-top: 16px;\r\n  padding-bottom: 16px;\n}\n.wizard__arrow[data-v-bee530fe]{\r\n  position:  absolute;\r\n  display: block;\r\n  width:  30px;\r\n  height:  30px;\r\n  /* border:  1px solid #aebac4; */\r\n  /* top:  85px; height of step + body margin -15 */\r\n  border-top-right-radius: 5px;\r\n  background-color: #fff;\r\n  border-left: none;\r\n  border-bottom:  none;\r\n  -webkit-transform: rotate(-45deg);\r\n          transform: rotate(-45deg);\r\n  z-index: 2;\r\n  -webkit-transition: left 0.3s;\r\n  transition: left 0.3s;\n}\r\n\r\n/* Wizard body \r\n*******************************/\n.wizard__body__actions[data-v-bee530fe]{\r\n  /* position:  absolute; */\r\n  bottom:  0px;\r\n  height:  50px;\r\n  width:  100%;\r\n  margin-bottom: 35px;\r\n  padding-bottom: 30px;\r\n  float: right ;\r\n  /* border-top:  1px solid #aebac4;\r\n  background-color: #b9c7d2; */\n}\n@media (max-width: 768px) {\n.wizard__body__actions[data-v-bee530fe] {\r\n      position: absolute;\r\n      bottom: 20px;\r\n      height: 50px;\r\n      width: 100%;\r\n      margin-bottom: 20px;\r\n      float: right;\n}\n}\r\n\r\n/* .wizard__body__actions a{\r\n  width:  120px;\r\n  height:  100%;\r\n  display: block;\r\n  background-color: #51abe4;\r\n  color:  white;\r\n  font-weight: bold;\r\n  text-align: center;\r\n  line-height: 50px;\r\n  cursor: pointer;\r\n  -webkit-transition: background-color 0.3s;\r\n  -o-transition: background-color 0.3s;\r\n  transition: background-color 0.3s;\r\n} */\n.join-cta-label[data-v-bee530fe]{\r\n  font-family: $font-family-sf-pro-display;\r\n  font-size: 24px;\r\n  font-weight: 500;\r\n  font-style: normal;\r\n  font-stretch: normal;\r\n  line-height: normal;\r\n  letter-spacing: normal;\r\n  color: #000000;\n}\n.join-cta-label-desc[data-v-bee530fe]{\r\n  opacity: 0.6;\r\n  font-family: $font-family-sf-pro-display;\r\n  font-size: 16px;\r\n  font-weight: 500;\r\n  font-style: normal;\r\n  font-stretch: normal;\r\n  line-height: normal;\r\n  letter-spacing: normal;\r\n  color: #000000;\n}\n.wizard__body__actions a.disabled[data-v-bee530fe]{\r\n  cursor: not-allowed;\r\n  -webkit-touch-callout: none;\r\n  -webkit-user-select: none;\r\n  -moz-user-select: none;\r\n  -ms-user-select: none;\r\n  user-select: none;\r\n  opacity: 0.5;\n}\n.wizard__body__actions a>.vgw-icon[data-v-bee530fe], .wizard__body__actions a>span[data-v-bee530fe]{\r\n  display: inline-block;\r\n  vertical-align: middle;\r\n  position: relative;\n}\n.wizard__body__actions .vgw-icon[data-v-bee530fe]::after{\r\n  position: absolute;\r\n  content: \"\";\r\n  -webkit-transform: rotate(-45deg);\r\n          transform: rotate(-45deg);\r\n  width: 8px;\r\n  height: 8px;\r\n  top: 50%;\r\n  margin-top: -5px;\n}\n.vgw-icon.vgw-next[data-v-bee530fe]::after{\r\n  border-bottom: 2px solid white;\r\n  border-right: 2px solid white;\n}\n.vgw-icon.vgw-prev[data-v-bee530fe]::after{\r\n  border-top: 2px solid white;\r\n  border-left: 2px solid white;\r\n  left: -10px;\n}\n.wizard__body__actions a[data-v-bee530fe]:hover{\r\n  /* background-color: #357fae; */\r\n  cursor: pointer;\n}\n.wizard__body__actions a.final-step[data-v-bee530fe]{\r\n  background-color: #6eb165;\n}\r\n\r\n/* mobile */\n.wizard__body.vgw-mobile[data-v-bee530fe]{\r\n  margin-left: 10px;\r\n  margin-right: 10px;\n}\n.wizard__step.vgw-mobile[data-v-bee530fe]{\r\n  display: none;\n}\n.wizard__step .wizard__step__line.vgw-mobile[data-v-bee530fe]{\r\n  display: none;\n}\n.wizard__step.active.vgw-mobile[data-v-bee530fe]{\r\n  display: inline-block;\n}\n.wizard__back[data-v-bee530fe]{\r\n  padding-top: 25px;\n}\r\n", ""]);
+exports.push([module.i, "\n@font-face {\n        font-family: \"SFProDisplay\";\n        src: url(\"/fonts/SF-Pro-Display-Bold.otf\") format('truetype');\n}\n/* Utilities\n*******************************/\n.pull-left[data-v-bee530fe]{\n  float:  left !important;\n}\n.pull-right[data-v-bee530fe]{\n  float:  right !important;\n}\n.clearfix[data-v-bee530fe]::after {\n  display: block;\n  content: \"\";\n  clear: both;\n}\n\n/* Header Steps \n*******************************/\n.wizard[data-v-bee530fe] {\n  position: relative;\n  width:  100%;\n}\n.wizard__steps[data-v-bee530fe]{\n  list-style-type:  none;\n  text-align: justify;\n  -ms-text-justify: distribute-all-lines;\n  text-justify: distribute-all-lines;\n  padding:  0;\n  height:  70px;\n  position:  relative;\n  max-width: 700px;\n  margin-left: auto;\n  margin-right: auto;\n}\n.stretch[data-v-bee530fe] {\n  width: 100%;\n  display: inline-block;\n  font-size: 0;\n  line-height: 0\n}\n.wizard__step[data-v-bee530fe]{\n  height: 70px;\n  vertical-align: bottom;\n  display: inline-block;\n  text-align: center;\n  position:  relative;\n}\n.wizard__step:not(:first-child) .wizard__step__line[data-v-bee530fe]{\n  position: absolute;\n  width:  100%;\n  left:  -50%;\n  bottom:  12px;\n  height:  5px;\n  background-color: #d8d8d8;\n  margin-bottom: 5px;\n}\n.wizard__step__indicator[data-v-bee530fe]{\n  -webkit-box-sizing: content-box;\n          box-sizing: content-box;\n  display:  block;\n  width:  27px;\n  height:  27px;\n  background-color: #d8d8d8;\n  border-radius: 50%;\n  border: 0px solid #fff;\n  position:  absolute;\n  left:  50%;\n  margin-left:  -10px;\n  bottom:  6px;\n  z-index: 1;\n}\n.wizard__step.active .wizard__step__indicator[data-v-bee530fe]{\n  background-color: #ffe100;\n}\n.wizard__step.active:not(:first-child) .wizard__step__line[data-v-bee530fe]{\n  background-color: #ffe100; /* green */\n}\n.wizard__step__label[data-v-bee530fe]{\n  padding-left: 10px;\n  font-family: $font-family-sf-pro-display;\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n\n/* Wizard body \n*******************************/\n.wizard__body[data-v-bee530fe]{\n  margin-top:  30px;\n  min-height:  400px;\n  /* margin-left:  50px;\n  margin-right:  50px; */\n  /* border:  1px solid #aebac4; */\n  background-color: #fff;\n  position: relative;\n  border-radius: 5px;\n  padding-bottom: 50px;\n}\n.wizard__body__step[data-v-bee530fe]{\n  padding-top: 16px;\n  padding-bottom: 16px;\n}\n.wizard__arrow[data-v-bee530fe]{\n  position:  absolute;\n  display: block;\n  width:  30px;\n  height:  30px;\n  /* border:  1px solid #aebac4; */\n  /* top:  85px; height of step + body margin -15 */\n  border-top-right-radius: 5px;\n  background-color: #fff;\n  border-left: none;\n  border-bottom:  none;\n  -webkit-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n  z-index: 2;\n  -webkit-transition: left 0.3s;\n  transition: left 0.3s;\n}\n\n/* Wizard body \n*******************************/\n.wizard__body__actions[data-v-bee530fe]{\n  /* position:  absolute; */\n  bottom:  0px;\n  height:  50px;\n  width:  100%;\n  margin-bottom: 35px;\n  padding-bottom: 30px;\n  float: right ;\n  /* border-top:  1px solid #aebac4;\n  background-color: #b9c7d2; */\n}\n@media (max-width: 768px) {\n.wizard__body__actions[data-v-bee530fe] {\n      position: absolute;\n      bottom: 20px;\n      height: 50px;\n      width: 100%;\n      margin-bottom: 20px;\n      float: right;\n}\n}\n\n/* .wizard__body__actions a{\n  width:  120px;\n  height:  100%;\n  display: block;\n  background-color: #51abe4;\n  color:  white;\n  font-weight: bold;\n  text-align: center;\n  line-height: 50px;\n  cursor: pointer;\n  -webkit-transition: background-color 0.3s;\n  -o-transition: background-color 0.3s;\n  transition: background-color 0.3s;\n} */\n.join-cta-label[data-v-bee530fe]{\n  font-family: $font-family-sf-pro-display;\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-bee530fe]{\n  opacity: 0.6;\n  font-family: $font-family-sf-pro-display;\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.wizard__body__actions a.disabled[data-v-bee530fe]{\n  cursor: not-allowed;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  opacity: 0.5;\n}\n.wizard__body__actions a>.vgw-icon[data-v-bee530fe], .wizard__body__actions a>span[data-v-bee530fe]{\n  display: inline-block;\n  vertical-align: middle;\n  position: relative;\n}\n.wizard__body__actions .vgw-icon[data-v-bee530fe]::after{\n  position: absolute;\n  content: \"\";\n  -webkit-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n  width: 8px;\n  height: 8px;\n  top: 50%;\n  margin-top: -5px;\n}\n.vgw-icon.vgw-next[data-v-bee530fe]::after{\n  border-bottom: 2px solid white;\n  border-right: 2px solid white;\n}\n.vgw-icon.vgw-prev[data-v-bee530fe]::after{\n  border-top: 2px solid white;\n  border-left: 2px solid white;\n  left: -10px;\n}\n.wizard__body__actions a[data-v-bee530fe]:hover{\n  /* background-color: #357fae; */\n  cursor: pointer;\n}\n.wizard__body__actions a.final-step[data-v-bee530fe]{\n  background-color: #6eb165;\n}\n\n/* mobile */\n.wizard__body.vgw-mobile[data-v-bee530fe]{\n  margin-left: 10px;\n  margin-right: 10px;\n}\n.wizard__step.vgw-mobile[data-v-bee530fe]{\n  display: none;\n}\n.wizard__step .wizard__step__line.vgw-mobile[data-v-bee530fe]{\n  display: none;\n}\n.wizard__step.active.vgw-mobile[data-v-bee530fe]{\n  display: inline-block;\n}\n.wizard__back[data-v-bee530fe]{\n  padding-top: 25px;\n}\n", ""]);
 
 // exports
 
@@ -10790,7 +10794,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\r\n// Body\r\n$body-bg: #f8fafc;\r\n\r\n// Typography\r\n$font-family-sans-serif: \"Nunito\", sans-serif;\r\n$font-size-base: 0.9rem;\r\n$line-height-base: 1.6;\r\n$font-family-sf-pro-display: \"SFProDisplay\";\r\n$font-family-sf-pro-text: \"SFProText\";\r\n$font-family-helvetica-neue: \"Helvetica Neue\";\r\n\r\n// Colors\r\n$blue: #3490dc;\r\n$indigo: #6574cd;\r\n$purple: #9561e2;\r\n$pink: #f66D9b;\r\n$red: #e3342f;\r\n$orange: #f6993f;\r\n$yellow: #ffed4a;\r\n$green: #38c172;\r\n$teal: #4dc0b5;\r\n$cyan: #6cb2eb;\r\n$h-blue: #4a90e2;\r\n$line-yellow: #ffc600;\r\n$y-oval: #ffe100;\r\n$gr-oval: #d8d8d8;\r\n$bg-yellow: #ffe100;\r\n$bt-line-yellow: #fff300; \r\n", ""]);
+exports.push([module.i, "\n// Body\n$body-bg: #f8fafc;\n\n// Typography\n$font-family-sans-serif: \"Nunito\", sans-serif;\n$font-size-base: 0.9rem;\n$line-height-base: 1.6;\n$font-family-sf-pro-display: \"SFProDisplay\";\n$font-family-sf-pro-text: \"SFProText\";\n$font-family-helvetica-neue: \"Helvetica Neue\";\n\n// Colors\n$blue: #3490dc;\n$indigo: #6574cd;\n$purple: #9561e2;\n$pink: #f66D9b;\n$red: #e3342f;\n$orange: #f6993f;\n$yellow: #ffed4a;\n$green: #38c172;\n$teal: #4dc0b5;\n$cyan: #6cb2eb;\n$h-blue: #4a90e2;\n$line-yellow: #ffc600;\n$y-oval: #ffe100;\n$gr-oval: #d8d8d8;\n$bg-yellow: #ffe100;\n$bt-line-yellow: #fff300; \n", ""]);
 
 // exports
 
@@ -55044,7 +55048,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("51a6b3a7", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("0ab717c7", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55071,7 +55075,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("31cac34e", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("273922ff", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55098,7 +55102,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("64722544", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("4dbd73de", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55125,7 +55129,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("66667160", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("fa291a2c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55152,7 +55156,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("75526586", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("53482534", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55179,7 +55183,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("5ec7a489", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("4a901c69", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55206,7 +55210,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("357c6bc1", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("64bf03a1", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55233,7 +55237,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("119e56ca", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("337c976a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55260,7 +55264,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("5749ce68", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("6e3f39a6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55287,7 +55291,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("79169893", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("18850a2d", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55314,7 +55318,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("0e01ce78", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("148918a4", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55341,7 +55345,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("44f936a3", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("f5d0896e", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55368,7 +55372,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("0cfda591", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("427395b7", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55395,7 +55399,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("7d0db648", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("a57cc688", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55422,7 +55426,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("287777f6", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("948407d4", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55449,7 +55453,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("eb9e7dd6", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("404f6caf", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55476,7 +55480,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("4982e5a9", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("354b5d89", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55503,7 +55507,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("7be82868", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("782a9766", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55530,7 +55534,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("190e9204", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3e42898a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55557,7 +55561,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("471beb46", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("bfb7cb12", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55584,7 +55588,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3e3226d6", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("165cdcbb", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55611,7 +55615,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("42497fd3", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("a974c09a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55638,7 +55642,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("94a41a4a", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("334665f5", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55665,7 +55669,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("6065c17a", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("25831b63", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55692,7 +55696,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("7b9f4e35", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("5d556b56", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55719,7 +55723,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3993e0b8", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("1e26516c", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55746,7 +55750,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("45c10fa6", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("5ab7eb47", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55773,7 +55777,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("a9df96b0", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("66231570", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55800,7 +55804,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("c19acbd2", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("8a86cc12", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55827,7 +55831,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("8e0f2648", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3c55d9d4", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55854,7 +55858,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("0f0255ea", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3c6bb8b6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55881,7 +55885,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("4bd7a086", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("34887d40", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55908,7 +55912,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("5dd4a8e0", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("1a1827a0", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55935,7 +55939,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("b80f2ea6", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("04b530da", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55962,7 +55966,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("1b555e25", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("7710e982", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -55989,7 +55993,7 @@ var content = __webpack_require__("./node_modules/css-loader/index.js!./node_mod
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("06f0b870", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("227ab850", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
