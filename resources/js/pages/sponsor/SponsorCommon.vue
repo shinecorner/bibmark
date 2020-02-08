@@ -7,15 +7,25 @@
                 <label for="cover">Change Cover</label>
             </div>
         </div>
-        <div class="main-section">
-            <div class="col-2 nav-links">
+        <template v-if="type==='full'">
+            <div class="main-section">
+                <div class="col-12 tab-section">
+                    <slot name="setting-content" :cover="cover"></slot>
+                </div>
+            </div>
+        </template>
+        <template v-else>
+            <div class="main-section">
+                <div class="col-2 nav-links">
                 <span class="navigation-link" :class="{ active: item.isActive }" v-for="(item, index) in navLinks"
                       :key="index" @click="redirect(item.url)">{{item.text}}</span>
+                </div>
+                <div class="col-10 tab-section">
+                    <slot name="setting-content" :cover="cover"></slot>
+                </div>
             </div>
-            <div class="col-10 tab-section">
-                <slot name="setting-content" :cover="cover"></slot>
-            </div>
-        </div>
+        </template>
+
     </div>
 </template>
 
@@ -46,6 +56,10 @@
             },
             activeLink: {
                 type: String,
+            },
+            type: {
+                type: String,
+                default: ''
             }
         },
         computed: {
@@ -111,9 +125,11 @@
 
 <style lang="scss" scoped>
     @import '~@/_variables.scss';
+
     .sponsor-common {
         padding: 0;
         background-color: white;
+
         .main-section {
             display: -webkit-flex;
             display: -moz-flex;
@@ -122,19 +138,23 @@
             display: flex;
             align-items: flex-start;
         }
+
         .image-wrapper {
             height: 431px;
             width: 100%;
             margin-bottom: 59px;
             position: relative;
         }
+
         .input-cover-wrap {
             position: absolute;
             bottom: 19px;
             right: 76px;
+
             input {
                 display: none;
             }
+
             label {
                 size: 18px;
                 color: #444444;
@@ -144,6 +164,7 @@
                 font-weight: bold;
             }
         }
+
         .nav-links {
             padding: 0 15px 67px 28px;
             display: -webkit-flex;
@@ -153,10 +174,12 @@
             display: flex;
             flex-direction: column;
             border-right: solid 2px #cccccc;
+
             & > *:not(:last-child) {
                 margin-bottom: 14px;
             }
         }
+
         .navigation-link {
             font-family: $font-family-helvetica-neue;
             font-size: 20px;
@@ -168,11 +191,13 @@
             line-height: normal;
             letter-spacing: normal;
             color: #444444;
+
             &.active {
                 color: #ffc600;
                 font-weight: bold;
             }
         }
+
         .tab-section {
             display: -webkit-flex;
             display: -moz-flex;
@@ -182,6 +207,7 @@
             flex-direction: column;
             padding-top: 11px;
         }
+
         .left-side {
             margin-right: 40px;
             max-width: 189px;
@@ -193,6 +219,7 @@
             display: -o-flex;
             display: flex;
             justify-content: flex-end;
+
             label {
                 font-family: $font-family-helvetica-neue;
                 font-size: 22px;
@@ -206,6 +233,7 @@
                 margin-bottom: 0;
             }
         }
+
         .left-side2 {
             margin-right: 40px;
             max-width: 300px;
@@ -217,6 +245,7 @@
             display: -o-flex;
             display: flex;
             justify-content: flex-end;
+
             label {
                 font-family: $font-family-helvetica-neue, sans-serif;
                 font-size: 22px;
@@ -225,6 +254,7 @@
                 margin-bottom: 0;
             }
         }
+
         .right-side {
             max-width: 348px;
             width: 100%;
@@ -235,6 +265,7 @@
             display: flex;
             align-items: center;
             flex-wrap: wrap;
+
             .input-label {
                 font-size: 18px;
                 color: #444444;
@@ -250,6 +281,7 @@
                 align-items: center;
                 margin-bottom: 0;
             }
+
             .logo {
                 $size: 49px;
                 height: $size;
@@ -258,9 +290,11 @@
                 margin-right: 20px;
                 background-color: #ffc600;
             }
+
             input[type="file"] {
                 display: none;
             }
+
             input[type="text"], select, textarea {
                 border: solid 2px #f2f2f2;
                 padding: 13px 11px;
@@ -271,11 +305,13 @@
                 width: 100%;
                 height: 48px;
             }
+
             textarea {
                 resize: none;
                 height: 122px;
             }
         }
+
         .right-side2 {
             max-width: 600px;
             width: 100%;
@@ -285,6 +321,7 @@
             display: -o-flex;
             display: flex;
             align-items: center;
+
             .input-label {
                 font-size: 18px;
                 color: #444444;
@@ -300,6 +337,7 @@
                 align-items: center;
                 margin-bottom: 0;
             }
+
             .logo {
                 $size: 49px;
                 height: $size;
@@ -308,9 +346,11 @@
                 margin-right: 20px;
                 background-color: #ffc600;
             }
+
             input[type="file"] {
                 display: none;
             }
+
             input[type="text"], textarea {
                 border: solid 2px #f2f2f2;
                 padding: 13px 11px;
@@ -321,6 +361,7 @@
                 width: 368px;
                 height: 48px;
             }
+
             select {
                 border: solid 2px #f2f2f2;
                 padding: 13px 11px;
@@ -331,30 +372,36 @@
                 width: 368px;
                 height: 48px;
             }
+
             textarea {
                 resize: none;
                 height: 122px;
             }
         }
+
         .background-image {
             background-color: #ffc600;
             width: 100%;
             height: 100%;
             display: block;
         }
+
         .input-wrap {
             display: -webkit-flex;
             display: -moz-flex;
             display: -ms-flex;
             display: -o-flex;
             display: flex;
+
             &:not(:last-child) {
                 margin-bottom: 13px;
             }
         }
+
         .table {
             font-size: 20px;
         }
+
         .save-btn {
             size: 18px !important;
             color: #444444;
@@ -362,7 +409,7 @@
             height: 35px;
             background-color: white;
             border-radius: 3px;
-            border: 1px solid  #f2f2f2;
+            border: 1px solid #f2f2f2;
             font-weight: normal;
             display: -webkit-flex;
             display: -moz-flex;
