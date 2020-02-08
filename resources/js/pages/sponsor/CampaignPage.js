@@ -63,6 +63,6 @@ export default {
         }
     },
     beforeMounted: function(){
-        this.getCampaigns
+        this.getCampaigns();
     }
 }
