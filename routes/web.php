@@ -75,6 +75,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/charities', 'DesignController@getCharities');
     // Sponsors
     Route::get('/sponsors', 'DesignController@getSponsors');
+    Route::get('/sponsors/{id}', 'SponsorController@index');
     Route::get('/sponsors/{id}/profile/edit', 'SponsorController@show');
     Route::put('/sponsors/{id}/profile/edit', 'SponsorController@update');
     Route::get('/sponsors/{id}/payment/history', 'PaymentController@paymentHistoryShow');
