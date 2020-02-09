@@ -5202,6 +5202,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/pages/common/components/Hashtag.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "hash-tag",
+    props: ['value'],
+    methods: {
+        prepareHashtags: function prepareHashtags(e) {
+            var sanitized = e.target.value;
+            if (sanitized) {
+                sanitized = sanitized.trim().split(',').map(function (item) {
+                    if (item.indexOf('#') < 0) {
+                        return '#' + item.trim();
+                    } else {
+                        return item.trim();
+                    }
+                }).join(', ');
+                this.$refs.hashtag.value = sanitized;
+                this.$emit('input', sanitized);
+            }
+        }
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/pages/design/Design.vue":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6407,6 +6439,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             type: Object,
             require: true
         }
+    },
+    filters: {
+        capitalize: function capitalize(value) {
+            if (!value) return '';
+            value = value.toString();
+            return value.charAt(0).toUpperCase() + value.slice(1);
+        },
+        formatPrice: function formatPrice(value) {
+            var val = (value / 1).toFixed(2).replace('.', ',');
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
     }
 });
 
@@ -6481,7 +6524,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            navLinks: [{ text: "Edit Profile", isActive: false, url: "/sponsors/{0}/profile/edit" }, { text: "Manage Team", isActive: false, url: "" }, { text: "Campaigns", isActive: false, url: "" }, { text: "Order Gallery", isActive: false, url: "" }, { text: "Reports", isActive: false, url: "" }, { text: "Payment Information", isActive: false, url: "" }, { text: "Payment History", isActive: false, url: "/sponsors/{0}/payment/history" }],
+            navLinks: [{ text: "Edit Profile", isActive: false, url: "/sponsors/{0}/profile/edit" }, { text: "Manage Team", isActive: false, url: "" }, { text: "Campaigns", isActive: false, url: "/sponsors/{0}/campaign/list" }, { text: "Order Gallery", isActive: false, url: "" }, { text: "Reports", isActive: false, url: "" }, { text: "Payment Information", isActive: false, url: "" }, { text: "Payment History", isActive: false, url: "/sponsors/{0}/payment/history" }],
             logo: null,
             defaultLogo: "/img/profile/profile-fit.png",
             defaultCover: "/img/bg/1.jpg",
@@ -6520,12 +6563,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 $('#cover-image').attr('src', e.target.result);
             };
             reader.readAsDataURL(this.cover);
-
             if (this.cover) {
                 var formData = new FormData();
                 formData.append("cover", this.cover);
                 formData.append("_method", "put");
-
                 axios.post("/sponsors/" + window.sponsor_id + "/profile/updateCover", formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -6646,11 +6687,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            navLink: 'Edit Profile'
+            navLink: 'Edit Profile',
+            showProfilePic: false
         };
     },
 
@@ -6662,6 +6705,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.initValidation();
+        this.showProfilePic = this.sponsor.logo;
+        this.sponsor.hashtags = this.prepareHashtags(this.$refs.hashtag.value);
     },
     computed: {
         logoUrl: function logoUrl() {
@@ -6695,32 +6740,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         selectLogo: function selectLogo() {
             this.logo = this.$refs.logo.files[0];
             var reader = new FileReader();
+            this.showProfilePic = true;
             reader.onload = function (e) {
                 $('#logo-image').attr('src', e.target.result);
             };
             reader.readAsDataURL(this.logo);
         },
 
-        prepareHashtags: function prepareHashtags(e) {
-            var sanitized = e.target.value;
-            if (sanitized) {
-                sanitized = sanitized.trim().split(',').map(function (item) {
-                    return item.trim();
-                }).join(', ');
-                this.$refs.hashtag.value = sanitized;
+        onHashtagChange: function onHashtagChange(e) {
+            var str = e.target.value;
+            var key = event.keyCode || event.charCode;
+            if (key == 8 || key == 46) return false;
+            if (str) {
+                this.$refs.hashtag.value = this.prepareHashtags(str);
             }
+        },
+        prepareHashtags: function prepareHashtags(str) {
+            if (str) {
+                str = str.replace(/#,/g, '').replace(/#/g, '').trim().split(',').map(function (item) {
+                    return '#' + item.trim();
+                }).join(', ');
+                return str;
+            }
+            return str;
         },
         saveProfile: function saveProfile() {
             if (!$('#validation-form').valid()) {
                 return;
             }
-
             var formData = new FormData();
             if (this.logo) {
                 formData.append("logo", this.logo);
             }
             formData.append("_method", "put");
-
             var loader = this.$loading.show({
                 // Optional parameters
                 container: null,
@@ -6733,7 +6785,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 formData.append("name", this.sponsor.name);
             }
             if (this.sponsor.hashtags) {
-                formData.append("hashtags", this.sponsor.hashtags);
+                formData.append("hashtags", this.sponsor.hashtags.replace(/#/g, ''));
             }
             if (this.sponsor.bio) {
                 formData.append("bio", null);
@@ -6771,7 +6823,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.sponsor.email) {
                 formData.append("email", this.sponsor.email);
             }
-
             axios.post('/sponsors/' + this.sponsor.id + '/profile/edit', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -8978,6 +9029,443 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./resources/js/pages/sponsor/AddCampaign.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            navLink: 'Campaigns',
+            defaultLogo: "/img/profile/profile-fit.png",
+            logo: null,
+            campaign: {
+                geoTargets: []
+            },
+            tempGeoTarget: {},
+            addGeoTargetError: '',
+            displayGeoEditIndex: '',
+            editGeoTargetIndex: -1,
+            sizes: [{ size: 'Small', price: '$3' }, { size: 'Medium', price: '$6' }, { size: 'Large', price: '$10' }, { size: 'Full', price: '$14' }],
+            excludeCompanies: [],
+            mockupCompanies: [{ id: 1, logo: '/img/companies/cocacola.png' }, { id: 2, logo: '/img/companies/cocacola.png' }, { id: 3, logo: '/img/companies/cocacola.png' }, { id: 4, logo: '/img/companies/cocacola.png' }, { id: 5, logo: '/img/companies/cocacola.png' }, { id: 6, logo: '/img/companies/cocacola.png' }, { id: 1, logo: '/img/companies/cocacola.png' }, { id: 2, logo: '/img/companies/cocacola.png' }, { id: 3, logo: '/img/companies/cocacola.png' }, { id: 4, logo: '/img/companies/cocacola.png' }, { id: 5, logo: '/img/companies/cocacola.png' }, { id: 6, logo: '/img/companies/cocacola.png' }, { id: 1, logo: '/img/companies/cocacola.png' }, { id: 2, logo: '/img/companies/cocacola.png' }, { id: 3, logo: '/img/companies/cocacola.png' }, { id: 4, logo: '/img/companies/cocacola.png' }, { id: 5, logo: '/img/companies/cocacola.png' }, { id: 6, logo: '/img/companies/cocacola.png' }],
+            ageRanges: ['14 and under', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '70-74', '75-79', '80-84', '85-89', '90 and over'],
+            enableSizePrice: {}
+        };
+    },
+
+    props: {
+        sponsor: {
+            type: Object,
+            require: true
+        }
+    },
+    computed: {
+        logoUrl: function logoUrl() {
+            return this.campaign.logo ? this.campaign.logo : this.defaultLogo;
+        }
+    },
+    mounted: function mounted() {
+        this.initValidation();
+    },
+    methods: {
+        initValidation: function initValidation() {
+            $('#validation-form').validate({
+                rules: {
+                    'name': {
+                        required: true
+                    }
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    var $parent = $(element).parents('.add-input-group');
+                    if ($parent.find('.jquery-validation-error').length) {
+                        return;
+                    }
+                    $parent.append(error.addClass('jquery-validation-error small form-text invalid-feedback'));
+                },
+                highlight: function highlight(element) {
+                    var $el = $(element);
+                    $el.addClass('is-invalid');
+                },
+                unhighlight: function unhighlight(element) {
+                    $(element).parents('.right-side2').find('.is-invalid').removeClass('is-invalid');
+                }
+            });
+        },
+        selectLogo: function selectLogo() {
+            this.campaign.logo = this.$refs.logo.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#logo').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(this.campaign.logo);
+        },
+        save: function save() {
+            var _this = this;
+
+            if (!$('#validation-form').valid()) {
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('name', this.campaign.name);
+            formData.append('budget', this.campaign.budget);
+            formData.append('sponsor_id', this.sponsor.id);
+            formData.append('status', this.campaign.status ? 1 : 0);
+
+            if (this.campaign.logo) {
+                formData.append("logo_url", this.campaign.logo);
+            }
+            formData.append("_method", "post");
+
+            var loader = this.$loading.show({
+                // Optional parameters
+                container: null,
+                canCancel: false,
+                width: 128,
+                height: 128
+            });
+
+            axios.post('/sponsors/' + this.sponsor.id + '/campaign/save', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(function (response) {
+                window.location.href = '/sponsors/' + _this.sponsor.id + '/campaign/list';
+            }).catch(function (error) {
+                console.log(error.response.data.errors);
+            }).finally(function () {
+                loader.hide();
+            });
+        },
+        showAddGeoTargetModal: function showAddGeoTargetModal() {
+            this.addGeoTargetError = '';
+            this.editGeoTargetIndex = -1;
+
+            // Refesh modal data
+            this.tempGeoTarget = {
+                name: '',
+                zipcodes: []
+            };
+            this.tempGeoTarget.zipcodes.push({ code: '', radius: '10' });
+            this.$modal.show('add-geo-target-modal');
+        },
+        addGeoZipcode: function addGeoZipcode() {
+            this.tempGeoTarget.zipcodes.push({ code: '', radius: '10' });
+        },
+        saveGeoTarget: function saveGeoTarget() {
+            this.addGeoTargetError = '';
+            var isValid = true;
+
+            if (this.tempGeoTarget.name === '') {
+                isValid = false;
+                this.addGeoTargetError += 'The target name must be filled. <br/>';
+            }
+
+            var that = this;
+            this.tempGeoTarget.zipcodes.forEach(function (value) {
+                if (value.code === '') {
+                    isValid = false;
+                    that.addGeoTargetError += 'The zip code must be filled.';
+                }
+            });
+
+            if (isValid) {
+                if (this.editGeoTargetIndex >= 0) {
+                    this.campaign.geoTargets[this.editGeoTargetIndex] = this.tempGeoTarget;
+                } else {
+                    this.campaign.geoTargets.push(this.tempGeoTarget);
+                }
+                this.$modal.hide('add-geo-target-modal');
+            }
+        },
+        editGeoTarget: function editGeoTarget(target, index) {
+            this.addGeoTargetError = '';
+            this.editGeoTargetIndex = index;
+            this.tempGeoTarget = target;
+            this.$modal.show('add-geo-target-modal');
+        },
+        displayButton: function displayButton(index) {
+            this.displayGeoEditIndex = index;
+        },
+        hideButton: function hideButton() {
+            this.displayGeoEditIndex = '';
+        },
+        addExcludeCompany: function addExcludeCompany(company) {
+            this.excludeCompanies.push(company);
+        },
+        removeExcludeCompany: function removeExcludeCompany(index) {
+            this.excludeCompanies.splice(index, 1);
+        }
+    }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./resources/js/pages/sponsor/CampaignEdit.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            navLink: 'Campaigns',
+            defaultLogo: "/img/profile/profile-fit.png",
+            logo: null,
+            tempGeoTarget: {},
+            addGeoTargetError: '',
+            displayGeoEditIndex: '',
+            editGeoTargetIndex: -1,
+            sizes: [{ size: 'Small', price: '$3' }, { size: 'Medium', price: '$6' }, { size: 'Large', price: '$10' }, { size: 'Full', price: '$14' }],
+            excludeCompanies: [],
+            mockupCompanies: [{ id: 1, logo: '/img/companies/cocacola.png' }, { id: 2, logo: '/img/companies/cocacola.png' }, { id: 3, logo: '/img/companies/cocacola.png' }, { id: 4, logo: '/img/companies/cocacola.png' }, { id: 5, logo: '/img/companies/cocacola.png' }, { id: 6, logo: '/img/companies/cocacola.png' }, { id: 1, logo: '/img/companies/cocacola.png' }, { id: 2, logo: '/img/companies/cocacola.png' }, { id: 3, logo: '/img/companies/cocacola.png' }, { id: 4, logo: '/img/companies/cocacola.png' }, { id: 5, logo: '/img/companies/cocacola.png' }, { id: 6, logo: '/img/companies/cocacola.png' }, { id: 1, logo: '/img/companies/cocacola.png' }, { id: 2, logo: '/img/companies/cocacola.png' }, { id: 3, logo: '/img/companies/cocacola.png' }, { id: 4, logo: '/img/companies/cocacola.png' }, { id: 5, logo: '/img/companies/cocacola.png' }, { id: 6, logo: '/img/companies/cocacola.png' }],
+            ageRanges: ['14 and under', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '70-74', '75-79', '80-84', '85-89', '90 and over'],
+            enableSizePrice: {}
+        };
+    },
+
+    props: {
+        campaignId: {
+            type: [Object, String],
+            require: true
+        },
+        sponsor: {
+            type: Object,
+            require: true
+        },
+        campaign: {
+            type: Object,
+            require: true
+        }
+    },
+    computed: {
+        logoUrl: function logoUrl() {
+            return this.campaign.logo ? this.campaign.logo : this.defaultLogo;
+        }
+    },
+    mounted: function mounted() {
+        this.initValidation();
+    },
+
+    methods: {
+        // getCampaign: function(campaignId) {
+        //     axios.get('/sponsors/' + this.sponsor.id + '/campaign/' + this.campaignId)
+        //     .then((response) => {
+        //         this.campaign = response.campaign;
+        //     })
+        // },
+        initValidation: function initValidation() {
+            $('#validation-form').validate({
+                rules: {
+                    'name': {
+                        required: true
+                    }
+                },
+                errorPlacement: function errorPlacement(error, element) {
+                    var $parent = $(element).parents('.add-input-group');
+                    if ($parent.find('.jquery-validation-error').length) {
+                        return;
+                    }
+                    $parent.append(error.addClass('jquery-validation-error small form-text invalid-feedback'));
+                },
+                highlight: function highlight(element) {
+                    var $el = $(element);
+                    $el.addClass('is-invalid');
+                },
+                unhighlight: function unhighlight(element) {
+                    $(element).parents('.right-side2').find('.is-invalid').removeClass('is-invalid');
+                }
+            });
+        },
+        selectLogo: function selectLogo() {
+            this.campaign.logo = this.$refs.logo.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#logo').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(this.campaign.logo);
+        },
+        save: function save() {
+            var _this = this;
+
+            if (!$('#validation-form').valid()) {
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('name', this.campaign.name);
+            formData.append('budget', this.campaign.budget);
+            formData.append('sponsor_id', this.sponsor.id);
+            formData.append('status', this.campaign.status ? 1 : 0);
+            formData.append('id', this.campaign.id);
+
+            if (this.campaign.logo) {
+                formData.append("logo_url", this.campaign.logo);
+            }
+            formData.append("_method", "post");
+
+            var loader = this.$loading.show({
+                // Optional parameters
+                container: null,
+                canCancel: false,
+                width: 128,
+                height: 128
+            });
+
+            axios.post('/sponsors/' + this.sponsor.id + '/campaign/save', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then(function (response) {
+                window.location.href = '/sponsors/' + _this.sponsor.id + '/campaign/list';
+            }).catch(function (error) {
+                console.log(error.response.data.errors);
+            }).finally(function () {
+                loader.hide();
+            });
+        },
+        showAddGeoTargetModal: function showAddGeoTargetModal() {
+            this.addGeoTargetError = '';
+            this.editGeoTargetIndex = -1;
+
+            // Refesh modal data
+            this.tempGeoTarget = {
+                name: '',
+                zipcodes: []
+            };
+            this.tempGeoTarget.zipcodes.push({ code: '', radius: '10' });
+            this.$modal.show('add-geo-target-modal');
+        },
+        addGeoZipcode: function addGeoZipcode() {
+            this.tempGeoTarget.zipcodes.push({ code: '', radius: '10' });
+        },
+        saveGeoTarget: function saveGeoTarget() {
+            this.addGeoTargetError = '';
+            var isValid = true;
+
+            if (this.tempGeoTarget.name === '') {
+                isValid = false;
+                this.addGeoTargetError += 'The target name must be filled. <br/>';
+            }
+
+            var that = this;
+            this.tempGeoTarget.zipcodes.forEach(function (value) {
+                if (value.code === '') {
+                    isValid = false;
+                    that.addGeoTargetError += 'The zip code must be filled.';
+                }
+            });
+
+            if (isValid) {
+                if (this.editGeoTargetIndex >= 0) {
+                    this.campaign.geoTargets[this.editGeoTargetIndex] = this.tempGeoTarget;
+                } else {
+                    this.campaign.geoTargets.push(this.tempGeoTarget);
+                }
+                this.$modal.hide('add-geo-target-modal');
+            }
+        },
+        editGeoTarget: function editGeoTarget(target, index) {
+            this.addGeoTargetError = '';
+            this.editGeoTargetIndex = index;
+            this.tempGeoTarget = target;
+            this.$modal.show('add-geo-target-modal');
+        },
+        displayButton: function displayButton(index) {
+            this.displayGeoEditIndex = index;
+        },
+        hideButton: function hideButton() {
+            this.displayGeoEditIndex = '';
+        },
+        addExcludeCompany: function addExcludeCompany(company) {
+            this.excludeCompanies.push(company);
+        },
+        removeExcludeCompany: function removeExcludeCompany(index) {
+            this.excludeCompanies.splice(index, 1);
+        }
+    }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./resources/js/pages/sponsor/CampaignPage.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            navLink: 'Campaigns'
+        };
+    },
+
+    props: {
+        campaigns: {
+            type: Array,
+            require: true
+        },
+        sponsor: {
+            type: Object,
+            require: true
+        }
+    },
+
+    methods: {
+        getCampaigns: function getCampaigns() {
+            var _this = this;
+
+            axios.get('/sponsors/' + this.sponsor.id + '/campaign/list-json').then(function (response) {
+                _this.campaigns = response.campaigns;
+                $('#campaign-list').unblock();
+            });
+        },
+        addCampaign: function addCampaign() {
+            window.location.href = '/sponsors/' + this.sponsor.id + '/campaign/create';
+        },
+
+        editCampaign: function editCampaign(campaignId) {
+            window.location.href = '/sponsors/' + this.sponsor.id + '/campaign/' + campaignId + '/edit';
+        },
+        removeCampaign: function removeCampaign(campaignId) {
+            var self = this;
+            bootbox.confirm({
+                message: 'Are you sure remove this campaign?',
+                className: 'bootbox-sm',
+                callback: function callback(result) {
+                    if (result) {
+                        $('#campaign-list').block({
+                            message: '<div class="sk-wave sk-primary"><div class="sk-rect sk-rect1"></div> <div class="sk-rect sk-rect2"></div> <div class="sk-rect sk-rect3"></div> <div class="sk-rect sk-rect4"></div> <div class="sk-rect sk-rect5"></div></div>',
+                            css: {
+                                backgroundColor: 'transparent',
+                                border: '0'
+                            },
+                            overlayCSS: {
+                                backgroundColor: '#fff',
+                                opacity: 0.8
+                            }
+                        });
+                        axios.delete('/campaign/' + campaignId).then(function (response) {
+                            self.getCampaigns(function () {
+                                $('#campaign-list').unblock();
+                            });
+                        }).catch(function (error) {
+                            $('#campaign-list').unblock();
+                        });
+                    }
+                }
+            });
+        }
+    },
+    beforeMounted: function beforeMounted() {
+        this.getCampaigns();
+    }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./resources/js/pages/sponsor/SponsorDetailPage.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -9164,17 +9652,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         this.initValidation();
+        this.$refs.hashtag.value = this.prepareHashtags(this.$refs.hashtag.value);
     },
     watch: {},
     methods: {
-        prepareHashtags: function prepareHashtags(e) {
-            var sanitized = e.target.value;
-            if (sanitized) {
-                sanitized = sanitized.trim().split(',').map(function (item) {
-                    return item.trim();
-                }).join(', ');
-                this.$refs.hashtag.value = sanitized;
+        onHashtagChange: function onHashtagChange(e) {
+            var str = e.target.value;
+
+            var key = event.keyCode || event.charCode;
+            if (key == 8 || key == 46) return false;
+
+            if (str) {
+                this.$refs.hashtag.value = this.prepareHashtags(str);
             }
+        },
+        prepareHashtags: function prepareHashtags(str) {
+            if (str) {
+                str = str.replace(/#,/g, '').replace(/#/g, '').trim().split(',').map(function (item) {
+                    return '#' + item.trim();
+                }).join(', ');
+                return str;
+            }
+            return str;
         },
         showToast: function showToast(type, title, msg) {
             toastr[type](msg, title, {
@@ -9307,6 +9806,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (success) {
                     self.uploadBackground(function (success) {
                         if (success) {
+                            if (self.sponsor.hashtags) {
+                                self.sponsor.hashtags = self.sponsor.hashtags.replace(/#/g, '');
+                            }
                             axios.post('/internal/sponsor', self.sponsor).then(function (response) {
                                 $('#input-form').unblock();
                                 ladda.stop();
@@ -9737,7 +10239,37 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.validate_error {\n  color: #d9534f;\n  font-size: 14px;\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.submit_btn {\n  border: none;\n  background-color: white;\n  cursor: pointer;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.submit_btn:focus {\n  outline: none;\n}\n.auth-reset-password {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-reset-password-container {\n  max-width: 768px;\n}\n.auth-reset-password-form .form-title {\n  font-family: SFProDisplay;\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-reset-password-form .form-sub-title {\n  font-family: SFProText;\n  font-size: 18px;\n  color: black;\n}\n.auth-reset-password-form .form-group label {\n  color: #444444;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-reset-password-form .form-group input {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-reset-password-form .form-group input:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-reset-password-form .form-group input.is-invalid {\n    border-color: #d9534f !important;\n}\n.auth-reset-password-form .form-group .error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-reset-password-form .form-group .error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n.auth-reset-password-form .login-cta-element i {\n  margin-right: 1rem;\n}\n.auth-reset-password-form .login-cta-element .login-cta-labels .login-cta-label-desc {\n  font-family: SFProDisplay;\n  opacity: 0.6;\n  font-size: 16px;\n  font-weight: 500;\n  color: #000000;\n}\n.auth-reset-password-form .login-cta-element .login-cta-labels .login-cta-label {\n  font-family: SFProDisplay;\n  font-size: 24px;\n  font-weight: 500;\n  color: #000000;\n}\n", ""]);
+exports.push([module.i, "\n.validate_error {\n  color: #d9534f;\n  font-size: 14px;\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.submit_btn {\n  border: none;\n  background-color: white;\n  cursor: pointer;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.submit_btn:focus {\n  outline: none;\n}\n.auth-reset-password {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-reset-password-container {\n  max-width: 768px;\n}\n.auth-reset-password-form .form-title {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-reset-password-form .form-sub-title {\n  font-family: SFProText;\n  font-size: 18px;\n  color: black;\n}\n.auth-reset-password-form .form-group label {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-reset-password-form .form-group input {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-reset-password-form .form-group input:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-reset-password-form .form-group input.is-invalid {\n    border-color: #d9534f !important;\n}\n.auth-reset-password-form .form-group .error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-reset-password-form .form-group .error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n.auth-reset-password-form .login-cta-element i {\n  margin-right: 1rem;\n}\n.auth-reset-password-form .login-cta-element .login-cta-labels .login-cta-label-desc {\n  font-family: \"SFProDisplay\";\n  opacity: 0.6;\n  font-size: 16px;\n  font-weight: 500;\n  color: #000000;\n}\n.auth-reset-password-form .login-cta-element .login-cta-labels .login-cta-label {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  color: #000000;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignEdit.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.table[data-v-10a53d98] {\n  padding-left: 154px !important;\n}\n.caption[data-v-10a53d98] {\n  font-weight: bold;\n  font-size: 17px;\n}\n.campaign[data-v-10a53d98] {\n  font-size: 25px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: bold;\n  color: #ffc600;\n}\n.total[data-v-10a53d98] {\n  font-size: 19px;\n}\n.table-row[data-v-10a53d98] {\n  text-align: center;\n  vertical-align: middle;\n}\n.rectangle-header[data-v-10a53d98] {\n  background-color: #ffc600;\n  font-family: \"Helvetica Neue\";\n  font-size: 22px;\n  font-weight: 500;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n.company-select-container[data-v-10a53d98] {\n  border: solid 2px #f2f2f2;\n  border-radius: 5px;\n  max-height: 180px;\n  overflow: auto;\n}\n.company-selected-list[data-v-10a53d98] {\n  border-radius: 5px;\n  background-color: rgba(0, 0, 0, 0.07);\n  width: 100%;\n  height: 80px;\n}\n.add-target-modal .title[data-v-10a53d98] {\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-size: 34px;\n  font-weight: 500;\n  color: #444444;\n  margin-bottom: 0;\n}\n.add-target-modal .table[data-v-10a53d98] {\n  padding-left: 0px !important;\n  border-collapse: separate;\n  border-spacing: 10px 10px;\n}\n.add-target-modal .table th[data-v-10a53d98] {\n  font-family: \"Helvetica Neue\", sans-serif;\n}\n.add-target-modal input[type=\"text\"][data-v-10a53d98], .add-target-modal select[data-v-10a53d98] {\n  border: solid 2px #f2f2f2;\n  padding: 13px 11px;\n  font-size: 20px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: normal;\n  color: #444444;\n  width: 100%;\n  height: 48px;\n}\n.add-target-modal .save-btn[data-v-10a53d98] {\n  size: 18px !important;\n  color: #444444;\n  width: 100px;\n  height: 35px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid  #f2f2f2;\n  font-weight: normal;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  float: right;\n  margin-top: 20px;\n}\n.close-button[data-v-10a53d98] {\n  border: none;\n  display: inline-block;\n  padding: 8px 16px;\n  vertical-align: middle;\n  overflow: hidden;\n  text-decoration: none;\n  color: inherit;\n  background-color: inherit;\n  text-align: center;\n  cursor: pointer;\n  white-space: nowrap;\n  font-size: 40px;\n  font-weight: 100;\n}\n.topright[data-v-10a53d98] {\n  position: absolute;\n  right: -5px;\n  top: -15px;\n}\n.is-invalid[data-v-10a53d98] {\n  border-color: #d9534f !important;\n}\nform[data-v-10a53d98] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-19c70163\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/AddCampaign.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.table[data-v-19c70163] {\n  padding-left: 154px !important;\n}\n.caption[data-v-19c70163] {\n  font-weight: bold;\n  font-size: 17px;\n}\n.campaign[data-v-19c70163] {\n  font-size: 25px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: bold;\n  color: #ffc600;\n}\n.total[data-v-19c70163] {\n  font-size: 19px;\n}\n.table-row[data-v-19c70163] {\n  text-align: center;\n  vertical-align: middle;\n}\n.rectangle-header[data-v-19c70163] {\n  background-color: #ffc600;\n  font-family: \"Helvetica Neue\";\n  font-size: 22px;\n  font-weight: 500;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n.company-select-container[data-v-19c70163] {\n  border: solid 2px #f2f2f2;\n  border-radius: 5px;\n  max-height: 180px;\n  overflow: auto;\n}\n.company-selected-list[data-v-19c70163] {\n  border-radius: 5px;\n  background-color: rgba(0, 0, 0, 0.07);\n  width: 100%;\n  height: 80px;\n}\n.add-target-modal .title[data-v-19c70163] {\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-size: 34px;\n  font-weight: 500;\n  color: #444444;\n  margin-bottom: 0;\n}\n.add-target-modal .table[data-v-19c70163] {\n  padding-left: 0px !important;\n  border-collapse: separate;\n  border-spacing: 10px 10px;\n}\n.add-target-modal .table th[data-v-19c70163] {\n  font-family: \"Helvetica Neue\", sans-serif;\n}\n.add-target-modal input[type=\"text\"][data-v-19c70163], .add-target-modal select[data-v-19c70163] {\n  border: solid 2px #f2f2f2;\n  padding: 13px 11px;\n  font-size: 20px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: normal;\n  color: #444444;\n  width: 100%;\n  height: 48px;\n}\n.add-target-modal .save-btn[data-v-19c70163] {\n  size: 18px !important;\n  color: #444444;\n  width: 100px;\n  height: 35px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid  #f2f2f2;\n  font-weight: normal;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  float: right;\n  margin-top: 20px;\n}\n.close-button[data-v-19c70163] {\n  border: none;\n  display: inline-block;\n  padding: 8px 16px;\n  vertical-align: middle;\n  overflow: hidden;\n  text-decoration: none;\n  color: inherit;\n  background-color: inherit;\n  text-align: center;\n  cursor: pointer;\n  white-space: nowrap;\n  font-size: 40px;\n  font-weight: 100;\n}\n.topright[data-v-19c70163] {\n  position: absolute;\n  right: -5px;\n  top: -15px;\n}\n.is-invalid[data-v-19c70163] {\n  border-color: #d9534f !important;\n}\nform[data-v-19c70163] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n", ""]);
 
 // exports
 
@@ -9752,7 +10284,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-19fddf5d] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-19fddf5d] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-19fddf5d] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-19fddf5d] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-19fddf5d] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-19fddf5d] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: SFProDisplay;\n}\n.profile-usermenu ul li a[data-v-19fddf5d] {\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-19fddf5d]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-19fddf5d] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-19fddf5d] {\n  padding: 0px;\n}\n.active[data-v-19fddf5d] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-19fddf5d] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.dashboard-link[data-v-19fddf5d] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-19fddf5d] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n}\nhr.content-divider[data-v-19fddf5d] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-19fddf5d] {\n  margin-bottom: 58px;\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-19fddf5d] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-19fddf5d] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-19fddf5d] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-19fddf5d] {\n    padding: 0px 20px !important;\n    text-align: center;\n}\n#wrapper[data-v-19fddf5d] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-19fddf5d] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-19fddf5d] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-19fddf5d] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-19fddf5d] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-19fddf5d] {\n    padding: 0px 20px;\n}\n}\n.avatar[data-v-19fddf5d] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.avatar-upload[data-v-19fddf5d] {\n  position: relative;\n  max-width: 205px;\n}\n.avatar-upload .avatar-edit[data-v-19fddf5d] {\n    position: absolute;\n    right: 12px;\n    z-index: 1;\n    top: 10px;\n}\n.avatar-upload .avatar-edit input[data-v-19fddf5d] {\n      display: none;\n}\n.avatar-upload .avatar-edit input + label[data-v-19fddf5d] {\n        font-family: 'FontAwesome';\n        color: #757575;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-pack: center;\n            -ms-flex-pack: center;\n                justify-content: center;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center;\n        width: 34px;\n        height: 34px;\n        margin-bottom: 0;\n        border-radius: 100%;\n        background: #FFFFFF;\n        border: 1px solid transparent;\n        -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);\n                box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);\n        cursor: pointer;\n        font-weight: normal;\n        -webkit-transition: all .2s ease-in-out;\n        transition: all .2s ease-in-out;\n}\n.avatar-upload .avatar-edit input + label[data-v-19fddf5d]:hover {\n          background: #f1f1f1;\n          border-color: #d6d6d6;\n}\n.avatar-upload .avatar-preview[data-v-19fddf5d] {\n    width: 150px;\n    height: 150px;\n    position: relative;\n    border-radius: 100%;\n    border: 6px solid #F8F8F8;\n    -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);\n            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);\n}\n.avatar-upload .avatar-preview > div[data-v-19fddf5d] {\n      width: 100%;\n      height: 100%;\n      border-radius: 100%;\n      background-size: cover;\n      background-repeat: no-repeat;\n      background-position: center;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-19fddf5d] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-19fddf5d] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-19fddf5d] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-19fddf5d] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-19fddf5d] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-19fddf5d] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-19fddf5d] {\n  font-family: helvetica-neue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-19fddf5d]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-19fddf5d] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-19fddf5d] {\n  padding: 0px;\n}\n.active[data-v-19fddf5d] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-19fddf5d] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.dashboard-link[data-v-19fddf5d] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-19fddf5d] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n}\nhr.content-divider[data-v-19fddf5d] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-19fddf5d] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-19fddf5d] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-19fddf5d] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-19fddf5d] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-19fddf5d] {\n    padding: 0px 20px !important;\n    text-align: center;\n}\n#wrapper[data-v-19fddf5d] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-19fddf5d] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-19fddf5d] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-19fddf5d] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-19fddf5d] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-19fddf5d] {\n    padding: 0px 20px;\n}\n}\n.avatar[data-v-19fddf5d] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.avatar-upload[data-v-19fddf5d] {\n  position: relative;\n  max-width: 205px;\n}\n.avatar-upload .avatar-edit[data-v-19fddf5d] {\n    position: absolute;\n    right: 12px;\n    z-index: 1;\n    top: 10px;\n}\n.avatar-upload .avatar-edit input[data-v-19fddf5d] {\n      display: none;\n}\n.avatar-upload .avatar-edit input + label[data-v-19fddf5d] {\n        font-family: 'FontAwesome';\n        color: #757575;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-pack: center;\n            -ms-flex-pack: center;\n                justify-content: center;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center;\n        width: 34px;\n        height: 34px;\n        margin-bottom: 0;\n        border-radius: 100%;\n        background: #FFFFFF;\n        border: 1px solid transparent;\n        -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);\n                box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);\n        cursor: pointer;\n        font-weight: normal;\n        -webkit-transition: all .2s ease-in-out;\n        transition: all .2s ease-in-out;\n}\n.avatar-upload .avatar-edit input + label[data-v-19fddf5d]:hover {\n          background: #f1f1f1;\n          border-color: #d6d6d6;\n}\n.avatar-upload .avatar-preview[data-v-19fddf5d] {\n    width: 150px;\n    height: 150px;\n    position: relative;\n    border-radius: 100%;\n    border: 6px solid #F8F8F8;\n    -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);\n            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);\n}\n.avatar-upload .avatar-preview > div[data-v-19fddf5d] {\n      width: 100%;\n      height: 100%;\n      border-radius: 100%;\n      background-size: cover;\n      background-repeat: no-repeat;\n      background-position: center;\n}\n", ""]);
 
 // exports
 
@@ -9767,14 +10299,14 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n.cart[data-v-1b47dec4] {\n  margin-top: 25px;\n  margin-bottom: 40px;\n}\n.ship-title[data-v-1b47dec4] {\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 40px;\n}\n.form-group label[data-v-1b47dec4] {\n  color: #444444;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n}\n.form-group input[data-v-1b47dec4] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.form-group input[data-v-1b47dec4]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.form-group input.is-invalid[data-v-1b47dec4] {\n    border-color: #d9534f !important;\n}\n.form-group .error[data-v-1b47dec4] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.form-group .error .invalid-feedback[data-v-1b47dec4] {\n    display: block;\n    margin: 0;\n}\n.card[data-v-1b47dec4] {\n  border: 1px solid #979797 !important;\n  border-radius: 2 !important;\n}\n.col-md-7[data-v-1b47dec4] {\n  padding-left: 0;\n}\n.card-body[data-v-1b47dec4] {\n  padding: 0.7rem !important;\n}\n.card-title[data-v-1b47dec4] {\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 0;\n}\n.card-subtitle[data-v-1b47dec4] {\n  font-size: 17px;\n  margin-top: 10px;\n  font-family: SFProText;\n  line-height: 28px;\n}\n.card-subtitle .name[data-v-1b47dec4] {\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.card-subtitle .adress[data-v-1b47dec4] {\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-top: 7px;\n}\n.btn-edit[data-v-1b47dec4] {\n  vertical-align: middle;\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: SFProText;\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 30px;\n  padding-right: 30px;\n  margin-right: 10px;\n}\n.btn-update[data-v-1b47dec4] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: SFProText;\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  margin-top: 3.8em;\n}\n@media (min-width: 1025px) {\n.mr[data-v-1b47dec4] {\n    margin-right: 30px;\n}\n.ml[data-v-1b47dec4] {\n    margin-left: 30px;\n}\n}\n@media (max-width: 768px) {\n.form-group label[data-v-1b47dec4] {\n    font-size: 15px;\n}\n.cart[data-v-1b47dec4] {\n    text-align: left;\n}\n.btn-edit[data-v-1b47dec4] {\n    margin-top: 13px;\n}\n}\n.radio[data-v-1b47dec4] {\n  margin: 0.5rem;\n}\n.radio input[type=\"radio\"][data-v-1b47dec4] {\n    position: absolute;\n    opacity: 0;\n}\n.radio input[type=\"radio\"] + .radio-label[data-v-1b47dec4]:before {\n      content: '';\n      background: #ffffff;\n      border-radius: 100%;\n      border: 1px solid #bfbfbf;\n      display: inline-block;\n      width: 1.4em;\n      height: 1.4em;\n      position: relative;\n      top: -0.2em;\n      margin-right: 1em;\n      vertical-align: top;\n      cursor: pointer;\n      text-align: center;\n      -webkit-transition: all 250ms ease;\n      transition: all 250ms ease;\n}\n.radio input[type=\"radio\"]:checked + .radio-label[data-v-1b47dec4]:before {\n      background-color: #ffe100;\n      -webkit-box-shadow: inset 0 0 0 4px #ffffff;\n              box-shadow: inset 0 0 0 4px #ffffff;\n}\n.radio input[type=\"radio\"]:focus + .radio-label[data-v-1b47dec4]:before {\n      outline: none;\n      border-color: #ffe100;\n}\n.radio input[type=\"radio\"]:disabled + .radio-label[data-v-1b47dec4]:before {\n      -webkit-box-shadow: inset 0 0 0 4px #ffffff;\n              box-shadow: inset 0 0 0 4px #ffffff;\n      border-color: #bfbfbf;\n      background: #bfbfbf;\n}\n.radio input[type=\"radio\"] + .radio-label[data-v-1b47dec4]:empty:before {\n      margin-right: 0;\n}\n.radio label[data-v-1b47dec4] {\n  font-family: SFProText;\n  font-size: 16px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.radio-button[data-v-1b47dec4] {\n  margin-bottom: 15px;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n.cart[data-v-1b47dec4] {\n  margin-top: 25px;\n  margin-bottom: 40px;\n}\n.ship-title[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 40px;\n}\n.form-group label[data-v-1b47dec4] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.form-group input[data-v-1b47dec4] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.form-group input[data-v-1b47dec4]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.form-group input.is-invalid[data-v-1b47dec4] {\n    border-color: #d9534f !important;\n}\n.form-group .error[data-v-1b47dec4] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.form-group .error .invalid-feedback[data-v-1b47dec4] {\n    display: block;\n    margin: 0;\n}\n.card[data-v-1b47dec4] {\n  border: 1px solid #979797 !important;\n  border-radius: 2 !important;\n}\n.col-md-7[data-v-1b47dec4] {\n  padding-left: 0;\n}\n.card-body[data-v-1b47dec4] {\n  padding: 0.7rem !important;\n}\n.card-title[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 0;\n}\n.card-subtitle[data-v-1b47dec4] {\n  font-size: 17px;\n  margin-top: 10px;\n  font-family: \"SFProText\";\n  line-height: 28px;\n}\n.card-subtitle .name[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.card-subtitle .adress[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-top: 7px;\n}\n.btn-edit[data-v-1b47dec4] {\n  vertical-align: middle;\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 30px;\n  padding-right: 30px;\n  margin-right: 10px;\n}\n.btn-update[data-v-1b47dec4] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  margin-top: 3.8em;\n}\n@media (min-width: 1025px) {\n.mr[data-v-1b47dec4] {\n    margin-right: 30px;\n}\n.ml[data-v-1b47dec4] {\n    margin-left: 30px;\n}\n}\n@media (max-width: 768px) {\n.form-group label[data-v-1b47dec4] {\n    font-size: 15px;\n}\n.cart[data-v-1b47dec4] {\n    text-align: left;\n}\n.btn-edit[data-v-1b47dec4] {\n    margin-top: 13px;\n}\n}\n.radio[data-v-1b47dec4] {\n  margin: 0.5rem;\n}\n.radio input[type=\"radio\"][data-v-1b47dec4] {\n    position: absolute;\n    opacity: 0;\n}\n.radio input[type=\"radio\"] + .radio-label[data-v-1b47dec4]:before {\n      content: '';\n      background: #ffffff;\n      border-radius: 100%;\n      border: 1px solid #bfbfbf;\n      display: inline-block;\n      width: 1.4em;\n      height: 1.4em;\n      position: relative;\n      top: -0.2em;\n      margin-right: 1em;\n      vertical-align: top;\n      cursor: pointer;\n      text-align: center;\n      -webkit-transition: all 250ms ease;\n      transition: all 250ms ease;\n}\n.radio input[type=\"radio\"]:checked + .radio-label[data-v-1b47dec4]:before {\n      background-color: #ffe100;\n      -webkit-box-shadow: inset 0 0 0 4px #ffffff;\n              box-shadow: inset 0 0 0 4px #ffffff;\n}\n.radio input[type=\"radio\"]:focus + .radio-label[data-v-1b47dec4]:before {\n      outline: none;\n      border-color: #ffe100;\n}\n.radio input[type=\"radio\"]:disabled + .radio-label[data-v-1b47dec4]:before {\n      -webkit-box-shadow: inset 0 0 0 4px #ffffff;\n              box-shadow: inset 0 0 0 4px #ffffff;\n      border-color: #bfbfbf;\n      background: #bfbfbf;\n}\n.radio input[type=\"radio\"] + .radio-label[data-v-1b47dec4]:empty:before {\n      margin-right: 0;\n}\n.radio label[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 16px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.radio-button[data-v-1b47dec4] {\n  margin-bottom: 15px;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Cart.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Cart.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -9782,14 +10314,14 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n        font-family: \"HelveticaNeue\";\n        src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n        src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n        font-family: \"SFUIDisplay-Regular\";\n        src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format('truetype');\n}\n@font-face {\n        font-family: \"SFProText\";\n        src: url(\"/fonts/SFUIText-Bold.ttf\") format('truetype');\n}\n@font-face {\n        font-family: \"SFProDisplay\";\n        src: url(\"/fonts/SourceSansPro-Bold.ttf\") format('truetype');\n}\n@font-face {\n        font-family: \"SourceSansPro-Regular\";\n        src: url(\"/fonts/SourceSansPro-Regular.ttf\") format('truetype');\n}\n\n\n    /* Profile Content */\n.profile-content[data-v-1bbde236] {\n        /* padding-right: 80px; */\n        padding: 0 4vw;\n        background: #fff;\n        min-height: 460px;\n}\n.welcome[data-v-1bbde236] {\n        font-family: SFProDisplay;\n        font-size: 42px;\n        font-weight: bold;\n        font-style: normal;\n        font-stretch: normal;\n        line-height: normal;\n        letter-spacing: normal;\n        color: #444444;\n        margin-bottom: 16px;\n}\nhr.sidebar-divider[data-v-1bbde236] {\n        width: 100%;\n        border-color: #cccccc;\n        border-width: 2px;\n        /*margin-top: 2rem;*/\n        /*margin-bottom: 1rem;*/\n        /*border-top: 1px solid #cccccc;*/\n        /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-1bbde236] {\n        border-top: 1px solid #cccccc;\n}\n.content[data-v-1bbde236] {\n        margin-bottom: 58px;\n        font-family: SFProText;\n        font-size: 18px;\n        font-weight: normal;\n        font-style: normal;\n        font-stretch: normal;\n        line-height: normal;\n        letter-spacing: normal;\n        color: #000000;\n}\n#wrapper[data-v-1bbde236] {\n        padding-top: 59px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-1bbde236] {\n            margin-left: 0;\n}\n#page-content-wrapper[data-v-1bbde236] {\n            min-width: 0;\n            width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-1bbde236] {\n            margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-1bbde236] {\n            padding-top: 0px !important;\n            padding-right: 2px !important;\n            padding-bottom: 0px !important;\n            padding-left: 2px !important;\n            text-align: center;\n}\n#wrapper[data-v-1bbde236] {\n            display: block !important;\n}\n#sidebar-wrapper[data-v-1bbde236] {\n            border: none;\n            margin: 0px;\n            min-height: unset;\n}\n.dashboard-link[data-v-1bbde236] {\n            margin-bottom: 100px !important;\n            text-align: center;\n            margin-left: 0px;\n            margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-1bbde236] {\n            display: -webkit-box;\n            display: -ms-flexbox;\n            display: flex;\n            -webkit-box-pack: center;\n                -ms-flex-pack: center;\n                    justify-content: center;\n}\n#page-content-wrapper[data-v-1bbde236] {\n            min-width: 0;\n            width: 100%;\n}\n.profile-sidebar[data-v-1bbde236] {\n            padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-1bbde236] {\n            padding: 0px 20px;\n}\n}\n.col-10[data-v-1bbde236] {\n        padding-right: 0;\n        padding-left: 0;\n}    \n\n/* Custom css */\n.main-step[data-v-1bbde236]{\n        /* max-width: 700px; */\n        margin-left: auto;\n        margin-right: auto;\n}\n\n        /* \n    ##Device = Tablets, Ipads (portrait)\n    ##Screen = B/w 768px to 1024px\n    */\n@media (min-width: 768px) and (max-width: 1024px) {\n.contain[data-v-1bbde236]{\n            margin-left: 40px;\n            margin-right: 60px;\n}\n}\n@media (min-width: 1025px) {\n    /* \n    ##Device = Desktops\n    ##Screen = 1025px to higher resolution desktops\n    */\n.contain[data-v-1bbde236]{\n            margin-left: 80px;\n            margin-right: 120px;\n}\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n\n/* Profile Content */\n.profile-content[data-v-1bbde236] {\n  /* padding-right: 80px; */\n  padding: 0 4vw;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-1bbde236] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\nhr.sidebar-divider[data-v-1bbde236] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-1bbde236] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-1bbde236] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-1bbde236] {\n  padding-top: 59px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-1bbde236] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-1bbde236] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-1bbde236] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-1bbde236] {\n    padding-top: 0px !important;\n    padding-right: 2px !important;\n    padding-bottom: 0px !important;\n    padding-left: 2px !important;\n    text-align: center;\n}\n#wrapper[data-v-1bbde236] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-1bbde236] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-1bbde236] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-1bbde236] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-1bbde236] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-1bbde236] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-1bbde236] {\n    padding: 0px 20px;\n}\n}\n.col-10[data-v-1bbde236] {\n  padding-right: 0;\n  padding-left: 0;\n}\n\n/* Custom css */\n.main-step[data-v-1bbde236] {\n  /* max-width: 700px; */\n  margin-left: auto;\n  margin-right: auto;\n}\n\n/* \n    ##Device = Tablets, Ipads (portrait)\n    ##Screen = B/w 768px to 1024px\n    */\n@media (min-width: 768px) and (max-width: 1024px) {\n.contain[data-v-1bbde236] {\n    margin-left: 40px;\n    margin-right: 60px;\n}\n}\n@media (min-width: 1025px) {\n  /* \n    ##Device = Desktops\n    ##Screen = 1025px to higher resolution desktops\n    */\n.contain[data-v-1bbde236] {\n    margin-left: 80px;\n    margin-right: 120px;\n}\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Confirmation.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Confirmation.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -9797,14 +10329,14 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.shipping[data-v-1d9002cb]{\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n    margin-bottom: 7px;\n    margin-top: 7px;\n    color:#22AE73\n}\n.svg-box[data-v-1d9002cb] {\n    display:inline-block;\n    position: relative;\n    width:150px;\n}\n.green-stroke[data-v-1d9002cb] {\n    stroke:#7CB342;\n}\n.red-stroke[data-v-1d9002cb] {\n    stroke: #FF6245;\n}\n.yellow-stroke[data-v-1d9002cb] {\n    stroke: #FFC107;\n}\n.circular circle.path[data-v-1d9002cb] {\n    stroke-dasharray: 330;\n    stroke-dashoffset: 0;\n    stroke-linecap: round;\n    opacity: 0.4;\n    -webkit-animation: 0.7s draw-circle-data-v-1d9002cb ease-out;\n            animation: 0.7s draw-circle-data-v-1d9002cb ease-out;\n}\n\n/*------- Checkmark ---------*/\n.checkmark[data-v-1d9002cb]{\n\tstroke-width: 6.25;\n    stroke-linecap: round;\n\tposition:absolute;\n    top: 56px;\n    left: 49px;\n    width: 52px;\n    height: 40px;\n}\n.checkmark path[data-v-1d9002cb] {\n    -webkit-animation: 1s draw-check-data-v-1d9002cb ease-out;\n            animation: 1s draw-check-data-v-1d9002cb ease-out;\n}\n@-webkit-keyframes draw-circle-data-v-1d9002cb {\n0% {\n        stroke-dasharray: 0,330;\n        stroke-dashoffset: 0;\n        opacity: 1;\n}\n80% {\n        stroke-dasharray: 330,330;\n        stroke-dashoffset: 0;\n        opacity: 1;\n}\n100%{\n        opacity: 0.4;\n}\n}\n@keyframes draw-circle-data-v-1d9002cb {\n0% {\n        stroke-dasharray: 0,330;\n        stroke-dashoffset: 0;\n        opacity: 1;\n}\n80% {\n        stroke-dasharray: 330,330;\n        stroke-dashoffset: 0;\n        opacity: 1;\n}\n100%{\n        opacity: 0.4;\n}\n}\n@-webkit-keyframes draw-check-data-v-1d9002cb {\n0% {\n        stroke-dasharray: 49,80;\n        stroke-dashoffset: 48;\n        opacity: 0;\n}\n50% {\n        stroke-dasharray: 49,80;\n        stroke-dashoffset: 48;\n        opacity: 1;\n}\n100% {\n        stroke-dasharray: 130,80;\n        stroke-dashoffset: 48;\n}\n}\n@keyframes draw-check-data-v-1d9002cb {\n0% {\n        stroke-dasharray: 49,80;\n        stroke-dashoffset: 48;\n        opacity: 0;\n}\n50% {\n        stroke-dasharray: 49,80;\n        stroke-dashoffset: 48;\n        opacity: 1;\n}\n100% {\n        stroke-dasharray: 130,80;\n        stroke-dashoffset: 48;\n}\n}\n\n/*---------- Cross ----------*/\n.cross[data-v-1d9002cb] {\n    stroke-width:6.25;\n    stroke-linecap: round;\n    position: absolute;\n    top: 54px;\n    left: 54px;\n    width: 40px;\n    height: 40px;\n}\n.cross .first-line[data-v-1d9002cb] {\n    -webkit-animation: 0.7s draw-first-line-data-v-1d9002cb ease-out;\n            animation: 0.7s draw-first-line-data-v-1d9002cb ease-out;\n}\n.cross .second-line[data-v-1d9002cb] {\n    -webkit-animation: 0.7s draw-second-line-data-v-1d9002cb ease-out;\n            animation: 0.7s draw-second-line-data-v-1d9002cb ease-out;\n}\n@-webkit-keyframes draw-first-line-data-v-1d9002cb {\n0% {\n        stroke-dasharray: 0,56;\n        stroke-dashoffset: 0;\n}\n50% {\n        stroke-dasharray: 0,56;\n        stroke-dashoffset: 0;\n}\n100% {\n        stroke-dasharray: 56,330;\n        stroke-dashoffset: 0;\n}\n}\n@keyframes draw-first-line-data-v-1d9002cb {\n0% {\n        stroke-dasharray: 0,56;\n        stroke-dashoffset: 0;\n}\n50% {\n        stroke-dasharray: 0,56;\n        stroke-dashoffset: 0;\n}\n100% {\n        stroke-dasharray: 56,330;\n        stroke-dashoffset: 0;\n}\n}\n@-webkit-keyframes draw-second-line-data-v-1d9002cb {\n0% {\n        stroke-dasharray: 0,55;\n        stroke-dashoffset: 1;\n}\n50% {\n        stroke-dasharray: 0,55;\n        stroke-dashoffset: 1;\n}\n100% {\n        stroke-dasharray: 55,0;\n        stroke-dashoffset: 70;\n}\n}\n@keyframes draw-second-line-data-v-1d9002cb {\n0% {\n        stroke-dasharray: 0,55;\n        stroke-dashoffset: 1;\n}\n50% {\n        stroke-dasharray: 0,55;\n        stroke-dashoffset: 1;\n}\n100% {\n        stroke-dasharray: 55,0;\n        stroke-dashoffset: 70;\n}\n}\n.alert-sign[data-v-1d9002cb] {\n    stroke-width:6.25;\n    stroke-linecap: round;\n    position: absolute;\n    top: 40px;\n    left: 68px;\n    width: 15px;\n    height: 70px;\n    -webkit-animation: 0.5s alert-sign-bounce-data-v-1d9002cb cubic-bezier(0.175, 0.885, 0.32, 1.275);\n            animation: 0.5s alert-sign-bounce-data-v-1d9002cb cubic-bezier(0.175, 0.885, 0.32, 1.275);\n}\n.alert-sign .dot[data-v-1d9002cb] {\n    stroke:none;\n    fill: #FFC107;\n}\n@-webkit-keyframes alert-sign-bounce-data-v-1d9002cb {\n0% {\n        -webkit-transform: scale(0);\n                transform: scale(0);\n        opacity: 0;\n}\n50% {\n        -webkit-transform: scale(0);\n                transform: scale(0);\n        opacity: 1;\n}\n100% {\n        -webkit-transform: scale(1);\n                transform: scale(1);\n}\n}\n@keyframes alert-sign-bounce-data-v-1d9002cb {\n0% {\n        -webkit-transform: scale(0);\n                transform: scale(0);\n        opacity: 0;\n}\n50% {\n        -webkit-transform: scale(0);\n                transform: scale(0);\n        opacity: 1;\n}\n100% {\n        -webkit-transform: scale(1);\n                transform: scale(1);\n}\n}\n", ""]);
+exports.push([module.i, "\n.shipping[data-v-1d9002cb] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 7px;\n  margin-top: 7px;\n  color: #22AE73;\n}\n.svg-box[data-v-1d9002cb] {\n  display: inline-block;\n  position: relative;\n  width: 150px;\n}\n.green-stroke[data-v-1d9002cb] {\n  stroke: #7CB342;\n}\n.red-stroke[data-v-1d9002cb] {\n  stroke: #FF6245;\n}\n.yellow-stroke[data-v-1d9002cb] {\n  stroke: #FFC107;\n}\n.circular circle.path[data-v-1d9002cb] {\n  stroke-dasharray: 330;\n  stroke-dashoffset: 0;\n  stroke-linecap: round;\n  opacity: 0.4;\n  -webkit-animation: 0.7s draw-circle-data-v-1d9002cb ease-out;\n          animation: 0.7s draw-circle-data-v-1d9002cb ease-out;\n}\n\n/*------- Checkmark ---------*/\n.checkmark[data-v-1d9002cb] {\n  stroke-width: 6.25;\n  stroke-linecap: round;\n  position: absolute;\n  top: 56px;\n  left: 49px;\n  width: 52px;\n  height: 40px;\n}\n.checkmark path[data-v-1d9002cb] {\n  -webkit-animation: 1s draw-check-data-v-1d9002cb ease-out;\n          animation: 1s draw-check-data-v-1d9002cb ease-out;\n}\n@-webkit-keyframes draw-circle-data-v-1d9002cb {\n0% {\n    stroke-dasharray: 0,330;\n    stroke-dashoffset: 0;\n    opacity: 1;\n}\n80% {\n    stroke-dasharray: 330,330;\n    stroke-dashoffset: 0;\n    opacity: 1;\n}\n100% {\n    opacity: 0.4;\n}\n}\n@keyframes draw-circle-data-v-1d9002cb {\n0% {\n    stroke-dasharray: 0,330;\n    stroke-dashoffset: 0;\n    opacity: 1;\n}\n80% {\n    stroke-dasharray: 330,330;\n    stroke-dashoffset: 0;\n    opacity: 1;\n}\n100% {\n    opacity: 0.4;\n}\n}\n@-webkit-keyframes draw-check-data-v-1d9002cb {\n0% {\n    stroke-dasharray: 49,80;\n    stroke-dashoffset: 48;\n    opacity: 0;\n}\n50% {\n    stroke-dasharray: 49,80;\n    stroke-dashoffset: 48;\n    opacity: 1;\n}\n100% {\n    stroke-dasharray: 130,80;\n    stroke-dashoffset: 48;\n}\n}\n@keyframes draw-check-data-v-1d9002cb {\n0% {\n    stroke-dasharray: 49,80;\n    stroke-dashoffset: 48;\n    opacity: 0;\n}\n50% {\n    stroke-dasharray: 49,80;\n    stroke-dashoffset: 48;\n    opacity: 1;\n}\n100% {\n    stroke-dasharray: 130,80;\n    stroke-dashoffset: 48;\n}\n}\n\n/*---------- Cross ----------*/\n.cross[data-v-1d9002cb] {\n  stroke-width: 6.25;\n  stroke-linecap: round;\n  position: absolute;\n  top: 54px;\n  left: 54px;\n  width: 40px;\n  height: 40px;\n}\n.cross .first-line[data-v-1d9002cb] {\n  -webkit-animation: 0.7s draw-first-line-data-v-1d9002cb ease-out;\n          animation: 0.7s draw-first-line-data-v-1d9002cb ease-out;\n}\n.cross .second-line[data-v-1d9002cb] {\n  -webkit-animation: 0.7s draw-second-line-data-v-1d9002cb ease-out;\n          animation: 0.7s draw-second-line-data-v-1d9002cb ease-out;\n}\n@-webkit-keyframes draw-first-line-data-v-1d9002cb {\n0% {\n    stroke-dasharray: 0,56;\n    stroke-dashoffset: 0;\n}\n50% {\n    stroke-dasharray: 0,56;\n    stroke-dashoffset: 0;\n}\n100% {\n    stroke-dasharray: 56,330;\n    stroke-dashoffset: 0;\n}\n}\n@keyframes draw-first-line-data-v-1d9002cb {\n0% {\n    stroke-dasharray: 0,56;\n    stroke-dashoffset: 0;\n}\n50% {\n    stroke-dasharray: 0,56;\n    stroke-dashoffset: 0;\n}\n100% {\n    stroke-dasharray: 56,330;\n    stroke-dashoffset: 0;\n}\n}\n@-webkit-keyframes draw-second-line-data-v-1d9002cb {\n0% {\n    stroke-dasharray: 0,55;\n    stroke-dashoffset: 1;\n}\n50% {\n    stroke-dasharray: 0,55;\n    stroke-dashoffset: 1;\n}\n100% {\n    stroke-dasharray: 55,0;\n    stroke-dashoffset: 70;\n}\n}\n@keyframes draw-second-line-data-v-1d9002cb {\n0% {\n    stroke-dasharray: 0,55;\n    stroke-dashoffset: 1;\n}\n50% {\n    stroke-dasharray: 0,55;\n    stroke-dashoffset: 1;\n}\n100% {\n    stroke-dasharray: 55,0;\n    stroke-dashoffset: 70;\n}\n}\n.alert-sign[data-v-1d9002cb] {\n  stroke-width: 6.25;\n  stroke-linecap: round;\n  position: absolute;\n  top: 40px;\n  left: 68px;\n  width: 15px;\n  height: 70px;\n  -webkit-animation: 0.5s alert-sign-bounce-data-v-1d9002cb cubic-bezier(0.175, 0.885, 0.32, 1.275);\n          animation: 0.5s alert-sign-bounce-data-v-1d9002cb cubic-bezier(0.175, 0.885, 0.32, 1.275);\n}\n.alert-sign .dot[data-v-1d9002cb] {\n  stroke: none;\n  fill: #FFC107;\n}\n@-webkit-keyframes alert-sign-bounce-data-v-1d9002cb {\n0% {\n    -webkit-transform: scale(0);\n            transform: scale(0);\n    opacity: 0;\n}\n50% {\n    -webkit-transform: scale(0);\n            transform: scale(0);\n    opacity: 1;\n}\n100% {\n    -webkit-transform: scale(1);\n            transform: scale(1);\n}\n}\n@keyframes alert-sign-bounce-data-v-1d9002cb {\n0% {\n    -webkit-transform: scale(0);\n            transform: scale(0);\n    opacity: 0;\n}\n50% {\n    -webkit-transform: scale(0);\n            transform: scale(0);\n    opacity: 1;\n}\n100% {\n    -webkit-transform: scale(1);\n            transform: scale(1);\n}\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/design/Design.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/design/Design.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -9812,7 +10344,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n        font-family: \"SFProDisplay\";\n        src: url(\"/fonts/SF-Pro-Display-Regular.otf\") format('truetype');\n}\n.container-fluid[data-v-28e5b594]{\n        padding: 0 4vw;\n}\n@media(max-width:992px){\n.wrapper[data-v-28e5b594]{\n    width:100%;\n}\n}\n.panel-heading[data-v-28e5b594] {\n    padding: 0;\n\tborder:0;\n}\n.panel-title>a[data-v-28e5b594], .panel-title>a[data-v-28e5b594]:active{\n\tdisplay:block;\n\t/* padding:15px; */\n\ttext-decoration:none;\n    font-family: HelveticaNeue;\n    font-size: 18px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n}\n.panel-heading  a[data-v-28e5b594]:before {\n    font-family: 'Glyphicons Halflings';\n    content: url(/img/Design/arrow.png);\n    float: right;\n    -webkit-transition: all 0.5s;\n    transition: all 0.5s;\n}\n.panel-heading.active a[data-v-28e5b594]:before {\n\t/* -webkit-transform: rotate(180deg);\n\t-moz-transform: rotate(180deg);\n\ttransform: rotate(180deg); */\n}\n\n/* Tabs css*/\n.nav-tabs[data-v-28e5b594]{\n    border-bottom: 0;\n}\n.nav-tabs .nav-item.show .nav-link[data-v-28e5b594], .nav-tabs .nav-link.active[data-v-28e5b594] {\n    /* background: moccasin; */\n    border-bottom: solid 3px #ffc600;\n    font-weight: 600;\n    width: -webkit-fit-content;\n    width: -moz-fit-content;\n    width: fit-content;\n    /* padding-left: 0 !important;\n    padding-right: 0 !important; */\n    padding-bottom: 5px;\n}\n.nav-tabs .nav-link[data-v-28e5b594] {\n    border: 0px solid transparent;\n    padding-left:0px;\n    padding-right: 0px;\n    margin-right:10px !important;\n}\n.nav-link[data-v-28e5b594]{\n    padding-left: 0;\n    padding-right: 0.85rem;\n    padding-bottom: 0.3rem;\n    font-family: SFProDisplay;\n    font-size: 16px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #777777;\n}\n.title-right[data-v-28e5b594]{\n    font-family: SFProDisplay;\n    font-size: 34px;\n    font-weight: 600;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n}\n.bar[data-v-28e5b594]{\n    border-bottom: solid 1.8px #cccccc;\n    margin-top: 0.5rem !important;\n    margin-bottom: 1.1rem !important;\n}\n.tab-content[data-v-28e5b594]{\n    padding-top: 15px;\n    padding-bottom: 10px;\n}\n#nav-tabContent .img-inline[data-v-28e5b594]{\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack:justify;\n        -ms-flex-pack:justify;\n            justify-content:space-between;\n    padding-top: 20px;\n}\n.brand[data-v-28e5b594]{\n    opacity: 0.7;\n    font-family: SFProDisplay;\n    font-size: 16px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.tank[data-v-28e5b594]{\n    font-family: SFProDisplay;\n    font-size: 36px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.switch[data-v-28e5b594]{\n    opacity: 0.7;\n    font-family: SFProDisplay;\n    font-size: 16px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #7c7c7c;\n}\n.size[data-v-28e5b594]{\n    font-family: SFProDisplay;\n    font-size: 30px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.sizing[data-v-28e5b594]{\n    opacity: 0.7;\n    font-family: SFProDisplay;\n    font-size: 16px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #7c7c7c;\n}\n.small[data-v-28e5b594]{\n    font-family: SFProDisplay;\n    font-size: 18px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: 1.33;\n    letter-spacing: normal;\n    color: #444444;\n}\n.join-cta-label[data-v-28e5b594]{\n    font-family: SFProDisplay;\n    font-size: 24px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.join-cta-label-desc[data-v-28e5b594]{\n    opacity: 0.6;\n    font-family: SFProDisplay;\n    font-size: 16px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.send[data-v-28e5b594]{\n    padding-top:25px;\n}\n.pt-10[data-v-28e5b594]{\n    padding-top:20px;\n}\n.t-shirt[data-v-28e5b594]{\n    /* float:right; */\n    padding-left: 60px;\n}\n\n\n/* Custom scroll bar */\n.custom-scrollbar[data-v-28e5b594] {\n    position: relative;\n    /* width: 400px; */\n    height: 200px;\n    overflow: hidden;\n}\n.custom-scrollbar__inner[data-v-28e5b594] {\n    height: 200px;\n    width: calc(100% + 40px);\n    padding-right: 64px;\n    overflow-y: scroll;\n    -webkit-overflow-scrolling: touch;\n}\n.custom-scrollbar__bar[data-v-28e5b594] {\n    position: absolute;\n    top: 16px;\n    bottom: 16px;\n    background: #cccccc;\n    width: 6px;\n    right: 8px;\n    border-radius: 2px;\n}\n.custom-scrollbar__knob[data-v-28e5b594] {\n    position: absolute;\n    top: 0;\n    left: 50%;\n    width: 20px;\n    height: 20px;\n    border-radius: 18px;\n    border: solid 4px #757575;\n    background-color: #ffffff;\n    -webkit-transform: translate(-50%, -50%);\n    transform: translate(-50%, -50%);\n    will-change: top;\n}\n.img-template[data-v-28e5b594]{\n    /* width: 80%; */\n    /* padding-right:10px; */\n}\n@media (min-width: 768px) and (max-width: 1024px) {\n    /* .img-template{\n        width: 50%;\n        padding-right:10px;\n    } */\n}\n.avatars[data-v-28e5b594]{\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        /* justify-content: space-around; */\n        -ms-flex-line-pack: start;\n            align-content: flex-start;\n        -ms-flex-wrap: wrap;\n            flex-wrap: wrap;\n}\n.avatar[data-v-28e5b594]{\n        cursor: pointer;\n}\n.avatars[data-v-28e5b594]{\n        /* padding-left: 3%; */\n}\n.avatar[data-v-28e5b594]{\n        padding: 10px;\n}\n.avatars img[data-v-28e5b594]:hover { \n        border: 1px solid #26B4FF;\n}\n.name[data-v-28e5b594]{\n        text-align: center;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SF-Pro-Display-Regular.otf\") format(\"truetype\");\n}\n.container-fluid[data-v-28e5b594] {\n  padding: 0 4vw;\n}\n@media (max-width: 992px) {\n.wrapper[data-v-28e5b594] {\n    width: 100%;\n}\n}\n.panel-heading[data-v-28e5b594] {\n  padding: 0;\n  border: 0;\n}\n.panel-title > a[data-v-28e5b594], .panel-title > a[data-v-28e5b594]:active {\n  display: block;\n  /* padding:15px; */\n  text-decoration: none;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.panel-heading a[data-v-28e5b594]:before {\n  font-family: 'Glyphicons Halflings';\n  content: url(/img/Design/arrow.png);\n  float: right;\n  -webkit-transition: all 0.5s;\n  transition: all 0.5s;\n}\n.panel-heading.active a[data-v-28e5b594]:before {\n  /* -webkit-transform: rotate(180deg);\n\t-moz-transform: rotate(180deg);\n\ttransform: rotate(180deg); */\n}\n\n/* Tabs css*/\n.nav-tabs[data-v-28e5b594] {\n  border-bottom: 0;\n}\n.nav-tabs .nav-item.show .nav-link[data-v-28e5b594], .nav-tabs .nav-link.active[data-v-28e5b594] {\n  /* background: moccasin; */\n  border-bottom: solid 3px #ffc600;\n  font-weight: 600;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  /* padding-left: 0 !important;\n    padding-right: 0 !important; */\n  padding-bottom: 5px;\n}\n.nav-tabs .nav-link[data-v-28e5b594] {\n  border: 0px solid transparent;\n  padding-left: 0px;\n  padding-right: 0px;\n  margin-right: 10px !important;\n}\n.nav-link[data-v-28e5b594] {\n  padding-left: 0;\n  padding-right: 0.85rem;\n  padding-bottom: 0.3rem;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #777777;\n}\n.title-right[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 34px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.bar[data-v-28e5b594] {\n  border-bottom: solid 1.8px #cccccc;\n  margin-top: 0.5rem !important;\n  margin-bottom: 1.1rem !important;\n}\n.tab-content[data-v-28e5b594] {\n  padding-top: 15px;\n  padding-bottom: 10px;\n}\n#nav-tabContent .img-inline[data-v-28e5b594] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding-top: 20px;\n}\n.brand[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.tank[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 36px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.switch[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #7c7c7c;\n}\n.size[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 30px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.sizing[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #7c7c7c;\n}\n.small[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 18px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  color: #444444;\n}\n.join-cta-label[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-28e5b594] {\n  opacity: 0.6;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.send[data-v-28e5b594] {\n  padding-top: 25px;\n}\n.pt-10[data-v-28e5b594] {\n  padding-top: 20px;\n}\n.t-shirt[data-v-28e5b594] {\n  /* float:right; */\n  padding-left: 60px;\n}\n\n/* Custom scroll bar */\n.custom-scrollbar[data-v-28e5b594] {\n  position: relative;\n  /* width: 400px; */\n  height: 200px;\n  overflow: hidden;\n}\n.custom-scrollbar__inner[data-v-28e5b594] {\n  height: 200px;\n  width: calc(100% + 40px);\n  padding-right: 64px;\n  overflow-y: scroll;\n  -webkit-overflow-scrolling: touch;\n}\n.custom-scrollbar__bar[data-v-28e5b594] {\n  position: absolute;\n  top: 16px;\n  bottom: 16px;\n  background: #cccccc;\n  width: 6px;\n  right: 8px;\n  border-radius: 2px;\n}\n.custom-scrollbar__knob[data-v-28e5b594] {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 20px;\n  height: 20px;\n  border-radius: 18px;\n  border: solid 4px #757575;\n  background-color: #ffffff;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  will-change: top;\n}\n.img-template[data-v-28e5b594] {\n  /* width: 80%; */\n  /* padding-right:10px; */\n}\n@media (min-width: 768px) and (max-width: 1024px) {\n  /* .img-template{\n        width: 50%;\n        padding-right:10px;\n    } */\n}\n.avatars[data-v-28e5b594] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  /* justify-content: space-around; */\n  -ms-flex-line-pack: start;\n      align-content: flex-start;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.avatar[data-v-28e5b594] {\n  cursor: pointer;\n}\n.avatars[data-v-28e5b594] {\n  /* padding-left: 3%; */\n}\n.avatar[data-v-28e5b594] {\n  padding: 10px;\n}\n.avatars img[data-v-28e5b594]:hover {\n  border: 1px solid #26B4FF;\n}\n.name[data-v-28e5b594] {\n  text-align: center;\n}\n", ""]);
 
 // exports
 
@@ -9842,14 +10374,14 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.sponsor-common .save-btn[data-v-29c258f6] {\n  size: 28px;\n  color: #444444;\n  width: 132px;\n  height: 33px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid black;\n  font-weight: bold;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  margin-top: 30px;\n}\n.sponsor-common .edit-profile[data-v-29c258f6] {\n  font-size: 25px;\n  font-family: HelveticaNeue, sans-serif;\n  font-weight: bold;\n  color: #ffc600;\n  margin-bottom: 25px;\n  padding-left: 232px;\n}\n.sponsor-common .invalid-feedback[data-v-29c258f6] {\n  -ms-flex-item-align: baseline;\n      align-self: baseline;\n}\n.sponsor-common .is-invalid[data-v-29c258f6] {\n  border-color: #d9534f !important;\n}\n.sponsor-common form[data-v-29c258f6] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n", ""]);
+exports.push([module.i, "\n.sponsor-common .save-btn[data-v-29c258f6] {\n  size: 28px;\n  color: #444444;\n  width: 132px;\n  height: 33px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid black;\n  font-weight: bold;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  margin-top: 30px;\n}\n.sponsor-common .edit-profile[data-v-29c258f6] {\n  font-size: 25px;\n  font-family: font-family-helvetica-neue;\n  font-weight: bold;\n  color: #ffc600;\n  margin-bottom: 25px;\n  padding-left: 232px;\n}\n.sponsor-common .invalid-feedback[data-v-29c258f6] {\n  -ms-flex-item-align: baseline;\n      align-self: baseline;\n}\n.sponsor-common .is-invalid[data-v-29c258f6] {\n  border-color: #d9534f !important;\n}\n.sponsor-common form[data-v-29c258f6] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.sponsor-common form input[type=\"text\"][data-v-29c258f6], .sponsor-common form textarea[data-v-29c258f6] {\n    border-radius: 3px;\n    border: solid 2px rgba(212, 212, 212, 0.33) !important;\n}\n.sponsor-common form input[type=\"text\"][data-v-29c258f6]:focus, .sponsor-common form textarea[data-v-29c258f6]:focus {\n      outline: none;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Slider.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Slider.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -9857,7 +10389,22 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* section 1 slider */\n.slider-image-1[data-v-2efc38d8] {\n    position: relative;\n    width: 100%;\n    max-width: 1920px;\n    height: 968px;\n    -o-object-fit: contain;\n       object-fit: contain;\n}\n.carousel-indicators[data-v-2efc38d8] {\n    top: 32.78vw;\n    left: 95.5vw;\n    width: 0.72vw;\n    height: 12.39vw;\n    display: block;\n    margin: 10px;\n    background: transparent;\n    -webkit-box-orient: horizontal;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: row;\n            flex-direction: row;\n    opacity: 0.9;\n}\n.carousel-indicators li[data-v-2efc38d8] {\n    width: 0.72vw;\n    height: 0.72vw;\n    border: 0.15vw solid white;\n    margin: 0 0 0.72vw 0;\n    background: transparent;\n    opacity: 0.5;\n}\n.carousel-indicators .active[data-v-2efc38d8] {\n    background: white;\n    opacity: 0.9;\n}\n\n", ""]);
+exports.push([module.i, "/* section 1 slider */\n.slider-image-1[data-v-2efc38d8] {\n  position: relative;\n  width: 100%;\n  max-width: 1920px;\n  height: 968px;\n  -o-object-fit: contain;\n     object-fit: contain;\n}\n.carousel-indicators[data-v-2efc38d8] {\n  top: 32.78vw;\n  left: 95.5vw;\n  width: 0.72vw;\n  height: 12.39vw;\n  display: block;\n  margin: 10px;\n  background: transparent;\n  -webkit-box-orient: horizontal;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: row;\n          flex-direction: row;\n  opacity: 0.9;\n}\n.carousel-indicators li[data-v-2efc38d8] {\n  width: 0.72vw;\n  height: 0.72vw;\n  border: 0.15vw solid white;\n  margin: 0 0 0.72vw 0;\n  background: transparent;\n  opacity: 0.5;\n}\n.carousel-indicators .active[data-v-2efc38d8] {\n  background: white;\n  opacity: 0.9;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-373b30c6\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignPage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.table[data-v-373b30c6] {\n  padding-left: 154px !important;\n}\n.caption[data-v-373b30c6] {\n  padding-left: 154px;\n}\n.caption span[data-v-373b30c6] {\n  margin-bottom: 18px;\n  display: block;\n}\n.campaign[data-v-373b30c6] {\n  font-size: 25px;\n  font-family: HelveticaNeue, sans-serif;\n  font-weight: bold;\n  color: #ffc600;\n}\n.total[data-v-373b30c6] {\n  font-size: 19px;\n}\n.table-row[data-v-373b30c6] {\n  text-align: center;\n  vertical-align: middle;\n}\n.rectangle-header[data-v-373b30c6] {\n  background-color: #ffc600;\n  font-family: HelveticaNeue;\n  font-size: 22px;\n  font-weight: 500;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n", ""]);
 
 // exports
 
@@ -9872,7 +10419,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.sponsor-common .table[data-v-3823d3bb] {\n  padding-left: 153px !important;\n}\n.sponsor-common .history[data-v-3823d3bb] {\n  font-size: 25px;\n  font-family: HelveticaNeue, sans-serif;\n  font-weight: bold;\n  color: #ffc600;\n  margin-bottom: 60px;\n  padding-left: 153px;\n}\n", ""]);
+exports.push([module.i, "\n.sponsor-common .table[data-v-3823d3bb] {\n  padding-left: 153px !important;\n}\n.sponsor-common .history[data-v-3823d3bb] {\n  font-size: 25px;\n  font-family: \"Helvetica Neue\";\n  font-weight: bold;\n  color: #ffc600;\n  margin-bottom: 60px;\n  padding-left: 153px;\n}\n", ""]);
 
 // exports
 
@@ -9887,7 +10434,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.auth-join[data-v-3b0025b8] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-join-container[data-v-3b0025b8] {\n  max-width: 768px;\n}\n.auth-join-form .form-title[data-v-3b0025b8] {\n  font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-join-form .form-group label[data-v-3b0025b8] {\n  color: #444444;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-join-form .form-group input[data-v-3b0025b8] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-join-form .form-group input[data-v-3b0025b8]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-join-form .form-group input.is-invalid[data-v-3b0025b8] {\n    border-color: #d9534f !important;\n}\n.auth-join-form .form-group .error[data-v-3b0025b8] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-join-form .form-group .error .invalid-feedback[data-v-3b0025b8] {\n    display: block;\n    margin: 0;\n}\n.auth-join-form .join-cta-element[data-v-3b0025b8] {\n  cursor: pointer;\n}\n.auth-join-form .join-cta-element i[data-v-3b0025b8] {\n    margin-right: 1rem;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label-desc[data-v-3b0025b8] {\n    font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label[data-v-3b0025b8] {\n    font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n", ""]);
+exports.push([module.i, "\n.auth-join[data-v-3b0025b8] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-join-container[data-v-3b0025b8] {\n  max-width: 768px;\n}\n.auth-join-form .form-title[data-v-3b0025b8] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-join-form .form-group label[data-v-3b0025b8] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-join-form .form-group input[data-v-3b0025b8] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-join-form .form-group input[data-v-3b0025b8]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-join-form .form-group input.is-invalid[data-v-3b0025b8] {\n    border-color: #d9534f !important;\n}\n.auth-join-form .form-group .error[data-v-3b0025b8] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-join-form .form-group .error .invalid-feedback[data-v-3b0025b8] {\n    display: block;\n    margin: 0;\n}\n.auth-join-form .join-cta-element[data-v-3b0025b8] {\n  cursor: pointer;\n}\n.auth-join-form .join-cta-element i[data-v-3b0025b8] {\n    margin-right: 1rem;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label-desc[data-v-3b0025b8] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label[data-v-3b0025b8] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n", ""]);
 
 // exports
 
@@ -9902,14 +10449,14 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.auth-login[data-v-42c42d6a] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-login-container[data-v-42c42d6a] {\n  max-width: 768px;\n}\n.auth-login-form .form-title[data-v-42c42d6a] {\n  font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-login-form .reset-password-cta[data-v-42c42d6a] {\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n  color: #4a90e2;\n}\n.auth-login-form .form-group label[data-v-42c42d6a] {\n  color: #444444;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-login-form .form-group input[type=checkbox][data-v-42c42d6a] {\n  font-size: 24px;\n  margin-top: 6px;\n}\n.auth-login-form .form-group input[data-v-42c42d6a] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-login-form .form-group input[data-v-42c42d6a]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-login-form .form-group input.is-invalid[data-v-42c42d6a] {\n    border-color: #d9534f !important;\n}\n.auth-login-form .form-group .error[data-v-42c42d6a] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-login-form .form-group .error .invalid-feedback[data-v-42c42d6a] {\n    display: block;\n    margin: 0;\n}\n.auth-login-form .login-cta-element[data-v-42c42d6a] {\n  cursor: pointer;\n}\n.auth-login-form .login-cta-element i[data-v-42c42d6a] {\n    margin-right: 1rem;\n}\n.auth-login-form .login-cta-element .login-cta-labels .login-cta-label-desc[data-v-42c42d6a] {\n    font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-login-form .login-cta-element .login-cta-labels .login-cta-label[data-v-42c42d6a] {\n    font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n", ""]);
+exports.push([module.i, "\n.auth-login[data-v-42c42d6a] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-login-container[data-v-42c42d6a] {\n  max-width: 768px;\n}\n.auth-login-form .form-title[data-v-42c42d6a] {\n  font-family: \"SFProDisplay\", sans-serif;\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-login-form .reset-password-cta[data-v-42c42d6a] {\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  color: h-blue;\n}\n.auth-login-form .form-group label[data-v-42c42d6a] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-login-form .form-group input[type=checkbox][data-v-42c42d6a] {\n  font-size: 24px;\n  margin-top: 6px;\n}\n.auth-login-form .form-group input[data-v-42c42d6a] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-login-form .form-group input[data-v-42c42d6a]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-login-form .form-group input.is-invalid[data-v-42c42d6a] {\n    border-color: #d9534f !important;\n}\n.auth-login-form .form-group .error[data-v-42c42d6a] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-login-form .form-group .error .invalid-feedback[data-v-42c42d6a] {\n    display: block;\n    margin: 0;\n}\n.auth-login-form .login-cta-element[data-v-42c42d6a] {\n  cursor: pointer;\n}\n.auth-login-form .login-cta-element i[data-v-42c42d6a] {\n    margin-right: 1rem;\n}\n.auth-login-form .login-cta-element .login-cta-labels .login-cta-label-desc[data-v-42c42d6a] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-login-form .login-cta-element .login-cta-labels .login-cta-label[data-v-42c42d6a] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/apparel/Product.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/apparel/Product.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -9917,14 +10464,14 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n        font-family: \"SFProDisplay\";\n        src: url(\"/fonts/SF-Pro-Display-Regular.otf\") format('truetype');\n}\n.container-fluid[data-v-4a447820]{\n        padding: 0 4.9vw;\n}\n@media(max-width:992px){\n.wrapper[data-v-4a447820]{\n    width:100%;\n}\n}\n.brand[data-v-4a447820]{\n    opacity: 0.7;\n    font-family: SFProDisplay;\n    font-size: 16px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n    margin-bottom: 5px;\n}\n.tank[data-v-4a447820]{\n    font-family: SFProDisplay;\n    font-size: 36px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.join-cta-label[data-v-4a447820]{\n    font-family: SFProDisplay;\n    font-size: 24px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.join-cta-label-desc[data-v-4a447820]{\n    opacity: 0.6;\n    font-family: SFProDisplay;\n    font-size: 16px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.send[data-v-4a447820]{\n    padding-top:45px;\n}\n.mt-10[data-v-4a447820]{\n    margin-top:150px;\n}\nul[data-v-4a447820] {\n  margin-right: 0;\n  margin-top: 35px;\n  padding-left: 20px;\n  font-family: SFProDisplay;\n  font-size: 17px;\n}\nli[data-v-4a447820]:not(:last-child) {\n    margin-bottom: 5px;\n}\n.col-lg[data-v-4a447820], .col-lg-4[data-v-4a447820]{\n    margin: 0;\n    padding: 0;\n}\n.col-lg-8[data-v-4a447820]{\n    padding-right: 0;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SF-Pro-Display-Regular.otf\") format(\"truetype\");\n}\n.container-fluid[data-v-4a447820] {\n  padding: 0 4.9vw;\n}\n@media (max-width: 992px) {\n.wrapper[data-v-4a447820] {\n    width: 100%;\n}\n}\n.brand[data-v-4a447820] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 5px;\n}\n.tank[data-v-4a447820] {\n  font-family: \"SFProDisplay\";\n  font-size: 36px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label[data-v-4a447820] {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-4a447820] {\n  opacity: 0.6;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.send[data-v-4a447820] {\n  padding-top: 45px;\n}\n.mt-10[data-v-4a447820] {\n  margin-top: 150px;\n}\nul[data-v-4a447820] {\n  margin-right: 0;\n  margin-top: 35px;\n  padding-left: 20px;\n  font-family: \"SFProDisplay\";\n  font-size: 20px;\n}\nli[data-v-4a447820]:not(:last-child) {\n  margin-bottom: 5px;\n}\n.col-lg[data-v-4a447820], .col-lg-4[data-v-4a447820] {\n  margin: 0;\n  padding: 0;\n}\n.col-lg-8[data-v-4a447820] {\n  padding-right: 0;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -9932,7 +10479,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.main-field[data-v-4c3f1cd4] {\n    width: 100vw;\n    margin: 0 auto;\n    background-color: white;\n}\n\n/* section 2 placeholder */\n.placeholder-text[data-v-4c3f1cd4] {\n    color: #444444;\n    margin-top: 5.7%;\n    text-align: center;\n    font-size: calc(12px + 1.55vw);/*42px*/\n}\n.chicagofire[data-v-4c3f1cd4] {\n    top: 8.03%;\n    height: auto;\n    left: 14.78vw;\n    width: 30.03vw;\n    position: absolute;\n}\n.boston-marathon-bib[data-v-4c3f1cd4] {\n    top: 32%;\n    height: auto;\n    left: 22.55vw;\n    width: 10.05vw;\n    position: absolute;\n}\n\n/*section 3 banner*/\n.bibmark-banner[data-v-4c3f1cd4] {\n    width: 100vw;\n    position: relative;\n}\n.bibmark-banner .image-banner[data-v-4c3f1cd4] {\n    z-index: 3;\n    height: 50vw;\n    background-size: cover;\n    background-position: center center;\n    background-image: url('https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/DCBBCBC8-6341-4DB8-861B-45A66241117D.png');\n}\n.bibmark-banner .banner-text[data-v-4c3f1cd4] {\n    top: 27%;\n    z-index: 1;\n    width: 50vw;\n    height: 4.7%;\n    left: 40.78vw;\n    color: #ffffff;\n    font-weight: 300;\n    position: absolute;\n    font-size: calc(8px + 2.44vw);\n}\n.banner-text .banner-text-bold[data-v-4c3f1cd4] {\n    font-weight: 900;\n    font-size: calc(10px + 2.65vw);\n}\n\n/*fontstyle*/\n.default-text-style[data-v-4c3f1cd4] {\n    font-style: normal;\n    line-height: normal;\n    font-stretch: normal;\n    letter-spacing: normal;\n    font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n}\n/*section 4*/\n.section-carousel-main-text[data-v-4c3f1cd4] {\n    color: #444444;\n    font-weight: bold;\n    text-align: center;\n    font-size: calc(12px + 1.56vw);\n}\n.section-carousel-subtext[data-v-4c3f1cd4] {\n    color: #000000;\n    text-align: center;\n    font-weight: normal;\n    background-color: white;\n    font-size: calc(8px + 0.52vw);\n    font-family: \"SFProText\", \"San Francisco\", sans-serif;\n}\n\n/*carousel*/\n.carousel-buttons[data-v-4c3f1cd4] {\n    top: 25%;\n    z-index: 9;\n    width: 134px;\n    height: 149px;\n    color: #717171;\n    font-size: 72px;\n    position: absolute;\n    font-weight: lighter;\n    text-align: center;\n}\n.carousel-buttons + .prev-slide[data-v-4c3f1cd4] {\n    left: 0px;\n}\n.carousel-buttons + .next-slide[data-v-4c3f1cd4] {\n    right: 0px;\n}\n.gradient-carousel[data-v-4c3f1cd4] {\n    position: relative;\n    display: inline-block;\n}\n.gradient-carousel[data-v-4c3f1cd4]:before {\n    z-index: 3;\n    height: 85%;\n    width: 100%;\n    content: \"\";\n    position: absolute;\n    background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 1)), color-stop(20%, rgba(255, 255, 255, 0)), color-stop(80%, rgba(255, 255, 255, 0)), to(rgba(255, 255, 255, 1)));\n    background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 1) 100%);\n    /* W3C */\n    /* FF3.6+ */\n    /* Chrome10+,Safari5.1+ */\n    /* Opera 11.10+ */\n    background: -ms-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, rgba(255, 255, 255, 1) 100%);\n    /* IE10+ */\n    background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(20%, rgba(255, 255, 255, 0)), color-stop(80%, rgba(255, 255, 255, 0)), color-stop(100%, rgba(255, 255, 255, 1)));\n    /* Chrome,Safari4+ */\n}\n\n", ""]);
+exports.push([module.i, "\n.main-field[data-v-4c3f1cd4] {\n  width: 100vw;\n  margin: 0 auto;\n  background-color: white;\n}\n\n/* section 2 placeholder */\n.placeholder-text[data-v-4c3f1cd4] {\n  color: #444444;\n  margin-top: 5.7%;\n  text-align: center;\n  font-size: calc(12px + 1.55vw);\n  /*42px*/\n}\n.chicagofire[data-v-4c3f1cd4] {\n  top: 8.03%;\n  height: auto;\n  left: 14.78vw;\n  width: 30.03vw;\n  position: absolute;\n}\n.boston-marathon-bib[data-v-4c3f1cd4] {\n  top: 32%;\n  height: auto;\n  left: 22.55vw;\n  width: 10.05vw;\n  position: absolute;\n}\n\n/*section 3 banner*/\n.bibmark-banner[data-v-4c3f1cd4] {\n  width: 100vw;\n  position: relative;\n}\n.bibmark-banner .image-banner[data-v-4c3f1cd4] {\n  z-index: 3;\n  height: 50vw;\n  background-size: cover;\n  background-position: center center;\n  background-image: url(\"https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/DCBBCBC8-6341-4DB8-861B-45A66241117D.png\");\n}\n.bibmark-banner .banner-text[data-v-4c3f1cd4] {\n  top: 27%;\n  z-index: 1;\n  width: 50vw;\n  height: 4.7%;\n  left: 40.78vw;\n  color: #ffffff;\n  font-weight: 300;\n  position: absolute;\n  font-size: calc(8px + 2.44vw);\n}\n.banner-text .banner-text-bold[data-v-4c3f1cd4] {\n  font-weight: 900;\n  font-size: calc(10px + 2.65vw);\n}\n\n/*fontstyle*/\n.default-text-style[data-v-4c3f1cd4] {\n  font-style: normal;\n  line-height: normal;\n  font-stretch: normal;\n  letter-spacing: normal;\n  font-family: \"SFProText\", \"Helvetica Neue\";\n}\n\n/*section 4*/\n.section-carousel-main-text[data-v-4c3f1cd4] {\n  font-family: \"SFProDisplay\";\n  color: #444444;\n  font-weight: bold;\n  text-align: center;\n  font-size: calc(18px + 1.56vw);\n}\n.section-carousel-subtext[data-v-4c3f1cd4] {\n  color: #000000;\n  text-align: center;\n  font-weight: normal;\n  background-color: white;\n  font-size: calc(8px + 0.52vw);\n  font-family: \"SFProText\";\n}\n\n/*carousel*/\n.carousel-buttons[data-v-4c3f1cd4] {\n  top: 25%;\n  z-index: 9;\n  width: 134px;\n  height: 149px;\n  color: #717171;\n  font-size: 72px;\n  position: absolute;\n  font-weight: lighter;\n  text-align: center;\n}\n.carousel-buttons + .prev-slide[data-v-4c3f1cd4] {\n  left: 0px;\n}\n.carousel-buttons + .next-slide[data-v-4c3f1cd4] {\n  right: 0px;\n}\n.gradient-carousel[data-v-4c3f1cd4] {\n  position: relative;\n  display: inline-block;\n}\n.gradient-carousel[data-v-4c3f1cd4]:before {\n  z-index: 3;\n  height: 85%;\n  width: 100%;\n  content: \"\";\n  position: absolute;\n  background: -webkit-gradient(linear, left top, right top, from(white), color-stop(20%, rgba(255, 255, 255, 0)), color-stop(80%, rgba(255, 255, 255, 0)), to(white));\n  background: linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, white 100%);\n  /* W3C */\n  /* FF3.6+ */\n  /* Chrome10+,Safari5.1+ */\n  /* Opera 11.10+ */\n  background: -ms-linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, white 100%);\n  /* IE10+ */\n  background: -webkit-gradient(linear, left top, right top, color-stop(0%, white), color-stop(20%, rgba(255, 255, 255, 0)), color-stop(80%, rgba(255, 255, 255, 0)), color-stop(100%, white));\n  /* Chrome,Safari4+ */\n}\n", ""]);
 
 // exports
 
@@ -9947,7 +10494,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-4c50516c] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-4c50516c] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-4c50516c] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-4c50516c] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-4c50516c] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-4c50516c] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-4c50516c] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: SFProDisplay;\n}\n.profile-usermenu ul li a[data-v-4c50516c] {\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-4c50516c]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-4c50516c] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-4c50516c] {\n  padding: 0px;\n}\n.active[data-v-4c50516c] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-4c50516c] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-4c50516c] {\n  font-family: SFProDisplay;\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-4c50516c] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-4c50516c] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-4c50516c] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-4c50516c] {\n  margin-bottom: 58px;\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-4c50516c] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-4c50516c] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-4c50516c] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-4c50516c] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-4c50516c] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-4c50516c] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-4c50516c] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-4c50516c] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-4c50516c] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-4c50516c] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-4c50516c] {\n    padding: 0px 20px;\n}\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-4c50516c] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-4c50516c] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-4c50516c] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-4c50516c] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-4c50516c] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-4c50516c] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-4c50516c] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-4c50516c] {\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-4c50516c]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-4c50516c] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-4c50516c] {\n  padding: 0px;\n}\n.active[data-v-4c50516c] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-4c50516c] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-4c50516c] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-4c50516c] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-4c50516c] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-4c50516c] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-4c50516c] {\n  margin-bottom: 58px;\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-4c50516c] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-4c50516c] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-4c50516c] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-4c50516c] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-4c50516c] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-4c50516c] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-4c50516c] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-4c50516c] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-4c50516c] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-4c50516c] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-4c50516c] {\n    padding: 0px 20px;\n}\n}\n", ""]);
 
 // exports
 
@@ -9977,7 +10524,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.sponsor-common[data-v-4fa041b7] {\n  padding: 0;\n  background-color: white;\n}\n.sponsor-common .main-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: start;\n        -ms-flex-align: start;\n            align-items: flex-start;\n}\n.sponsor-common .image-wrapper[data-v-4fa041b7] {\n    height: 431px;\n    width: 100%;\n    margin-bottom: 59px;\n    position: relative;\n}\n.sponsor-common .input-cover-wrap[data-v-4fa041b7] {\n    position: absolute;\n    bottom: 19px;\n    right: 76px;\n}\n.sponsor-common .input-cover-wrap input[data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .input-cover-wrap label[data-v-4fa041b7] {\n      size: 18px;\n      color: #444444;\n      padding: 6px 7px;\n      background-color: white;\n      border-radius: 3px;\n      font-weight: bold;\n}\n.sponsor-common .nav-links[data-v-4fa041b7] {\n    padding: 0 15px 67px 28px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    border-right: solid 2px #cccccc;\n}\n.sponsor-common .nav-links > *[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 14px;\n}\n.sponsor-common .navigation-link[data-v-4fa041b7] {\n    font-family: HelveticaNeue, sans-serif;\n    font-size: 20px;\n    cursor: pointer;\n    color: #444444;\n    font-weight: regular;\n}\n.sponsor-common .navigation-link.active[data-v-4fa041b7] {\n      font-weight: bold;\n      color: #ffc600;\n}\n.sponsor-common .tab-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    padding-top: 11px;\n}\n.sponsor-common .left-side[data-v-4fa041b7] {\n    margin-right: 40px;\n    max-width: 189px;\n    width: 100%;\n    padding-top: 14px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n}\n.sponsor-common .left-side label[data-v-4fa041b7] {\n      font-family: HelveticaNeue, sans-serif;\n      font-size: 22px;\n      font-weight: 500;\n      color: #444444;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side[data-v-4fa041b7] {\n    max-width: 348px;\n    width: 100%;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -ms-flex-wrap: wrap;\n        flex-wrap: wrap;\n}\n.sponsor-common .right-side .input-label[data-v-4fa041b7] {\n      font-size: 18px;\n      color: #444444;\n      width: 117px;\n      height: 33px;\n      border: solid 1px #d4d4d4;\n      display: -moz-inline-flex;\n      display: -ms-inline-flex;\n      display: -o-inline-flex;\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side .logo[data-v-4fa041b7] {\n      height: 49px;\n      width: 49px;\n      border-radius: 50%;\n      margin-right: 20px;\n      background-color: #ffc600;\n}\n.sponsor-common .right-side input[type=\"file\"][data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .right-side input[type=\"text\"][data-v-4fa041b7], .sponsor-common .right-side textarea[data-v-4fa041b7] {\n      border: solid 2px rgba(212, 212, 212, 0.89);\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: HelveticaNeue, sans-serif;\n      font-weight: regular;\n      color: #444444;\n      width: 100%;\n}\n.sponsor-common .right-side textarea[data-v-4fa041b7] {\n      resize: none;\n      height: 122px;\n}\n.sponsor-common .background-image[data-v-4fa041b7] {\n    background-color: #ffc600;\n    width: 100%;\n    height: 100%;\n    display: block;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 13px;\n}\n", ""]);
+exports.push([module.i, "\n.sponsor-common[data-v-4fa041b7] {\n  padding: 0;\n  background-color: white;\n}\n.sponsor-common .main-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: start;\n        -ms-flex-align: start;\n            align-items: flex-start;\n}\n.sponsor-common .image-wrapper[data-v-4fa041b7] {\n    height: 431px;\n    width: 100%;\n    margin-bottom: 59px;\n    position: relative;\n}\n.sponsor-common .input-cover-wrap[data-v-4fa041b7] {\n    position: absolute;\n    bottom: 19px;\n    right: 76px;\n}\n.sponsor-common .input-cover-wrap input[data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .input-cover-wrap label[data-v-4fa041b7] {\n      size: 18px;\n      color: #444444;\n      padding: 6px 7px;\n      background-color: white;\n      border-radius: 3px;\n      font-weight: bold;\n}\n.sponsor-common .nav-links[data-v-4fa041b7] {\n    padding: 0 15px 67px 28px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    border-right: solid 2px #cccccc;\n}\n.sponsor-common .nav-links > *[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 14px;\n}\n.sponsor-common .navigation-link[data-v-4fa041b7] {\n    font-family: \"Helvetica Neue\";\n    font-size: 20px;\n    cursor: pointer;\n    color: #444444;\n    font-weight: normal;\n    font-stretch: normal;\n    font-style: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n}\n.sponsor-common .navigation-link.active[data-v-4fa041b7] {\n      color: #ffc600;\n      font-weight: bold;\n}\n.sponsor-common .tab-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    padding-top: 11px;\n}\n.sponsor-common .left-side[data-v-4fa041b7] {\n    margin-right: 40px;\n    max-width: 189px;\n    width: 100%;\n    padding-top: 14px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n}\n.sponsor-common .left-side label[data-v-4fa041b7] {\n      font-family: \"Helvetica Neue\";\n      font-size: 22px;\n      font-weight: 500;\n      font-stretch: normal;\n      font-style: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: right;\n      color: #444444;\n      margin-bottom: 0;\n}\n.sponsor-common .left-side2[data-v-4fa041b7] {\n    margin-right: 40px;\n    max-width: 300px;\n    width: 100%;\n    padding-top: 14px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n}\n.sponsor-common .left-side2 label[data-v-4fa041b7] {\n      font-family: \"Helvetica Neue\", sans-serif;\n      font-size: 22px;\n      font-weight: 500;\n      color: #444444;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side[data-v-4fa041b7] {\n    max-width: 348px;\n    width: 100%;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -ms-flex-wrap: wrap;\n        flex-wrap: wrap;\n}\n.sponsor-common .right-side .input-label[data-v-4fa041b7] {\n      font-size: 18px;\n      color: #444444;\n      width: 117px;\n      height: 33px;\n      border: solid 1px #d4d4d4;\n      display: -moz-inline-flex;\n      display: -ms-inline-flex;\n      display: -o-inline-flex;\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side .logo[data-v-4fa041b7] {\n      height: 49px;\n      width: 49px;\n      border-radius: 50%;\n      margin-right: 20px;\n      background-color: #ffc600;\n}\n.sponsor-common .right-side input[type=\"file\"][data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .right-side input[type=\"text\"][data-v-4fa041b7], .sponsor-common .right-side select[data-v-4fa041b7], .sponsor-common .right-side textarea[data-v-4fa041b7] {\n      border: solid 2px #f2f2f2;\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: \"Helvetica Neue\";\n      font-weight: regular;\n      color: #444444;\n      width: 100%;\n      height: 48px;\n}\n.sponsor-common .right-side textarea[data-v-4fa041b7] {\n      resize: none;\n      height: 122px;\n}\n.sponsor-common .right-side2[data-v-4fa041b7] {\n    max-width: 600px;\n    width: 100%;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.sponsor-common .right-side2 .input-label[data-v-4fa041b7] {\n      font-size: 18px;\n      color: #444444;\n      width: 117px;\n      height: 33px;\n      border: solid 1px #d4d4d4;\n      display: -moz-inline-flex;\n      display: -ms-inline-flex;\n      display: -o-inline-flex;\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side2 .logo[data-v-4fa041b7] {\n      height: 49px;\n      width: 49px;\n      border-radius: 50%;\n      margin-right: 20px;\n      background-color: #ffc600;\n}\n.sponsor-common .right-side2 input[type=\"file\"][data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .right-side2 input[type=\"text\"][data-v-4fa041b7], .sponsor-common .right-side2 textarea[data-v-4fa041b7] {\n      border: solid 2px #f2f2f2;\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: \"Helvetica Neue\", sans-serif;\n      font-weight: normal;\n      color: #444444;\n      width: 368px;\n      height: 48px;\n}\n.sponsor-common .right-side2 select[data-v-4fa041b7] {\n      border: solid 2px #f2f2f2;\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: \"Helvetica Neue\", sans-serif;\n      font-weight: normal;\n      color: #444444;\n      width: 368px;\n      height: 48px;\n}\n.sponsor-common .right-side2 textarea[data-v-4fa041b7] {\n      resize: none;\n      height: 122px;\n}\n.sponsor-common .background-image[data-v-4fa041b7] {\n    background-color: #ffc600;\n    width: 100%;\n    height: 100%;\n    display: block;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 13px;\n}\n.sponsor-common .table[data-v-4fa041b7] {\n    font-size: 20px;\n}\n.sponsor-common .save-btn[data-v-4fa041b7] {\n    size: 18px !important;\n    color: #444444;\n    width: 100px;\n    height: 35px;\n    background-color: white;\n    border-radius: 3px;\n    border: 1px solid  #f2f2f2;\n    font-weight: normal;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -ms-flex-item-align: center;\n        align-self: center;\n    margin-top: 10px;\n    font-family: \"Helvetica Neue\", sans-serif;\n}\n", ""]);
 
 // exports
 
@@ -9992,7 +10539,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.table-row[data-v-551e824a] {\n  text-align: center;\n}\n.rectangle-header[data-v-551e824a] {\n  background-color: #ffc600;\n  font-family: HelveticaNeue;\n  font-size: 22px;\n  font-weight: 500;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n", ""]);
+exports.push([module.i, "\n.table-row[data-v-551e824a] {\n  font-family: \"Helvetica Neue\";\n  text-align: center;\n  font-size: 20px;\n  font-weight: normal;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.rectangle-header[data-v-551e824a] {\n  background-color: #ffc600;\n  font-family: \"Helvetica Neue\";\n  font-size: 20px;\n  font-weight: 600 !important;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n.rectangle-header tr th[data-v-551e824a] {\n    font-weight: 500 !important;\n    font-size: 22px;\n}\n", ""]);
 
 // exports
 
@@ -10007,7 +10554,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.submit_btn {\n  border: none;\n  background-color: white;\n  cursor: pointer;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.submit_btn:focus {\n  outline: none;\n}\n.auth-forgot-password {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-forgot-password-container {\n  max-width: 768px;\n}\n.auth-forgot-password-form .form-title {\n  font-family: SFProDisplay;\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-forgot-password-form .form-sub-title {\n  font-family: SFProText;\n  font-size: 18px;\n  color: black;\n}\n.auth-forgot-password-form .form-group label {\n  color: #444444;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-forgot-password-form .form-group input {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-forgot-password-form .form-group input:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-forgot-password-form .form-group input.is-invalid {\n    border-color: #d9534f !important;\n}\n.auth-forgot-password-form .form-group .error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-forgot-password-form .form-group .error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n.auth-forgot-password-form .login-cta-element i {\n  margin-right: 1rem;\n}\n.auth-forgot-password-form .login-cta-element .login-cta-labels .login-cta-label-desc {\n  font-family: SFProDisplay;\n  opacity: 0.6;\n  font-size: 16px;\n  font-weight: 500;\n  color: #000000;\n}\n.auth-forgot-password-form .login-cta-element .login-cta-labels .login-cta-label {\n  font-family: SFProDisplay;\n  font-size: 24px;\n  font-weight: 500;\n  color: #000000;\n}\ninput {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\ninput:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\ninput.is-invalid {\n    border-color: #d9534f !important;\n}\n.error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n", ""]);
+exports.push([module.i, "\n.submit_btn {\n  border: none;\n  background-color: white;\n  cursor: pointer;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.submit_btn:focus {\n  outline: none;\n}\n.auth-forgot-password {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-forgot-password-container {\n  max-width: 768px;\n}\n.auth-forgot-password-form .form-title {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-forgot-password-form .form-sub-title {\n  font-family: SFProText;\n  font-size: 18px;\n  color: black;\n}\n.auth-forgot-password-form .form-group label {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-forgot-password-form .form-group input {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-forgot-password-form .form-group input:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-forgot-password-form .form-group input.is-invalid {\n    border-color: #d9534f !important;\n}\n.auth-forgot-password-form .form-group .error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-forgot-password-form .form-group .error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n.auth-forgot-password-form .login-cta-element i {\n  margin-right: 1rem;\n}\n.auth-forgot-password-form .login-cta-element .login-cta-labels .login-cta-label-desc {\n  font-family: \"SFProDisplay\";\n  opacity: 0.6;\n  font-size: 16px;\n  font-weight: 500;\n  color: #000000;\n}\n.auth-forgot-password-form .login-cta-element .login-cta-labels .login-cta-label {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  color: #000000;\n}\ninput {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\ninput:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\ninput.is-invalid {\n    border-color: #d9534f !important;\n}\n.error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n", ""]);
 
 // exports
 
@@ -10037,14 +10584,14 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n.form-group label[data-v-6572bb56] {\n  color: #444444;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n}\n.form-group input[data-v-6572bb56] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.form-group input[data-v-6572bb56]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.form-group input.is-invalid[data-v-6572bb56] {\n    border-color: #d9534f !important;\n}\n.form-group .error[data-v-6572bb56] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.form-group .error .invalid-feedback[data-v-6572bb56] {\n    display: block;\n    margin: 0;\n}\n.stripe-card[data-v-6572bb56] {\n  padding: 10px;\n}\n@media (min-width: 1025px) {\n  /* \n    ##Screen desktop = 1025px to higher resolution desktops\n    */\n.list-group[data-v-6572bb56] {\n    width: 70%;\n    margin: auto;\n}\n}\n.radio-list-group input[type=radio][data-v-6572bb56] {\n  display: none;\n}\n.radio-list-group .list-group-item[data-v-6572bb56] {\n  position: relative;\n  overflow: hidden;\n  border-style: hidden;\n}\n.radio-list-group .list-group-item label[data-v-6572bb56] {\n  display: block;\n  width: 100%;\n  font-weight: normal;\n}\n.radio-list-group .list-group-item input + span[data-v-6572bb56] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 100%;\n  border: 1px solid #ddd;\n  padding: 10px 15px;\n  margin-bottom: -1px;\n  z-index: 1;\n}\n.radio-list-group .list-group-item input + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F111\";\n  font-size: 20px;\n  line-height: 20px;\n  font-weight: bold;\n}\n.radio-list-group .list-group-item input:checked + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F10C\";\n}\n.radio-list-group .list-group-item:hover input + span[data-v-6572bb56] {\n  background-color: #f5f5f5;\n}\n.radio-list-group .list-group-item input:checked + span[data-v-6572bb56] {\n  border-color: #ffe100;\n  z-index: 10;\n}\n.list-group-item[data-v-6572bb56]:first-child {\n  border-top-left-radius: 0 !important;\n  border-top-right-radius: 0 !important;\n}\n.list-group-item[data-v-6572bb56]:last-child {\n  margin-bottom: 0;\n  border-bottom-right-radius: 0 !important;\n  border-bottom-left-radius: 0 !important;\n}\n.radio-list-group .list-group-item-success input:checked + span i.fa[data-v-6572bb56]:before {\n  color: #d0e9c6 !important;\n}\n.btn-edit[data-v-6572bb56] {\n  vertical-align: middle;\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: SFProText;\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-top: 10px;\n}\n.pay-with-stripe[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: SFProText;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-bottom: 10px;\n  margin-right: 10px;\n}\n.btn-add[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: SFProText;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: left;\n  margin-top: 10px;\n  margin-bottom: 25px;\n}\n.new-card[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: SFProText;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  padding-left: 20px;\n  padding-right: 20px;\n  padding-top: 5px;\n  padding-bottom: 5px;\n  margin-bottom: 10px;\n  margin-top: 10px;\n}\n.edit-card[data-v-6572bb56] {\n  margin-left: 30px;\n  margin-top: 20px;\n}\n.payment[data-v-6572bb56] {\n  margin-bottom: 50px;\n}\n.list-group-item[data-v-6572bb56] {\n  margin: 5px;\n  padding: 20px;\n}\nimg[data-v-6572bb56] {\n  vertical-align: middle;\n  border-style: none;\n}\nbutton[data-v-6572bb56]:disabled,\nbutton[disabled][data-v-6572bb56] {\n  background-color: #cccccc;\n}\n.container-billing[data-v-6572bb56] {\n  margin-bottom: 20px;\n}\n*[data-v-6572bb56]:focus:not(a) {\n  outline: 2px solid none !important;\n  -webkit-box-shadow: none !important;\n          box-shadow: none !important;\n}\n.end[data-v-6572bb56] {\n  padding-left: 10px;\n}\n.nopayment[data-v-6572bb56] {\n  margin-bottom: 15px;\n}\n#card-errors[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n#card-errors2[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n.form-group label[data-v-6572bb56] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.form-group input[data-v-6572bb56] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.form-group input[data-v-6572bb56]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.form-group input.is-invalid[data-v-6572bb56] {\n    border-color: #d9534f !important;\n}\n.form-group .error[data-v-6572bb56] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.form-group .error .invalid-feedback[data-v-6572bb56] {\n    display: block;\n    margin: 0;\n}\n.stripe-card[data-v-6572bb56] {\n  padding: 10px;\n}\n@media (min-width: 1025px) {\n  /* \n    ##Screen desktop = 1025px to higher resolution desktops\n    */\n.list-group[data-v-6572bb56] {\n    width: 70%;\n    margin: auto;\n}\n}\n.radio-list-group input[type=radio][data-v-6572bb56] {\n  display: none;\n}\n.radio-list-group .list-group-item[data-v-6572bb56] {\n  position: relative;\n  overflow: hidden;\n  border-style: hidden;\n}\n.radio-list-group .list-group-item label[data-v-6572bb56] {\n  display: block;\n  width: 100%;\n  font-weight: normal;\n}\n.radio-list-group .list-group-item input + span[data-v-6572bb56] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 100%;\n  border: 1px solid #ddd;\n  padding: 10px 15px;\n  margin-bottom: -1px;\n  z-index: 1;\n}\n.radio-list-group .list-group-item input + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F111\";\n  font-size: 20px;\n  line-height: 20px;\n  font-weight: bold;\n}\n.radio-list-group .list-group-item input:checked + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F10C\";\n}\n.radio-list-group .list-group-item:hover input + span[data-v-6572bb56] {\n  background-color: #f5f5f5;\n}\n.radio-list-group .list-group-item input:checked + span[data-v-6572bb56] {\n  border-color: #ffe100;\n  z-index: 10;\n}\n.list-group-item[data-v-6572bb56]:first-child {\n  border-top-left-radius: 0 !important;\n  border-top-right-radius: 0 !important;\n}\n.list-group-item[data-v-6572bb56]:last-child {\n  margin-bottom: 0;\n  border-bottom-right-radius: 0 !important;\n  border-bottom-left-radius: 0 !important;\n}\n.radio-list-group .list-group-item-success input:checked + span i.fa[data-v-6572bb56]:before {\n  color: #d0e9c6 !important;\n}\n.btn-edit[data-v-6572bb56] {\n  vertical-align: middle;\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-top: 10px;\n}\n.pay-with-stripe[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-bottom: 10px;\n  margin-right: 10px;\n}\n.btn-add[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: left;\n  margin-top: 10px;\n  margin-bottom: 25px;\n}\n.new-card[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  padding-left: 20px;\n  padding-right: 20px;\n  padding-top: 5px;\n  padding-bottom: 5px;\n  margin-bottom: 10px;\n  margin-top: 10px;\n}\n.edit-card[data-v-6572bb56] {\n  margin-left: 30px;\n  margin-top: 20px;\n}\n.payment[data-v-6572bb56] {\n  margin-bottom: 50px;\n}\n.list-group-item[data-v-6572bb56] {\n  margin: 5px;\n  padding: 20px;\n}\nimg[data-v-6572bb56] {\n  vertical-align: middle;\n  border-style: none;\n}\nbutton[data-v-6572bb56]:disabled,\nbutton[disabled][data-v-6572bb56] {\n  background-color: #cccccc;\n}\n.container-billing[data-v-6572bb56] {\n  margin-bottom: 20px;\n}\n*[data-v-6572bb56]:focus:not(a) {\n  outline: 2px solid none !important;\n  -webkit-box-shadow: none !important;\n          box-shadow: none !important;\n}\n.end[data-v-6572bb56] {\n  padding-left: 10px;\n}\n.nopayment[data-v-6572bb56] {\n  margin-bottom: 15px;\n}\n#card-errors[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n#card-errors2[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Product.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Product.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -10052,7 +10599,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n        font-family: \"SFProText\";\n        src: url(\"/fonts/SFProText-Regular.ttf\") format('truetype');\n}\nthead[data-v-6eddf2c9]{\n    height: 33px !important ;\n    background-color: #f2f2f2;\n}\nthead th[data-v-6eddf2c9]{\n    padding: 5px;\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.table > tbody > tr > td[data-v-6eddf2c9] {\n    vertical-align: middle;\n}\n.product-title[data-v-6eddf2c9]{\n    /* display: block; */\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.product-sub-title[data-v-6eddf2c9]{\n    /* display: block; */\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.price[data-v-6eddf2c9]{\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.remove .fa[data-v-6eddf2c9]{\n    color: #626469;\n    font-size: 14px;\n    font-weight: 600;\n}\n.cart[data-v-6eddf2c9]{\n    margin-top:25px;\n}\n.total-label[data-v-6eddf2c9]{\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n    margin-bottom: 7px;\n    margin-top: 7px;\n}\n.total[data-v-6eddf2c9]{\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n    margin-bottom: 7px;\n    margin-top: 7px;\n}\n.border-bottom-total[data-v-6eddf2c9]{\n    border-bottom:solid 1px #cccccc;\n}\n.btn[data-v-6eddf2c9] {\n    display: inline-block;\n    font-weight: 400;\n    text-align: center;\n    white-space: nowrap;\n    vertical-align: middle;\n    -webkit-user-select: none;\n    -moz-user-select: none;\n    -ms-user-select: none;\n    user-select: none;\n    border: 1px solid #979797;\n    /* padding: 0.2rem 0.6rem; */\n    padding: 0.2rem 0.4rem;\n    font-size: 0.894rem;\n    line-height: 1.54;\n    border-radius: 0;\n    -webkit-transition: all 0.2s ease-in-out;\n    transition: all 0.2s ease-in-out;\n}\n.counter-box[data-v-6eddf2c9]{\n    /* width: 43px;\n    height: 30px; */\n    width: 28px;\n    /* height: 28px; */\n    border: solid 1px #979797;\n    /* border-bottom: solid 1px #979797; */\n}\n.counter[data-v-6eddf2c9] {\n    padding: 3px;\n    display: block;\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n.counter-new[data-v-6eddf2c9]{\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n    float: left;\n    margin-left: 35px;\n}\n.btn.fa[data-v-6eddf2c9]{\n    font-size: 18px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n}\n@media (min-width: 768px) {\n.table-responsive[data-v-6eddf2c9]{\n        display: inline-table;\n}\n}\n@media (max-width: 768px) {\n.counter-box[data-v-6eddf2c9]{\n        border: solid 1px #979797;\n        /* border-left: solid 1px #979797; */\n        /* border-top: 0;\n        border-bottom: 0; */\n        width: 28px;\n        height: 25px;\n        /* margin-left: 24px; */\n        margin-left: 17px;\n}\n.input-group[data-v-6eddf2c9]{\n        display: inline-block\n}\n.cart[data-v-6eddf2c9]{\n        margin-top:0;\n}\n    /* discrease a little bit the font size on mobile */\n.table thead th[data-v-6eddf2c9] {\n        font-size: 14px;\n}\n}\n.table td[data-v-6eddf2c9] {\n    padding-top: 1rem !important;\n    padding-bottom: 1rem !important;\n}\n.btn .btn-default[data-v-6eddf2c9]:disabled{\n    border: 1px solid #979797 !important;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\nthead[data-v-6eddf2c9] {\n  height: 33px !important;\n  background-color: #f2f2f2;\n}\nthead th[data-v-6eddf2c9] {\n  padding: 5px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.table > tbody > tr > td[data-v-6eddf2c9] {\n  vertical-align: middle;\n}\n.product-title[data-v-6eddf2c9] {\n  /* display: block; */\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.product-sub-title[data-v-6eddf2c9] {\n  /* display: block; */\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.price[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.remove .fa[data-v-6eddf2c9] {\n  color: #626469;\n  font-size: 14px;\n  font-weight: 600;\n}\n.cart[data-v-6eddf2c9] {\n  margin-top: 25px;\n}\n.total-label[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 7px;\n  margin-top: 7px;\n}\n.total[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 7px;\n  margin-top: 7px;\n}\n.border-bottom-total[data-v-6eddf2c9] {\n  border-bottom: solid 1px #cccccc;\n}\n.btn[data-v-6eddf2c9] {\n  display: inline-block;\n  font-weight: 400;\n  text-align: center;\n  white-space: nowrap;\n  vertical-align: middle;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  border: 1px solid #979797;\n  /* padding: 0.2rem 0.6rem; */\n  padding: 0.2rem 0.4rem;\n  font-size: 0.894rem;\n  line-height: 1.54;\n  border-radius: 0;\n  -webkit-transition: all 0.2s ease-in-out;\n  transition: all 0.2s ease-in-out;\n}\n.counter-box[data-v-6eddf2c9] {\n  /* width: 43px;\n    height: 30px; */\n  width: 28px;\n  /* height: 28px; */\n  border: solid 1px #979797;\n  /* border-bottom: solid 1px #979797; */\n}\n.counter[data-v-6eddf2c9] {\n  padding: 3px;\n  display: block;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.counter-new[data-v-6eddf2c9] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  float: left;\n  margin-left: 35px;\n}\n.btn.fa[data-v-6eddf2c9] {\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n@media (min-width: 768px) {\n.table-responsive[data-v-6eddf2c9] {\n    display: inline-table;\n}\n}\n@media (max-width: 768px) {\n.counter-box[data-v-6eddf2c9] {\n    border: solid 1px #979797;\n    /* border-left: solid 1px #979797; */\n    /* border-top: 0;\n        border-bottom: 0; */\n    width: 28px;\n    height: 25px;\n    /* margin-left: 24px; */\n    margin-left: 17px;\n}\n.input-group[data-v-6eddf2c9] {\n    display: inline-block;\n}\n.cart[data-v-6eddf2c9] {\n    margin-top: 0;\n}\n  /* discrease a little bit the font size on mobile */\n.table thead th[data-v-6eddf2c9] {\n    font-size: 14px;\n}\n}\n.table td[data-v-6eddf2c9] {\n  padding-top: 1rem !important;\n  padding-bottom: 1rem !important;\n}\n.btn .btn-default[data-v-6eddf2c9]:disabled {\n  border: 1px solid #979797 !important;\n}\n", ""]);
 
 // exports
 
@@ -10067,7 +10614,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#wrapper[data-v-74157b94] {\n  padding-top: 58px;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n  min-width: 100vw;\n  /* Profile Content */\n}\n#my-event-page-content-wrapper .profile-content[data-v-74157b94] {\n    padding-right: 80px;\n    padding-left: 70px;\n    background: #fff;\n    min-height: 460px;\n}\n#my-event-page-content-wrapper .welcome[data-v-74157b94] {\n    font-family: SFProDisplay;\n    font-size: 42px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n    margin-bottom: 16px;\n}\n#my-event-page-content-wrapper .subtitle[data-v-74157b94] {\n    font-family: SFProDisplay;\n    font-size: 24px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n    margin-top: 38px;\n    margin-bottom: 30px;\n}\n#my-event-page-content-wrapper .no-results[data-v-74157b94] {\n    font-family: SFProText;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n}\n#my-event-page-content-wrapper hr.sidebar-divider[data-v-74157b94] {\n    width: 100%;\n    border-color: #cccccc;\n    border-width: 2px;\n}\n#my-event-page-content-wrapper hr.content-divider[data-v-74157b94] {\n    border-top: 1px solid #cccccc;\n}\n#my-event-page-content-wrapper .content[data-v-74157b94] {\n    margin-bottom: 58px;\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n}\n#my-event-page-content-wrapper .card-events[data-v-74157b94] {\n    padding-bottom: 148px;\n}\n#my-event-page-content-wrapper .card-events .table td[data-v-74157b94] {\n      vertical-align: bottom !important;\n      border-top: none !important;\n      border-bottom: 1px solid #f1f1f2 !important;\n      font-family: SFProText;\n      font-size: 18px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #000000;\n}\n#my-event-page-content-wrapper .card-events .add-btn[data-v-74157b94] {\n      width: 110px;\n      height: 30px;\n      border-radius: 5px;\n      background-color: #ffe100 !important;\n      font-family: SFProText;\n      font-size: 14px;\n      font-weight: bold;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: center;\n      color: #000000;\n      border: none;\n      cursor: pointer;\n}\n#my-events-modal .btn-close[data-v-74157b94] {\n  font-size: 26px;\n  text-decoration: none;\n  position: absolute;\n  right: 10px;\n  top: 0;\n  color: #626469;\n  cursor: pointer;\n}\n#my-events-modal .modal-container[data-v-74157b94] {\n  padding: 35px 28px;\n}\n#my-events-modal .modal-container .login-cta-element i[data-v-74157b94] {\n    margin-right: 1rem;\n}\n#my-events-modal .modal-container .login-cta-element .login-cta-labels .login-cta-label-desc[data-v-74157b94] {\n    font-family: SFProDisplay;\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n#my-events-modal .modal-container .login-cta-element .login-cta-labels .login-cta-label[data-v-74157b94] {\n    font-family: SFProDisplay;\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n#my-events-modal .modal-container .form-group label[data-v-74157b94] {\n    color: #444444;\n    font-family: HelveticaNeue;\n    font-size: 18px;\n    font-weight: bold;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94] {\n    border: 0 none;\n    border-bottom: solid 2px #cccccc;\n    border-radius: 0;\n    font-family: HelveticaNeue;\n    font-size: 18px;\n    margin-top: 0.5rem;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94]:focus {\n      border-color: #26B4FF !important;\n      -webkit-box-shadow: none !important;\n              box-shadow: none !important;\n}\n#my-events-modal .modal-container .form-group input.is-invalid[data-v-74157b94] {\n      border-color: #d9534f !important;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94]::-webkit-outer-spin-button,\n  #my-events-modal .modal-container .form-group input[data-v-74157b94]::-webkit-inner-spin-button {\n    -webkit-appearance: none;\n    margin: 0;\n}\n#my-events-modal .modal-container .form-group input[type=number][data-v-74157b94] {\n    -moz-appearance: textfield;\n}\n#my-events-modal .modal-container .form-group .error[data-v-74157b94] {\n    height: 25px;\n    margin-top: 0.25rem;\n}\n#my-events-modal .modal-container .form-group .error .invalid-feedback[data-v-74157b94] {\n      display: block;\n      margin: 0;\n}\n#my-events-modal .modal-title[data-v-74157b94] {\n  font-family: SFProDisplay;\n  font-size: 24px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  height: 40px;\n}\n#my-events-modal .modal-detail[data-v-74157b94] {\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 30px;\n}\n#my-events-modal .modal-subtitle[data-v-74157b94] {\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.my-events-cta-element[data-v-74157b94] {\n  padding-bottom: 35px;\n  cursor: pointer;\n}\n.my-events-cta-element i[data-v-74157b94] {\n    margin-right: 1rem;\n}\n.my-events-cta-element .my-events-cta-labels .my-events-cta-label-desc[data-v-74157b94] {\n    font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.my-events-cta-element .my-events-cta-labels .my-events-cta-label[data-v-74157b94] {\n    font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n@media (min-width: 768px) {\n.td-date[data-v-74157b94] {\n    width: 200px;\n}\n.td-CN[data-v-74157b94], .td-btn[data-v-74157b94] {\n    width: 150px;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n    min-width: 0;\n    width: 100%;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-74157b94] {\n    display: block !important;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n    min-width: 0;\n    width: 100%;\n}\n#my-event-page-content-wrapper .add-btn[data-v-74157b94] {\n      width: 80px !important;\n      height: 25px !important;\n}\n#my-event-page-content-wrapper .profile-content[data-v-74157b94] {\n      padding: 0px 20px !important;\n      text-align: center;\n}\n#my-event-page-content-wrapper .profile-usermenu ul li[data-v-74157b94] {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-74157b94] {\n    padding: 0px 20px;\n}\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#wrapper[data-v-74157b94] {\n  padding-top: 58px;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n  min-width: 100vw;\n  /* Profile Content */\n}\n#my-event-page-content-wrapper .profile-content[data-v-74157b94] {\n    padding-right: 80px;\n    padding-left: 70px;\n    background: #fff;\n    min-height: 460px;\n}\n#my-event-page-content-wrapper .welcome[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 42px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n    margin-bottom: 16px;\n}\n#my-event-page-content-wrapper .subtitle[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n    margin-top: 38px;\n    margin-bottom: 30px;\n}\n#my-event-page-content-wrapper .no-results[data-v-74157b94] {\n    font-family: \"SFProText\";\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n}\n#my-event-page-content-wrapper hr.sidebar-divider[data-v-74157b94] {\n    width: 100%;\n    border-color: #cccccc;\n    border-width: 2px;\n}\n#my-event-page-content-wrapper hr.content-divider[data-v-74157b94] {\n    border-top: 1px solid #cccccc;\n}\n#my-event-page-content-wrapper .content[data-v-74157b94] {\n    margin-bottom: 58px;\n    font-family: \"SFProText\";\n    font-size: 18px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n}\n#my-event-page-content-wrapper .card-events[data-v-74157b94] {\n    padding-bottom: 148px;\n}\n#my-event-page-content-wrapper .card-events .table td[data-v-74157b94] {\n      vertical-align: bottom !important;\n      border-top: none !important;\n      border-bottom: 1px solid #f1f1f2 !important;\n      font-family: sf-pro-text;\n      font-size: 18px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #000000;\n}\n#my-event-page-content-wrapper .card-events .add-btn[data-v-74157b94] {\n      width: 110px;\n      height: 30px;\n      border-radius: 5px;\n      background-color: #ffe100 !important;\n      font-family: sf-pro-text;\n      font-size: 14px;\n      font-weight: bold;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: center;\n      color: #000000;\n      border: none;\n      cursor: pointer;\n}\n#my-events-modal .btn-close[data-v-74157b94] {\n  font-size: 26px;\n  text-decoration: none;\n  position: absolute;\n  right: 10px;\n  top: 0;\n  color: #626469;\n  cursor: pointer;\n}\n#my-events-modal .modal-container[data-v-74157b94] {\n  padding: 35px 28px;\n}\n#my-events-modal .modal-container .login-cta-element i[data-v-74157b94] {\n    margin-right: 1rem;\n}\n#my-events-modal .modal-container .login-cta-element .login-cta-labels .login-cta-label-desc[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n#my-events-modal .modal-container .login-cta-element .login-cta-labels .login-cta-label[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n#my-events-modal .modal-container .form-group label[data-v-74157b94] {\n    color: #444444;\n    font-family: \"Helvetica Neue\";\n    font-size: 18px;\n    font-weight: bold;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94] {\n    border: 0 none;\n    border-bottom: solid 2px #cccccc;\n    border-radius: 0;\n    font-family: \"Helvetica Neue\";\n    font-size: 18px;\n    margin-top: 0.5rem;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94]:focus {\n      border-color: #26B4FF !important;\n      -webkit-box-shadow: none !important;\n              box-shadow: none !important;\n}\n#my-events-modal .modal-container .form-group input.is-invalid[data-v-74157b94] {\n      border-color: #d9534f !important;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94]::-webkit-outer-spin-button,\n  #my-events-modal .modal-container .form-group input[data-v-74157b94]::-webkit-inner-spin-button {\n    -webkit-appearance: none;\n    margin: 0;\n}\n#my-events-modal .modal-container .form-group input[type=number][data-v-74157b94] {\n    -moz-appearance: textfield;\n}\n#my-events-modal .modal-container .form-group .error[data-v-74157b94] {\n    height: 25px;\n    margin-top: 0.25rem;\n}\n#my-events-modal .modal-container .form-group .error .invalid-feedback[data-v-74157b94] {\n      display: block;\n      margin: 0;\n}\n#my-events-modal .modal-title[data-v-74157b94] {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  height: 40px;\n}\n#my-events-modal .modal-detail[data-v-74157b94] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 30px;\n}\n#my-events-modal .modal-subtitle[data-v-74157b94] {\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.my-events-cta-element[data-v-74157b94] {\n  padding-bottom: 35px;\n  cursor: pointer;\n}\n.my-events-cta-element i[data-v-74157b94] {\n    margin-right: 1rem;\n}\n.my-events-cta-element .my-events-cta-labels .my-events-cta-label-desc[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.my-events-cta-element .my-events-cta-labels .my-events-cta-label[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n@media (min-width: 768px) {\n.td-date[data-v-74157b94] {\n    width: 200px;\n}\n.td-CN[data-v-74157b94], .td-btn[data-v-74157b94] {\n    width: 150px;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n    min-width: 0;\n    width: 100%;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-74157b94] {\n    display: block !important;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n    min-width: 0;\n    width: 100%;\n}\n#my-event-page-content-wrapper .add-btn[data-v-74157b94] {\n      width: 80px !important;\n      height: 25px !important;\n}\n#my-event-page-content-wrapper .profile-content[data-v-74157b94] {\n      padding: 0px 20px !important;\n      text-align: center;\n}\n#my-event-page-content-wrapper .profile-usermenu ul li[data-v-74157b94] {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-74157b94] {\n    padding: 0px 20px;\n}\n}\n", ""]);
 
 // exports
 
@@ -10089,7 +10636,7 @@ exports.push([module.i, "\nbody[data-v-7a0237c8] {\n  width: 100%;\n  margin: 15
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/common/Header.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/common/Header.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -10097,14 +10644,14 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* font */\n@font-face {\n    font-family: \"HelveticaNeue\";\n    src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n    src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n    font-family: \"SFUIDisplay-Regular\";\n    src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format('truetype');\n}\n@font-face {\n    font-family: \"SFProText\";\n    src: url(\"/fonts/SFUIText-Bold.ttf\") format('truetype');\n}\n@font-face {\n    font-family: \"SFProDisplay\";\n    src: url(\"/fonts/SourceSansPro-Bold.ttf\") format('truetype');\n}\n@font-face {\n    font-family: \"SourceSansPro-Regular\";\n    src: url(\"/fonts/SourceSansPro-Regular.ttf\") format('truetype');\n}\n\n/* navbar */\n.Rectangle[data-v-7abe1f90] {\n    max-width: 100%;\n    min-height: 113px;\n    background-color: #ffffff;\n    padding: 0 4vw;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    /*box-shadow: 0 2px 5px 0 rgba(0,0,0,0.1);*/\n}\n.nav-link[data-v-7abe1f90] {\n    /*padding: 1.625rem 0.5vw;*/\n    position: relative;\n    opacity: 0.9;\n    font-family: SFProText;\n    font-size: calc(8px + 0.41vw);\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: calc(1px + 0.05vw);\n    color: #000000;\n}\n.navbar-nav[data-v-7abe1f90] {\n    /* margin-left: 110px; */\n    padding-left: 45px;\n}\n.nav-item[data-v-7abe1f90] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.default-space[data-v-7abe1f90] {\n    padding-right: 2.4rem !important;\n}\n.logo[data-v-7abe1f90] {\n    width: 10vw;\n    padding-bottom: 10px;\n}\n.navbar-brand[data-v-7abe1f90] {\n    margin-left: 0.8rem !important;\n    margin-right: 0rem !important;\n}\n@media (max-width: 767px) {\n.logo[data-v-7abe1f90] {\n        width: 95%;\n}\n.Rectangle[data-v-7abe1f90] {\n        min-height: auto;\n}\n}\n@media (max-width: 1150px) {\n.default-space[data-v-7abe1f90] {\n        padding-left: 0;\n}\n.shopping-cart-icon > img[data-v-7abe1f90] {\n        width: 5vw;\n        margin-left: -16px;\n}\n.navbar-expand-md .navbar-nav .nav-link[data-v-7abe1f90] {\n        padding-right: 0.5rem !important;\n        padding-left: 0.5rem !important;\n}\n.Rectangle[data-v-7abe1f90] {\n        padding: 0px;\n}\n.default-space[data-v-7abe1f90] {\n        padding-right: 1rem !important;\n}\n.navbar-nav[data-v-7abe1f90] {\n        margin-left: 2rem !important;\n}\n.active[data-v-7abe1f90]{\n        border-bottom: solid 3px #ffc600;\n        width: -webkit-fit-content;\n        width: -moz-fit-content;\n        width: fit-content;\n        padding-left: 0 !important;\n        padding-right: 0 !important;\n        padding-bottom: 5px;\n}\n}\n.hello[data-v-7abe1f90] {\n    opacity: 0.9;\n    font-family: SFProText;\n    font-size: 14px;\n    font-weight: 500;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: calc(1px + 0.05vw);\n    color: #000000;\n    min-width: 130px;\n    margin-top: auto;\n    margin-bottom: auto;\n}\n.hello span[data-v-7abe1f90] {\n    text-transform: uppercase;\n}\n@media (max-width: 767px) {\n.hello[data-v-7abe1f90] {\n        min-width: 200px;\n        margin-top: 10px;\n        margin-bottom: 0;\n}\n}\n.active[data-v-7abe1f90]{\n    border-bottom: solid 3px #ffc600;\n    width: -webkit-fit-content;\n    width: -moz-fit-content;\n    width: fit-content;\n    padding-left: 0 !important;\n    padding-right: 0 !important;\n    padding-bottom: 5px;\n}\n", ""]);
+exports.push([module.i, "/* font */\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n\n/* navbar */\n.Rectangle[data-v-7abe1f90] {\n  max-width: 100%;\n  min-height: 113px;\n  background-color: #ffffff;\n  padding: 0 4vw;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  /*box-shadow: 0 2px 5px 0 rgba(0,0,0,0.1);*/\n}\n.nav-link[data-v-7abe1f90] {\n  /*padding: 1.625rem 0.5vw;*/\n  position: relative;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n  font-size: calc(9px + 0.41vw);\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: calc(1px + 0.05vw);\n  color: #000000;\n}\n.navbar-nav[data-v-7abe1f90] {\n  /* margin-left: 110px; */\n  padding-left: 45px;\n}\n.nav-item[data-v-7abe1f90] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.default-space[data-v-7abe1f90] {\n  padding-right: 2.4rem !important;\n}\n.logo[data-v-7abe1f90] {\n  width: 10vw;\n  padding-bottom: 10px;\n}\n.navbar-brand[data-v-7abe1f90] {\n  margin-left: 0.8rem !important;\n  margin-right: 0rem !important;\n}\n@media (max-width: 767px) {\n.logo[data-v-7abe1f90] {\n    width: 95%;\n}\n.Rectangle[data-v-7abe1f90] {\n    min-height: auto;\n}\n}\n@media (max-width: 1150px) {\n.default-space[data-v-7abe1f90] {\n    padding-left: 0;\n}\n.shopping-cart-icon > img[data-v-7abe1f90] {\n    width: 5vw;\n    margin-left: -16px;\n}\n.navbar-expand-md .navbar-nav .nav-link[data-v-7abe1f90] {\n    padding-right: 0.5rem !important;\n    padding-left: 0.5rem !important;\n}\n.Rectangle[data-v-7abe1f90] {\n    padding: 0px;\n}\n.default-space[data-v-7abe1f90] {\n    padding-right: 1rem !important;\n}\n.navbar-nav[data-v-7abe1f90] {\n    margin-left: 2rem !important;\n}\n.active[data-v-7abe1f90] {\n    border-bottom: solid 3px #ffc600;\n    width: -webkit-fit-content;\n    width: -moz-fit-content;\n    width: fit-content;\n    padding-left: 0 !important;\n    padding-right: 0 !important;\n    padding-bottom: 5px;\n}\n}\n.hello[data-v-7abe1f90] {\n  opacity: 0.9;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: calc(1px + 0.05vw);\n  color: #000000;\n  min-width: 130px;\n  margin-top: auto;\n  margin-bottom: auto;\n}\n.hello span[data-v-7abe1f90] {\n  text-transform: uppercase;\n}\n@media (max-width: 767px) {\n.hello[data-v-7abe1f90] {\n    min-width: 200px;\n    margin-top: 10px;\n    margin-bottom: 0;\n}\n}\n.active[data-v-7abe1f90] {\n  border-bottom: solid 3px #ffc600;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  padding-left: 0 !important;\n  padding-right: 0 !important;\n  padding-bottom: 5px;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Review.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Review.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -10112,7 +10659,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.shipping[data-v-7c965aee]{\n    font-family: SFProText;\n    font-size: 18px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #000000;\n    margin-bottom: 7px;\n    margin-top: 7px;\n}\n", ""]);
+exports.push([module.i, "\n.shipping[data-v-7c965aee] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 7px;\n  margin-top: 7px;\n}\n", ""]);
 
 // exports
 
@@ -10142,7 +10689,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-a8bc0e38] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-a8bc0e38] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-a8bc0e38] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-a8bc0e38] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-a8bc0e38] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-a8bc0e38] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: SFProDisplay;\n}\n.profile-usermenu ul li a[data-v-a8bc0e38] {\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-a8bc0e38]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-a8bc0e38] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-a8bc0e38] {\n  padding: 0px;\n}\n.active[data-v-a8bc0e38] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-a8bc0e38] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-a8bc0e38] {\n  font-family: SFProDisplay;\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-a8bc0e38] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-a8bc0e38] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-a8bc0e38] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-a8bc0e38] {\n  margin-bottom: 58px;\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n}\n#wrapper[data-v-a8bc0e38] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-a8bc0e38] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-a8bc0e38] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-a8bc0e38] {\n    padding: 0px 20px !important;\n    text-align: center;\n}\n#wrapper[data-v-a8bc0e38] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-a8bc0e38] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-a8bc0e38] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-a8bc0e38] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-a8bc0e38] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-a8bc0e38] {\n    padding: 0px 20px;\n}\n}\n.auth-join[data-v-a8bc0e38] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-join-container[data-v-a8bc0e38] {\n  max-width: 723px;\n  padding-top: 30px;\n}\n.auth-join-form .form-title[data-v-a8bc0e38] {\n  font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-join-form .form-group label[data-v-a8bc0e38] {\n  color: #444444;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-join-form .form-group input[data-v-a8bc0e38] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-join-form .form-group input[data-v-a8bc0e38]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-join-form .form-group input.is-invalid[data-v-a8bc0e38] {\n    border-color: #d9534f !important;\n}\n.auth-join-form .form-group .error[data-v-a8bc0e38] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-join-form .form-group .error .invalid-feedback[data-v-a8bc0e38] {\n    display: block;\n    margin: 0;\n}\n.auth-join-form .join-cta-element[data-v-a8bc0e38] {\n  cursor: pointer;\n}\n.auth-join-form .join-cta-element i[data-v-a8bc0e38] {\n    margin-right: 1rem;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label-desc[data-v-a8bc0e38] {\n    font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label[data-v-a8bc0e38] {\n    font-family: \"SFProDisplay\", \"San Francisco\", sans-serif;\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n@media (max-width: 768px) {\n.auth-join-container .card[data-v-a8bc0e38] {\n    margin-bottom: 20px;\n}\n}\n.auth-join-container .card[data-v-a8bc0e38] {\n  margin-top: 100px !important;\n  border: 1px solid #cccccc !important;\n  border-radius: 0 !important;\n}\n.card-body[data-v-a8bc0e38] {\n  padding: 0.7rem !important;\n}\n.card-title[data-v-a8bc0e38] {\n  font-size: 24px;\n  color: #444444;\n  font-family: SFProDisplay;\n}\n.card-subtitle[data-v-a8bc0e38] {\n  font-size: 17px;\n  margin-top: 10px;\n  font-family: SFProText;\n  line-height: 28px;\n}\n.reset-btn[data-v-a8bc0e38] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-size: 17px;\n  color: #000000;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-a8bc0e38] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-a8bc0e38] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-a8bc0e38] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-a8bc0e38] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-a8bc0e38] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-a8bc0e38] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-a8bc0e38] {\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-a8bc0e38]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-a8bc0e38] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-a8bc0e38] {\n  padding: 0px;\n}\n.active[data-v-a8bc0e38] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-a8bc0e38] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-a8bc0e38] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-a8bc0e38] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-a8bc0e38] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-a8bc0e38] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-a8bc0e38] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n}\n#wrapper[data-v-a8bc0e38] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-a8bc0e38] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-a8bc0e38] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-a8bc0e38] {\n    padding: 0px 20px !important;\n    text-align: center;\n}\n#wrapper[data-v-a8bc0e38] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-a8bc0e38] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-a8bc0e38] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-a8bc0e38] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-a8bc0e38] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-a8bc0e38] {\n    padding: 0px 20px;\n}\n}\n.auth-join[data-v-a8bc0e38] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-join-container[data-v-a8bc0e38] {\n  max-width: 723px;\n  padding-top: 30px;\n}\n.auth-join-form .form-title[data-v-a8bc0e38] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-join-form .form-group label[data-v-a8bc0e38] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-join-form .form-group input[data-v-a8bc0e38] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-join-form .form-group input[data-v-a8bc0e38]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-join-form .form-group input.is-invalid[data-v-a8bc0e38] {\n    border-color: #d9534f !important;\n}\n.auth-join-form .form-group .error[data-v-a8bc0e38] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-join-form .form-group .error .invalid-feedback[data-v-a8bc0e38] {\n    display: block;\n    margin: 0;\n}\n.auth-join-form .join-cta-element[data-v-a8bc0e38] {\n  cursor: pointer;\n}\n.auth-join-form .join-cta-element i[data-v-a8bc0e38] {\n    margin-right: 1rem;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label-desc[data-v-a8bc0e38] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label[data-v-a8bc0e38] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n@media (max-width: 768px) {\n.auth-join-container .card[data-v-a8bc0e38] {\n    margin-bottom: 20px;\n}\n}\n.auth-join-container .card[data-v-a8bc0e38] {\n  margin-top: 100px !important;\n  border: 1px solid #cccccc !important;\n  border-radius: 0 !important;\n}\n.card-body[data-v-a8bc0e38] {\n  padding: 0.7rem !important;\n}\n.card-title[data-v-a8bc0e38] {\n  font-size: 24px;\n  color: #444444;\n  font-family: \"SFProDisplay\";\n}\n.card-subtitle[data-v-a8bc0e38] {\n  font-size: 17px;\n  margin-top: 10px;\n  font-family: \"SFProText\";\n  line-height: 28px;\n}\n.reset-btn[data-v-a8bc0e38] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-size: 17px;\n  color: #000000;\n}\n", ""]);
 
 // exports
 
@@ -10172,7 +10719,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SF-Pro-Display-Regular.otf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n#footer-container[data-v-bd22e774] {\n  padding-top: 67px;\n  background: #ffffff;\n}\n#footer-container .page-footer[data-v-bd22e774] {\n    background-color: #000000;\n}\n#footer-container .page-footer .first-row .footer-description[data-v-bd22e774] {\n      padding-top: 10px;\n      font-family: SFProDisplay;\n      font-size: 26px;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #ffffff;\n}\n#footer-container .page-footer .first-row .input-email[data-v-bd22e774] {\n      padding-top: 8px;\n      padding-bottom: 11px;\n      padding-right: 55px;\n      padding-left: 55px;\n}\n#footer-container .page-footer .first-row .input-email #email[data-v-bd22e774] {\n        width: 420px;\n        height: 40px;\n        border-radius: 3px;\n        -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);\n                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);\n        border: solid 1px #d4d4d4;\n        background-color: #ffffff;\n}\n#footer-container .page-footer .first-row .input-email .search-btn[data-v-bd22e774] {\n        width: 127px;\n        height: 40px;\n        border-radius: 5px;\n        background-color: #ffe100;\n        margin-left: 15px;\n        font-family: SFProText;\n        font-size: 17px;\n        font-weight: bold;\n        font-style: normal;\n        font-stretch: normal;\n        line-height: normal;\n        letter-spacing: normal;\n        color: #000000;\n        border: none;\n        cursor: pointer;\n}\n#footer-container .page-footer .yellow-line[data-v-bd22e774] {\n      width: 100%;\n      height: 3px;\n      background-color: #fff300;\n      z-index: 9;\n}\n#footer-container .page-footer .second-row .social-links[data-v-bd22e774] {\n      margin-top: 48px;\n      padding-right: 169px;\n}\n#footer-container .page-footer .second-row .social-links ul[data-v-bd22e774] {\n        width: 155px;\n}\n#footer-container .page-footer .second-row .social-links .list-item[data-v-bd22e774] {\n        padding-right: 3px;\n        display: inline-block;\n}\n#footer-container .page-footer .second-row .pane-title[data-v-bd22e774] {\n      font-family: SFProText;\n      font-size: 14px;\n      font-weight: bold;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #ffffff;\n}\n#footer-container .page-footer .second-row a.grey[data-v-bd22e774] {\n      color: grey;\n}\n#footer-container .page-footer .second-row a[data-v-bd22e774]:hover {\n      color: lightblue;\n}\n#footer-container .page-footer .footer-copyright[data-v-bd22e774] {\n      padding-top: 31px;\n      padding-bottom: 13px;\n      font-family: SFProText, \"San Francisco\", sans-serif;\n      font-size: 14px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #ffffff;\n}\n.common-cls[data-v-bd22e774] {\n  margin-top: 54px;\n  padding-right: 110px;\n  min-height: 185px;\n}\n.padding-side[data-v-bd22e774] {\n  padding-left: 331px;\n}\n@media screen and (min-width: 320px) and (max-width: 550px) {\n.input-email[data-v-bd22e774] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: space-evenly;\n        -ms-flex-pack: space-evenly;\n            justify-content: space-evenly;\n    width: 220px;\n    padding-right: 0px !important;\n    padding-left: 0px !important;\n}\n.input-email .search-btn[data-v-bd22e774] {\n      width: 70px !important;\n      font-size: 14px !important;\n}\n}\n@media screen and (max-width: 768px) {\n.input-email[data-v-bd22e774] {\n    padding: 8px 55px 11px 55px;\n}\n.input-email #email[data-v-bd22e774] {\n      width: 420px;\n      height: 40px;\n}\n.input-email .search-btn[data-v-bd22e774] {\n      width: 127px;\n      height: 40px;\n      font-size: 17px;\n}\n}\n@media screen and (max-width: 768px) {\n.first-row[data-v-bd22e774] {\n    display: block;\n}\n.footer-description[data-v-bd22e774] {\n    font-size: 16px !important;\n    padding-left: 20px;\n}\n.social-links ul[data-v-bd22e774] {\n    width: 100% !important;\n}\n}\n@media screen and (min-width: 768px) and (max-width: 1600px) {\n.second-row[data-v-bd22e774] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: space-evenly;\n        -ms-flex-pack: space-evenly;\n            justify-content: space-evenly;\n}\n.footer-copyright[data-v-bd22e774] {\n    text-align: center;\n}\n}\n@media screen and (max-width: 1600px) {\n.footer-description[data-v-bd22e774] {\n    text-align: center;\n}\n.first-row[data-v-bd22e774] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n.footer-copyright[data-v-bd22e774] {\n    text-align: center;\n}\n.common-cls[data-v-bd22e774], .social-links[data-v-bd22e774] {\n    padding-right: 0px !important;\n}\n.padding-side[data-v-bd22e774] {\n    padding-left: 0px !important;\n}\n}\n@media screen and (min-width: 1600px) {\n.footer-copyright[data-v-bd22e774] {\n    text-align: left;\n}\n.footer-description[data-v-bd22e774] {\n    text-align: left;\n}\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SF-Pro-Display-Regular.otf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n#footer-container[data-v-bd22e774] {\n  padding-top: 67px;\n  background: #ffffff;\n}\n#footer-container .page-footer[data-v-bd22e774] {\n    background-color: #000000;\n}\n#footer-container .page-footer .first-row .footer-description[data-v-bd22e774] {\n      padding-top: 10px;\n      font-family: \"SFProDisplay\";\n      font-size: 26px;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #ffffff;\n}\n#footer-container .page-footer .first-row .input-email[data-v-bd22e774] {\n      padding-top: 8px;\n      padding-bottom: 11px;\n      padding-right: 55px;\n      padding-left: 55px;\n}\n#footer-container .page-footer .first-row .input-email #email[data-v-bd22e774] {\n        width: 420px;\n        height: 40px;\n        border-radius: 3px;\n        -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);\n                box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);\n        border: solid 1px #d4d4d4;\n        background-color: #ffffff;\n}\n#footer-container .page-footer .first-row .input-email .search-btn[data-v-bd22e774] {\n        width: 127px;\n        height: 40px;\n        border-radius: 5px;\n        background-color: #ffe100;\n        margin-left: 15px;\n        font-family: \"SFProText\";\n        font-size: 17px;\n        font-weight: bold;\n        font-style: normal;\n        font-stretch: normal;\n        line-height: normal;\n        letter-spacing: normal;\n        color: #000000;\n        border: none;\n        cursor: pointer;\n}\n#footer-container .page-footer .yellow-line[data-v-bd22e774] {\n      width: 100%;\n      height: 3px;\n      background-color: #fff300;\n      z-index: 9;\n}\n#footer-container .page-footer .second-row .social-links[data-v-bd22e774] {\n      margin-top: 48px;\n      padding-right: 169px;\n}\n#footer-container .page-footer .second-row .social-links ul[data-v-bd22e774] {\n        width: 155px;\n}\n#footer-container .page-footer .second-row .social-links .list-item[data-v-bd22e774] {\n        padding-right: 3px;\n        display: inline-block;\n}\n#footer-container .page-footer .second-row .pane-title[data-v-bd22e774] {\n      font-family: \"SFProText\";\n      font-size: 14px;\n      font-weight: bold;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #ffffff;\n}\n#footer-container .page-footer .second-row a.grey[data-v-bd22e774] {\n      color: grey;\n}\n#footer-container .page-footer .second-row a[data-v-bd22e774]:hover {\n      color: lightblue;\n}\n#footer-container .page-footer .footer-copyright[data-v-bd22e774] {\n      padding-top: 31px;\n      padding-bottom: 13px;\n      font-family: \"SFProText\";\n      font-size: 14px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #ffffff;\n}\n.common-cls[data-v-bd22e774] {\n  margin-top: 54px;\n  padding-right: 110px;\n  min-height: 185px;\n}\n.padding-side[data-v-bd22e774] {\n  padding-left: 331px;\n}\n@media screen and (min-width: 320px) and (max-width: 550px) {\n.input-email[data-v-bd22e774] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: space-evenly;\n        -ms-flex-pack: space-evenly;\n            justify-content: space-evenly;\n    width: 220px;\n    padding-right: 0px !important;\n    padding-left: 0px !important;\n}\n.input-email .search-btn[data-v-bd22e774] {\n      width: 70px !important;\n      font-size: 14px !important;\n}\n}\n@media screen and (max-width: 768px) {\n.input-email[data-v-bd22e774] {\n    padding: 8px 55px 11px 55px;\n}\n.input-email #email[data-v-bd22e774] {\n      width: 420px;\n      height: 40px;\n}\n.input-email .search-btn[data-v-bd22e774] {\n      width: 127px;\n      height: 40px;\n      font-size: 17px;\n}\n}\n@media screen and (max-width: 768px) {\n.first-row[data-v-bd22e774] {\n    display: block;\n}\n.footer-description[data-v-bd22e774] {\n    font-size: 16px !important;\n    padding-left: 20px;\n}\n.social-links ul[data-v-bd22e774] {\n    width: 100% !important;\n}\n}\n@media screen and (min-width: 768px) and (max-width: 1600px) {\n.second-row[data-v-bd22e774] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: space-evenly;\n        -ms-flex-pack: space-evenly;\n            justify-content: space-evenly;\n}\n.footer-copyright[data-v-bd22e774] {\n    text-align: center;\n}\n}\n@media screen and (max-width: 1600px) {\n.footer-description[data-v-bd22e774] {\n    text-align: center;\n}\n.first-row[data-v-bd22e774] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n.footer-copyright[data-v-bd22e774] {\n    text-align: center;\n}\n.common-cls[data-v-bd22e774], .social-links[data-v-bd22e774] {\n    padding-right: 0px !important;\n}\n.padding-side[data-v-bd22e774] {\n    padding-left: 0px !important;\n}\n}\n@media screen and (min-width: 1600px) {\n.footer-copyright[data-v-bd22e774] {\n    text-align: left;\n}\n.footer-description[data-v-bd22e774] {\n    text-align: left;\n}\n}\n", ""]);
 
 // exports
 
@@ -10202,7 +10749,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-bec152ec] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-bec152ec] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-bec152ec] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-bec152ec] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-bec152ec] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-bec152ec] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-bec152ec] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: SFProDisplay;\n}\n.profile-usermenu ul li a[data-v-bec152ec] {\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-bec152ec]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-bec152ec] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-bec152ec] {\n  padding: 0px;\n}\n.active[data-v-bec152ec] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-bec152ec] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-bec152ec] {\n  font-family: SFProDisplay;\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-bec152ec] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-bec152ec] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-bec152ec] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-bec152ec] {\n  margin-bottom: 58px;\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-bec152ec] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-bec152ec] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-bec152ec] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-bec152ec] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-bec152ec] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-bec152ec] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-bec152ec] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-bec152ec] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-bec152ec] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-bec152ec] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-bec152ec] {\n    padding: 0px 20px;\n}\n}\n.title[data-v-bec152ec] {\n  width: 200px;\n  height: 21px;\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.sub-title[data-v-bec152ec] {\n  width: 200px;\n  height: 21px;\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.col-lg[data-v-bec152ec], .col-lg-1[data-v-bec152ec], .col-lg-3[data-v-bec152ec], .list-group-item[data-v-bec152ec] {\n  margin-left: 0;\n  margin-right: 0;\n  padding-left: 0;\n  padding-right: 0;\n}\n.list-group-item[data-v-bec152ec] {\n  position: relative;\n  display: block;\n  padding: 0;\n  margin-bottom: -1px;\n  background-color: transparent;\n  border-left: 0;\n  border-right: 0;\n  border-bottom: 1px solid #cccccc;\n  border-top: 1px solid #cccccc;\n}\n.list-group-item[data-v-bec152ec]:first-child {\n  border-top: 0;\n}\n.list-group-item[data-v-bec152ec]:last-child {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.join-cta-label[data-v-bec152ec] {\n  width: 95px;\n  height: 29px;\n  font-family: SFProDisplay;\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-bec152ec] {\n  width: 93px;\n  height: 19px;\n  opacity: 0.6;\n  font-family: SFProDisplay;\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.list-group-item[data-v-bec152ec]:not(:first-child) {\n  padding-top: 14px;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-bec152ec] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-bec152ec] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-bec152ec] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-bec152ec] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-bec152ec] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-bec152ec] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-bec152ec] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-bec152ec] {\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-bec152ec]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-bec152ec] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-bec152ec] {\n  padding: 0px;\n}\n.active[data-v-bec152ec] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-bec152ec] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-bec152ec] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-bec152ec] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-bec152ec] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-bec152ec] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-bec152ec] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-bec152ec] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-bec152ec] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-bec152ec] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-bec152ec] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-bec152ec] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-bec152ec] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-bec152ec] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-bec152ec] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-bec152ec] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-bec152ec] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-bec152ec] {\n    padding: 0px 20px;\n}\n}\n.title[data-v-bec152ec] {\n  width: 200px;\n  height: 21px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.sub-title[data-v-bec152ec] {\n  width: 200px;\n  height: 21px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.col-lg[data-v-bec152ec], .col-lg-1[data-v-bec152ec], .col-lg-3[data-v-bec152ec], .list-group-item[data-v-bec152ec] {\n  margin-left: 0;\n  margin-right: 0;\n  padding-left: 0;\n  padding-right: 0;\n}\n.list-group-item[data-v-bec152ec] {\n  position: relative;\n  display: block;\n  padding: 0;\n  margin-bottom: -1px;\n  background-color: transparent;\n  border-left: 0;\n  border-right: 0;\n  border-bottom: 1px solid #cccccc;\n  border-top: 1px solid #cccccc;\n}\n.list-group-item[data-v-bec152ec]:first-child {\n  border-top: 0;\n}\n.list-group-item[data-v-bec152ec]:last-child {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.join-cta-label[data-v-bec152ec] {\n  width: 95px;\n  height: 29px;\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-bec152ec] {\n  width: 93px;\n  height: 19px;\n  opacity: 0.6;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.list-group-item[data-v-bec152ec]:not(:first-child) {\n  padding-top: 14px;\n}\n", ""]);
 
 // exports
 
@@ -10214,10 +10761,10 @@ exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  sr
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
 // imports
-
+exports.i(__webpack_require__("./node_modules/css-loader/index.js!./resources/sass/_variables.scss"), "");
 
 // module
-exports.push([module.i, "\n@font-face {\n        font-family: \"SFProDisplay\";\n        src: url(\"/fonts/SF-Pro-Display-Bold.otf\") format('truetype');\n}\n/* Utilities\n*******************************/\n.pull-left[data-v-bee530fe]{\n  float:  left !important;\n}\n.pull-right[data-v-bee530fe]{\n  float:  right !important;\n}\n.clearfix[data-v-bee530fe]::after {\n  display: block;\n  content: \"\";\n  clear: both;\n}\n\n/* Header Steps \n*******************************/\n.wizard[data-v-bee530fe] {\n  position: relative;\n  width:  100%;\n}\n.wizard__steps[data-v-bee530fe]{\n  list-style-type:  none;\n  text-align: justify;\n  -ms-text-justify: distribute-all-lines;\n  text-justify: distribute-all-lines;\n  padding:  0;\n  height:  70px;\n  position:  relative;\n  max-width: 700px;\n  margin-left: auto;\n  margin-right: auto;\n}\n.stretch[data-v-bee530fe] {\n  width: 100%;\n  display: inline-block;\n  font-size: 0;\n  line-height: 0\n}\n.wizard__step[data-v-bee530fe]{\n  height: 70px;\n  vertical-align: bottom;\n  display: inline-block;\n  text-align: center;\n  position:  relative;\n}\n.wizard__step:not(:first-child) .wizard__step__line[data-v-bee530fe]{\n  position: absolute;\n  width:  100%;\n  left:  -50%;\n  bottom:  12px;\n  height:  5px;\n  background-color: #d8d8d8;\n  margin-bottom: 5px;\n}\n.wizard__step__indicator[data-v-bee530fe]{\n  -webkit-box-sizing: content-box;\n          box-sizing: content-box;\n  display:  block;\n  width:  27px;\n  height:  27px;\n  background-color: #d8d8d8;\n  border-radius: 50%;\n  border: 0px solid #fff;\n  position:  absolute;\n  left:  50%;\n  margin-left:  -10px;\n  bottom:  6px;\n  z-index: 1;\n}\n.wizard__step.active .wizard__step__indicator[data-v-bee530fe]{\n  background-color: #ffe100;\n}\n.wizard__step.active:not(:first-child) .wizard__step__line[data-v-bee530fe]{\n  background-color: #ffe100; /* green */\n}\n.wizard__step__label[data-v-bee530fe]{\n  padding-left: 10px;\n  font-family: SFProDisplay;\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n\n/* Wizard body \n*******************************/\n.wizard__body[data-v-bee530fe]{\n  margin-top:  30px;\n  min-height:  400px;\n  /* margin-left:  50px;\n  margin-right:  50px; */\n  /* border:  1px solid #aebac4; */\n  background-color: #fff;\n  position: relative;\n  border-radius: 5px;\n  padding-bottom: 50px;\n}\n.wizard__body__step[data-v-bee530fe]{\n  padding-top: 16px;\n  padding-bottom: 16px;\n}\n.wizard__arrow[data-v-bee530fe]{\n  position:  absolute;\n  display: block;\n  width:  30px;\n  height:  30px;\n  /* border:  1px solid #aebac4; */\n  /* top:  85px; height of step + body margin -15 */\n  border-top-right-radius: 5px;\n  background-color: #fff;\n  border-left: none;\n  border-bottom:  none;\n  -webkit-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n  z-index: 2;\n  -webkit-transition: left 0.3s;\n  transition: left 0.3s;\n}\n\n/* Wizard body \n*******************************/\n.wizard__body__actions[data-v-bee530fe]{\n  /* position:  absolute; */\n  bottom:  0px;\n  height:  50px;\n  width:  100%;\n  margin-bottom: 35px;\n  padding-bottom: 30px;\n  float: right ;\n  /* border-top:  1px solid #aebac4;\n  background-color: #b9c7d2; */\n}\n@media (max-width: 768px) {\n.wizard__body__actions[data-v-bee530fe] {\n      position: absolute;\n      bottom: 20px;\n      height: 50px;\n      width: 100%;\n      margin-bottom: 20px;\n      float: right;\n}\n}\n\n/* .wizard__body__actions a{\n  width:  120px;\n  height:  100%;\n  display: block;\n  background-color: #51abe4;\n  color:  white;\n  font-weight: bold;\n  text-align: center;\n  line-height: 50px;\n  cursor: pointer;\n  -webkit-transition: background-color 0.3s;\n  -o-transition: background-color 0.3s;\n  transition: background-color 0.3s;\n} */\n.join-cta-label[data-v-bee530fe]{\n  font-family: SFProDisplay;\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-bee530fe]{\n  opacity: 0.6;\n  font-family: SFProDisplay;\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.wizard__body__actions a.disabled[data-v-bee530fe]{\n  cursor: not-allowed;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  opacity: 0.5;\n}\n.wizard__body__actions a>.vgw-icon[data-v-bee530fe], .wizard__body__actions a>span[data-v-bee530fe]{\n  display: inline-block;\n  vertical-align: middle;\n  position: relative;\n}\n.wizard__body__actions .vgw-icon[data-v-bee530fe]::after{\n  position: absolute;\n  content: \"\";\n  -webkit-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n  width: 8px;\n  height: 8px;\n  top: 50%;\n  margin-top: -5px;\n}\n.vgw-icon.vgw-next[data-v-bee530fe]::after{\n  border-bottom: 2px solid white;\n  border-right: 2px solid white;\n}\n.vgw-icon.vgw-prev[data-v-bee530fe]::after{\n  border-top: 2px solid white;\n  border-left: 2px solid white;\n  left: -10px;\n}\n.wizard__body__actions a[data-v-bee530fe]:hover{\n  /* background-color: #357fae; */\n  cursor: pointer;\n}\n.wizard__body__actions a.final-step[data-v-bee530fe]{\n  background-color: #6eb165;\n}\n\n/* mobile */\n.wizard__body.vgw-mobile[data-v-bee530fe]{\n  margin-left: 10px;\n  margin-right: 10px;\n}\n.wizard__step.vgw-mobile[data-v-bee530fe]{\n  display: none;\n}\n.wizard__step .wizard__step__line.vgw-mobile[data-v-bee530fe]{\n  display: none;\n}\n.wizard__step.active.vgw-mobile[data-v-bee530fe]{\n  display: inline-block;\n}\n.wizard__back[data-v-bee530fe]{\n  padding-top: 25px;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n        font-family: \"SFProDisplay\";\n        src: url(\"/fonts/SF-Pro-Display-Bold.otf\") format('truetype');\n}\n/* Utilities\n*******************************/\n.pull-left[data-v-bee530fe]{\n  float:  left !important;\n}\n.pull-right[data-v-bee530fe]{\n  float:  right !important;\n}\n.clearfix[data-v-bee530fe]::after {\n  display: block;\n  content: \"\";\n  clear: both;\n}\n\n/* Header Steps \n*******************************/\n.wizard[data-v-bee530fe] {\n  position: relative;\n  width:  100%;\n}\n.wizard__steps[data-v-bee530fe]{\n  list-style-type:  none;\n  text-align: justify;\n  -ms-text-justify: distribute-all-lines;\n  text-justify: distribute-all-lines;\n  padding:  0;\n  height:  70px;\n  position:  relative;\n  max-width: 700px;\n  margin-left: auto;\n  margin-right: auto;\n}\n.stretch[data-v-bee530fe] {\n  width: 100%;\n  display: inline-block;\n  font-size: 0;\n  line-height: 0\n}\n.wizard__step[data-v-bee530fe]{\n  height: 70px;\n  vertical-align: bottom;\n  display: inline-block;\n  text-align: center;\n  position:  relative;\n}\n.wizard__step:not(:first-child) .wizard__step__line[data-v-bee530fe]{\n  position: absolute;\n  width:  100%;\n  left:  -50%;\n  bottom:  12px;\n  height:  5px;\n  background-color: #d8d8d8;\n  margin-bottom: 5px;\n}\n.wizard__step__indicator[data-v-bee530fe]{\n  -webkit-box-sizing: content-box;\n          box-sizing: content-box;\n  display:  block;\n  width:  27px;\n  height:  27px;\n  background-color: #d8d8d8;\n  border-radius: 50%;\n  border: 0px solid #fff;\n  position:  absolute;\n  left:  50%;\n  margin-left:  -10px;\n  bottom:  6px;\n  z-index: 1;\n}\n.wizard__step.active .wizard__step__indicator[data-v-bee530fe]{\n  background-color: #ffe100;\n}\n.wizard__step.active:not(:first-child) .wizard__step__line[data-v-bee530fe]{\n  background-color: #ffe100; /* green */\n}\n.wizard__step__label[data-v-bee530fe]{\n  padding-left: 10px;\n  font-family: $font-family-sf-pro-display;\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n\n/* Wizard body \n*******************************/\n.wizard__body[data-v-bee530fe]{\n  margin-top:  30px;\n  min-height:  400px;\n  /* margin-left:  50px;\n  margin-right:  50px; */\n  /* border:  1px solid #aebac4; */\n  background-color: #fff;\n  position: relative;\n  border-radius: 5px;\n  padding-bottom: 50px;\n}\n.wizard__body__step[data-v-bee530fe]{\n  padding-top: 16px;\n  padding-bottom: 16px;\n}\n.wizard__arrow[data-v-bee530fe]{\n  position:  absolute;\n  display: block;\n  width:  30px;\n  height:  30px;\n  /* border:  1px solid #aebac4; */\n  /* top:  85px; height of step + body margin -15 */\n  border-top-right-radius: 5px;\n  background-color: #fff;\n  border-left: none;\n  border-bottom:  none;\n  -webkit-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n  z-index: 2;\n  -webkit-transition: left 0.3s;\n  transition: left 0.3s;\n}\n\n/* Wizard body \n*******************************/\n.wizard__body__actions[data-v-bee530fe]{\n  /* position:  absolute; */\n  bottom:  0px;\n  height:  50px;\n  width:  100%;\n  margin-bottom: 35px;\n  padding-bottom: 30px;\n  float: right ;\n  /* border-top:  1px solid #aebac4;\n  background-color: #b9c7d2; */\n}\n@media (max-width: 768px) {\n.wizard__body__actions[data-v-bee530fe] {\n      position: absolute;\n      bottom: 20px;\n      height: 50px;\n      width: 100%;\n      margin-bottom: 20px;\n      float: right;\n}\n}\n\n/* .wizard__body__actions a{\n  width:  120px;\n  height:  100%;\n  display: block;\n  background-color: #51abe4;\n  color:  white;\n  font-weight: bold;\n  text-align: center;\n  line-height: 50px;\n  cursor: pointer;\n  -webkit-transition: background-color 0.3s;\n  -o-transition: background-color 0.3s;\n  transition: background-color 0.3s;\n} */\n.join-cta-label[data-v-bee530fe]{\n  font-family: $font-family-sf-pro-display;\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-bee530fe]{\n  opacity: 0.6;\n  font-family: $font-family-sf-pro-display;\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.wizard__body__actions a.disabled[data-v-bee530fe]{\n  cursor: not-allowed;\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  opacity: 0.5;\n}\n.wizard__body__actions a>.vgw-icon[data-v-bee530fe], .wizard__body__actions a>span[data-v-bee530fe]{\n  display: inline-block;\n  vertical-align: middle;\n  position: relative;\n}\n.wizard__body__actions .vgw-icon[data-v-bee530fe]::after{\n  position: absolute;\n  content: \"\";\n  -webkit-transform: rotate(-45deg);\n          transform: rotate(-45deg);\n  width: 8px;\n  height: 8px;\n  top: 50%;\n  margin-top: -5px;\n}\n.vgw-icon.vgw-next[data-v-bee530fe]::after{\n  border-bottom: 2px solid white;\n  border-right: 2px solid white;\n}\n.vgw-icon.vgw-prev[data-v-bee530fe]::after{\n  border-top: 2px solid white;\n  border-left: 2px solid white;\n  left: -10px;\n}\n.wizard__body__actions a[data-v-bee530fe]:hover{\n  /* background-color: #357fae; */\n  cursor: pointer;\n}\n.wizard__body__actions a.final-step[data-v-bee530fe]{\n  background-color: #6eb165;\n}\n\n/* mobile */\n.wizard__body.vgw-mobile[data-v-bee530fe]{\n  margin-left: 10px;\n  margin-right: 10px;\n}\n.wizard__step.vgw-mobile[data-v-bee530fe]{\n  display: none;\n}\n.wizard__step .wizard__step__line.vgw-mobile[data-v-bee530fe]{\n  display: none;\n}\n.wizard__step.active.vgw-mobile[data-v-bee530fe]{\n  display: inline-block;\n}\n.wizard__back[data-v-bee530fe]{\n  padding-top: 25px;\n}\n", ""]);
 
 // exports
 
@@ -10233,6 +10780,21 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 // module
 exports.push([module.i, ".vld-overlay {\n  bottom: 0;\n  left: 0;\n  position: absolute;\n  right: 0;\n  top: 0;\n  align-items: center;\n  display: none;\n  justify-content: center;\n  overflow: hidden;\n  z-index: 1\n}\n\n.vld-overlay.is-active {\n  display: flex\n}\n\n.vld-overlay.is-full-page {\n  z-index: 999;\n  position: fixed\n}\n\n.vld-overlay .vld-background {\n  bottom: 0;\n  left: 0;\n  position: absolute;\n  right: 0;\n  top: 0;\n  background: #fff;\n  opacity: 0.5\n}\n\n.vld-overlay .vld-icon, .vld-parent {\n  position: relative\n}\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js!./resources/sass/_variables.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n// Body\n$body-bg: #f8fafc;\n\n// Typography\n$font-family-sans-serif: \"Nunito\", sans-serif;\n$font-size-base: 0.9rem;\n$line-height-base: 1.6;\n$font-family-sf-pro-display: \"SFProDisplay\";\n$font-family-sf-pro-text: \"SFProText\";\n$font-family-helvetica-neue: \"Helvetica Neue\";\n\n// Colors\n$blue: #3490dc;\n$indigo: #6574cd;\n$purple: #9561e2;\n$pink: #f66D9b;\n$red: #e3342f;\n$orange: #f6993f;\n$yellow: #ffed4a;\n$green: #38c172;\n$teal: #4dc0b5;\n$cyan: #6cb2eb;\n$h-blue: #4a90e2;\n$line-yellow: #ffc600;\n$y-oval: #ffe100;\n$gr-oval: #d8d8d8;\n$bg-yellow: #ffe100;\n$bt-line-yellow: #fff300; \n", ""]);
 
 // exports
 
@@ -33779,6 +34341,1033 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-10a53d98\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/sponsor/CampaignEdit.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("sponsor-common", {
+    attrs: {
+      sponsor: _vm.sponsor,
+      campaign: _vm.campaign,
+      activeLink: _vm.navLink
+    },
+    scopedSlots: _vm._u([
+      {
+        key: "setting-content",
+        fn: function() {
+          return [
+            _c("form", { attrs: { id: "validation-form" } }, [
+              _c("div", { staticClass: "row add-campaign-row input-form " }, [
+                _c("div", { staticClass: "col-12" }, [
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("span", { staticClass: "campaign" }, [
+                        _vm._v("Campaigns")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("span", { staticClass: "caption" }, [
+                        _vm._v("Edit Campaign")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", { attrs: { for: "name" } }, [
+                        _vm._v("Campaign Name")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "w-100 add-input-group" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.campaign.name,
+                              expression: "campaign.name"
+                            }
+                          ],
+                          staticClass: "w-80",
+                          attrs: { id: "name", name: "name", type: "text" },
+                          domProps: { value: _vm.campaign.name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.campaign,
+                                "name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", { attrs: { for: "logo" } }, [_vm._v("Logo")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("img", {
+                        staticClass: "logo",
+                        attrs: { id: "logo", alt: "logo", src: _vm.logoUrl }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        ref: "logo",
+                        attrs: { id: "imageProfile", type: "file" },
+                        on: { change: _vm.selectLogo }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "input-label",
+                          attrs: { for: "imageProfile" }
+                        },
+                        [_vm._v("Choose File")]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", { attrs: { for: "budget" } }, [
+                        _vm._v("Budget")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "w-100 add-input-group" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.campaign.budget,
+                              expression: "campaign.budget"
+                            }
+                          ],
+                          attrs: { id: "budget", name: "budget", type: "text" },
+                          domProps: { value: _vm.campaign.budget },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.campaign,
+                                "budget",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", [_vm._v("Logo Size & Price")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "col-7 pl-0 pr-0" }, [
+                        _c(
+                          "table",
+                          {
+                            staticClass: "table table-bordered",
+                            staticStyle: { width: "368px" }
+                          },
+                          [
+                            _c("thead", { staticClass: "rectangle-header" }, [
+                              _c("tr", [
+                                _c("th", { attrs: { width: "180px" } }, [
+                                  _vm._v("Size")
+                                ]),
+                                _vm._v(" "),
+                                _c("th", { attrs: { width: "180px" } }, [
+                                  _vm._v("Price")
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "tbody",
+                              _vm._l(_vm.sizes, function(size, index) {
+                                return _c("tr", { staticClass: "table-row" }, [
+                                  _c("td", [_vm._v(_vm._s(size.size))]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(_vm._s(size.price))])
+                                ])
+                              }),
+                              0
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-5 col-7 pl-1 pr-0" }, [
+                        _c("table", { staticClass: "table table-borderless" }, [
+                          _c("thead", [_c("tr", [_c("th", [_vm._v(" ")])])]),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.sizes, function(size, index) {
+                              return _c("tr", { staticClass: "table-row" }, [
+                                _c("td", { staticStyle: { float: "left" } }, [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col custom-control custom-checkbox mid-checkbox",
+                                      staticStyle: {
+                                        display: "inline-block",
+                                        width: "30px"
+                                      }
+                                    },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.enableSizePrice[index],
+                                            expression: "enableSizePrice[index]"
+                                          }
+                                        ],
+                                        staticClass: "custom-control-input",
+                                        attrs: { type: "checkbox", id: index },
+                                        domProps: {
+                                          checked: Array.isArray(
+                                            _vm.enableSizePrice[index]
+                                          )
+                                            ? _vm._i(
+                                                _vm.enableSizePrice[index],
+                                                null
+                                              ) > -1
+                                            : _vm.enableSizePrice[index]
+                                        },
+                                        on: {
+                                          change: function($event) {
+                                            var $$a =
+                                                _vm.enableSizePrice[index],
+                                              $$el = $event.target,
+                                              $$c = $$el.checked ? true : false
+                                            if (Array.isArray($$a)) {
+                                              var $$v = null,
+                                                $$i = _vm._i($$a, $$v)
+                                              if ($$el.checked) {
+                                                $$i < 0 &&
+                                                  _vm.$set(
+                                                    _vm.enableSizePrice,
+                                                    index,
+                                                    $$a.concat([$$v])
+                                                  )
+                                              } else {
+                                                $$i > -1 &&
+                                                  _vm.$set(
+                                                    _vm.enableSizePrice,
+                                                    index,
+                                                    $$a
+                                                      .slice(0, $$i)
+                                                      .concat(
+                                                        $$a.slice($$i + 1)
+                                                      )
+                                                  )
+                                              }
+                                            } else {
+                                              _vm.$set(
+                                                _vm.enableSizePrice,
+                                                index,
+                                                $$c
+                                              )
+                                            }
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("label", {
+                                        staticClass: "custom-control-label",
+                                        attrs: { for: index }
+                                      })
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    staticClass: "slider",
+                                    staticStyle: {
+                                      width: "150px",
+                                      position: "relative",
+                                      top: "-5px"
+                                    },
+                                    attrs: {
+                                      disabled: !_vm.enableSizePrice[index],
+                                      type: "range",
+                                      min: "1",
+                                      max: "100",
+                                      value: "1"
+                                    }
+                                  })
+                                ])
+                              ])
+                            }),
+                            0
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", [_vm._v("Hashtags")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "row w-100" }, [
+                        _c(
+                          "div",
+                          { staticClass: "col" },
+                          [
+                            _c("hash-tag", {
+                              model: {
+                                value: _vm.campaign.hashtags,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.campaign, "hashtags", $$v)
+                                },
+                                expression: "campaign.hashtags"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", [_vm._v("Geo Target")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c(
+                        "div",
+                        { staticClass: "row w-100" },
+                        [
+                          _vm._l(_vm.campaign.geoTargets, function(
+                            target,
+                            index
+                          ) {
+                            return _vm.campaign.geoTargets.length > 0
+                              ? [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col custom-control custom-checkbox mid-checkbox"
+                                    },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: target.status,
+                                            expression: "target.status"
+                                          }
+                                        ],
+                                        staticClass: "custom-control-input",
+                                        attrs: {
+                                          type: "checkbox",
+                                          id: "target-" + index
+                                        },
+                                        domProps: {
+                                          checked: Array.isArray(target.status)
+                                            ? _vm._i(target.status, null) > -1
+                                            : target.status
+                                        },
+                                        on: {
+                                          change: function($event) {
+                                            var $$a = target.status,
+                                              $$el = $event.target,
+                                              $$c = $$el.checked ? true : false
+                                            if (Array.isArray($$a)) {
+                                              var $$v = null,
+                                                $$i = _vm._i($$a, $$v)
+                                              if ($$el.checked) {
+                                                $$i < 0 &&
+                                                  _vm.$set(
+                                                    target,
+                                                    "status",
+                                                    $$a.concat([$$v])
+                                                  )
+                                              } else {
+                                                $$i > -1 &&
+                                                  _vm.$set(
+                                                    target,
+                                                    "status",
+                                                    $$a
+                                                      .slice(0, $$i)
+                                                      .concat(
+                                                        $$a.slice($$i + 1)
+                                                      )
+                                                  )
+                                              }
+                                            } else {
+                                              _vm.$set(target, "status", $$c)
+                                            }
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "custom-control-label",
+                                          attrs: { for: "target-" + index },
+                                          on: {
+                                            mouseover: function($event) {
+                                              return _vm.displayButton(index)
+                                            },
+                                            mouseleave: function($event) {
+                                              return _vm.hideButton()
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(target.name) +
+                                              "\n                                            "
+                                          ),
+                                          _vm.displayGeoEditIndex === index
+                                            ? _c(
+                                                "button",
+                                                {
+                                                  staticClass:
+                                                    "ml-2 btn btn-info btn-circle black",
+                                                  attrs: { type: "button" },
+                                                  on: {
+                                                    click: function($event) {
+                                                      $event.preventDefault()
+                                                      return _vm.editGeoTarget(
+                                                        target,
+                                                        index
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _c("i", {
+                                                    staticClass: "fa fa-pen"
+                                                  })
+                                                ]
+                                              )
+                                            : _vm._e()
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "w-100" })
+                                ]
+                              : _vm._e()
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-100" }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "row w-100" }, [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "jquery-validation-error small form-text invalid-feedback"
+                              },
+                              [_vm._v(_vm._s(_vm.addGeoTargetError) + "}")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-100" }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col mt-1" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-info btn-circle yellow",
+                                attrs: { type: "button" },
+                                on: { click: _vm.showAddGeoTargetModal }
+                              },
+                              [_c("i", { staticClass: "fa fa-plus" })]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticClass: "button-caption",
+                                staticStyle: { cursor: "pointer" },
+                                on: { click: _vm.showAddGeoTargetModal }
+                              },
+                              [_vm._v(" Add New Target Audience")]
+                            )
+                          ])
+                        ],
+                        2
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", [_vm._v("Filter Questions")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "row w-100" }, [
+                        _c("div", { staticClass: "col" }, [
+                          _vm._v("Are there any companies you do not "),
+                          _c("br"),
+                          _vm._v(
+                            "want to be on the same shirt\n                                    with you?\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c("input", {
+                            attrs: { type: "text", placeholder: "Search" }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "row ml-0 mt-2 mb-2 px-2 py-2 company-select-container"
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "mx-1 mb-2 company-selected-list row"
+                                },
+                                _vm._l(_vm.excludeCompanies, function(
+                                  n,
+                                  index
+                                ) {
+                                  return _c(
+                                    "div",
+                                    { staticClass: "col-2 mx-1 my-1" },
+                                    [
+                                      _c("img", {
+                                        attrs: { width: "45px", src: n.logo }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "btn btn-info btn-circle small red",
+                                          attrs: { type: "button" },
+                                          on: {
+                                            click: function($event) {
+                                              $event.stopPropagation()
+                                              return _vm.removeExcludeCompany(
+                                                index
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("i", {
+                                            staticClass: "fa fa-minus"
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                }),
+                                0
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.mockupCompanies, function(c) {
+                                return _c(
+                                  "div",
+                                  { staticClass: "col-2 mb-2" },
+                                  [
+                                    _c("img", {
+                                      attrs: { width: "80px", src: c.logo },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.addExcludeCompany(c)
+                                        }
+                                      }
+                                    })
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _vm._v("Are there any specific age ranges that "),
+                          _c("br"),
+                          _vm._v(
+                            "you would like to\n                                    execute?\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c(
+                            "select",
+                            { staticClass: "form-control form-control-lg" },
+                            _vm._l(_vm.ageRanges, function(age) {
+                              return _c(
+                                "option",
+                                { domProps: { value: age } },
+                                [_vm._v(_vm._s(age))]
+                              )
+                            }),
+                            0
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _vm._v("Are there any organizations you do not"),
+                          _c("br"),
+                          _vm._v(" wish to sponsor?")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c("input", {
+                            attrs: { type: "text", placeholder: "Search" }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col mt-2" }, [
+                          _c(
+                            "select",
+                            { staticClass: "form-control form-control-lg" },
+                            [
+                              _c("option", [_vm._v("Test 1")]),
+                              _vm._v(" "),
+                              _c("option", [_vm._v("Test 2")]),
+                              _vm._v(" "),
+                              _c("option", [_vm._v("Test 3")])
+                            ]
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", [_vm._v("Status")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "row w-100" }, [
+                        _c("div", { staticClass: "col" }, [
+                          _c("label", { staticClass: "switch" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.campaign.status,
+                                  expression: "campaign.status"
+                                }
+                              ],
+                              staticClass: "default",
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: Array.isArray(_vm.campaign.status)
+                                  ? _vm._i(_vm.campaign.status, null) > -1
+                                  : _vm.campaign.status
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.campaign.status,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.campaign,
+                                          "status",
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.campaign,
+                                          "status",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
+                                  } else {
+                                    _vm.$set(_vm.campaign, "status", $$c)
+                                  }
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "toggle-slider round" })
+                          ])
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "save-btn btn-primary",
+                          staticStyle: { "font-size": "18px" },
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              return _vm.save($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Save")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "save-btn ml-2",
+                          staticStyle: { "font-size": "18px" },
+                          attrs: { type: "button" }
+                        },
+                        [_vm._v("Cancel")]
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "modal",
+              {
+                attrs: {
+                  name: "add-geo-target-modal",
+                  transition: "nice-modal-fade",
+                  width: "620",
+                  height: "auto",
+                  delay: 100,
+                  classes: "v--modal radius-modal"
+                }
+              },
+              [
+                _c(
+                  "span",
+                  {
+                    staticClass: "close-button topright",
+                    on: {
+                      click: function($event) {
+                        return _vm.$modal.hide("add-geo-target-modal")
+                      }
+                    }
+                  },
+                  [_vm._v("×")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "add-target-modal" }, [
+                  _c("form", { attrs: { id: "add-target-validation-form" } }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row w-90 my-5",
+                        staticStyle: {
+                          "margin-left": "50px",
+                          "margin-right": "50px",
+                          "max-height": "500px",
+                          overflow: "auto"
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "col mb-2 text-center" }, [
+                          _c("span", { staticClass: "title" }, [
+                            _vm._v("Target Audience")
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col mb-0" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.tempGeoTarget.name,
+                                expression: "tempGeoTarget.name"
+                              }
+                            ],
+                            staticStyle: {
+                              width: "96%",
+                              "margin-left": "10px",
+                              "margin-right": "10px"
+                            },
+                            attrs: {
+                              id: "targetname",
+                              name: "targetname",
+                              type: "text"
+                            },
+                            domProps: { value: _vm.tempGeoTarget.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.tempGeoTarget,
+                                  "name",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col mb-2" }, [
+                          _c(
+                            "table",
+                            { staticClass: "table table-borderless mb-0" },
+                            [
+                              _c("thead", { staticClass: "rectangle-header" }, [
+                                _c("tr", [
+                                  _c("th", { attrs: { width: "50%" } }, [
+                                    _vm._v("Zip Code")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("th", { attrs: { width: "50%" } }, [
+                                    _vm._v("Radius")
+                                  ])
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "tbody",
+                                _vm._l(_vm.tempGeoTarget.zipcodes, function(
+                                  zipcode
+                                ) {
+                                  return _c(
+                                    "tr",
+                                    { staticClass: "table-row" },
+                                    [
+                                      _c("td", { staticClass: "px-0 py-0" }, [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: zipcode.code,
+                                              expression: "zipcode.code"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "text",
+                                            name: "code",
+                                            placeholder: "Zip Code"
+                                          },
+                                          domProps: { value: zipcode.code },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                zipcode,
+                                                "code",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", { staticClass: "px-0 py-0" }, [
+                                        _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: zipcode.radius,
+                                                expression: "zipcode.radius"
+                                              }
+                                            ],
+                                            staticClass:
+                                              "form-control form-control-lg",
+                                            attrs: { name: "radius" },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  zipcode,
+                                                  "radius",
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "option",
+                                              { attrs: { value: "10" } },
+                                              [_vm._v("10 Miles")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "option",
+                                              { attrs: { value: "20" } },
+                                              [_vm._v("20 Miles")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "option",
+                                              { attrs: { value: "30" } },
+                                              [_vm._v("30 Miles")]
+                                            )
+                                          ]
+                                        )
+                                      ])
+                                    ]
+                                  )
+                                }),
+                                0
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-info btn-circle yellow ml-2",
+                              attrs: { type: "button" },
+                              on: { click: _vm.addGeoZipcode }
+                            },
+                            [_c("i", { staticClass: "fa fa-plus" })]
+                          ),
+                          _vm._v(" "),
+                          _vm.addGeoTargetError
+                            ? _c("div", {
+                                staticClass: "is-invalid ml-2 mt-1 text-danger",
+                                domProps: {
+                                  innerHTML: _vm._s(_vm.addGeoTargetError)
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "save-btn btn-primary mr-2",
+                              staticStyle: { "font-size": "18px" },
+                              attrs: { type: "button" },
+                              on: { click: _vm.saveGeoTarget }
+                            },
+                            [_vm._v("Save\n                            ")]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                ])
+              ]
+            )
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-10a53d98", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-14a85894\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/product/ProductList.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -33831,6 +35420,1029 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-14a85894", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-19c70163\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/sponsor/AddCampaign.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("sponsor-common", {
+    attrs: { sponsor: _vm.sponsor, activeLink: _vm.navLink },
+    scopedSlots: _vm._u([
+      {
+        key: "setting-content",
+        fn: function() {
+          return [
+            _c("form", { attrs: { id: "validation-form" } }, [
+              _c("div", { staticClass: "row add-campaign-row input-form " }, [
+                _c("div", { staticClass: "col-12" }, [
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("span", { staticClass: "campaign" }, [
+                        _vm._v("Campaigns")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("span", { staticClass: "caption" }, [
+                        _vm._v("Create New Campaign")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", { attrs: { for: "name" } }, [
+                        _vm._v("Campaign Name")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "w-100 add-input-group" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.campaign.name,
+                              expression: "campaign.name"
+                            }
+                          ],
+                          staticClass: "w-80",
+                          attrs: { id: "name", name: "name", type: "text" },
+                          domProps: { value: _vm.campaign.name },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.campaign,
+                                "name",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", { attrs: { for: "logo" } }, [_vm._v("Logo")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("img", {
+                        staticClass: "logo",
+                        attrs: { id: "logo", alt: "logo", src: _vm.logoUrl }
+                      }),
+                      _vm._v(" "),
+                      _c("input", {
+                        ref: "logo",
+                        attrs: { id: "imageProfile", type: "file" },
+                        on: { change: _vm.selectLogo }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "input-label",
+                          attrs: { for: "imageProfile" }
+                        },
+                        [_vm._v("Choose File")]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", { attrs: { for: "budget" } }, [
+                        _vm._v("Budget")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "w-100 add-input-group" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.campaign.budget,
+                              expression: "campaign.budget"
+                            }
+                          ],
+                          attrs: { id: "budget", name: "budget", type: "text" },
+                          domProps: { value: _vm.campaign.budget },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.campaign,
+                                "budget",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", [_vm._v("Logo Size & Price")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "col-7 pl-0 pr-0" }, [
+                        _c(
+                          "table",
+                          {
+                            staticClass: "table table-bordered",
+                            staticStyle: { width: "368px" }
+                          },
+                          [
+                            _c("thead", { staticClass: "rectangle-header" }, [
+                              _c("tr", [
+                                _c("th", { attrs: { width: "180px" } }, [
+                                  _vm._v("Size")
+                                ]),
+                                _vm._v(" "),
+                                _c("th", { attrs: { width: "180px" } }, [
+                                  _vm._v("Price")
+                                ])
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c(
+                              "tbody",
+                              _vm._l(_vm.sizes, function(size, index) {
+                                return _c("tr", { staticClass: "table-row" }, [
+                                  _c("td", [_vm._v(_vm._s(size.size))]),
+                                  _vm._v(" "),
+                                  _c("td", [_vm._v(_vm._s(size.price))])
+                                ])
+                              }),
+                              0
+                            )
+                          ]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-5 col-7 pl-1 pr-0" }, [
+                        _c("table", { staticClass: "table table-borderless" }, [
+                          _c("thead", [_c("tr", [_c("th", [_vm._v(" ")])])]),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.sizes, function(size, index) {
+                              return _c("tr", { staticClass: "table-row" }, [
+                                _c("td", { staticStyle: { float: "left" } }, [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col custom-control custom-checkbox mid-checkbox",
+                                      staticStyle: {
+                                        display: "inline-block",
+                                        width: "30px"
+                                      }
+                                    },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.enableSizePrice[index],
+                                            expression: "enableSizePrice[index]"
+                                          }
+                                        ],
+                                        staticClass: "custom-control-input",
+                                        attrs: { type: "checkbox", id: index },
+                                        domProps: {
+                                          checked: Array.isArray(
+                                            _vm.enableSizePrice[index]
+                                          )
+                                            ? _vm._i(
+                                                _vm.enableSizePrice[index],
+                                                null
+                                              ) > -1
+                                            : _vm.enableSizePrice[index]
+                                        },
+                                        on: {
+                                          change: function($event) {
+                                            var $$a =
+                                                _vm.enableSizePrice[index],
+                                              $$el = $event.target,
+                                              $$c = $$el.checked ? true : false
+                                            if (Array.isArray($$a)) {
+                                              var $$v = null,
+                                                $$i = _vm._i($$a, $$v)
+                                              if ($$el.checked) {
+                                                $$i < 0 &&
+                                                  _vm.$set(
+                                                    _vm.enableSizePrice,
+                                                    index,
+                                                    $$a.concat([$$v])
+                                                  )
+                                              } else {
+                                                $$i > -1 &&
+                                                  _vm.$set(
+                                                    _vm.enableSizePrice,
+                                                    index,
+                                                    $$a
+                                                      .slice(0, $$i)
+                                                      .concat(
+                                                        $$a.slice($$i + 1)
+                                                      )
+                                                  )
+                                              }
+                                            } else {
+                                              _vm.$set(
+                                                _vm.enableSizePrice,
+                                                index,
+                                                $$c
+                                              )
+                                            }
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("label", {
+                                        staticClass: "custom-control-label",
+                                        attrs: { for: index }
+                                      })
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("input", {
+                                    staticClass: "slider",
+                                    staticStyle: {
+                                      width: "150px",
+                                      position: "relative",
+                                      top: "-5px"
+                                    },
+                                    attrs: {
+                                      disabled: !_vm.enableSizePrice[index],
+                                      type: "range",
+                                      min: "1",
+                                      max: "100",
+                                      value: "1"
+                                    }
+                                  })
+                                ])
+                              ])
+                            }),
+                            0
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", [_vm._v("Hashtags")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "row w-100" }, [
+                        _c(
+                          "div",
+                          { staticClass: "col" },
+                          [
+                            _c("hash-tag", {
+                              model: {
+                                value: _vm.campaign.hashtags,
+                                callback: function($$v) {
+                                  _vm.$set(_vm.campaign, "hashtags", $$v)
+                                },
+                                expression: "campaign.hashtags"
+                              }
+                            })
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" })
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", [_vm._v("Geo Target")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c(
+                        "div",
+                        { staticClass: "row w-100" },
+                        [
+                          _vm._l(_vm.campaign.geoTargets, function(
+                            target,
+                            index
+                          ) {
+                            return _vm.campaign.geoTargets.length > 0
+                              ? [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "col custom-control custom-checkbox mid-checkbox"
+                                    },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: target.status,
+                                            expression: "target.status"
+                                          }
+                                        ],
+                                        staticClass: "custom-control-input",
+                                        attrs: {
+                                          type: "checkbox",
+                                          id: "target-" + index
+                                        },
+                                        domProps: {
+                                          checked: Array.isArray(target.status)
+                                            ? _vm._i(target.status, null) > -1
+                                            : target.status
+                                        },
+                                        on: {
+                                          change: function($event) {
+                                            var $$a = target.status,
+                                              $$el = $event.target,
+                                              $$c = $$el.checked ? true : false
+                                            if (Array.isArray($$a)) {
+                                              var $$v = null,
+                                                $$i = _vm._i($$a, $$v)
+                                              if ($$el.checked) {
+                                                $$i < 0 &&
+                                                  _vm.$set(
+                                                    target,
+                                                    "status",
+                                                    $$a.concat([$$v])
+                                                  )
+                                              } else {
+                                                $$i > -1 &&
+                                                  _vm.$set(
+                                                    target,
+                                                    "status",
+                                                    $$a
+                                                      .slice(0, $$i)
+                                                      .concat(
+                                                        $$a.slice($$i + 1)
+                                                      )
+                                                  )
+                                              }
+                                            } else {
+                                              _vm.$set(target, "status", $$c)
+                                            }
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "label",
+                                        {
+                                          staticClass: "custom-control-label",
+                                          attrs: { for: "target-" + index },
+                                          on: {
+                                            mouseover: function($event) {
+                                              return _vm.displayButton(index)
+                                            },
+                                            mouseleave: function($event) {
+                                              return _vm.hideButton()
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                            " +
+                                              _vm._s(target.name) +
+                                              "\n                                            "
+                                          ),
+                                          _vm.displayGeoEditIndex === index
+                                            ? _c(
+                                                "button",
+                                                {
+                                                  staticClass:
+                                                    "ml-2 btn btn-info btn-circle black",
+                                                  attrs: { type: "button" },
+                                                  on: {
+                                                    click: function($event) {
+                                                      $event.preventDefault()
+                                                      return _vm.editGeoTarget(
+                                                        target,
+                                                        index
+                                                      )
+                                                    }
+                                                  }
+                                                },
+                                                [
+                                                  _c("i", {
+                                                    staticClass: "fa fa-pen"
+                                                  })
+                                                ]
+                                              )
+                                            : _vm._e()
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c("div", { staticClass: "w-100" })
+                                ]
+                              : _vm._e()
+                          }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-100" }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "row w-100" }, [
+                            _c(
+                              "span",
+                              {
+                                staticClass:
+                                  "jquery-validation-error small form-text invalid-feedback"
+                              },
+                              [_vm._v(_vm._s(_vm.addGeoTargetError) + "}")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "w-100" }),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col mt-1" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-info btn-circle yellow",
+                                attrs: { type: "button" },
+                                on: { click: _vm.showAddGeoTargetModal }
+                              },
+                              [_c("i", { staticClass: "fa fa-plus" })]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "span",
+                              {
+                                staticClass: "button-caption",
+                                staticStyle: { cursor: "pointer" },
+                                on: { click: _vm.showAddGeoTargetModal }
+                              },
+                              [_vm._v(" Add New Target Audience")]
+                            )
+                          ])
+                        ],
+                        2
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", [_vm._v("Filter Questions")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "row w-100" }, [
+                        _c("div", { staticClass: "col" }, [
+                          _vm._v("Are there any companies you do not "),
+                          _c("br"),
+                          _vm._v(
+                            "want to be on the same shirt\n                                    with you?\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c("input", {
+                            attrs: { type: "text", placeholder: "Search" }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c(
+                            "div",
+                            {
+                              staticClass:
+                                "row ml-0 mt-2 mb-2 px-2 py-2 company-select-container"
+                            },
+                            [
+                              _c(
+                                "div",
+                                {
+                                  staticClass:
+                                    "mx-1 mb-2 company-selected-list row"
+                                },
+                                _vm._l(_vm.excludeCompanies, function(
+                                  n,
+                                  index
+                                ) {
+                                  return _c(
+                                    "div",
+                                    { staticClass: "col-2 mx-1 my-1" },
+                                    [
+                                      _c("img", {
+                                        attrs: { width: "45px", src: n.logo }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "button",
+                                        {
+                                          staticClass:
+                                            "btn btn-info btn-circle small red",
+                                          attrs: { type: "button" },
+                                          on: {
+                                            click: function($event) {
+                                              $event.stopPropagation()
+                                              return _vm.removeExcludeCompany(
+                                                index
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [
+                                          _c("i", {
+                                            staticClass: "fa fa-minus"
+                                          })
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                }),
+                                0
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.mockupCompanies, function(c) {
+                                return _c(
+                                  "div",
+                                  { staticClass: "col-2 mb-2" },
+                                  [
+                                    _c("img", {
+                                      attrs: { width: "80px", src: c.logo },
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.addExcludeCompany(c)
+                                        }
+                                      }
+                                    })
+                                  ]
+                                )
+                              })
+                            ],
+                            2
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _vm._v("Are there any specific age ranges that "),
+                          _c("br"),
+                          _vm._v(
+                            "you would like to\n                                    execute?\n                                "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c(
+                            "select",
+                            { staticClass: "form-control form-control-lg" },
+                            _vm._l(_vm.ageRanges, function(age) {
+                              return _c(
+                                "option",
+                                { domProps: { value: age } },
+                                [_vm._v(_vm._s(age))]
+                              )
+                            }),
+                            0
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _vm._v("Are there any organizations you do not"),
+                          _c("br"),
+                          _vm._v(" wish to sponsor?")
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col" }, [
+                          _c("input", {
+                            attrs: { type: "text", placeholder: "Search" }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col mt-2" }, [
+                          _c(
+                            "select",
+                            { staticClass: "form-control form-control-lg" },
+                            [
+                              _c("option", [_vm._v("Test 1")]),
+                              _vm._v(" "),
+                              _c("option", [_vm._v("Test 2")]),
+                              _vm._v(" "),
+                              _c("option", [_vm._v("Test 3")])
+                            ]
+                          )
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }, [
+                      _c("label", [_vm._v("Status")])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c("div", { staticClass: "row w-100" }, [
+                        _c("div", { staticClass: "col" }, [
+                          _c("label", { staticClass: "switch" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.campaign.status,
+                                  expression: "campaign.status"
+                                }
+                              ],
+                              staticClass: "default",
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: Array.isArray(_vm.campaign.status)
+                                  ? _vm._i(_vm.campaign.status, null) > -1
+                                  : _vm.campaign.status
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.campaign.status,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.campaign,
+                                          "status",
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.campaign,
+                                          "status",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
+                                  } else {
+                                    _vm.$set(_vm.campaign, "status", $$c)
+                                  }
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "toggle-slider round" })
+                          ])
+                        ])
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-wrap" }, [
+                    _c("div", { staticClass: "left-side2" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "right-side2" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "save-btn btn-primary",
+                          staticStyle: { "font-size": "18px" },
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              $event.stopPropagation()
+                              return _vm.save($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Save")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "save-btn ml-2",
+                          staticStyle: { "font-size": "18px" },
+                          attrs: { type: "button" }
+                        },
+                        [_vm._v("Cancel")]
+                      )
+                    ])
+                  ])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "modal",
+              {
+                attrs: {
+                  name: "add-geo-target-modal",
+                  transition: "nice-modal-fade",
+                  width: "620",
+                  height: "auto",
+                  delay: 100,
+                  classes: "v--modal radius-modal"
+                }
+              },
+              [
+                _c(
+                  "span",
+                  {
+                    staticClass: "close-button topright",
+                    on: {
+                      click: function($event) {
+                        return _vm.$modal.hide("add-geo-target-modal")
+                      }
+                    }
+                  },
+                  [_vm._v("×")]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "add-target-modal" }, [
+                  _c("form", { attrs: { id: "add-target-validation-form" } }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "row w-90 my-5",
+                        staticStyle: {
+                          "margin-left": "50px",
+                          "margin-right": "50px",
+                          "max-height": "500px",
+                          overflow: "auto"
+                        }
+                      },
+                      [
+                        _c("div", { staticClass: "col mb-2 text-center" }, [
+                          _c("span", { staticClass: "title" }, [
+                            _vm._v("Target Audience")
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col mb-0" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.tempGeoTarget.name,
+                                expression: "tempGeoTarget.name"
+                              }
+                            ],
+                            staticStyle: {
+                              width: "96%",
+                              "margin-left": "10px",
+                              "margin-right": "10px"
+                            },
+                            attrs: {
+                              id: "targetname",
+                              name: "targetname",
+                              type: "text"
+                            },
+                            domProps: { value: _vm.tempGeoTarget.name },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.tempGeoTarget,
+                                  "name",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "w-100" }),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col mb-2" }, [
+                          _c(
+                            "table",
+                            { staticClass: "table table-borderless mb-0" },
+                            [
+                              _c("thead", { staticClass: "rectangle-header" }, [
+                                _c("tr", [
+                                  _c("th", { attrs: { width: "50%" } }, [
+                                    _vm._v("Zip Code")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("th", { attrs: { width: "50%" } }, [
+                                    _vm._v("Radius")
+                                  ])
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "tbody",
+                                _vm._l(_vm.tempGeoTarget.zipcodes, function(
+                                  zipcode
+                                ) {
+                                  return _c(
+                                    "tr",
+                                    { staticClass: "table-row" },
+                                    [
+                                      _c("td", { staticClass: "px-0 py-0" }, [
+                                        _c("input", {
+                                          directives: [
+                                            {
+                                              name: "model",
+                                              rawName: "v-model",
+                                              value: zipcode.code,
+                                              expression: "zipcode.code"
+                                            }
+                                          ],
+                                          attrs: {
+                                            type: "text",
+                                            name: "code",
+                                            placeholder: "Zip Code"
+                                          },
+                                          domProps: { value: zipcode.code },
+                                          on: {
+                                            input: function($event) {
+                                              if ($event.target.composing) {
+                                                return
+                                              }
+                                              _vm.$set(
+                                                zipcode,
+                                                "code",
+                                                $event.target.value
+                                              )
+                                            }
+                                          }
+                                        })
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("td", { staticClass: "px-0 py-0" }, [
+                                        _c(
+                                          "select",
+                                          {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: zipcode.radius,
+                                                expression: "zipcode.radius"
+                                              }
+                                            ],
+                                            staticClass:
+                                              "form-control form-control-lg",
+                                            attrs: { name: "radius" },
+                                            on: {
+                                              change: function($event) {
+                                                var $$selectedVal = Array.prototype.filter
+                                                  .call(
+                                                    $event.target.options,
+                                                    function(o) {
+                                                      return o.selected
+                                                    }
+                                                  )
+                                                  .map(function(o) {
+                                                    var val =
+                                                      "_value" in o
+                                                        ? o._value
+                                                        : o.value
+                                                    return val
+                                                  })
+                                                _vm.$set(
+                                                  zipcode,
+                                                  "radius",
+                                                  $event.target.multiple
+                                                    ? $$selectedVal
+                                                    : $$selectedVal[0]
+                                                )
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _c(
+                                              "option",
+                                              { attrs: { value: "10" } },
+                                              [_vm._v("10 Miles")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "option",
+                                              { attrs: { value: "20" } },
+                                              [_vm._v("20 Miles")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "option",
+                                              { attrs: { value: "30" } },
+                                              [_vm._v("30 Miles")]
+                                            )
+                                          ]
+                                        )
+                                      ])
+                                    ]
+                                  )
+                                }),
+                                0
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-info btn-circle yellow ml-2",
+                              attrs: { type: "button" },
+                              on: { click: _vm.addGeoZipcode }
+                            },
+                            [_c("i", { staticClass: "fa fa-plus" })]
+                          ),
+                          _vm._v(" "),
+                          _vm.addGeoTargetError
+                            ? _c("div", {
+                                staticClass: "is-invalid ml-2 mt-1 text-danger",
+                                domProps: {
+                                  innerHTML: _vm._s(_vm.addGeoTargetError)
+                                }
+                              })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "save-btn btn-primary mr-2",
+                              staticStyle: { "font-size": "18px" },
+                              attrs: { type: "button" },
+                              on: { click: _vm.saveGeoTarget }
+                            },
+                            [_vm._v("Save\n                            ")]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
+                ])
+              ]
+            )
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-19c70163", module.exports)
   }
 }
 
@@ -36685,12 +39297,20 @@ var render = function() {
                     _c("div", { staticClass: "input-wrap" }, [
                       _c("div", { staticClass: "left-side" }, [
                         _c("label", { attrs: { for: "imageProfile" } }, [
-                          _vm._v("Profile Picture")
+                          _vm._v("Profile Picture")
                         ])
                       ]),
                       _vm._v(" "),
                       _c("div", { staticClass: "right-side" }, [
                         _c("img", {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.showProfilePic,
+                              expression: "showProfilePic"
+                            }
+                          ],
                           staticClass: "logo",
                           attrs: {
                             id: "logo-image",
@@ -36719,7 +39339,7 @@ var render = function() {
                     _c("div", { staticClass: "input-wrap" }, [
                       _c("div", { staticClass: "left-side" }, [
                         _c("label", { attrs: { for: "companyName" } }, [
-                          _vm._v("Company Name")
+                          _vm._v("Full Name")
                         ])
                       ]),
                       _vm._v(" "),
@@ -36941,7 +39561,7 @@ var render = function() {
                           attrs: { id: "hashtags", type: "text" },
                           domProps: { value: _vm.sponsor.hashtags },
                           on: {
-                            keyup: _vm.prepareHashtags,
+                            keyup: _vm.onHashtagChange,
                             input: function($event) {
                               if ($event.target.composing) {
                                 return
@@ -36962,7 +39582,7 @@ var render = function() {
                     _c("div", { staticClass: "input-wrap" }, [
                       _c("div", { staticClass: "left-side" }, [
                         _c("label", { attrs: { for: "companyAddress" } }, [
-                          _vm._v("Company Address")
+                          _vm._v("Company Address")
                         ])
                       ]),
                       _vm._v(" "),
@@ -37063,7 +39683,7 @@ var render = function() {
                     _c("div", { staticClass: "input-wrap" }, [
                       _c("div", { staticClass: "left-side" }, [
                         _c("label", { attrs: { for: "zipCode" } }, [
-                          _vm._v("Zip Code")
+                          _vm._v("Zip Code")
                         ])
                       ]),
                       _vm._v(" "),
@@ -37129,7 +39749,7 @@ var render = function() {
                     _c("div", { staticClass: "input-wrap" }, [
                       _c("div", { staticClass: "left-side" }, [
                         _c("label", { attrs: { for: "companyPhone" } }, [
-                          _vm._v("Company Phone")
+                          _vm._v("Phone")
                         ])
                       ]),
                       _vm._v(" "),
@@ -37964,6 +40584,147 @@ if (false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-373b30c6\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/sponsor/CampaignPage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("sponsor-common", {
+    attrs: { sponsor: _vm.sponsor, activeLink: _vm.navLink },
+    scopedSlots: _vm._u([
+      {
+        key: "setting-content",
+        fn: function() {
+          return [
+            _c("div", { staticClass: "caption" }, [
+              _c("span", { staticClass: "campaign" }, [_vm._v("Campaigns")]),
+              _vm._v(" "),
+              _c("span", { staticClass: "total" }, [
+                _vm._v("Total Logo Uploaded: 19M")
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "table" }, [
+              _c("div", [
+                _c(
+                  "table",
+                  {
+                    staticClass: "table table-striped table-bordered mb-0",
+                    attrs: { id: "campaign-list" }
+                  },
+                  [
+                    _c("thead", { staticClass: "rectangle-header" }, [
+                      _c("tr", [
+                        _c("th", [_vm._v("Campaign Name")]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Logo")]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Logo Budget")]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Status")]),
+                        _vm._v(" "),
+                        _c("th", [_vm._v("Actions")])
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.campaigns, function(campaign) {
+                        return _c("tr", { staticClass: "table-row" }, [
+                          _c("td", [_vm._v(_vm._s(campaign.name))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("img", {
+                              attrs: { src: campaign.logo, width: "50px" }
+                            })
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(campaign.budget))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(campaign.status ? "Acitve" : "Inactive")
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-info btn-circle black",
+                                attrs: { type: "button" }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-pen",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.editCampaign(campaign.id)
+                                    }
+                                  }
+                                })
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-info btn-circle red",
+                                attrs: { type: "button" }
+                              },
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-minus",
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.removeCampaign(campaign.id)
+                                    }
+                                  }
+                                })
+                              ]
+                            )
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "caption" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-info btn-circle yellow",
+                  attrs: { type: "button" },
+                  on: { click: _vm.addCampaign }
+                },
+                [_c("i", { staticClass: "fa fa-plus" })]
+              )
+            ])
+          ]
+        },
+        proxy: true
+      }
+    ])
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-373b30c6", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-3823d3bb\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/sponsor/PaymentHistoryPage.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -38776,9 +41537,14 @@ var render = function() {
   return _c("div", { staticClass: "main-field" }, [
     _c("div", { staticStyle: { width: "100vw" } }, [_c("home-slider")], 1),
     _vm._v(" "),
-    _c("div", { staticClass: "placeholder-text default-text-style" }, [
-      _vm._v("Technology x Design x Sponsorship")
-    ]),
+    _c(
+      "div",
+      {
+        staticClass:
+          "placeholder-text default-text-style section-carousel-main-text"
+      },
+      [_vm._v("Technology x Design x Sponsorship")]
+    ),
     _vm._v(" "),
     _vm._m(0),
     _vm._v(" "),
@@ -39203,9 +41969,11 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(history.TransactionDate))]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(history.Amount))]),
+            _c("td", [
+              _vm._v("$" + _vm._s(_vm._f("formatPrice")(history.Amount)))
+            ]),
             _vm._v(" "),
-            _c("td", [_vm._v(_vm._s(history.Status))])
+            _c("td", [_vm._v(_vm._s(_vm._f("capitalize")(history.Status)))])
           ])
         }),
         0
@@ -39220,15 +41988,15 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "rectangle-header" }, [
       _c("tr", [
-        _c("th", [_vm._v("Credit Card Number")]),
+        _c("th", { staticClass: "label" }, [_vm._v("Credit Card Number")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Billed Month")]),
+        _c("th", { staticClass: "label" }, [_vm._v("Billed Month")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Paid On")]),
+        _c("th", { staticClass: "label" }, [_vm._v("Paid On")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Amount Paid")]),
+        _c("th", { staticClass: "label" }, [_vm._v("Amount Paid")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Status")])
+        _c("th", { staticClass: "label" }, [_vm._v("Status")])
       ])
     ])
   }
@@ -42329,7 +45097,7 @@ var render = function() {
               attrs: { type: "text", name: "input-name" },
               domProps: { value: _vm.sponsor.hashtags },
               on: {
-                change: _vm.prepareHashtags,
+                keyup: _vm.onHashtagChange,
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -44103,6 +46871,31 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-d5ddfbd8", module.exports)
+  }
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-eb199084\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/common/components/Hashtag.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("input", {
+    ref: "hashtag",
+    attrs: { type: "text" },
+    on: { keyup: _vm.prepareHashtags }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-eb199084", module.exports)
   }
 }
 
@@ -52272,6 +55065,60 @@ if(false) {
 
 /***/ }),
 
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignEdit.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignEdit.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("273922ff", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./CampaignEdit.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./CampaignEdit.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-19c70163\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/AddCampaign.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-19c70163\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/AddCampaign.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("4dbd73de", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-19c70163\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddCampaign.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-19c70163\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AddCampaign.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
 /***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-19fddf5d\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/profile/SideBar.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -52326,23 +55173,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Cart.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Cart.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Cart.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Cart.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("27bde284", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("4a901c69", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Cart.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Cart.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Cart.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Cart.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -52353,23 +55200,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Confirmation.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Confirmation.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Confirmation.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Confirmation.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("060d730c", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("64bf03a1", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Confirmation.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Confirmation.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Confirmation.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Confirmation.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -52380,23 +55227,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/design/Design.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/design/Design.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/design/Design.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/design/Design.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("83b44f32", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("337c976a", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Design.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Design.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Design.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Design.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -52461,23 +55308,50 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Slider.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Slider.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Slider.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Slider.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("6cfc030b", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("148918a4", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Slider.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Slider.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Slider.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Slider.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-373b30c6\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignPage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-373b30c6\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignPage.vue");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("f5d0896e", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-373b30c6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./CampaignPage.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-373b30c6\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./CampaignPage.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -52569,23 +55443,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/apparel/Product.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/apparel/Product.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/apparel/Product.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/apparel/Product.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("bd75b77c", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("404f6caf", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Product.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Product.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Product.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Product.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -52596,23 +55470,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("61a91774", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("354b5d89", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -52812,23 +55686,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Product.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Product.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Product.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Product.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("3afc9fe8", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("5d556b56", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Product.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Product.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Product.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Product.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -52893,23 +55767,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/common/Header.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/common/Header.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/common/Header.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/common/Header.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("b85dcde2", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("66231570", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Header.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Header.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Header.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Header.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -52920,23 +55794,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Review.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Review.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Review.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Review.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("4a7d0794", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("8a86cc12", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Review.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Review.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Review.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Review.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -66575,6 +69449,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('sponsor-show', __webpack_
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('sponsor-detail-page', __webpack_require__("./resources/js/pages/sponsor/SponsorDetailPage.vue"));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('sponsor-edit-page', __webpack_require__("./resources/js/pages/sponsor/SponsorEditPage.vue"));
 
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('campaign-page', __webpack_require__("./resources/js/pages/sponsor/CampaignPage.vue"));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('add-campaign', __webpack_require__("./resources/js/pages/sponsor/AddCampaign.vue"));
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('campaign-edit', __webpack_require__("./resources/js/pages/sponsor/CampaignEdit.vue"));
+
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('payment-history-list', __webpack_require__("./resources/js/pages/sponsor/PaymentHistoryList.vue"));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('payment-history-page', __webpack_require__("./resources/js/pages/sponsor/PaymentHistoryPage.vue"));
 
@@ -66615,6 +69493,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('cart', __webpack_require_
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('Design', __webpack_require__("./resources/js/pages/design/Design.vue"));
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('Apparel', __webpack_require__("./resources/js/pages/apparel/Product.vue"));
+
+// common component
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('hash-tag', __webpack_require__("./resources/js/pages/common/components/Hashtag.vue"));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -66715,7 +69596,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('modal-test', function (re
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/apparel/Product.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4a447820\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/apparel/Product.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
@@ -67223,7 +70104,7 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Cart.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1bbde236\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Cart.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
@@ -67275,7 +70156,7 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Confirmation.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1d9002cb\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Confirmation.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
@@ -67327,7 +70208,7 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Product.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-6eddf2c9\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Product.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
@@ -67379,7 +70260,7 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Review.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c965aee\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/cart/Review.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
@@ -67783,7 +70664,7 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/common/Header.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7abe1f90\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/common/Header.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
@@ -67818,6 +70699,54 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-7abe1f90", Component.options)
   } else {
     hotAPI.reload("data-v-7abe1f90", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/pages/common/components/Hashtag.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./node_modules/vue-loader/lib/selector.js?type=script&index=0!./resources/js/pages/common/components/Hashtag.vue")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-eb199084\",\"hasScoped\":false,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/common/components/Hashtag.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/pages/common/components/Hashtag.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-eb199084", Component.options)
+  } else {
+    hotAPI.reload("data-v-eb199084", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -67887,7 +70816,7 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/design/Design.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-28e5b594\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/design/Design.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
@@ -68231,7 +71160,7 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
@@ -68283,7 +71212,7 @@ module.exports = Component.exports
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Slider.vue")
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-2efc38d8\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Slider.vue")
 }
 var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
 /* script */
@@ -68866,6 +71795,162 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-19fddf5d", Component.options)
   } else {
     hotAPI.reload("data-v-19fddf5d", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/pages/sponsor/AddCampaign.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-19c70163\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/AddCampaign.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./resources/js/pages/sponsor/AddCampaign.js")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-19c70163\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/sponsor/AddCampaign.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-19c70163"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/pages/sponsor/AddCampaign.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-19c70163", Component.options)
+  } else {
+    hotAPI.reload("data-v-19c70163", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/pages/sponsor/CampaignEdit.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignEdit.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./resources/js/pages/sponsor/CampaignEdit.js")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-10a53d98\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/sponsor/CampaignEdit.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-10a53d98"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/pages/sponsor/CampaignEdit.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-10a53d98", Component.options)
+  } else {
+    hotAPI.reload("data-v-10a53d98", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ "./resources/js/pages/sponsor/CampaignPage.vue":
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-373b30c6\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignPage.vue")
+}
+var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
+/* script */
+var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./resources/js/pages/sponsor/CampaignPage.js")
+/* template */
+var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-373b30c6\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/sponsor/CampaignPage.vue")
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-373b30c6"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/pages/sponsor/CampaignPage.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-373b30c6", Component.options)
+  } else {
+    hotAPI.reload("data-v-373b30c6", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
