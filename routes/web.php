@@ -80,9 +80,12 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/sponsors/{id}/payment/history', 'PaymentController@paymentHistoryShow');
     Route::put('/sponsors/{id}/profile/updateCover', 'SponsorController@updateCover');
 
-    Route::get('/sponsors/{id}/campaign/list', 'CampaignController@list');
+    Route::get('/sponsors/{id}/campaign/list', 'CampaignController@index');
+    Route::get('/sponsors/{id}/campaign/list-json', 'CampaignController@list');
     Route::get('/sponsors/{id}/campaign/create', 'CampaignController@create');
+    Route::get('/sponsors/{id}/campaign/{campaignId}/edit', 'CampaignController@edit');
     Route::post('/sponsors/{id}/campaign/save', 'CampaignController@createOrUpdate');
+    Route::delete('/campaign/{id}', 'CampaignController@destroy');
 
 });
 

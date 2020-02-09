@@ -5,9 +5,6 @@ export default {
             navLink: 'Campaigns',
             defaultLogo: "/img/profile/profile-fit.png",
             logo: null,
-            campaign: {
-                geoTargets: [],
-            },
             tempGeoTarget: {},
             addGeoTargetError: '',
             displayGeoEditIndex: '',
@@ -61,7 +58,15 @@ export default {
         };
     },
     props: {
+        campaignId: {
+            type: [Object, String],
+            require: true
+        },
         sponsor: {
+            type: Object,
+            require: true
+        },
+        campaign: {
             type: Object,
             require: true
         }
@@ -74,7 +79,14 @@ export default {
     mounted: function () {
         this.initValidation();
     },
+
     methods: {
+        // getCampaign: function(campaignId) {
+        //     axios.get('/sponsors/' + this.sponsor.id + '/campaign/' + this.campaignId)
+        //     .then((response) => {
+        //         this.campaign = response.campaign;
+        //     })
+        // },
         initValidation: function () {
             $('#validation-form').validate({
                 rules: {
@@ -118,6 +130,7 @@ export default {
             formData.append('budget', this.campaign.budget);
             formData.append('sponsor_id', this.sponsor.id);
             formData.append('status', this.campaign.status ? 1 : 0);
+            formData.append('id', this.campaign.id);
 
             if (this.campaign.logo) {
                 formData.append("logo_url", this.campaign.logo);
