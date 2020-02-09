@@ -142,7 +142,7 @@
         .image-wrapper {
             height: 431px;
             width: 100%;
-            margin-bottom: 59px;
+            margin-bottom: 29px;
             position: relative;
         }
 
