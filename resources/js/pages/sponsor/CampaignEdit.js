@@ -82,7 +82,7 @@ export default {
 
     methods: {
         // getCampaign: function(campaignId) {
-        //     axios.get('/sponsors/' + this.sponsor.id + '/campaign/' + this.campaignId)
+        //     axios.get('/sponsor/' + this.sponsor.id + '/campaign/' + this.campaignId)
         //     .then((response) => {
         //         this.campaign = response.campaign;
         //     })
@@ -146,13 +146,13 @@ export default {
             });
 
             axios
-                .post(`/sponsors/${this.sponsor.id}/campaign/save`, formData, {
+                .post(`/sponsor/${this.sponsor.id}/campaign/save`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
                 .then(response => {
-                    window.location.href = `/sponsors/${this.sponsor.id}/campaign/list`;
+                    window.location.href = `/sponsor/${this.sponsor.id}/campaign`;
                 })
                 .catch(error => {
                     console.log(error.response.data.errors);

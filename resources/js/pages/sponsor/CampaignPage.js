@@ -18,17 +18,17 @@ export default {
 
     methods: {
         getCampaigns: function() {
-            axios.get('/sponsors/' + this.sponsor.id + '/campaign/list-json')
+            axios.get('/sponsor/' + this.sponsor.id + '/campaign/list-json')
             .then((response) => {
                 this.campaigns = response.campaigns;
                 $('#campaign-list').unblock();
             });
         },
         addCampaign() {
-            window.location.href = `/sponsors/${this.sponsor.id}/campaign/create`;
+            window.location.href = `/sponsor/${this.sponsor.id}/campaign/create`;
         },
         editCampaign: function(campaignId) {
-            window.location.href = `/sponsors/${this.sponsor.id}/campaign/${campaignId}/edit`;
+            window.location.href = `/sponsor/${this.sponsor.id}/campaign/${campaignId}/edit`;
         },
         removeCampaign: function(campaignId) {
             var self = this;

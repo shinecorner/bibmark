@@ -24,13 +24,13 @@
         data() {
             return {
                 navLinks: [
-                    {text: "Edit Profile", isActive: false, url: "/sponsors/{0}/profile/edit"},
+                    {text: "Edit Profile", isActive: false, url: "/sponsor/{0}/profile/edit"},
                     {text: "Manage Team", isActive: false, url: ""},
-                    {text: "Campaigns", isActive: false, url: "/sponsors/{0}/campaign/list"},
+                    {text: "Campaigns", isActive: false, url: "/sponsor/{0}/campaign"},
                     {text: "Order Gallery", isActive: false, url: ""},
                     {text: "Reports", isActive: false, url: ""},
                     {text: "Payment Information", isActive: false, url: ""},
-                    {text: "Payment History", isActive: false, url: "/sponsors/{0}/payment/history"}
+                    {text: "Payment History", isActive: false, url: "/sponsor/{0}/payment/history"}
                 ],
                 logo: null,
                 defaultLogo: "/img/profile/profile-fit.png",
@@ -74,7 +74,7 @@
                     formData.append("cover", this.cover);
                     formData.append("_method", "put");
                     axios
-                        .post(`/sponsors/${window.sponsor_id}/profile/updateCover`, formData, {
+                        .post(`/sponsor/${window.sponsor_id}/profile/updateCover`, formData, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
@@ -145,7 +145,7 @@
             }
         }
         .nav-links {
-            padding: 0 15px 67px 28px;
+            padding: 0 15px 67px 95px;
             display: -webkit-flex;
             display: -moz-flex;
             display: -ms-flex;
@@ -340,6 +340,7 @@
             background-color: #ffc600;
             width: 100%;
             height: 100%;
+            object-fit: cover;
             display: block;
         }
         .input-wrap {
@@ -360,7 +361,7 @@
             color: #444444;
             width: 100px;
             height: 35px;
-            background-color: white;
+            background-color: #ffe100;
             border-radius: 3px;
             border: 1px solid  #f2f2f2;
             font-weight: normal;

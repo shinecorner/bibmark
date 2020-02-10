@@ -220,7 +220,7 @@
                     formData.append("email", this.sponsor.email);
                 }
                 axios
-                    .post(`/sponsors/${this.sponsor.id}/profile/edit`, formData, {
+                    .post(`/sponsor/${this.sponsor.id}/profile/edit`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
@@ -247,7 +247,7 @@
             color: #444444;
             width: 132px;
             height: 33px;
-            background-color: white;
+            background-color: #ffe100;
             border-radius: 3px;
             border: 1px solid black;
             font-weight: bold;
