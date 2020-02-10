@@ -38,7 +38,7 @@ export default {
                 callback: function(result) {
                     if (result) {
                         $('#campaign-list').block({
-                            message: '<div class="sk-wave sk-primary"><div class="sk-rect sk-rect1"></div> <div class="sk-rect sk-rect2"></div> <div class="sk-rect sk-rect3"></div> <div class="sk-rect sk-rect4"></div> <div class="sk-rect sk-rect5"></div></div>',
+                            message: '<div class="sk-wave sk-primary"><div class="sk-rect-fix sk-rect1"></div> <div class="sk-rect-fix sk-rect2"></div> <div class="sk-rect-fix sk-rect3"></div> <div class="sk-rect-fix sk-rect4"></div> <div class="sk-rect-fix sk-rect5"></div></div>',
                             css: {
                                 backgroundColor: 'transparent',
                                 border: '0'
