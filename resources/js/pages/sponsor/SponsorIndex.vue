@@ -4,7 +4,7 @@
             <div class="container-fluid1" style="background: #ffffff">
                 <div class="d-flex" id="wrapper">
                     <!-- Sidebar -->
-                    <SideBar></SideBar>
+                    <SideBar :sponsor="sponsor"></SideBar>
                     <!-- /#sidebar-wrapper -->
 
                     <!-- Page Content -->
@@ -18,8 +18,8 @@
                                                 <div class="box image">
                                                     <div class="box-header">
                                                         <h3>
-                                                            <a href=""><img src="/img/starbuck_logo.png" alt="">
-                                                                Starbucks
+                                                            <a href=""><img :src="sponsor.logo" alt="">
+                                                                {{sponsor.name}}
                                                             </a>
                                                             <span class="summary">add an <a>event</a></span>
                                                             <span>March 21,18:45pm <i
@@ -58,8 +58,8 @@
                                             <div class="box image">
                                                 <div class="box-header">
                                                     <h3>
-                                                        <a href=""><img src="/img/starbuck_logo.png" alt="" >
-                                                            Starbucks
+                                                        <a href=""><img :src="sponsor.logo" alt="">
+                                                            {{sponsor.name}}
                                                         </a>
                                                         <span class="summary">add an <a>event</a></span>
                                                         <span>March 21,18:45pm <i

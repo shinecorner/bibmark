@@ -4,20 +4,20 @@
             <!-- SIDEBAR USERPIC -->
             <div class="avatar">
                 <div class="avatar-upload">
-                    <img src=" /img/starbuck_logo.png"
+                    <img :src="sponsor.logo"
                          class="img-responsive center profile_icon"
                          width="150"
                          alt="">
                 </div>
             </div>
             <div class="profile-content">
-                <span class="sponsor-name">Starbucks Coffee</span>
-                <p class="sponsor-description" >Inspiring and nurturing the human spirit—one person, one cup, one neighborhood at a time. </p>
-                <span class="sponsor-link">www.starbucks.com</span>
+                <span class="sponsor-name">{{sponsor.name}}</span>
+                <p class="sponsor-description" >{{sponsor.bio}}</p>
+                <span class="sponsor-link">{{sponsor.website}}</span>
                 <div class="sponsor-social-icons">
-                    <i class="fab fa-instagram"></i>
-                    <i class="fab fa-facebook-square"></i>
-                    <i class="fab fa-twitter"></i>
+                    <a v-if="sponsor.instagram" :href="sponsor.instagram"><i class="fab fa-instagram"></i></a>
+                    <a v-if="sponsor.facebook" :href="sponsor.facebook"><i class="fab fa-facebook-square"></i></a>
+                    <a v-if="sponsor.twitter" :href="sponsor.fa-twitter"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>
             <!-- END MENU -->
@@ -28,6 +28,10 @@
 <script>
     export default {
         name: "SideBar",
+        props: {
+            sponsor: {
+            }
+        },
         data() {
             return {};
         },
