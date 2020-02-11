@@ -6,12 +6,12 @@
                 <div class="avatar-upload">
                     <img :src="sponsor.logo"
                          class="img-responsive center profile_icon"
-                         width="150"
+                         width="200"
                          alt="">
                 </div>
             </div>
             <div class="profile-content">
-                <span class="sponsor-name">{{sponsor.name}}</span>
+                <div class="w-100 text-center"><span class="sponsor-name">{{sponsor.name}}</span></div>
                 <p class="sponsor-description" >{{sponsor.bio}}</p>
                 <span class="sponsor-link">{{sponsor.website}}</span>
                 <div class="sponsor-social-icons">
@@ -95,6 +95,8 @@
     /* Profile Content */
     .profile-content {
         margin-top: 20px;
+        margin-left: auto;
+        margin-right: auto;
         background: #fff;
         min-height: 460px;
         width: 180px;
@@ -245,19 +247,27 @@
 
     .sponsor-description {
         font-family: $font-family-helvetica-neue;
-        font-size: 13px;
-        font-weight: normal;
+        font-size: 11px;
+        font-weight: 100 !important;
         margin-top: 5px;
+        text-align: left;
+        margin-bottom: 5px;
     }
 
     .sponsor-link {
         font-family: $font-family-helvetica-neue;
-        font-size: 13px;
-        font-weight: 300;
+        font-size: 11px;
+        font-weight: 100 !important;
         margin-top: 20px;
+        color: grey;
     }
 
     .sponsor-social-icons i {
         margin-right: 5px;
+        color: black;
+    }
+
+    .sponsor-social-icons a {
+        color: black;
     }
 </style>
