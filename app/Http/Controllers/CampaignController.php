@@ -52,7 +52,7 @@ class CampaignController extends Controller
         $sponsor = Sponsor::find($id);
         return view('front.add-campaign')->with([
             'id' => $id,
-            'sponsor' => $sponsor,
+            'sponsor' => $sponsor
         ]);
     }
 
@@ -69,7 +69,7 @@ class CampaignController extends Controller
     }
 
     public function createOrUpdate(CreateOrUpdateCampaignRequest $request, CampaignService $campaignService){
-        if (!empty($request['logo_url'])) {
+        if (!empty($request['logo_url']) && !is_string($request['logo_url'])) {
             $request['logo'] = $this->extraService->uploadImage(
                 [
                     'image' => $request['logo_url'],
