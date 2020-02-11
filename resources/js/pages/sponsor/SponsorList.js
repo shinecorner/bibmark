@@ -15,7 +15,7 @@ export default {
         });
     },
     watch: {
-        
+
     },
     methods: {
         getSponsors: function(callback) {
@@ -33,7 +33,7 @@ export default {
                                 sponsor.background_image,
                                 sponsor.balance,
                                 sponsor.budget,
-                                moment(sponsor.created_at.date).format('YYYY-MM-DD'),
+                                sponsor.created_at ? moment(sponsor.created_at.date).format('YYYY-MM-DD') : null,
                                 '',
                             ]);
                         });
@@ -52,7 +52,7 @@ export default {
                 "createdRow": function(row, data, index) {
                     var isRtl = $('body').attr('dir') === 'rtl' || $('html').attr('dir') === 'rtl';
                     $('td', row).eq(1).html('').append(
-                        '<a href="sponsors/' + data[0] + '">' + data[1] + '</a>'
+                        '<a href="sponsor/' + data[0] + '">' + data[1] + '</a>'
                     );
                     if (data[2]) {
                         $('td', row).eq(2).html('').append(
@@ -65,11 +65,11 @@ export default {
                         );
                     }
                     $('td', row).eq(7).addClass('text-center text-nowrap').html('').append(
-                    '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'sponsors/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
+                    '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'sponsor/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
                     '<div class="btn-group">' +
                         '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat dropdown-toggle hide-arrow user-tooltip" title="Actions" data-toggle="dropdown"><i class="ion ion-ios-settings"></i></button>' +
                         '<div class="dropdown-menu' + (isRtl ? '' : ' dropdown-menu-right') + '">' +
-                        '<a class="dropdown-item" href="sponsors/' + data[0] + '">View sponsor</a>' +
+                        '<a class="dropdown-item" href="sponsor/' + data[0] + '">View sponsor</a>' +
                         '<a class="dropdown-item btn-remove" href="javascript:void(0)" data="' + data[0] + '">Remove</a>' +
                         '</div>' +
                     '</div>'

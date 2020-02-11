@@ -51,7 +51,7 @@ export default {
                                 user.name,
                                 user.email,
                                 user.phone,
-                                moment(user.created_at.date).format('YYYY-MM-DD'),
+                                user.created_at ? moment(user.created_at.date).format('YYYY-MM-DD') : null,
                                 '',
                             ]);
                         });
@@ -101,7 +101,7 @@ export default {
                                 user.name,
                                 user.email,
                                 user.phone,
-                                moment(user.created_at.date).format('YYYY-MM-DD'),
+                                user.created_at ? moment(user.created_at.date).format('YYYY-MM-DD') : null,
                                 '',
                             ]);
                         });

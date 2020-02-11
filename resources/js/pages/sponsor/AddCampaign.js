@@ -133,13 +133,13 @@ export default {
             });
 
             axios
-                .post(`/sponsors/${this.sponsor.id}/campaign/save`, formData, {
+                .post(`/sponsor/${this.sponsor.id}/campaign/save`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
                 .then(response => {
-                    window.location.href = `/sponsors/${this.sponsor.id}/campaign/list`;
+                    window.location.href = `/sponsor/${this.sponsor.id}/campaign`;
                 })
                 .catch(error => {
                     console.log(error.response.data.errors);
