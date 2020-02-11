@@ -71,8 +71,10 @@ Route::middleware(['auth'])->group(function() {
 
     // Design
     Route::get('/design', 'DesignController@index');
+
     // charities
     Route::get('/charities', 'DesignController@getCharities');
+
     // Sponsors
     Route::get('/sponsors', 'DesignController@getSponsors');
     Route::get('/sponsors/{id}', 'SponsorController@index');

@@ -5,9 +5,6 @@ export default {
             navLink: 'Campaigns',
             defaultLogo: "/img/profile/profile-fit.png",
             logo: null,
-            campaign: {
-                geoTargets: [],
-            },
             tempGeoTarget: {},
             addGeoTargetError: '',
             displayGeoEditIndex: '',
@@ -61,26 +58,53 @@ export default {
         };
     },
     props: {
+        campaignId: {
+            type: [Object, String],
+            require: true
+        },
         sponsor: {
+            type: Object,
+            require: true
+        },
+        campaign: {
             type: Object,
             require: true
         }
     },
     computed: {
         logoUrl() {
-            return this.campaign.logo ? this.campaign.logo : this.defaultLogo
+            return (this.campaign.logo && (typeof this.campaign.logo === 'string')) ? this.campaign.logo : this.defaultLogo
         },
+    },
+    beforeMount: function() {
+        if(this.campaign == null) {
+            this.campaign = {budget: 0};
+        }
     },
     mounted: function () {
         this.initValidation();
     },
     methods: {
         initValidation: function () {
+            $.validator.addMethod(
+                "numberIfNotNull", 
+                function(value, elm) {
+                    if(value) {
+                        return !isNaN(value);
+                    } else {
+                        return true;
+                    }
+                },
+                "Budget has to be a Number"
+            );
             $('#validation-form').validate({
                 rules: {
                     'name': {
                         required: true
                     },
+                    'budget': {
+                        numberIfNotNull: true
+                    }
                 },
                 errorPlacement: function errorPlacement(error, element) {
                     var $parent = $(element).parents('.add-input-group');
@@ -115,9 +139,12 @@ export default {
 
             let formData = new FormData();
             formData.append('name', this.campaign.name);
-            formData.append('budget', this.campaign.budget);
+            formData.append('budget', this.campaign.budget ? this.campaign.budget : 0);
             formData.append('sponsor_id', this.sponsor.id);
             formData.append('status', this.campaign.status ? 1 : 0);
+            if(this.campaign.id) {
+                formData.append('id', this.campaign.id);
+            }
 
             if (this.campaign.logo) {
                 formData.append("logo_url", this.campaign.logo);
@@ -133,13 +160,13 @@ export default {
             });
 
             axios
-                .post(`/sponsors/${this.sponsor.id}/campaign/save`, formData, {
+                .post(`/sponsor/${this.sponsor.id}/campaign/save`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 })
                 .then(response => {
-                    window.location.href = `/sponsors/${this.sponsor.id}/campaign/list`;
+                    window.location.href = `/sponsor/${this.sponsor.id}/campaign`;
                 })
                 .catch(error => {
                     console.log(error.response.data.errors);
