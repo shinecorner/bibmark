@@ -96,6 +96,7 @@
                     axios.patch('/profile/'+ this.user.id, data).then(response => {
                         console.log(response.data.message);
                         this.$toastr('success', response.data.message, 'Success')
+                        window.location.reload();
                     }).catch(error => {
                         this.$toastr('error', 'An error occured, please try again', 'Error')
                     });

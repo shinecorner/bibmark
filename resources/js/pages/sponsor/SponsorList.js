@@ -33,7 +33,7 @@ export default {
                                 sponsor.background_image,
                                 sponsor.balance,
                                 sponsor.budget,
-                                moment(sponsor.created_at.date).format('YYYY-MM-DD'),
+                                sponsor.created_at ? moment(sponsor.created_at.date).format('YYYY-MM-DD') : null,
                                 '',
                             ]);
                         });
