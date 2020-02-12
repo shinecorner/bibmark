@@ -76,18 +76,17 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/charities', 'DesignController@getCharities');
 
     // Sponsors
-    Route::get('/sponsors', 'DesignController@getSponsors');
-    Route::get('/sponsors/{id}', 'SponsorController@index');
-    Route::get('/sponsors/{id}/profile/edit', 'SponsorController@show');
-    Route::put('/sponsors/{id}/profile/edit', 'SponsorController@update');
-    Route::get('/sponsors/{id}/payment/history', 'PaymentController@paymentHistoryShow');
-    Route::put('/sponsors/{id}/profile/updateCover', 'SponsorController@updateCover');
-
-    Route::get('/sponsors/{id}/campaign/list', 'CampaignController@index');
-    Route::get('/sponsors/{id}/campaign/list-json', 'CampaignController@list');
-    Route::get('/sponsors/{id}/campaign/create', 'CampaignController@create');
-    Route::get('/sponsors/{id}/campaign/{campaignId}/edit', 'CampaignController@edit');
-    Route::post('/sponsors/{id}/campaign/save', 'CampaignController@createOrUpdate');
+    Route::get('/sponsor', 'DesignController@getSponsors');
+    Route::get('/sponsor/{id}', 'SponsorController@index');
+    Route::get('/sponsor/{id}/profile/edit', 'SponsorController@show');
+    Route::put('/sponsor/{id}/profile/edit', 'SponsorController@update');
+    Route::get('/sponsor/{id}/payment/history', 'PaymentController@paymentHistoryShow');
+    Route::put('/sponsor/{id}/profile/updateCover', 'SponsorController@updateCover');
+    Route::get('/sponsor/{id}/campaign', 'CampaignController@index');
+    Route::get('/sponsor/{id}/campaign/list-json', 'CampaignController@list');
+    Route::get('/sponsor/{id}/campaign/create', 'CampaignController@create');
+    Route::get('/sponsor/{id}/campaign/{campaignId}/edit', 'CampaignController@edit');
+    Route::post('/sponsor/{id}/campaign/save', 'CampaignController@createOrUpdate');
     Route::delete('/campaign/{id}', 'CampaignController@destroy');
 
 });
