@@ -9,17 +9,17 @@
             <div class="table">
                 <div>
                     <table id="campaign-list" class="table table-striped table-bordered mb-0">
-                        <thead class="rectangle-header">
-                        <tr>
-                            <th>Campaign Name</th>
-                            <th>Logo</th>
-                            <th>Logo Budget</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
+                        <thead class="rectangle-header bg-yellow">
+                            <tr>
+                                <th>Campaign Name</th>
+                                <th>Logo</th>
+                                <th>Logo Budget</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr class="table-row" v-for="campaign in campaigns">
+                        <tr class="table-row" v-for="campaign in finalCampaigns">
                             <td>{{campaign.name}}</td>
                             <td><img :src="campaign.logo" width="50px"></td>
                             <td>{{campaign.budget}}</td>
@@ -37,7 +37,7 @@
             </div>
             <div class="caption">
                 <button @click='addCampaign' type="button"
-                        class="btn btn-info btn-circle yellow"><i
+                        class="btn btn-info btn-circle bg-yellow"><i
                     class="fa fa-plus"></i></button>
             </div>
         </template>
@@ -64,7 +64,7 @@
         font-size: 25px;
         font-family: HelveticaNeue, sans-serif;
         font-weight: bold;
-        color: #ffc600;
+        color: #000000;
     }
 
     .total {
@@ -77,7 +77,6 @@
     }
 
     .rectangle-header {
-        background-color: #ffc600;
         font-family: HelveticaNeue;
         font-size: 22px;
         font-weight: 500;

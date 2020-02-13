@@ -59,7 +59,7 @@
 }
 
 .btn-primary {
-    background-color: #ffc600 !important;
+    background-color: #1e70cd !important;
 }
 
 .button-caption {
@@ -196,4 +196,27 @@ input:checked + .toggle-slider:before {
 // Modal
 .radius-modal {
     border-radius: 20px 0 20px 20px !important;
+}
+
+.bg-yellow {
+    background: $line-yellow;
+    &.btn {
+        &:hover, &:active {
+            background-color: $line-yellow;
+        }
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}
+
+.text-yellow {
+    color: $line-yellow;
+}
+
+.sk-yellow {
+    .sk-rect-fix {
+        background-color: $line-yellow;
+    }
 }

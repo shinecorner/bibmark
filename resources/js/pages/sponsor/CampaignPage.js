@@ -2,7 +2,8 @@ export default {
 
     data() {
         return {
-            navLink: 'Campaigns'
+            navLink: 'Campaigns',
+            finalCampaigns: []
         };
     },
     props: {
@@ -15,12 +16,15 @@ export default {
             require: true
         }
     },
+    created() {
+       this.finalCampaigns = this.campaigns;
+    },
 
     methods: {
         getCampaigns: function() {
             axios.get('/sponsor/' + this.sponsor.id + '/campaign/list-json')
             .then((response) => {
-                this.campaigns = response.campaigns;
+                this.finalCampaigns = response.data.campaigns;
                 $('#campaign-list').unblock();
             });
         },
@@ -35,10 +39,20 @@ export default {
             bootbox.confirm({
                 message: 'Are you sure remove this campaign?',
                 className: 'bootbox-sm',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'bg-yellow'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn'
+                    }
+                },
                 callback: function(result) {
                     if (result) {
                         $('#campaign-list').block({
-                            message: '<div class="sk-wave sk-primary"><div class="sk-rect-fix sk-rect1"></div> <div class="sk-rect-fix sk-rect2"></div> <div class="sk-rect-fix sk-rect3"></div> <div class="sk-rect-fix sk-rect4"></div> <div class="sk-rect-fix sk-rect5"></div></div>',
+                            message: '<div class="sk-wave sk-yellow"><div class="sk-rect-fix sk-rect1"></div> <div class="sk-rect-fix sk-rect2"></div> <div class="sk-rect-fix sk-rect3"></div> <div class="sk-rect-fix sk-rect4"></div> <div class="sk-rect-fix sk-rect5"></div></div>',
                             css: {
                                 backgroundColor: 'transparent',
                                 border: '0'

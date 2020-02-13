@@ -193,7 +193,7 @@
             color: #444444;
 
             &.active {
-                color: #ffc600;
+                color: $line-yellow;
                 font-weight: bold;
             }
         }

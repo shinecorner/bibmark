@@ -17,24 +17,24 @@ export default {
             ],
             excludeCompanies: [],
             mockupCompanies: [
-                {id : 1, logo: '/img/companies/cocacola.png'},
-                {id : 2, logo: '/img/companies/cocacola.png'},
-                {id : 3, logo: '/img/companies/cocacola.png'},
-                {id : 4, logo: '/img/companies/cocacola.png'},
-                {id : 5, logo: '/img/companies/cocacola.png'},
-                {id : 6, logo: '/img/companies/cocacola.png'},
-                {id : 1, logo: '/img/companies/cocacola.png'},
-                {id : 2, logo: '/img/companies/cocacola.png'},
-                {id : 3, logo: '/img/companies/cocacola.png'},
-                {id : 4, logo: '/img/companies/cocacola.png'},
-                {id : 5, logo: '/img/companies/cocacola.png'},
-                {id : 6, logo: '/img/companies/cocacola.png'},
-                {id : 1, logo: '/img/companies/cocacola.png'},
-                {id : 2, logo: '/img/companies/cocacola.png'},
-                {id : 3, logo: '/img/companies/cocacola.png'},
-                {id : 4, logo: '/img/companies/cocacola.png'},
-                {id : 5, logo: '/img/companies/cocacola.png'},
-                {id : 6, logo: '/img/companies/cocacola.png'},
+                {id: 1, logo: '/img/companies/cocacola.png'},
+                {id: 2, logo: '/img/companies/cocacola.png'},
+                {id: 3, logo: '/img/companies/cocacola.png'},
+                {id: 4, logo: '/img/companies/cocacola.png'},
+                {id: 5, logo: '/img/companies/cocacola.png'},
+                {id: 6, logo: '/img/companies/cocacola.png'},
+                {id: 1, logo: '/img/companies/cocacola.png'},
+                {id: 2, logo: '/img/companies/cocacola.png'},
+                {id: 3, logo: '/img/companies/cocacola.png'},
+                {id: 4, logo: '/img/companies/cocacola.png'},
+                {id: 5, logo: '/img/companies/cocacola.png'},
+                {id: 6, logo: '/img/companies/cocacola.png'},
+                {id: 1, logo: '/img/companies/cocacola.png'},
+                {id: 2, logo: '/img/companies/cocacola.png'},
+                {id: 3, logo: '/img/companies/cocacola.png'},
+                {id: 4, logo: '/img/companies/cocacola.png'},
+                {id: 5, logo: '/img/companies/cocacola.png'},
+                {id: 6, logo: '/img/companies/cocacola.png'},
             ],
             ageRanges: [
                 '14 and under',
@@ -76,8 +76,8 @@ export default {
             return (this.campaign.logo && (typeof this.campaign.logo === 'string')) ? this.campaign.logo : this.defaultLogo
         },
     },
-    beforeMount: function() {
-        if(this.campaign == null) {
+    beforeMount: function () {
+        if (this.campaign == null) {
             this.campaign = {budget: 0};
         }
     },
@@ -87,9 +87,9 @@ export default {
     methods: {
         initValidation: function () {
             $.validator.addMethod(
-                "numberIfNotNull", 
-                function(value, elm) {
-                    if(value) {
+                "numberIfNotNull",
+                function (value, elm) {
+                    if (value) {
                         return !isNaN(value);
                     } else {
                         return true;
@@ -142,7 +142,7 @@ export default {
             formData.append('budget', this.campaign.budget ? this.campaign.budget : 0);
             formData.append('sponsor_id', this.sponsor.id);
             formData.append('status', this.campaign.status ? 1 : 0);
-            if(this.campaign.id) {
+            if (this.campaign.id) {
                 formData.append('id', this.campaign.id);
             }
 
@@ -194,7 +194,7 @@ export default {
             this.addGeoTargetError = '';
             let isValid = true;
 
-            if(this.tempGeoTarget.name === '' ){
+            if (this.tempGeoTarget.name === '') {
                 isValid = false;
                 this.addGeoTargetError += 'The target name must be filled. <br/>';
             }
@@ -228,11 +228,33 @@ export default {
         hideButton() {
             this.displayGeoEditIndex = '';
         },
-        addExcludeCompany(company){
+        addExcludeCompany(company) {
             this.excludeCompanies.push(company);
         },
-        removeExcludeCompany(index){
+        removeExcludeCompany(index) {
             this.excludeCompanies.splice(index, 1);
+        },
+        cancel() {
+            const self = this;
+            bootbox.confirm({
+                message: 'Are you sure discard this campaign?',
+                className: 'bootbox-sm bootbox-yellow',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'bg-yellow'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn'
+                    }
+                },
+                callback: function (res) {
+                    if(res) {
+                        window.history.back();
+                    }
+                }
+            });
         }
     }
 }
