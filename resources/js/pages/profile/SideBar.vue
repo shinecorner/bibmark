@@ -223,7 +223,7 @@
     }
 
     .active {
-        border-bottom: solid 2px #ffc600 !important;
+        border-bottom: solid 2px #1e70cd !important;
         padding-bottom: 9px;
         margin-bottom: 3px !important;
         width: fit-content;

@@ -37,7 +37,7 @@
             </div>
             <div class="caption">
                 <button @click='addCampaign' type="button"
-                        class="btn btn-info btn-circle yellow"><i
+                        class="btn btn-info btn-circle button-blue"><i
                     class="fa fa-plus"></i></button>
             </div>
         </template>
@@ -64,7 +64,7 @@
         font-size: 25px;
         font-family: HelveticaNeue, sans-serif;
         font-weight: bold;
-        color: #ffc600;
+        color: #000000;
     }
 
     .total {
@@ -77,7 +77,6 @@
     }
 
     .rectangle-header {
-        background-color: #ffc600;
         font-family: HelveticaNeue;
         font-size: 22px;
         font-weight: 500;

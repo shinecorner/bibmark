@@ -123,7 +123,7 @@
                                     </div>
                                     <div class="w-100"></div>
                                     <div class="col mt-1">
-                                        <button type="button" class="btn btn-info btn-circle yellow"
+                                        <button type="button" class="btn btn-info btn-circle button-blue"
                                                 @click="showAddGeoTargetModal">
                                             <i class="fa fa-plus"></i>
                                         </button>
@@ -198,7 +198,7 @@
                         <div class="input-wrap">
                             <div class="left-side2"></div>
                             <div class="right-side2">
-                                <button class="save-btn btn-primary" type="button" @click.stop="save" style="font-size:18px">Save</button>
+                                <button class="save-btn btn-primary button-blue" type="button" @click.stop="save" style="font-size:18px">Save</button>
                                 <button class="save-btn ml-2 bg-white" type="button" style="font-size:18px" @click="cancel()">Cancel</button>
                             </div>
                         </div>
@@ -254,13 +254,13 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <button type="button" class="btn btn-info btn-circle yellow ml-2"
+                                <button type="button" class="btn btn-info btn-circle button-blue ml-2"
                                         @click="addGeoZipcode">
                                     <i class="fa fa-plus"></i>
                                 </button>
                                 <div v-if="addGeoTargetError" class="is-invalid ml-2 mt-1 text-danger"
                                      v-html="addGeoTargetError"></div>
-                                <button type="button" class="save-btn btn-primary mr-2" @click="saveGeoTarget" style="font-size:18px">Save
+                                <button type="button" class="save-btn btn-primary mr-2 button-blue" @click="saveGeoTarget" style="font-size:18px">Save
                                 </button>
                             </div>
 
@@ -291,7 +291,7 @@
         font-size: 25px;
         font-family: $font-family-helvetica-neue, sans-serif;
         font-weight: bold;
-        color: #ffc600;
+        color: #1e70cd;
     }
 
     .total {
@@ -304,7 +304,6 @@
     }
 
     .rectangle-header {
-        background-color: #ffc600;
         font-family: $font-family-helvetica-neue;
         font-size: 22px;
         font-weight: 500;
