@@ -11,7 +11,7 @@ class InstagramService implements Provisionable
     {
     }
 
-    public function getPosts(string $tag = 'bibmark', array $options = [])
+    public function getPosts(array $tags = ['bibmark'], array $options = [])
     {
         $data = $this->request($tag);
         // https://stackoverflow.com/a/48682863/5442966

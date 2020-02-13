@@ -32,6 +32,8 @@ class SponsorController extends Controller
 
         $tags = explode(',', $sponsor->hashtags);
 
+        dd($tags);
+
         $instagramPosts = [];
 
         foreach ($tags as $tag) {
