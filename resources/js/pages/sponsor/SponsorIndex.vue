@@ -6,54 +6,13 @@
                     <!-- Sidebar -->
                     <SideBar :sponsor="sponsor"></SideBar>
                     <!-- /#sidebar-wrapper -->
-
+                    <!-- {{ instagramPosts }} -->
                     <!-- Page Content -->
                     <div id="page-content-wrapper">
                         <div class="container-fluid">
                             <div class="profile-content">
                                 <div class="row">
-                                    <div class="col-6">
-                                        <div class="row mb-2">
-                                            <div class="event-container col-12">
-                                                <div class="box image">
-                                                    <div class="box-header">
-                                                        <h3>
-                                                            <a href=""><img :src="sponsor.logo" alt="">
-                                                                {{sponsor.name}}
-                                                            </a>
-                                                            <span class="summary">add an <a>event</a></span>
-                                                            <span>March 21,18:45pm <i
-                                                                class="fas fa-globe-americas"></i></span>
-                                                        </h3>
-                                                    </div>
-                                                    <div class="box-content">
-                                                        <div class="bottom">
-                                                            <p>
-                                                                orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                                            </p>
-                                                            <span><span class="fa fa-search-plus"></span></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="box-buttons">
-                                                        <div class="row">
-                                                            <button class="btn"><i class="far fa-comment-alt"></i> <span>123</span></button>
-                                                            <button class="btn"><i class="fas fa-retweet"></i> <span>123</span></button>
-                                                            <button class="btn"><i class="far fa-heart"></i> <span>123</span></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-6 pl-0 pr-1">
-                                                <img src="/img/demo2.png" width="100%"/>
-                                            </div>
-                                            <div class="col-6 pr-0 pl-1">
-                                                <img src="/img/demo2.png" width="100%"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
+                                    <div class="col-4 pb-4" :key = "instagramPost.id" v-for="instagramPost in instagramPosts">
                                         <div class="event-container">
                                             <div class="box image">
                                                 <div class="box-header">
@@ -68,7 +27,7 @@
                                                 </div>
                                                 <div class="box-content">
                                                     <div class="content">
-                                                        <img src="/img/demo-image.png" alt="" width="100%">
+                                                        <img :src="instagramPost.image_url" alt="" width="100%">
                                                     </div>
                                                     <div class="bottom">
                                                     </div>

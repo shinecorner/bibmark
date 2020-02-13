@@ -2387,7 +2387,7 @@ module.exports = function spread(callback) {
 
 
 var bind = __webpack_require__("./node_modules/axios/lib/helpers/bind.js");
-var isBuffer = __webpack_require__("./node_modules/axios/node_modules/is-buffer/index.js");
+var isBuffer = __webpack_require__("./node_modules/is-buffer/index.js");
 
 /*global toString:true*/
 
@@ -2687,24 +2687,6 @@ module.exports = {
   extend: extend,
   trim: trim
 };
-
-
-/***/ }),
-
-/***/ "./node_modules/axios/node_modules/is-buffer/index.js":
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <https://feross.org>
- * @license  MIT
- */
-
-module.exports = function isBuffer (obj) {
-  return obj != null && obj.constructor != null &&
-    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
 
 
 /***/ }),
@@ -5966,6 +5948,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     axios.patch('/profile/' + _this.user.id, data).then(function (response) {
                         console.log(response.data.message);
                         _this.$toastr('success', response.data.message, 'Success');
+                        window.location.reload();
                     }).catch(function (error) {
                         _this.$toastr('error', 'An error occured, please try again', 'Error');
                     });
@@ -6547,6 +6530,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: "SideBar",
+    props: {
+        sponsor: {}
+    },
     data: function data() {
         return {};
     },
@@ -6595,7 +6581,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            navLinks: [{ text: "Edit Profile", isActive: false, url: "/sponsors/{0}/profile/edit" }, { text: "Manage Team", isActive: false, url: "" }, { text: "Campaigns", isActive: false, url: "/sponsors/{0}/campaign/list" }, { text: "Order Gallery", isActive: false, url: "" }, { text: "Reports", isActive: false, url: "" }, { text: "Payment Information", isActive: false, url: "" }, { text: "Payment History", isActive: false, url: "/sponsors/{0}/payment/history" }],
+            navLinks: [{ text: "Edit Profile", isActive: false, url: "/sponsor/{0}/profile/edit" }, { text: "Manage Team", isActive: false, url: "" }, { text: "Campaigns", isActive: false, url: "/sponsor/{0}/campaign" }, { text: "Order Gallery", isActive: false, url: "" }, { text: "Reports", isActive: false, url: "" }, { text: "Payment Information", isActive: false, url: "" }, { text: "Payment History", isActive: false, url: "/sponsor/{0}/payment/history" }],
             logo: null,
             defaultLogo: "/img/profile/profile-fit.png",
             defaultCover: "/img/bg/1.jpg",
@@ -6642,7 +6628,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 var formData = new FormData();
                 formData.append("cover", this.cover);
                 formData.append("_method", "put");
-                axios.post("/sponsors/" + window.sponsor_id + "/profile/updateCover", formData, {
+                axios.post("/sponsor/" + window.sponsor_id + "/profile/updateCover", formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -6898,7 +6884,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.sponsor.email) {
                 formData.append("email", this.sponsor.email);
             }
-            axios.post('/sponsors/' + this.sponsor.id + '/profile/edit', formData, {
+            axios.post('/sponsor/' + this.sponsor.id + '/profile/edit', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -9115,180 +9101,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             navLink: 'Campaigns',
             defaultLogo: "/img/profile/profile-fit.png",
             logo: null,
-            campaign: {
-                geoTargets: []
-            },
-            tempGeoTarget: {},
-            addGeoTargetError: '',
-            displayGeoEditIndex: '',
-            editGeoTargetIndex: -1,
-            sizes: [{ size: 'Small', price: '$3' }, { size: 'Medium', price: '$6' }, { size: 'Large', price: '$10' }, { size: 'Full', price: '$14' }],
-            excludeCompanies: [],
-            mockupCompanies: [{ id: 1, logo: '/img/companies/cocacola.png' }, { id: 2, logo: '/img/companies/cocacola.png' }, { id: 3, logo: '/img/companies/cocacola.png' }, { id: 4, logo: '/img/companies/cocacola.png' }, { id: 5, logo: '/img/companies/cocacola.png' }, { id: 6, logo: '/img/companies/cocacola.png' }, { id: 1, logo: '/img/companies/cocacola.png' }, { id: 2, logo: '/img/companies/cocacola.png' }, { id: 3, logo: '/img/companies/cocacola.png' }, { id: 4, logo: '/img/companies/cocacola.png' }, { id: 5, logo: '/img/companies/cocacola.png' }, { id: 6, logo: '/img/companies/cocacola.png' }, { id: 1, logo: '/img/companies/cocacola.png' }, { id: 2, logo: '/img/companies/cocacola.png' }, { id: 3, logo: '/img/companies/cocacola.png' }, { id: 4, logo: '/img/companies/cocacola.png' }, { id: 5, logo: '/img/companies/cocacola.png' }, { id: 6, logo: '/img/companies/cocacola.png' }],
-            ageRanges: ['14 and under', '15-19', '20-24', '25-29', '30-34', '35-39', '40-44', '45-49', '50-54', '55-59', '60-64', '70-74', '75-79', '80-84', '85-89', '90 and over'],
-            enableSizePrice: {}
-        };
-    },
-
-    props: {
-        sponsor: {
-            type: Object,
-            require: true
-        }
-    },
-    computed: {
-        logoUrl: function logoUrl() {
-            return this.campaign.logo ? this.campaign.logo : this.defaultLogo;
-        }
-    },
-    mounted: function mounted() {
-        this.initValidation();
-    },
-    methods: {
-        initValidation: function initValidation() {
-            $('#validation-form').validate({
-                rules: {
-                    'name': {
-                        required: true
-                    }
-                },
-                errorPlacement: function errorPlacement(error, element) {
-                    var $parent = $(element).parents('.add-input-group');
-                    if ($parent.find('.jquery-validation-error').length) {
-                        return;
-                    }
-                    $parent.append(error.addClass('jquery-validation-error small form-text invalid-feedback'));
-                },
-                highlight: function highlight(element) {
-                    var $el = $(element);
-                    $el.addClass('is-invalid');
-                },
-                unhighlight: function unhighlight(element) {
-                    $(element).parents('.right-side2').find('.is-invalid').removeClass('is-invalid');
-                }
-            });
-        },
-        selectLogo: function selectLogo() {
-            this.campaign.logo = this.$refs.logo.files[0];
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#logo').attr('src', e.target.result);
-            };
-            reader.readAsDataURL(this.campaign.logo);
-        },
-        save: function save() {
-            var _this = this;
-
-            if (!$('#validation-form').valid()) {
-                return;
-            }
-
-            var formData = new FormData();
-            formData.append('name', this.campaign.name);
-            formData.append('budget', this.campaign.budget);
-            formData.append('sponsor_id', this.sponsor.id);
-            formData.append('status', this.campaign.status ? 1 : 0);
-
-            if (this.campaign.logo) {
-                formData.append("logo_url", this.campaign.logo);
-            }
-            formData.append("_method", "post");
-
-            var loader = this.$loading.show({
-                // Optional parameters
-                container: null,
-                canCancel: false,
-                width: 128,
-                height: 128
-            });
-
-            axios.post('/sponsors/' + this.sponsor.id + '/campaign/save', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(function (response) {
-                window.location.href = '/sponsors/' + _this.sponsor.id + '/campaign/list';
-            }).catch(function (error) {
-                console.log(error.response.data.errors);
-            }).finally(function () {
-                loader.hide();
-            });
-        },
-        showAddGeoTargetModal: function showAddGeoTargetModal() {
-            this.addGeoTargetError = '';
-            this.editGeoTargetIndex = -1;
-
-            // Refesh modal data
-            this.tempGeoTarget = {
-                name: '',
-                zipcodes: []
-            };
-            this.tempGeoTarget.zipcodes.push({ code: '', radius: '10' });
-            this.$modal.show('add-geo-target-modal');
-        },
-        addGeoZipcode: function addGeoZipcode() {
-            this.tempGeoTarget.zipcodes.push({ code: '', radius: '10' });
-        },
-        saveGeoTarget: function saveGeoTarget() {
-            this.addGeoTargetError = '';
-            var isValid = true;
-
-            if (this.tempGeoTarget.name === '') {
-                isValid = false;
-                this.addGeoTargetError += 'The target name must be filled. <br/>';
-            }
-
-            var that = this;
-            this.tempGeoTarget.zipcodes.forEach(function (value) {
-                if (value.code === '') {
-                    isValid = false;
-                    that.addGeoTargetError += 'The zip code must be filled.';
-                }
-            });
-
-            if (isValid) {
-                if (this.editGeoTargetIndex >= 0) {
-                    this.campaign.geoTargets[this.editGeoTargetIndex] = this.tempGeoTarget;
-                } else {
-                    this.campaign.geoTargets.push(this.tempGeoTarget);
-                }
-                this.$modal.hide('add-geo-target-modal');
-            }
-        },
-        editGeoTarget: function editGeoTarget(target, index) {
-            this.addGeoTargetError = '';
-            this.editGeoTargetIndex = index;
-            this.tempGeoTarget = target;
-            this.$modal.show('add-geo-target-modal');
-        },
-        displayButton: function displayButton(index) {
-            this.displayGeoEditIndex = index;
-        },
-        hideButton: function hideButton() {
-            this.displayGeoEditIndex = '';
-        },
-        addExcludeCompany: function addExcludeCompany(company) {
-            this.excludeCompanies.push(company);
-        },
-        removeExcludeCompany: function removeExcludeCompany(index) {
-            this.excludeCompanies.splice(index, 1);
-        }
-    }
-});
-
-/***/ }),
-
-/***/ "./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./resources/js/pages/sponsor/CampaignEdit.js":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            navLink: 'Campaigns',
-            defaultLogo: "/img/profile/profile-fit.png",
-            logo: null,
             tempGeoTarget: {},
             addGeoTargetError: '',
             displayGeoEditIndex: '',
@@ -9317,25 +9129,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         logoUrl: function logoUrl() {
-            return this.campaign.logo ? this.campaign.logo : this.defaultLogo;
+            return this.campaign.logo && typeof this.campaign.logo === 'string' ? this.campaign.logo : this.defaultLogo;
+        }
+    },
+    beforeMount: function beforeMount() {
+        if (this.campaign == null) {
+            this.campaign = { budget: 0 };
         }
     },
     mounted: function mounted() {
         this.initValidation();
     },
-
     methods: {
-        // getCampaign: function(campaignId) {
-        //     axios.get('/sponsors/' + this.sponsor.id + '/campaign/' + this.campaignId)
-        //     .then((response) => {
-        //         this.campaign = response.campaign;
-        //     })
-        // },
         initValidation: function initValidation() {
+            $.validator.addMethod("numberIfNotNull", function (value, elm) {
+                if (value) {
+                    return !isNaN(value);
+                } else {
+                    return true;
+                }
+            }, "Budget has to be a Number");
             $('#validation-form').validate({
                 rules: {
                     'name': {
                         required: true
+                    },
+                    'budget': {
+                        numberIfNotNull: true
                     }
                 },
                 errorPlacement: function errorPlacement(error, element) {
@@ -9371,10 +9191,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var formData = new FormData();
             formData.append('name', this.campaign.name);
-            formData.append('budget', this.campaign.budget);
+            formData.append('budget', this.campaign.budget ? this.campaign.budget : 0);
             formData.append('sponsor_id', this.sponsor.id);
             formData.append('status', this.campaign.status ? 1 : 0);
-            formData.append('id', this.campaign.id);
+            if (this.campaign.id) {
+                formData.append('id', this.campaign.id);
+            }
 
             if (this.campaign.logo) {
                 formData.append("logo_url", this.campaign.logo);
@@ -9389,12 +9211,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 height: 128
             });
 
-            axios.post('/sponsors/' + this.sponsor.id + '/campaign/save', formData, {
+            axios.post('/sponsor/' + this.sponsor.id + '/campaign/save', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(function (response) {
-                window.location.href = '/sponsors/' + _this.sponsor.id + '/campaign/list';
+                window.location.href = '/sponsor/' + _this.sponsor.id + '/campaign';
             }).catch(function (error) {
                 console.log(error.response.data.errors);
             }).finally(function () {
@@ -9492,17 +9314,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getCampaigns: function getCampaigns() {
             var _this = this;
 
-            axios.get('/sponsors/' + this.sponsor.id + '/campaign/list-json').then(function (response) {
+            axios.get('/sponsor/' + this.sponsor.id + '/campaign/list-json').then(function (response) {
                 _this.campaigns = response.campaigns;
                 $('#campaign-list').unblock();
             });
         },
         addCampaign: function addCampaign() {
-            window.location.href = '/sponsors/' + this.sponsor.id + '/campaign/create';
+            window.location.href = '/sponsor/' + this.sponsor.id + '/campaign/create';
         },
 
         editCampaign: function editCampaign(campaignId) {
-            window.location.href = '/sponsors/' + this.sponsor.id + '/campaign/' + campaignId + '/edit';
+            window.location.href = '/sponsor/' + this.sponsor.id + '/campaign/' + campaignId + '/edit';
         },
         removeCampaign: function removeCampaign(campaignId) {
             var self = this;
@@ -9512,7 +9334,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 callback: function callback(result) {
                     if (result) {
                         $('#campaign-list').block({
-                            message: '<div class="sk-wave sk-primary"><div class="sk-rect sk-rect1"></div> <div class="sk-rect sk-rect2"></div> <div class="sk-rect sk-rect3"></div> <div class="sk-rect sk-rect4"></div> <div class="sk-rect sk-rect5"></div></div>',
+                            message: '<div class="sk-wave sk-primary"><div class="sk-rect-fix sk-rect1"></div> <div class="sk-rect-fix sk-rect2"></div> <div class="sk-rect-fix sk-rect3"></div> <div class="sk-rect-fix sk-rect4"></div> <div class="sk-rect-fix sk-rect5"></div></div>',
                             css: {
                                 backgroundColor: 'transparent',
                                 border: '0'
@@ -9919,9 +9741,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: { SideBar: __WEBPACK_IMPORTED_MODULE_0__SideBar___default.a },
-    props: {
-        sponsor: {}
-    },
+    props: ['sponsor', 'instagramPosts'],
     data: function data() {
         return {};
     }
@@ -9960,7 +9780,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     dataSrc: function dataSrc(json) {
                         var data = [];
                         json.sponsors.forEach(function (sponsor) {
-                            data.push([sponsor.id, sponsor.name, sponsor.logo, sponsor.background_image, sponsor.balance, sponsor.budget, moment(sponsor.created_at.date).format('YYYY-MM-DD'), '']);
+                            data.push([sponsor.id, sponsor.name, sponsor.logo, sponsor.background_image, sponsor.balance, sponsor.budget, sponsor.created_at ? moment(sponsor.created_at.date).format('YYYY-MM-DD') : null, '']);
                         });
                         if (callback) {
                             callback();
@@ -9976,14 +9796,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }],
                 "createdRow": function createdRow(row, data, index) {
                     var isRtl = $('body').attr('dir') === 'rtl' || $('html').attr('dir') === 'rtl';
-                    $('td', row).eq(1).html('').append('<a href="sponsors/' + data[0] + '">' + data[1] + '</a>');
+                    $('td', row).eq(1).html('').append('<a href="sponsor/' + data[0] + '">' + data[1] + '</a>');
                     if (data[2]) {
                         $('td', row).eq(2).html('').append('<img style="width: 80px; height: 80px; object-fit: contain;" src="' + data[2] + '" />');
                     }
                     if (data[3]) {
                         $('td', row).eq(3).html('').append('<img style="width: 80px; height: 80px; object-fit: contain;" src="' + data[3] + '" />');
                     }
-                    $('td', row).eq(7).addClass('text-center text-nowrap').html('').append('<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'sponsors/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' + '<div class="btn-group">' + '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat dropdown-toggle hide-arrow user-tooltip" title="Actions" data-toggle="dropdown"><i class="ion ion-ios-settings"></i></button>' + '<div class="dropdown-menu' + (isRtl ? '' : ' dropdown-menu-right') + '">' + '<a class="dropdown-item" href="sponsors/' + data[0] + '">View sponsor</a>' + '<a class="dropdown-item btn-remove" href="javascript:void(0)" data="' + data[0] + '">Remove</a>' + '</div>' + '</div>');
+                    $('td', row).eq(7).addClass('text-center text-nowrap').html('').append('<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'sponsor/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' + '<div class="btn-group">' + '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat dropdown-toggle hide-arrow user-tooltip" title="Actions" data-toggle="dropdown"><i class="ion ion-ios-settings"></i></button>' + '<div class="dropdown-menu' + (isRtl ? '' : ' dropdown-menu-right') + '">' + '<a class="dropdown-item" href="sponsor/' + data[0] + '">View sponsor</a>' + '<a class="dropdown-item btn-remove" href="javascript:void(0)" data="' + data[0] + '">Remove</a>' + '</div>' + '</div>');
                 }
             });
         },
@@ -10195,7 +10015,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     dataSrc: function dataSrc(json) {
                         var data = [];
                         json.users.forEach(function (user) {
-                            data.push([user.id, user.name, user.email, user.phone, moment(user.created_at.date).format('YYYY-MM-DD'), '']);
+                            data.push([user.id, user.name, user.email, user.phone, user.created_at ? moment(user.created_at.date).format('YYYY-MM-DD') : null, '']);
                         });
 
                         if (callback) {
@@ -10226,7 +10046,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     dataSrc: function dataSrc(json) {
                         var data = [];
                         json.users.forEach(function (user) {
-                            data.push([user.id, user.name, user.email, user.phone, moment(user.created_at.date).format('YYYY-MM-DD'), '']);
+                            data.push([user.id, user.name, user.email, user.phone, user.created_at ? moment(user.created_at.date).format('YYYY-MM-DD') : null, '']);
                         });
 
                         if (callback) {
@@ -10335,14 +10155,14 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.validate_error {\n  color: #d9534f;\n  font-size: 14px;\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.submit_btn {\n  border: none;\n  background-color: white;\n  cursor: pointer;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.submit_btn:focus {\n  outline: none;\n}\n.auth-reset-password {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-reset-password-container {\n  max-width: 768px;\n}\n.auth-reset-password-form .form-title {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-reset-password-form .form-sub-title {\n  font-family: SFProText;\n  font-size: 18px;\n  color: black;\n}\n.auth-reset-password-form .form-group label {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-reset-password-form .form-group input {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-reset-password-form .form-group input:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-reset-password-form .form-group input.is-invalid {\n    border-color: #d9534f !important;\n}\n.auth-reset-password-form .form-group .error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-reset-password-form .form-group .error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n.auth-reset-password-form .login-cta-element i {\n  margin-right: 1rem;\n}\n.auth-reset-password-form .login-cta-element .login-cta-labels .login-cta-label-desc {\n  font-family: \"SFProDisplay\";\n  opacity: 0.6;\n  font-size: 16px;\n  font-weight: 500;\n  color: #000000;\n}\n.auth-reset-password-form .login-cta-element .login-cta-labels .login-cta-label {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  color: #000000;\n}\n", ""]);
+exports.push([module.i, "\n.validate_error {\n  color: #d9534f;\n  font-size: 14px;\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.submit_btn {\n  border: none;\n  background-color: white;\n  cursor: pointer;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.submit_btn:focus {\n  outline: none;\n}\n.auth-reset-password {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-reset-password-container {\n  max-width: 768px;\n}\n.auth-reset-password-form .form-title {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-reset-password-form .form-sub-title {\n  font-family: SFProText;\n  font-size: 18px;\n  color: black;\n}\n.auth-reset-password-form .form-group label {\n  color: #444444;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-reset-password-form .form-group input {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-reset-password-form .form-group input:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-reset-password-form .form-group input.is-invalid {\n    border-color: #d9534f !important;\n}\n.auth-reset-password-form .form-group .error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-reset-password-form .form-group .error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n.auth-reset-password-form .login-cta-element i {\n  margin-right: 1rem;\n}\n.auth-reset-password-form .login-cta-element .login-cta-labels .login-cta-label-desc {\n  font-family: \"SFProDisplay\";\n  opacity: 0.6;\n  font-size: 16px;\n  font-weight: 500;\n  color: #000000;\n}\n.auth-reset-password-form .login-cta-element .login-cta-labels .login-cta-label {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  color: #000000;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignEdit.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-09e6a936\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/SponsorIndex.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -10350,7 +10170,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.table[data-v-10a53d98] {\n  padding-left: 154px !important;\n}\n.caption[data-v-10a53d98] {\n  font-weight: bold;\n  font-size: 17px;\n}\n.campaign[data-v-10a53d98] {\n  font-size: 25px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: bold;\n  color: #ffc600;\n}\n.total[data-v-10a53d98] {\n  font-size: 19px;\n}\n.table-row[data-v-10a53d98] {\n  text-align: center;\n  vertical-align: middle;\n}\n.rectangle-header[data-v-10a53d98] {\n  background-color: #ffc600;\n  font-family: \"Helvetica Neue\";\n  font-size: 22px;\n  font-weight: 500;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n.company-select-container[data-v-10a53d98] {\n  border: solid 2px #f2f2f2;\n  border-radius: 5px;\n  max-height: 180px;\n  overflow: auto;\n}\n.company-selected-list[data-v-10a53d98] {\n  border-radius: 5px;\n  background-color: rgba(0, 0, 0, 0.07);\n  width: 100%;\n  height: 80px;\n}\n.add-target-modal .title[data-v-10a53d98] {\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-size: 34px;\n  font-weight: 500;\n  color: #444444;\n  margin-bottom: 0;\n}\n.add-target-modal .table[data-v-10a53d98] {\n  padding-left: 0px !important;\n  border-collapse: separate;\n  border-spacing: 10px 10px;\n}\n.add-target-modal .table th[data-v-10a53d98] {\n  font-family: \"Helvetica Neue\", sans-serif;\n}\n.add-target-modal input[type=\"text\"][data-v-10a53d98], .add-target-modal select[data-v-10a53d98] {\n  border: solid 2px #f2f2f2;\n  padding: 13px 11px;\n  font-size: 20px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: normal;\n  color: #444444;\n  width: 100%;\n  height: 48px;\n}\n.add-target-modal .save-btn[data-v-10a53d98] {\n  size: 18px !important;\n  color: #444444;\n  width: 100px;\n  height: 35px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid  #f2f2f2;\n  font-weight: normal;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  float: right;\n  margin-top: 20px;\n}\n.close-button[data-v-10a53d98] {\n  border: none;\n  display: inline-block;\n  padding: 8px 16px;\n  vertical-align: middle;\n  overflow: hidden;\n  text-decoration: none;\n  color: inherit;\n  background-color: inherit;\n  text-align: center;\n  cursor: pointer;\n  white-space: nowrap;\n  font-size: 40px;\n  font-weight: 100;\n}\n.topright[data-v-10a53d98] {\n  position: absolute;\n  right: -5px;\n  top: -15px;\n}\n.is-invalid[data-v-10a53d98] {\n  border-color: #d9534f !important;\n}\nform[data-v-10a53d98] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n", ""]);
+exports.push([module.i, "\n#sidebar-wrapper[data-v-09e6a936] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-09e6a936] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-09e6a936] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-09e6a936] {\n  width: 100%;\n}\n\n/* Profile Content */\n.profile-content[data-v-09e6a936] {\n  background: #fff;\n  min-height: 460px;\n}\n.event-container[data-v-09e6a936] {\n  margin: 0 auto;\n  overflow: hidden;\n  padding: 0;\n  position: relative;\n  border: 1px solid lightgrey;\n  font-family: \"HelveticaNeue\";\n  font-size: 13px;\n}\n.event-container > h2[data-v-09e6a936] {\n  color: #9298A4;\n  font-weight: 400;\n  letter-spacing: -1px;\n  margin: 140px auto 80px;\n  text-align: center;\n}\n.event-container > h2[data-v-09e6a936]:first-child {\n  margin: 40px auto 80px;\n}\n.event-container > .box[data-v-09e6a936] {\n  background: #FFF;\n  border-radius: 4px;\n  height: auto;\n  overflow: hidden;\n  position: relative;\n}\n.event-container > .box > [class*=\"box-\"][data-v-09e6a936] {\n  margin: 0 auto;\n  padding: 0 30px;\n  position: relative;\n}\n.event-container > .box > [class*=\"box-\"] img[data-v-09e6a936] {\n  display: block;\n  width: 100%;\n}\n.event-container > .box > .box-header[data-v-09e6a936] {\n  margin: 0 auto;\n  padding: 0 10px 0px;\n  width: initial;\n  height: 60px;\n}\n.event-container > .box > .box-header > h3[data-v-09e6a936] {\n  font-size: 15px;\n  font-weight: 700;\n  height: 60px;\n  margin: 5px auto;\n  overflow: hidden;\n  padding: 5px 0 0;\n  position: relative;\n}\n.event-container > .box > .box-header > h3 > a[data-v-09e6a936] {\n  margin: 0;\n  overflow: hidden;\n  padding: 0;\n  position: relative;\n}\n.event-container > .box > .box-header > h3 > .summary[data-v-09e6a936] {\n  display: inline-block;\n}\n.event-container > .box > .box-header > h3 > span[data-v-09e6a936] {\n  color: #9197A3;\n  display: block;\n  font-size: 13px;\n  font-weight: 400;\n  margin-top: 2px;\n}\n.event-container > .box > .box-header > h3 > span .fa[data-v-09e6a936] {\n  font-size: 15px;\n  margin-left: 5px;\n}\n.event-container > .box > .box-header > span[data-v-09e6a936] {\n  background: #F4F4F4;\n  border-radius: 3px;\n  color: #BCBFC6;\n  cursor: pointer;\n  font-size: 24px;\n  height: 18px;\n  line-height: 18px;\n  margin: 5px auto 0;\n  padding: 3px 4px;\n  position: absolute;\n  right: 40px;\n  top: 0;\n}\n.event-container > .box > .box-header > span[data-v-09e6a936]:hover {\n  color: #888;\n}\n.event-container > .box > .box-header > span > i[data-v-09e6a936] {\n  height: 18px;\n  line-height: 18px;\n}\n.event-container > .box > .box-header img[data-v-09e6a936] {\n  border-radius: 100px;\n  float: left;\n  height: 50px;\n  width: 50px;\n  margin: -5px 10px 0 0;\n  -o-object-fit: cover;\n     object-fit: cover;\n}\n.event-container > .box > .box-content[data-v-09e6a936] {\n  margin: 0;\n  overflow: hidden;\n  padding: 0;\n  position: relative;\n  width: initial;\n}\n.event-container > .box > .box-content > .content[data-v-09e6a936] {\n  height: auto;\n  margin: 0;\n  overflow: hidden;\n  padding: 0;\n  position: relative;\n  width: initial;\n}\n.event-container > .box > .box-content > .bottom[data-v-09e6a936] {\n  margin: 0 auto;\n  padding: 0 10px 0 50px;\n  position: relative;\n  width: initial;\n}\n.event-container > .box > .box-content > .bottom > p[data-v-09e6a936] {\n  line-height: 20px;\n  margin: 0;\n  padding: 0px 10px 0 20px;\n}\n.event-container > .box > .box-content > .bottom > span[data-v-09e6a936] {\n  background: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.45)), to(rgba(0, 0, 0, 0)));\n  background: linear-gradient(to top, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0));\n  height: 160px;\n  left: 0;\n  line-height: 160px;\n  margin: 0 auto;\n  overflow: hidden;\n  padding: 0;\n  position: absolute;\n  text-align: right;\n  top: -160px;\n  vertical-align: bottom;\n  width: 100%;\n}\n.event-container > .box > .box-content > .bottom > span > span[data-v-09e6a936] {\n  background: rgba(0, 0, 0, 0.35);\n  border-radius: 4px;\n  bottom: 0;\n  color: #FFF;\n  cursor: pointer;\n  font-size: 20px;\n  margin: 0 30px 25px auto;\n  opacity: .75;\n  overflow: hidden;\n  padding: 10px;\n  position: absolute;\n  right: 0;\n  top: auto;\n  -webkit-transition: all .25s ease-in-out;\n  transition: all .25s ease-in-out;\n}\n.event-container > .box > .box-content > .bottom > span > span[data-v-09e6a936]:hover {\n  opacity: 1;\n}\n.event-container > .box > .box-likes[data-v-09e6a936] {\n  margin: 0 auto;\n  overflow: hidden;\n  padding: 0 30px;\n  position: relative;\n}\n.event-container > .box > .box-likes > .row[data-v-09e6a936] {\n  border-top: 1px solid #F4F4F4;\n  padding: 20px 0;\n}\n.event-container > .box > .box-likes > .row > span[data-v-09e6a936] {\n  display: inline-block;\n  font-size: 13px;\n  margin: 0 2px 0 0;\n  position: relative;\n  vertical-align: middle;\n}\n.event-container > .box > .box-likes > .row[data-v-09e6a936]:first-child {\n  float: left;\n  width: 60%;\n}\n.event-container > .box > .box-likes > .row[data-v-09e6a936]:last-child {\n  float: left;\n  text-align: end;\n  width: 40%;\n}\n.event-container > .box > .box-likes > .row:first-child > span[data-v-09e6a936]:nth-child(4) {\n  background: #4D679F;\n  border-radius: 50px;\n  font-weight: bold;\n  padding: 0 8px 0 6px;\n}\n.event-container > .box > .box-likes > .row:first-child > span:nth-child(4) > a[data-v-09e6a936] {\n  color: #FFF;\n}\n.event-container > .box > .box-likes > .row:first-child > span[data-v-09e6a936],\n.event-container > .box > .box-likes > .row:last-child > span[data-v-09e6a936] {\n  color: #9197A3;\n}\n.event-container > .box > .box-likes > .row:last-child > span[data-v-09e6a936] {\n  display: inline-block;\n  verrtical-align: middle;\n}\n.event-container > .box > .box-likes > .row img[data-v-09e6a936] {\n  border-radius: 100px;\n  height: 28px;\n  -o-object-fit: cover;\n     object-fit: cover;\n  width: 28px;\n}\n.event-container > .box > .box-buttons[data-v-09e6a936] {\n  overflow: hidden;\n  padding: 0;\n  position: relative;\n  width: 35%;\n  margin-left: 70px;\n  margin-top: 10px;\n}\n.event-container > .box > .box-buttons *[data-v-09e6a936], *[data-v-09e6a936]::before, *[data-v-09e6a936]::after {\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n}\n.event-container > .box > .box-buttons > .row[data-v-09e6a936] {\n  border-bottom: 1px solid #F4F4F4;\n  overflow: hidden;\n  padding: 0;\n  position: relative;\n}\n.event-container > .box > .box-buttons > .row > button[data-v-09e6a936]:last-child {\n  border: 0;\n}\n.event-container > .box > .box-buttons > .row > button[data-v-09e6a936] {\n  background: #FFF;\n  border: 0;\n  color: #9197A3;\n  font-size: 13px;\n  float: left;\n  height: 60px;\n  line-height: 60px;\n  margin: 0;\n  *outline: 1px #08F;\n  padding: 0;\n  width: 33.33333333333%;\n}\n.btn[data-v-09e6a936]:focus,\n.btn[data-v-09e6a936]:active:focus,\n.btn.active[data-v-09e6a936]:focus,\n.btn.focus[data-v-09e6a936],\n.btn:active.focus[data-v-09e6a936],\n.btn.active.focus[data-v-09e6a936] {\n  background: #FFF;\n  border: 0;\n  color: #9197A3;\n}\n.btn[data-v-09e6a936]:hover,\n.btn[data-v-09e6a936]:focus,\n.btn.focus[data-v-09e6a936] {\n  background: #FFF;\n  border: 0;\n  color: #9197A3;\n}\n.btn[data-v-09e6a936]:active,\n.btn.active[data-v-09e6a936] {\n  background: #FFF;\n  border: 0;\n}\n.event-container > .box > .box-buttons > .row > button > span[data-v-09e6a936] {\n  margin-left: 10px;\n}\n.event-container > .box > .box-buttons > .row > button[data-v-09e6a936]:hover {\n  background: #F5F5F5;\n  color: #7D8696;\n}\n.event-container > .box > .box-buttons > .row > button[data-v-09e6a936]:focus {\n  background: #F0F2F2;\n  color: #6C7588;\n  -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);\n          box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);\n  outline-color: #08F;\n}\n.event-container > .box > .box-click[data-v-09e6a936] {\n  color: #4D679F;\n  font-size: 13px;\n  margin: 0 auto;\n  overflow: hidden;\n  padding: 10px 30px;\n  position: relative;\n}\n.event-container > .box > .box-click > span[data-v-09e6a936] {\n  cursor: pointer;\n}\n.event-container > .box > .box-click > span i[data-v-09e6a936] {\n  font-size: 18px;\n  margin-right: 5px;\n}\n.event-container > .box > .box-comments[data-v-09e6a936] {\n  margin: 0;\n  overflow: hidden;\n  padding: 0;\n  position: relative;\n}\n.event-container > .box > .box-comments > .comment[data-v-09e6a936] {\n  border-top: 1px solid #F4F4F4;\n  margin: 0;\n  overflow: hidden;\n  padding: 16px 30px;\n  position: relative;\n}\n.event-container > .box > .box-comments > .comment > img[data-v-09e6a936] {\n  border-radius: 100px;\n  float: left;\n  height: 56px;\n  margin: 0;\n  -o-object-fit: cover;\n     object-fit: cover;\n  width: 56px;\n}\n.event-container > .box > .box-comments > .comment > .content[data-v-09e6a936] {\n  height: auto;\n  line-height: 20px;\n  margin: 0 0 0 70px;\n  overflow: hidden;\n  padding: 0;\n  position: relative;\n  width: initial;\n}\n.event-container > .box > .box-comments > .comment > .content > h3[data-v-09e6a936] {\n  float: left;\n  font-size: 14px;\n  font-weight: 600;\n  margin: 4px auto 0;\n  text-transform: capitalize;\n  width: 150px;\n}\n.event-container > .box > .box-comments > .comment > .content > h3 > span[data-v-09e6a936] {\n  color: #9197A3;\n  display: block;\n  font-size: 12px;\n  font-weight: 400;\n  text-transform: none;\n}\n.event-container > .box > .box-comments > .comment > .content > p[data-v-09e6a936] {\n  color: #4B4D53;\n  font-size: 13px;\n  margin: 0;\n  padding: 0;\n}\n.event-container > .box > .box-new-comment[data-v-09e6a936] {\n  background: #9298A4;\n  margin: 0;\n  overflow: hidden;\n  padding: 20px 30px;\n  position: relative;\n}\n.event-container > .box > .box-new-comment > img[data-v-09e6a936] {\n  border-radius: 100px;\n  float: left;\n  height: 40px;\n  margin: 0;\n  -o-object-fit: cover;\n     object-fit: cover;\n  width: 40px;\n}\n.event-container > .box > .box-new-comment > .content[data-v-09e6a936] {\n  border-radius: 20px;\n  margin: 4px 0 0 52px;\n  overflow: hidden;\n  padding: 0;\n  position: relative;\n  width: initial;\n  -webkit-transition: all .25s ease-in-out;\n  transition: all .25s ease-in-out;\n}\n.event-container > .box > .box-new-comment > .content > .row[data-v-09e6a936] {\n  background: transparent;\n  display: inline-block;\n  height: 32px;\n  overflow: hidden;\n  position: relative;\n  vertical-align: middle;\n  width: 100%;\n  -webkit-transition: all .25s ease-in-out;\n  transition: all .25s ease-in-out;\n}\n.event-container > .box > .box-new-comment > .content > .row[data-v-09e6a936]:last-child {\n  color: #C6C9D0;\n  font-size: 22px;\n  height: 28px;\n  line-height: 27px;\n  margin: 2px 0;\n  position: absolute;\n  text-align: center;\n  top: 0;\n  right: 10px;\n  width: 40px;\n}\n.event-container > .box > .box-new-comment > .content > .row:last-child > span[data-v-09e6a936] {\n  cursor: pointer;\n}\n.event-container > .box > .box-new-comment > .content > .row > textarea[data-v-09e6a936] {\n  border: 1px solid transparent;\n  border-radius: 20px;\n  color: #555;\n  outline: 0;\n  padding: 0 40px 0 10px;\n  resize: none;\n  width: calc(100% - 52px) !important;\n  -webkit-transition: all .25s ease-in-out;\n  transition: all .25s ease-in-out;\n}\n.event-container > .box.update[data-v-09e6a936],\n.event-container > .box.text[data-v-09e6a936] {\n  border: 1px solid #E0E1E4;\n  -webkit-box-shadow: none;\n          box-shadow: none;\n  padding: 20px 0 0;\n}\n.event-container > .box.update > .box-header[data-v-09e6a936],\n.event-container > .box.text > .box-header[data-v-09e6a936] {\n  padding: 0 30px;\n}\n.event-container > .box.update > .box-header > span[data-v-09e6a936],\n.event-container > .box.text > .box-header > span[data-v-09e6a936] {\n  background: transparent;\n  color: #9298A4;\n  font-size: 32px;\n  margin: -10px auto 0;\n}\n.event-container > .box.update > .box-content > .content > p[data-v-09e6a936],\n.event-container > .box.text > .box-content > .content > p[data-v-09e6a936] {\n  border-top: 1px solid #F4F4F4;\n  color: #4D5057;\n  font-size: 14px;\n  line-height: 22px;\n  padding: 26px 30px;\n}\n.event-container > .box.update > .box-content > .content > .img[data-v-09e6a936] {\n  margin: 0;\n  overflow: hidden;\n  padding: 0;\n  position: relative;\n  width: initial;\n}\n.event-container > .box.update > .box-content > .content > .img[data-v-09e6a936]:before {\n  border: 1px solid rgba(0, 0, 0, 0.25);\n  bottom: 0;\n  content: \"\";\n  height: 100%;\n  left: 0;\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: 100%;\n}\n.event-container > .box.text > .box-buttons > .row > button[data-v-09e6a936] {\n  font-size: 13px;\n}\n.event-container > .box.text > .box-buttons > .row > button > span[data-v-09e6a936] {\n  font-size: 20px;\n}\n.event-container > .box.image > .box-new-comment > .content[data-v-09e6a936],\n.event-container > .box.image > .box-new-comment > .content > .row > textarea[data-v-09e6a936],\n.event-container > .box.video > .box-new-comment > .content[data-v-09e6a936],\n.event-container > .box.video > .box-new-comment > .content > .row > textarea[data-v-09e6a936] {\n  background: #9298A4;\n  -webkit-transition: all .25s ease-in-out;\n  transition: all .25s ease-in-out;\n}\n.event-container > .box > .box-new-comment > .content > .row > textarea[data-v-09e6a936]:focus,\n.event-container > .box.image > .box-new-comment > .content:active > .row[data-v-09e6a936] {\n  background: #FFF;\n}\n.event-container > .box > .box-new-comment > .content > .row > textarea[data-v-09e6a936]:focus,\n.event-container > .box.video .box-new-comment > .content:active > .row[data-v-09e6a936] {\n  background: #FFF;\n}\n", ""]);
 
 // exports
 
@@ -10365,7 +10185,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.table[data-v-19c70163] {\n  padding-left: 154px !important;\n}\n.caption[data-v-19c70163] {\n  font-weight: bold;\n  font-size: 17px;\n}\n.campaign[data-v-19c70163] {\n  font-size: 25px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: bold;\n  color: #ffc600;\n}\n.total[data-v-19c70163] {\n  font-size: 19px;\n}\n.table-row[data-v-19c70163] {\n  text-align: center;\n  vertical-align: middle;\n}\n.rectangle-header[data-v-19c70163] {\n  background-color: #ffc600;\n  font-family: \"Helvetica Neue\";\n  font-size: 22px;\n  font-weight: 500;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n.company-select-container[data-v-19c70163] {\n  border: solid 2px #f2f2f2;\n  border-radius: 5px;\n  max-height: 180px;\n  overflow: auto;\n}\n.company-selected-list[data-v-19c70163] {\n  border-radius: 5px;\n  background-color: rgba(0, 0, 0, 0.07);\n  width: 100%;\n  height: 80px;\n}\n.add-target-modal .title[data-v-19c70163] {\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-size: 34px;\n  font-weight: 500;\n  color: #444444;\n  margin-bottom: 0;\n}\n.add-target-modal .table[data-v-19c70163] {\n  padding-left: 0px !important;\n  border-collapse: separate;\n  border-spacing: 10px 10px;\n}\n.add-target-modal .table th[data-v-19c70163] {\n  font-family: \"Helvetica Neue\", sans-serif;\n}\n.add-target-modal input[type=\"text\"][data-v-19c70163], .add-target-modal select[data-v-19c70163] {\n  border: solid 2px #f2f2f2;\n  padding: 13px 11px;\n  font-size: 20px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  font-weight: normal;\n  color: #444444;\n  width: 100%;\n  height: 48px;\n}\n.add-target-modal .save-btn[data-v-19c70163] {\n  size: 18px !important;\n  color: #444444;\n  width: 100px;\n  height: 35px;\n  font-family: \"Helvetica Neue\", sans-serif;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid  #f2f2f2;\n  font-weight: normal;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  float: right;\n  margin-top: 20px;\n}\n.close-button[data-v-19c70163] {\n  border: none;\n  display: inline-block;\n  padding: 8px 16px;\n  vertical-align: middle;\n  overflow: hidden;\n  text-decoration: none;\n  color: inherit;\n  background-color: inherit;\n  text-align: center;\n  cursor: pointer;\n  white-space: nowrap;\n  font-size: 40px;\n  font-weight: 100;\n}\n.topright[data-v-19c70163] {\n  position: absolute;\n  right: -5px;\n  top: -15px;\n}\n.is-invalid[data-v-19c70163] {\n  border-color: #d9534f !important;\n}\nform[data-v-19c70163] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n", ""]);
+exports.push([module.i, "\n.table[data-v-19c70163] {\n  padding-left: 154px !important;\n}\n.caption[data-v-19c70163] {\n  font-weight: bold;\n  font-size: 17px;\n}\n.campaign[data-v-19c70163] {\n  font-size: 25px;\n  font-family: \"HelveticaNeue\", sans-serif;\n  font-weight: bold;\n  color: #ffc600;\n}\n.total[data-v-19c70163] {\n  font-size: 19px;\n}\n.table-row[data-v-19c70163] {\n  text-align: center;\n  vertical-align: middle;\n}\n.rectangle-header[data-v-19c70163] {\n  background-color: #ffc600;\n  font-family: \"HelveticaNeue\";\n  font-size: 22px;\n  font-weight: 500;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n.company-select-container[data-v-19c70163] {\n  border: solid 2px #f2f2f2;\n  border-radius: 5px;\n  max-height: 180px;\n  overflow: auto;\n}\n.company-selected-list[data-v-19c70163] {\n  border-radius: 5px;\n  background-color: rgba(0, 0, 0, 0.07);\n  width: 100%;\n  height: 80px;\n}\n.add-target-modal .title[data-v-19c70163] {\n  font-family: \"HelveticaNeue\", sans-serif;\n  font-size: 34px;\n  font-weight: 500;\n  color: #444444;\n  margin-bottom: 0;\n}\n.add-target-modal .table[data-v-19c70163] {\n  padding-left: 0px !important;\n  border-collapse: separate;\n  border-spacing: 10px 10px;\n}\n.add-target-modal .table th[data-v-19c70163] {\n  font-family: \"HelveticaNeue\", sans-serif;\n}\n.add-target-modal input[type=\"text\"][data-v-19c70163], .add-target-modal select[data-v-19c70163] {\n  border: solid 2px #f2f2f2;\n  padding: 13px 11px;\n  font-size: 20px;\n  font-family: \"HelveticaNeue\", sans-serif;\n  font-weight: normal;\n  color: #444444;\n  width: 100%;\n  height: 48px;\n}\n.add-target-modal .save-btn[data-v-19c70163] {\n  size: 18px !important;\n  color: #444444;\n  width: 100px;\n  height: 35px;\n  font-family: \"HelveticaNeue\", sans-serif;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid  #f2f2f2;\n  font-weight: normal;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  float: right;\n  margin-top: 20px;\n}\n.close-button[data-v-19c70163] {\n  border: none;\n  display: inline-block;\n  padding: 8px 16px;\n  vertical-align: middle;\n  overflow: hidden;\n  text-decoration: none;\n  color: inherit;\n  background-color: inherit;\n  text-align: center;\n  cursor: pointer;\n  white-space: nowrap;\n  font-size: 40px;\n  font-weight: 100;\n}\n.topright[data-v-19c70163] {\n  position: absolute;\n  right: -5px;\n  top: -15px;\n}\n.is-invalid[data-v-19c70163] {\n  border-color: #d9534f !important;\n}\nform[data-v-19c70163] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n", ""]);
 
 // exports
 
@@ -10380,7 +10200,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-19fddf5d] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-19fddf5d] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-19fddf5d] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-19fddf5d] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-19fddf5d] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-19fddf5d] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-19fddf5d] {\n  font-family: helvetica-neue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-19fddf5d]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-19fddf5d] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-19fddf5d] {\n  padding: 0px;\n}\n.active[data-v-19fddf5d] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-19fddf5d] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.dashboard-link[data-v-19fddf5d] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-19fddf5d] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n}\nhr.content-divider[data-v-19fddf5d] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-19fddf5d] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-19fddf5d] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-19fddf5d] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-19fddf5d] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-19fddf5d] {\n    padding: 0px 20px !important;\n    text-align: center;\n}\n#wrapper[data-v-19fddf5d] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-19fddf5d] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-19fddf5d] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-19fddf5d] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-19fddf5d] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-19fddf5d] {\n    padding: 0px 20px;\n}\n}\n.avatar[data-v-19fddf5d] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.avatar-upload[data-v-19fddf5d] {\n  position: relative;\n  max-width: 205px;\n}\n.avatar-upload .avatar-edit[data-v-19fddf5d] {\n    position: absolute;\n    right: 12px;\n    z-index: 1;\n    top: 10px;\n}\n.avatar-upload .avatar-edit input[data-v-19fddf5d] {\n      display: none;\n}\n.avatar-upload .avatar-edit input + label[data-v-19fddf5d] {\n        font-family: 'FontAwesome';\n        color: #757575;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-pack: center;\n            -ms-flex-pack: center;\n                justify-content: center;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center;\n        width: 34px;\n        height: 34px;\n        margin-bottom: 0;\n        border-radius: 100%;\n        background: #FFFFFF;\n        border: 1px solid transparent;\n        -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);\n                box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);\n        cursor: pointer;\n        font-weight: normal;\n        -webkit-transition: all .2s ease-in-out;\n        transition: all .2s ease-in-out;\n}\n.avatar-upload .avatar-edit input + label[data-v-19fddf5d]:hover {\n          background: #f1f1f1;\n          border-color: #d6d6d6;\n}\n.avatar-upload .avatar-preview[data-v-19fddf5d] {\n    width: 150px;\n    height: 150px;\n    position: relative;\n    border-radius: 100%;\n    border: 6px solid #F8F8F8;\n    -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);\n            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);\n}\n.avatar-upload .avatar-preview > div[data-v-19fddf5d] {\n      width: 100%;\n      height: 100%;\n      border-radius: 100%;\n      background-size: cover;\n      background-repeat: no-repeat;\n      background-position: center;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-19fddf5d] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-19fddf5d] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-19fddf5d] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-19fddf5d] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-19fddf5d] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-19fddf5d] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-19fddf5d] {\n  font-family: helvetica-neue;\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-19fddf5d]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-19fddf5d] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-19fddf5d] {\n  padding: 0px;\n}\n.active[data-v-19fddf5d] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-19fddf5d] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.dashboard-link[data-v-19fddf5d] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-19fddf5d] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n}\nhr.content-divider[data-v-19fddf5d] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-19fddf5d] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-19fddf5d] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-19fddf5d] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-19fddf5d] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-19fddf5d] {\n    padding: 0px 20px !important;\n    text-align: center;\n}\n#wrapper[data-v-19fddf5d] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-19fddf5d] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-19fddf5d] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-19fddf5d] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-19fddf5d] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-19fddf5d] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-19fddf5d] {\n    padding: 0px 20px;\n}\n}\n.avatar[data-v-19fddf5d] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.avatar-upload[data-v-19fddf5d] {\n  position: relative;\n  max-width: 205px;\n}\n.avatar-upload .avatar-edit[data-v-19fddf5d] {\n    position: absolute;\n    right: 12px;\n    z-index: 1;\n    top: 10px;\n}\n.avatar-upload .avatar-edit input[data-v-19fddf5d] {\n      display: none;\n}\n.avatar-upload .avatar-edit input + label[data-v-19fddf5d] {\n        font-family: 'FontAwesome';\n        color: #757575;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-pack: center;\n            -ms-flex-pack: center;\n                justify-content: center;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center;\n        width: 34px;\n        height: 34px;\n        margin-bottom: 0;\n        border-radius: 100%;\n        background: #FFFFFF;\n        border: 1px solid transparent;\n        -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);\n                box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);\n        cursor: pointer;\n        font-weight: normal;\n        -webkit-transition: all .2s ease-in-out;\n        transition: all .2s ease-in-out;\n}\n.avatar-upload .avatar-edit input + label[data-v-19fddf5d]:hover {\n          background: #f1f1f1;\n          border-color: #d6d6d6;\n}\n.avatar-upload .avatar-preview[data-v-19fddf5d] {\n    width: 150px;\n    height: 150px;\n    position: relative;\n    border-radius: 100%;\n    border: 6px solid #F8F8F8;\n    -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);\n            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);\n}\n.avatar-upload .avatar-preview > div[data-v-19fddf5d] {\n      width: 100%;\n      height: 100%;\n      border-radius: 100%;\n      background-size: cover;\n      background-repeat: no-repeat;\n      background-position: center;\n}\n", ""]);
 
 // exports
 
@@ -10395,7 +10215,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n.cart[data-v-1b47dec4] {\n  margin-top: 25px;\n  margin-bottom: 40px;\n}\n.ship-title[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 40px;\n}\n.form-group label[data-v-1b47dec4] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.form-group input[data-v-1b47dec4] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.form-group input[data-v-1b47dec4]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.form-group input.is-invalid[data-v-1b47dec4] {\n    border-color: #d9534f !important;\n}\n.form-group .error[data-v-1b47dec4] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.form-group .error .invalid-feedback[data-v-1b47dec4] {\n    display: block;\n    margin: 0;\n}\n.card[data-v-1b47dec4] {\n  border: 1px solid #979797 !important;\n  border-radius: 2 !important;\n}\n.col-md-7[data-v-1b47dec4] {\n  padding-left: 0;\n}\n.card-body[data-v-1b47dec4] {\n  padding: 0.7rem !important;\n}\n.card-title[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 0;\n}\n.card-subtitle[data-v-1b47dec4] {\n  font-size: 17px;\n  margin-top: 10px;\n  font-family: \"SFProText\";\n  line-height: 28px;\n}\n.card-subtitle .name[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.card-subtitle .adress[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-top: 7px;\n}\n.btn-edit[data-v-1b47dec4] {\n  vertical-align: middle;\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 30px;\n  padding-right: 30px;\n  margin-right: 10px;\n}\n.btn-update[data-v-1b47dec4] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  margin-top: 3.8em;\n}\n@media (min-width: 1025px) {\n.mr[data-v-1b47dec4] {\n    margin-right: 30px;\n}\n.ml[data-v-1b47dec4] {\n    margin-left: 30px;\n}\n}\n@media (max-width: 768px) {\n.form-group label[data-v-1b47dec4] {\n    font-size: 15px;\n}\n.cart[data-v-1b47dec4] {\n    text-align: left;\n}\n.btn-edit[data-v-1b47dec4] {\n    margin-top: 13px;\n}\n}\n.radio[data-v-1b47dec4] {\n  margin: 0.5rem;\n}\n.radio input[type=\"radio\"][data-v-1b47dec4] {\n    position: absolute;\n    opacity: 0;\n}\n.radio input[type=\"radio\"] + .radio-label[data-v-1b47dec4]:before {\n      content: '';\n      background: #ffffff;\n      border-radius: 100%;\n      border: 1px solid #bfbfbf;\n      display: inline-block;\n      width: 1.4em;\n      height: 1.4em;\n      position: relative;\n      top: -0.2em;\n      margin-right: 1em;\n      vertical-align: top;\n      cursor: pointer;\n      text-align: center;\n      -webkit-transition: all 250ms ease;\n      transition: all 250ms ease;\n}\n.radio input[type=\"radio\"]:checked + .radio-label[data-v-1b47dec4]:before {\n      background-color: #ffe100;\n      -webkit-box-shadow: inset 0 0 0 4px #ffffff;\n              box-shadow: inset 0 0 0 4px #ffffff;\n}\n.radio input[type=\"radio\"]:focus + .radio-label[data-v-1b47dec4]:before {\n      outline: none;\n      border-color: #ffe100;\n}\n.radio input[type=\"radio\"]:disabled + .radio-label[data-v-1b47dec4]:before {\n      -webkit-box-shadow: inset 0 0 0 4px #ffffff;\n              box-shadow: inset 0 0 0 4px #ffffff;\n      border-color: #bfbfbf;\n      background: #bfbfbf;\n}\n.radio input[type=\"radio\"] + .radio-label[data-v-1b47dec4]:empty:before {\n      margin-right: 0;\n}\n.radio label[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 16px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.radio-button[data-v-1b47dec4] {\n  margin-bottom: 15px;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n.cart[data-v-1b47dec4] {\n  margin-top: 25px;\n  margin-bottom: 40px;\n}\n.ship-title[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 40px;\n}\n.form-group label[data-v-1b47dec4] {\n  color: #444444;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.form-group input[data-v-1b47dec4] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.form-group input[data-v-1b47dec4]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.form-group input.is-invalid[data-v-1b47dec4] {\n    border-color: #d9534f !important;\n}\n.form-group .error[data-v-1b47dec4] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.form-group .error .invalid-feedback[data-v-1b47dec4] {\n    display: block;\n    margin: 0;\n}\n.card[data-v-1b47dec4] {\n  border: 1px solid #979797 !important;\n  border-radius: 2 !important;\n}\n.col-md-7[data-v-1b47dec4] {\n  padding-left: 0;\n}\n.card-body[data-v-1b47dec4] {\n  padding: 0.7rem !important;\n}\n.card-title[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 0;\n}\n.card-subtitle[data-v-1b47dec4] {\n  font-size: 17px;\n  margin-top: 10px;\n  font-family: \"SFProText\";\n  line-height: 28px;\n}\n.card-subtitle .name[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.card-subtitle .adress[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-top: 7px;\n}\n.btn-edit[data-v-1b47dec4] {\n  vertical-align: middle;\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 30px;\n  padding-right: 30px;\n  margin-right: 10px;\n}\n.btn-update[data-v-1b47dec4] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  margin-top: 3.8em;\n}\n@media (min-width: 1025px) {\n.mr[data-v-1b47dec4] {\n    margin-right: 30px;\n}\n.ml[data-v-1b47dec4] {\n    margin-left: 30px;\n}\n}\n@media (max-width: 768px) {\n.form-group label[data-v-1b47dec4] {\n    font-size: 15px;\n}\n.cart[data-v-1b47dec4] {\n    text-align: left;\n}\n.btn-edit[data-v-1b47dec4] {\n    margin-top: 13px;\n}\n}\n.radio[data-v-1b47dec4] {\n  margin: 0.5rem;\n}\n.radio input[type=\"radio\"][data-v-1b47dec4] {\n    position: absolute;\n    opacity: 0;\n}\n.radio input[type=\"radio\"] + .radio-label[data-v-1b47dec4]:before {\n      content: '';\n      background: #ffffff;\n      border-radius: 100%;\n      border: 1px solid #bfbfbf;\n      display: inline-block;\n      width: 1.4em;\n      height: 1.4em;\n      position: relative;\n      top: -0.2em;\n      margin-right: 1em;\n      vertical-align: top;\n      cursor: pointer;\n      text-align: center;\n      -webkit-transition: all 250ms ease;\n      transition: all 250ms ease;\n}\n.radio input[type=\"radio\"]:checked + .radio-label[data-v-1b47dec4]:before {\n      background-color: #ffe100;\n      -webkit-box-shadow: inset 0 0 0 4px #ffffff;\n              box-shadow: inset 0 0 0 4px #ffffff;\n}\n.radio input[type=\"radio\"]:focus + .radio-label[data-v-1b47dec4]:before {\n      outline: none;\n      border-color: #ffe100;\n}\n.radio input[type=\"radio\"]:disabled + .radio-label[data-v-1b47dec4]:before {\n      -webkit-box-shadow: inset 0 0 0 4px #ffffff;\n              box-shadow: inset 0 0 0 4px #ffffff;\n      border-color: #bfbfbf;\n      background: #bfbfbf;\n}\n.radio input[type=\"radio\"] + .radio-label[data-v-1b47dec4]:empty:before {\n      margin-right: 0;\n}\n.radio label[data-v-1b47dec4] {\n  font-family: \"SFProText\";\n  font-size: 16px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.radio-button[data-v-1b47dec4] {\n  margin-bottom: 15px;\n}\n", ""]);
 
 // exports
 
@@ -10440,7 +10260,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SF-Pro-Display-Regular.otf\") format(\"truetype\");\n}\n.container-fluid[data-v-28e5b594] {\n  padding: 0 4vw;\n}\n@media (max-width: 992px) {\n.wrapper[data-v-28e5b594] {\n    width: 100%;\n}\n}\n.panel-heading[data-v-28e5b594] {\n  padding: 0;\n  border: 0;\n}\n.panel-title > a[data-v-28e5b594], .panel-title > a[data-v-28e5b594]:active {\n  display: block;\n  /* padding:15px; */\n  text-decoration: none;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.panel-heading a[data-v-28e5b594]:before {\n  font-family: 'Glyphicons Halflings';\n  content: url(/img/Design/arrow.png);\n  float: right;\n  -webkit-transition: all 0.5s;\n  transition: all 0.5s;\n}\n.panel-heading.active a[data-v-28e5b594]:before {\n  /* -webkit-transform: rotate(180deg);\n\t-moz-transform: rotate(180deg);\n\ttransform: rotate(180deg); */\n}\n\n/* Tabs css*/\n.nav-tabs[data-v-28e5b594] {\n  border-bottom: 0;\n}\n.nav-tabs .nav-item.show .nav-link[data-v-28e5b594], .nav-tabs .nav-link.active[data-v-28e5b594] {\n  /* background: moccasin; */\n  border-bottom: solid 3px #ffc600;\n  font-weight: 600;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  /* padding-left: 0 !important;\n    padding-right: 0 !important; */\n  padding-bottom: 5px;\n}\n.nav-tabs .nav-link[data-v-28e5b594] {\n  border: 0px solid transparent;\n  padding-left: 0px;\n  padding-right: 0px;\n  margin-right: 10px !important;\n}\n.nav-link[data-v-28e5b594] {\n  padding-left: 0;\n  padding-right: 0.85rem;\n  padding-bottom: 0.3rem;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #777777;\n}\n.title-right[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 34px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.bar[data-v-28e5b594] {\n  border-bottom: solid 1.8px #cccccc;\n  margin-top: 0.5rem !important;\n  margin-bottom: 1.1rem !important;\n}\n.tab-content[data-v-28e5b594] {\n  padding-top: 15px;\n  padding-bottom: 10px;\n}\n#nav-tabContent .img-inline[data-v-28e5b594] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding-top: 20px;\n}\n.brand[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.tank[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 36px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.switch[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #7c7c7c;\n}\n.size[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 30px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.sizing[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #7c7c7c;\n}\n.small[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 18px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  color: #444444;\n}\n.join-cta-label[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-28e5b594] {\n  opacity: 0.6;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.send[data-v-28e5b594] {\n  padding-top: 25px;\n}\n.pt-10[data-v-28e5b594] {\n  padding-top: 20px;\n}\n.t-shirt[data-v-28e5b594] {\n  /* float:right; */\n  padding-left: 60px;\n}\n\n/* Custom scroll bar */\n.custom-scrollbar[data-v-28e5b594] {\n  position: relative;\n  /* width: 400px; */\n  height: 200px;\n  overflow: hidden;\n}\n.custom-scrollbar__inner[data-v-28e5b594] {\n  height: 200px;\n  width: calc(100% + 40px);\n  padding-right: 64px;\n  overflow-y: scroll;\n  -webkit-overflow-scrolling: touch;\n}\n.custom-scrollbar__bar[data-v-28e5b594] {\n  position: absolute;\n  top: 16px;\n  bottom: 16px;\n  background: #cccccc;\n  width: 6px;\n  right: 8px;\n  border-radius: 2px;\n}\n.custom-scrollbar__knob[data-v-28e5b594] {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 20px;\n  height: 20px;\n  border-radius: 18px;\n  border: solid 4px #757575;\n  background-color: #ffffff;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  will-change: top;\n}\n.img-template[data-v-28e5b594] {\n  /* width: 80%; */\n  /* padding-right:10px; */\n}\n@media (min-width: 768px) and (max-width: 1024px) {\n  /* .img-template{\n        width: 50%;\n        padding-right:10px;\n    } */\n}\n.avatars[data-v-28e5b594] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  /* justify-content: space-around; */\n  -ms-flex-line-pack: start;\n      align-content: flex-start;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.avatar[data-v-28e5b594] {\n  cursor: pointer;\n}\n.avatars[data-v-28e5b594] {\n  /* padding-left: 3%; */\n}\n.avatar[data-v-28e5b594] {\n  padding: 10px;\n}\n.avatars img[data-v-28e5b594]:hover {\n  border: 1px solid #26B4FF;\n}\n.name[data-v-28e5b594] {\n  text-align: center;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SF-Pro-Display-Regular.otf\") format(\"truetype\");\n}\n.container-fluid[data-v-28e5b594] {\n  padding: 0 4vw;\n}\n@media (max-width: 992px) {\n.wrapper[data-v-28e5b594] {\n    width: 100%;\n}\n}\n.panel-heading[data-v-28e5b594] {\n  padding: 0;\n  border: 0;\n}\n.panel-title > a[data-v-28e5b594], .panel-title > a[data-v-28e5b594]:active {\n  display: block;\n  /* padding:15px; */\n  text-decoration: none;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.panel-heading a[data-v-28e5b594]:before {\n  font-family: 'Glyphicons Halflings';\n  content: url(/img/Design/arrow.png);\n  float: right;\n  -webkit-transition: all 0.5s;\n  transition: all 0.5s;\n}\n.panel-heading.active a[data-v-28e5b594]:before {\n  /* -webkit-transform: rotate(180deg);\n\t-moz-transform: rotate(180deg);\n\ttransform: rotate(180deg); */\n}\n\n/* Tabs css*/\n.nav-tabs[data-v-28e5b594] {\n  border-bottom: 0;\n}\n.nav-tabs .nav-item.show .nav-link[data-v-28e5b594], .nav-tabs .nav-link.active[data-v-28e5b594] {\n  /* background: moccasin; */\n  border-bottom: solid 3px #ffc600;\n  font-weight: 600;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n  /* padding-left: 0 !important;\n    padding-right: 0 !important; */\n  padding-bottom: 5px;\n}\n.nav-tabs .nav-link[data-v-28e5b594] {\n  border: 0px solid transparent;\n  padding-left: 0px;\n  padding-right: 0px;\n  margin-right: 10px !important;\n}\n.nav-link[data-v-28e5b594] {\n  padding-left: 0;\n  padding-right: 0.85rem;\n  padding-bottom: 0.3rem;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #777777;\n}\n.title-right[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 34px;\n  font-weight: 600;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.bar[data-v-28e5b594] {\n  border-bottom: solid 1.8px #cccccc;\n  margin-top: 0.5rem !important;\n  margin-bottom: 1.1rem !important;\n}\n.tab-content[data-v-28e5b594] {\n  padding-top: 15px;\n  padding-bottom: 10px;\n}\n#nav-tabContent .img-inline[data-v-28e5b594] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding-top: 20px;\n}\n.brand[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.tank[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 36px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.switch[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #7c7c7c;\n}\n.size[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 30px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.sizing[data-v-28e5b594] {\n  opacity: 0.7;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #7c7c7c;\n}\n.small[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 18px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: 1.33;\n  letter-spacing: normal;\n  color: #444444;\n}\n.join-cta-label[data-v-28e5b594] {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-28e5b594] {\n  opacity: 0.6;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.send[data-v-28e5b594] {\n  padding-top: 25px;\n}\n.pt-10[data-v-28e5b594] {\n  padding-top: 20px;\n}\n.t-shirt[data-v-28e5b594] {\n  /* float:right; */\n  padding-left: 60px;\n}\n\n/* Custom scroll bar */\n.custom-scrollbar[data-v-28e5b594] {\n  position: relative;\n  /* width: 400px; */\n  height: 200px;\n  overflow: hidden;\n}\n.custom-scrollbar__inner[data-v-28e5b594] {\n  height: 200px;\n  width: calc(100% + 40px);\n  padding-right: 64px;\n  overflow-y: scroll;\n  -webkit-overflow-scrolling: touch;\n}\n.custom-scrollbar__bar[data-v-28e5b594] {\n  position: absolute;\n  top: 16px;\n  bottom: 16px;\n  background: #cccccc;\n  width: 6px;\n  right: 8px;\n  border-radius: 2px;\n}\n.custom-scrollbar__knob[data-v-28e5b594] {\n  position: absolute;\n  top: 0;\n  left: 50%;\n  width: 20px;\n  height: 20px;\n  border-radius: 18px;\n  border: solid 4px #757575;\n  background-color: #ffffff;\n  -webkit-transform: translate(-50%, -50%);\n  transform: translate(-50%, -50%);\n  will-change: top;\n}\n.img-template[data-v-28e5b594] {\n  /* width: 80%; */\n  /* padding-right:10px; */\n}\n@media (min-width: 768px) and (max-width: 1024px) {\n  /* .img-template{\n        width: 50%;\n        padding-right:10px;\n    } */\n}\n.avatars[data-v-28e5b594] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  /* justify-content: space-around; */\n  -ms-flex-line-pack: start;\n      align-content: flex-start;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.avatar[data-v-28e5b594] {\n  cursor: pointer;\n}\n.avatars[data-v-28e5b594] {\n  /* padding-left: 3%; */\n}\n.avatar[data-v-28e5b594] {\n  padding: 10px;\n}\n.avatars img[data-v-28e5b594]:hover {\n  border: 1px solid #26B4FF;\n}\n.name[data-v-28e5b594] {\n  text-align: center;\n}\n", ""]);
 
 // exports
 
@@ -10470,7 +10290,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.sponsor-common .save-btn[data-v-29c258f6] {\n  size: 28px;\n  color: #444444;\n  width: 132px;\n  height: 33px;\n  background-color: white;\n  border-radius: 3px;\n  border: 1px solid black;\n  font-weight: bold;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  margin-top: 30px;\n}\n.sponsor-common .edit-profile[data-v-29c258f6] {\n  font-size: 25px;\n  font-family: font-family-helvetica-neue;\n  font-weight: bold;\n  color: #ffc600;\n  margin-bottom: 25px;\n  padding-left: 232px;\n}\n.sponsor-common .invalid-feedback[data-v-29c258f6] {\n  -ms-flex-item-align: baseline;\n      align-self: baseline;\n}\n.sponsor-common .is-invalid[data-v-29c258f6] {\n  border-color: #d9534f !important;\n}\n.sponsor-common form[data-v-29c258f6] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.sponsor-common form input[type=\"text\"][data-v-29c258f6], .sponsor-common form textarea[data-v-29c258f6] {\n    border-radius: 3px;\n    border: solid 2px rgba(212, 212, 212, 0.33) !important;\n}\n.sponsor-common form input[type=\"text\"][data-v-29c258f6]:focus, .sponsor-common form textarea[data-v-29c258f6]:focus {\n      outline: none;\n}\n", ""]);
+exports.push([module.i, "\n.sponsor-common .save-btn[data-v-29c258f6] {\n  size: 28px;\n  color: #444444;\n  width: 132px;\n  height: 33px;\n  background-color: #ffe100;\n  border-radius: 3px;\n  border: 1px solid black;\n  font-weight: bold;\n  display: -moz-flex;\n  display: -ms-flex;\n  display: -o-flex;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -ms-flex-item-align: center;\n      align-self: center;\n  margin-top: 30px;\n}\n.sponsor-common .edit-profile[data-v-29c258f6] {\n  font-size: 25px;\n  font-family: font-family-helvetica-neue;\n  font-weight: bold;\n  color: #ffc600;\n  margin-bottom: 25px;\n  padding-left: 232px;\n}\n.sponsor-common .invalid-feedback[data-v-29c258f6] {\n  -ms-flex-item-align: baseline;\n      align-self: baseline;\n}\n.sponsor-common .is-invalid[data-v-29c258f6] {\n  border-color: #d9534f !important;\n}\n.sponsor-common form[data-v-29c258f6] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n}\n.sponsor-common form input[type=\"text\"][data-v-29c258f6], .sponsor-common form textarea[data-v-29c258f6] {\n    border-radius: 3px;\n    border: solid 2px rgba(212, 212, 212, 0.33) !important;\n}\n.sponsor-common form input[type=\"text\"][data-v-29c258f6]:focus, .sponsor-common form textarea[data-v-29c258f6]:focus {\n      outline: none;\n}\n", ""]);
 
 // exports
 
@@ -10515,7 +10335,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.sponsor-common .table[data-v-3823d3bb] {\n  padding-left: 153px !important;\n}\n.sponsor-common .history[data-v-3823d3bb] {\n  font-size: 25px;\n  font-family: \"Helvetica Neue\";\n  font-weight: bold;\n  color: #ffc600;\n  margin-bottom: 60px;\n  padding-left: 153px;\n}\n", ""]);
+exports.push([module.i, "\n.sponsor-common .table[data-v-3823d3bb] {\n  padding-left: 153px !important;\n}\n.sponsor-common .history[data-v-3823d3bb] {\n  font-size: 25px;\n  font-family: \"HelveticaNeue\";\n  font-weight: bold;\n  color: #ffc600;\n  margin-bottom: 60px;\n  padding-left: 153px;\n}\n", ""]);
 
 // exports
 
@@ -10530,7 +10350,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.auth-join[data-v-3b0025b8] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-join-container[data-v-3b0025b8] {\n  max-width: 768px;\n}\n.auth-join-form .form-title[data-v-3b0025b8] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-join-form .form-group label[data-v-3b0025b8] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-join-form .form-group input[data-v-3b0025b8] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-join-form .form-group input[data-v-3b0025b8]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-join-form .form-group input.is-invalid[data-v-3b0025b8] {\n    border-color: #d9534f !important;\n}\n.auth-join-form .form-group .error[data-v-3b0025b8] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-join-form .form-group .error .invalid-feedback[data-v-3b0025b8] {\n    display: block;\n    margin: 0;\n}\n.auth-join-form .join-cta-element[data-v-3b0025b8] {\n  cursor: pointer;\n}\n.auth-join-form .join-cta-element i[data-v-3b0025b8] {\n    margin-right: 1rem;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label-desc[data-v-3b0025b8] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label[data-v-3b0025b8] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n", ""]);
+exports.push([module.i, "\n.auth-join[data-v-3b0025b8] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-join-container[data-v-3b0025b8] {\n  max-width: 768px;\n}\n.auth-join-form .form-title[data-v-3b0025b8] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-join-form .form-group label[data-v-3b0025b8] {\n  color: #444444;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-join-form .form-group input[data-v-3b0025b8] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-join-form .form-group input[data-v-3b0025b8]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-join-form .form-group input.is-invalid[data-v-3b0025b8] {\n    border-color: #d9534f !important;\n}\n.auth-join-form .form-group .error[data-v-3b0025b8] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-join-form .form-group .error .invalid-feedback[data-v-3b0025b8] {\n    display: block;\n    margin: 0;\n}\n.auth-join-form .join-cta-element[data-v-3b0025b8] {\n  cursor: pointer;\n}\n.auth-join-form .join-cta-element i[data-v-3b0025b8] {\n    margin-right: 1rem;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label-desc[data-v-3b0025b8] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label[data-v-3b0025b8] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n", ""]);
 
 // exports
 
@@ -10545,7 +10365,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.auth-login[data-v-42c42d6a] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-login-container[data-v-42c42d6a] {\n  max-width: 768px;\n}\n.auth-login-form .form-title[data-v-42c42d6a] {\n  font-family: \"SFProDisplay\", sans-serif;\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-login-form .reset-password-cta[data-v-42c42d6a] {\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  color: h-blue;\n}\n.auth-login-form .form-group label[data-v-42c42d6a] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-login-form .form-group input[type=checkbox][data-v-42c42d6a] {\n  font-size: 24px;\n  margin-top: 6px;\n}\n.auth-login-form .form-group input[data-v-42c42d6a] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-login-form .form-group input[data-v-42c42d6a]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-login-form .form-group input.is-invalid[data-v-42c42d6a] {\n    border-color: #d9534f !important;\n}\n.auth-login-form .form-group .error[data-v-42c42d6a] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-login-form .form-group .error .invalid-feedback[data-v-42c42d6a] {\n    display: block;\n    margin: 0;\n}\n.auth-login-form .login-cta-element[data-v-42c42d6a] {\n  cursor: pointer;\n}\n.auth-login-form .login-cta-element i[data-v-42c42d6a] {\n    margin-right: 1rem;\n}\n.auth-login-form .login-cta-element .login-cta-labels .login-cta-label-desc[data-v-42c42d6a] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-login-form .login-cta-element .login-cta-labels .login-cta-label[data-v-42c42d6a] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n", ""]);
+exports.push([module.i, "\n.auth-login[data-v-42c42d6a] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-login-container[data-v-42c42d6a] {\n  max-width: 768px;\n}\n.auth-login-form .form-title[data-v-42c42d6a] {\n  font-family: \"SFProDisplay\", sans-serif;\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-login-form .reset-password-cta[data-v-42c42d6a] {\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n  color: h-blue;\n}\n.auth-login-form .form-group label[data-v-42c42d6a] {\n  color: #444444;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-login-form .form-group input[type=checkbox][data-v-42c42d6a] {\n  font-size: 24px;\n  margin-top: 6px;\n}\n.auth-login-form .form-group input[data-v-42c42d6a] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-login-form .form-group input[data-v-42c42d6a]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-login-form .form-group input.is-invalid[data-v-42c42d6a] {\n    border-color: #d9534f !important;\n}\n.auth-login-form .form-group .error[data-v-42c42d6a] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-login-form .form-group .error .invalid-feedback[data-v-42c42d6a] {\n    display: block;\n    margin: 0;\n}\n.auth-login-form .login-cta-element[data-v-42c42d6a] {\n  cursor: pointer;\n}\n.auth-login-form .login-cta-element i[data-v-42c42d6a] {\n    margin-right: 1rem;\n}\n.auth-login-form .login-cta-element .login-cta-labels .login-cta-label-desc[data-v-42c42d6a] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-login-form .login-cta-element .login-cta-labels .login-cta-label[data-v-42c42d6a] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n", ""]);
 
 // exports
 
@@ -10567,7 +10387,7 @@ exports.push([module.i, "\n@font-face {\n  font-family: \"SFProDisplay\";\n  src
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b3b074e\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/SideBar.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -10575,7 +10395,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.main-field[data-v-4c3f1cd4] {\n  width: 100vw;\n  margin: 0 auto;\n  background-color: white;\n}\n\n/* section 2 placeholder */\n.placeholder-text[data-v-4c3f1cd4] {\n  color: #444444;\n  margin-top: 5.7%;\n  text-align: center;\n  font-size: calc(12px + 1.55vw);\n  /*42px*/\n}\n.chicagofire[data-v-4c3f1cd4] {\n  top: 8.03%;\n  height: auto;\n  left: 14.78vw;\n  width: 30.03vw;\n  position: absolute;\n}\n.boston-marathon-bib[data-v-4c3f1cd4] {\n  top: 32%;\n  height: auto;\n  left: 22.55vw;\n  width: 10.05vw;\n  position: absolute;\n}\n\n/*section 3 banner*/\n.bibmark-banner[data-v-4c3f1cd4] {\n  width: 100vw;\n  position: relative;\n}\n.bibmark-banner .image-banner[data-v-4c3f1cd4] {\n  z-index: 3;\n  height: 50vw;\n  background-size: cover;\n  background-position: center center;\n  background-image: url(\"https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/DCBBCBC8-6341-4DB8-861B-45A66241117D.png\");\n}\n.bibmark-banner .banner-text[data-v-4c3f1cd4] {\n  top: 27%;\n  z-index: 1;\n  width: 50vw;\n  height: 4.7%;\n  left: 40.78vw;\n  color: #ffffff;\n  font-weight: 300;\n  position: absolute;\n  font-size: calc(8px + 2.44vw);\n}\n.banner-text .banner-text-bold[data-v-4c3f1cd4] {\n  font-weight: 900;\n  font-size: calc(10px + 2.65vw);\n}\n\n/*fontstyle*/\n.default-text-style[data-v-4c3f1cd4] {\n  font-style: normal;\n  line-height: normal;\n  font-stretch: normal;\n  letter-spacing: normal;\n  font-family: \"SFProText\", \"Helvetica Neue\";\n}\n\n/*section 4*/\n.section-carousel-main-text[data-v-4c3f1cd4] {\n  font-family: \"SFProDisplay\";\n  color: #444444;\n  font-weight: bold;\n  text-align: center;\n  font-size: calc(18px + 1.56vw);\n}\n.section-carousel-subtext[data-v-4c3f1cd4] {\n  color: #000000;\n  text-align: center;\n  font-weight: normal;\n  background-color: white;\n  font-size: calc(8px + 0.52vw);\n  font-family: \"SFProText\";\n}\n\n/*carousel*/\n.carousel-buttons[data-v-4c3f1cd4] {\n  top: 25%;\n  z-index: 9;\n  width: 134px;\n  height: 149px;\n  color: #717171;\n  font-size: 72px;\n  position: absolute;\n  font-weight: lighter;\n  text-align: center;\n}\n.carousel-buttons + .prev-slide[data-v-4c3f1cd4] {\n  left: 0px;\n}\n.carousel-buttons + .next-slide[data-v-4c3f1cd4] {\n  right: 0px;\n}\n.gradient-carousel[data-v-4c3f1cd4] {\n  position: relative;\n  display: inline-block;\n}\n.gradient-carousel[data-v-4c3f1cd4]:before {\n  z-index: 3;\n  height: 85%;\n  width: 100%;\n  content: \"\";\n  position: absolute;\n  background: -webkit-gradient(linear, left top, right top, from(white), color-stop(20%, rgba(255, 255, 255, 0)), color-stop(80%, rgba(255, 255, 255, 0)), to(white));\n  background: linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, white 100%);\n  /* W3C */\n  /* FF3.6+ */\n  /* Chrome10+,Safari5.1+ */\n  /* Opera 11.10+ */\n  background: -ms-linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 80%, white 100%);\n  /* IE10+ */\n  background: -webkit-gradient(linear, left top, right top, color-stop(0%, white), color-stop(20%, rgba(255, 255, 255, 0)), color-stop(80%, rgba(255, 255, 255, 0)), color-stop(100%, white));\n  /* Chrome,Safari4+ */\n}\n", ""]);
+exports.push([module.i, "\n#sidebar-wrapper[data-v-4b3b074e] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-4b3b074e] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-4b3b074e] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-4b3b074e] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-4b3b074e] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-4b3b074e] {\n  padding-left: 50px;\n  padding-right: 25px;\n}\n.profile-usermenu ul[data-v-4b3b074e] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-4b3b074e] {\n  padding: 0px;\n}\n.active[data-v-4b3b074e] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-4b3b074e] {\n  margin-top: 20px;\n  margin-left: auto;\n  margin-right: auto;\n  background: #fff;\n  min-height: 460px;\n  width: 180px;\n}\n.content[data-v-4b3b074e] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-4b3b074e] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-4b3b074e] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-4b3b074e] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-4b3b074e] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-4b3b074e] {\n    padding: 0px 20px !important;\n    text-align: center;\n}\n#wrapper[data-v-4b3b074e] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-4b3b074e] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-4b3b074e] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-4b3b074e] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-4b3b074e] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-4b3b074e] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-4b3b074e] {\n    padding: 0px 20px;\n}\n}\n.avatar[data-v-4b3b074e] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n}\n.avatar-upload[data-v-4b3b074e] {\n  position: relative;\n  max-width: 205px;\n}\n.avatar-upload .avatar-edit[data-v-4b3b074e] {\n    position: absolute;\n    right: 12px;\n    z-index: 1;\n    top: 10px;\n}\n.avatar-upload .avatar-edit input[data-v-4b3b074e] {\n      display: none;\n}\n.avatar-upload .avatar-edit input + label[data-v-4b3b074e] {\n        font-family: 'FontAwesome';\n        color: #757575;\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex;\n        -webkit-box-pack: center;\n            -ms-flex-pack: center;\n                justify-content: center;\n        -webkit-box-align: center;\n            -ms-flex-align: center;\n                align-items: center;\n        width: 34px;\n        height: 34px;\n        margin-bottom: 0;\n        border-radius: 100%;\n        background: #FFFFFF;\n        border: 1px solid transparent;\n        -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);\n                box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);\n        cursor: pointer;\n        font-weight: normal;\n        -webkit-transition: all .2s ease-in-out;\n        transition: all .2s ease-in-out;\n}\n.avatar-upload .avatar-edit input + label[data-v-4b3b074e]:hover {\n          background: #f1f1f1;\n          border-color: #d6d6d6;\n}\n.avatar-upload .avatar-preview[data-v-4b3b074e] {\n    width: 150px;\n    height: 150px;\n    position: relative;\n    border-radius: 100%;\n    border: 6px solid #F8F8F8;\n    -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);\n            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);\n}\n.avatar-upload .avatar-preview > div[data-v-4b3b074e] {\n      width: 100%;\n      height: 100%;\n      border-radius: 100%;\n      background-size: cover;\n      background-repeat: no-repeat;\n      background-position: center;\n}\n.sponsor-name[data-v-4b3b074e] {\n  font-family: \"HelveticaNeue\";\n  font-size: 20px;\n  font-weight: bold;\n}\n.sponsor-description[data-v-4b3b074e] {\n  font-family: \"HelveticaNeue\";\n  font-size: 11px;\n  font-weight: 100 !important;\n  margin-top: 5px;\n  text-align: left;\n  margin-bottom: 5px;\n}\n.sponsor-link[data-v-4b3b074e] {\n  font-family: \"HelveticaNeue\";\n  font-size: 11px;\n  font-weight: 100 !important;\n  margin-top: 20px;\n  color: grey;\n}\n.sponsor-social-icons i[data-v-4b3b074e] {\n  margin-right: 5px;\n  color: black;\n}\n.sponsor-social-icons a[data-v-4b3b074e] {\n  color: black;\n}\n", ""]);
 
 // exports
 
@@ -10605,7 +10425,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-4c50516c] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-4c50516c] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-4c50516c] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-4c50516c] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-4c50516c] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-4c50516c] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-4c50516c] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-4c50516c] {\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-4c50516c]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-4c50516c] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-4c50516c] {\n  padding: 0px;\n}\n.active[data-v-4c50516c] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-4c50516c] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-4c50516c] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-4c50516c] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-4c50516c] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-4c50516c] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-4c50516c] {\n  margin-bottom: 58px;\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-4c50516c] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-4c50516c] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-4c50516c] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-4c50516c] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-4c50516c] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-4c50516c] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-4c50516c] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-4c50516c] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-4c50516c] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-4c50516c] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-4c50516c] {\n    padding: 0px 20px;\n}\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-4c50516c] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-4c50516c] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-4c50516c] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-4c50516c] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-4c50516c] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-4c50516c] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-4c50516c] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-4c50516c] {\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-4c50516c]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-4c50516c] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-4c50516c] {\n  padding: 0px;\n}\n.active[data-v-4c50516c] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-4c50516c] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-4c50516c] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-4c50516c] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-4c50516c] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-4c50516c] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-4c50516c] {\n  margin-bottom: 58px;\n  font-family: SFProText;\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-4c50516c] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-4c50516c] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-4c50516c] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-4c50516c] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-4c50516c] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-4c50516c] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-4c50516c] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-4c50516c] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-4c50516c] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-4c50516c] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-4c50516c] {\n    padding: 0px 20px;\n}\n}\n", ""]);
 
 // exports
 
@@ -10635,7 +10455,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.sponsor-common[data-v-4fa041b7] {\n  padding: 0;\n  background-color: white;\n}\n.sponsor-common .main-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: start;\n        -ms-flex-align: start;\n            align-items: flex-start;\n}\n.sponsor-common .image-wrapper[data-v-4fa041b7] {\n    height: 431px;\n    width: 100%;\n    margin-bottom: 59px;\n    position: relative;\n}\n.sponsor-common .input-cover-wrap[data-v-4fa041b7] {\n    position: absolute;\n    bottom: 19px;\n    right: 76px;\n}\n.sponsor-common .input-cover-wrap input[data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .input-cover-wrap label[data-v-4fa041b7] {\n      size: 18px;\n      color: #444444;\n      padding: 6px 7px;\n      background-color: white;\n      border-radius: 3px;\n      font-weight: bold;\n}\n.sponsor-common .nav-links[data-v-4fa041b7] {\n    padding: 0 15px 67px 28px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    border-right: solid 2px #cccccc;\n}\n.sponsor-common .nav-links > *[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 14px;\n}\n.sponsor-common .navigation-link[data-v-4fa041b7] {\n    font-family: \"Helvetica Neue\";\n    font-size: 20px;\n    cursor: pointer;\n    color: #444444;\n    font-weight: normal;\n    font-stretch: normal;\n    font-style: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n}\n.sponsor-common .navigation-link.active[data-v-4fa041b7] {\n      color: #ffc600;\n      font-weight: bold;\n}\n.sponsor-common .tab-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    padding-top: 11px;\n}\n.sponsor-common .left-side[data-v-4fa041b7] {\n    margin-right: 40px;\n    max-width: 189px;\n    width: 100%;\n    padding-top: 14px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n}\n.sponsor-common .left-side label[data-v-4fa041b7] {\n      font-family: \"Helvetica Neue\";\n      font-size: 22px;\n      font-weight: 500;\n      font-stretch: normal;\n      font-style: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: right;\n      color: #444444;\n      margin-bottom: 0;\n}\n.sponsor-common .left-side2[data-v-4fa041b7] {\n    margin-right: 40px;\n    max-width: 300px;\n    width: 100%;\n    padding-top: 14px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n}\n.sponsor-common .left-side2 label[data-v-4fa041b7] {\n      font-family: \"Helvetica Neue\", sans-serif;\n      font-size: 22px;\n      font-weight: 500;\n      color: #444444;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side[data-v-4fa041b7] {\n    max-width: 348px;\n    width: 100%;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -ms-flex-wrap: wrap;\n        flex-wrap: wrap;\n}\n.sponsor-common .right-side .input-label[data-v-4fa041b7] {\n      font-size: 18px;\n      color: #444444;\n      width: 117px;\n      height: 33px;\n      border: solid 1px #d4d4d4;\n      display: -moz-inline-flex;\n      display: -ms-inline-flex;\n      display: -o-inline-flex;\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side .logo[data-v-4fa041b7] {\n      height: 49px;\n      width: 49px;\n      border-radius: 50%;\n      margin-right: 20px;\n      background-color: #ffc600;\n}\n.sponsor-common .right-side input[type=\"file\"][data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .right-side input[type=\"text\"][data-v-4fa041b7], .sponsor-common .right-side select[data-v-4fa041b7], .sponsor-common .right-side textarea[data-v-4fa041b7] {\n      border: solid 2px #f2f2f2;\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: \"Helvetica Neue\";\n      font-weight: regular;\n      color: #444444;\n      width: 100%;\n      height: 48px;\n}\n.sponsor-common .right-side textarea[data-v-4fa041b7] {\n      resize: none;\n      height: 122px;\n}\n.sponsor-common .right-side2[data-v-4fa041b7] {\n    max-width: 600px;\n    width: 100%;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.sponsor-common .right-side2 .input-label[data-v-4fa041b7] {\n      font-size: 18px;\n      color: #444444;\n      width: 117px;\n      height: 33px;\n      border: solid 1px #d4d4d4;\n      display: -moz-inline-flex;\n      display: -ms-inline-flex;\n      display: -o-inline-flex;\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side2 .logo[data-v-4fa041b7] {\n      height: 49px;\n      width: 49px;\n      border-radius: 50%;\n      margin-right: 20px;\n      background-color: #ffc600;\n}\n.sponsor-common .right-side2 input[type=\"file\"][data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .right-side2 input[type=\"text\"][data-v-4fa041b7], .sponsor-common .right-side2 textarea[data-v-4fa041b7] {\n      border: solid 2px #f2f2f2;\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: \"Helvetica Neue\", sans-serif;\n      font-weight: normal;\n      color: #444444;\n      width: 368px;\n      height: 48px;\n}\n.sponsor-common .right-side2 select[data-v-4fa041b7] {\n      border: solid 2px #f2f2f2;\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: \"Helvetica Neue\", sans-serif;\n      font-weight: normal;\n      color: #444444;\n      width: 368px;\n      height: 48px;\n}\n.sponsor-common .right-side2 textarea[data-v-4fa041b7] {\n      resize: none;\n      height: 122px;\n}\n.sponsor-common .background-image[data-v-4fa041b7] {\n    background-color: #ffc600;\n    width: 100%;\n    height: 100%;\n    display: block;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 13px;\n}\n.sponsor-common .table[data-v-4fa041b7] {\n    font-size: 20px;\n}\n.sponsor-common .save-btn[data-v-4fa041b7] {\n    size: 18px !important;\n    color: #444444;\n    width: 100px;\n    height: 35px;\n    background-color: white;\n    border-radius: 3px;\n    border: 1px solid  #f2f2f2;\n    font-weight: normal;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -ms-flex-item-align: center;\n        align-self: center;\n    margin-top: 10px;\n    font-family: \"Helvetica Neue\", sans-serif;\n}\n", ""]);
+exports.push([module.i, "\n.sponsor-common[data-v-4fa041b7] {\n  padding: 0;\n  background-color: white;\n}\n.sponsor-common .main-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: start;\n        -ms-flex-align: start;\n            align-items: flex-start;\n}\n.sponsor-common .image-wrapper[data-v-4fa041b7] {\n    height: 431px;\n    width: 100%;\n    margin-bottom: 29px;\n    position: relative;\n}\n.sponsor-common .input-cover-wrap[data-v-4fa041b7] {\n    position: absolute;\n    bottom: 19px;\n    right: 76px;\n}\n.sponsor-common .input-cover-wrap input[data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .input-cover-wrap label[data-v-4fa041b7] {\n      size: 18px;\n      color: #444444;\n      padding: 6px 7px;\n      background-color: white;\n      border-radius: 3px;\n      font-weight: bold;\n}\n.sponsor-common .nav-links[data-v-4fa041b7] {\n    padding: 0 15px 67px 95px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    border-right: solid 2px #cccccc;\n}\n.sponsor-common .nav-links > *[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 14px;\n}\n.sponsor-common .navigation-link[data-v-4fa041b7] {\n    font-family: \"HelveticaNeue\";\n    font-size: 20px;\n    cursor: pointer;\n    color: #444444;\n    font-weight: normal;\n    font-stretch: normal;\n    font-style: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n}\n.sponsor-common .navigation-link.active[data-v-4fa041b7] {\n      color: #ffc600;\n      font-weight: bold;\n}\n.sponsor-common .tab-section[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    padding-top: 11px;\n}\n.sponsor-common .left-side[data-v-4fa041b7] {\n    margin-right: 40px;\n    max-width: 189px;\n    width: 100%;\n    padding-top: 14px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n}\n.sponsor-common .left-side label[data-v-4fa041b7] {\n      font-family: \"HelveticaNeue\";\n      font-size: 22px;\n      font-weight: 500;\n      font-stretch: normal;\n      font-style: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: right;\n      color: #444444;\n      margin-bottom: 0;\n}\n.sponsor-common .left-side2[data-v-4fa041b7] {\n    margin-right: 40px;\n    max-width: 300px;\n    width: 100%;\n    padding-top: 14px;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: end;\n        -ms-flex-pack: end;\n            justify-content: flex-end;\n}\n.sponsor-common .left-side2 label[data-v-4fa041b7] {\n      font-family: \"HelveticaNeue\", sans-serif;\n      font-size: 22px;\n      font-weight: 500;\n      color: #444444;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side[data-v-4fa041b7] {\n    max-width: 348px;\n    width: 100%;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -ms-flex-wrap: wrap;\n        flex-wrap: wrap;\n}\n.sponsor-common .right-side .input-label[data-v-4fa041b7] {\n      font-size: 18px;\n      color: #444444;\n      width: 117px;\n      height: 33px;\n      border: solid 1px #d4d4d4;\n      display: -moz-inline-flex;\n      display: -ms-inline-flex;\n      display: -o-inline-flex;\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side .logo[data-v-4fa041b7] {\n      height: 49px;\n      width: 49px;\n      border-radius: 50%;\n      margin-right: 20px;\n      background-color: #ffc600;\n}\n.sponsor-common .right-side input[type=\"file\"][data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .right-side input[type=\"text\"][data-v-4fa041b7], .sponsor-common .right-side select[data-v-4fa041b7], .sponsor-common .right-side textarea[data-v-4fa041b7] {\n      border: solid 2px #f2f2f2;\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: \"HelveticaNeue\";\n      font-weight: regular;\n      color: #444444;\n      width: 100%;\n      height: 48px;\n}\n.sponsor-common .right-side textarea[data-v-4fa041b7] {\n      resize: none;\n      height: 122px;\n}\n.sponsor-common .right-side2[data-v-4fa041b7] {\n    max-width: 600px;\n    width: 100%;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.sponsor-common .right-side2 .input-label[data-v-4fa041b7] {\n      font-size: 18px;\n      color: #444444;\n      width: 117px;\n      height: 33px;\n      border: solid 1px #d4d4d4;\n      display: -moz-inline-flex;\n      display: -ms-inline-flex;\n      display: -o-inline-flex;\n      display: -webkit-inline-box;\n      display: -ms-inline-flexbox;\n      display: inline-flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n      -webkit-box-align: center;\n          -ms-flex-align: center;\n              align-items: center;\n      margin-bottom: 0;\n}\n.sponsor-common .right-side2 .logo[data-v-4fa041b7] {\n      height: 49px;\n      width: 49px;\n      border-radius: 50%;\n      margin-right: 20px;\n      background-color: #ffc600;\n}\n.sponsor-common .right-side2 input[type=\"file\"][data-v-4fa041b7] {\n      display: none;\n}\n.sponsor-common .right-side2 input[type=\"text\"][data-v-4fa041b7], .sponsor-common .right-side2 textarea[data-v-4fa041b7] {\n      border: solid 2px #f2f2f2;\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: \"HelveticaNeue\", sans-serif;\n      font-weight: normal;\n      color: #444444;\n      width: 368px;\n      height: 48px;\n}\n.sponsor-common .right-side2 select[data-v-4fa041b7] {\n      border: solid 2px #f2f2f2;\n      padding: 13px 11px;\n      font-size: 20px;\n      font-family: \"HelveticaNeue\", sans-serif;\n      font-weight: normal;\n      color: #444444;\n      width: 368px;\n      height: 48px;\n}\n.sponsor-common .right-side2 textarea[data-v-4fa041b7] {\n      resize: none;\n      height: 122px;\n}\n.sponsor-common .background-image[data-v-4fa041b7] {\n    background-color: #ffc600;\n    width: 100%;\n    height: 100%;\n    -o-object-fit: cover;\n       object-fit: cover;\n    display: block;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7] {\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n}\n.sponsor-common .input-wrap[data-v-4fa041b7]:not(:last-child) {\n      margin-bottom: 13px;\n}\n.sponsor-common .table[data-v-4fa041b7] {\n    font-size: 20px;\n}\n.sponsor-common .save-btn[data-v-4fa041b7] {\n    size: 18px !important;\n    color: #444444;\n    width: 100px;\n    height: 35px;\n    background-color: #ffe100;\n    border-radius: 3px;\n    border: 1px solid #f2f2f2;\n    font-weight: normal;\n    display: -moz-flex;\n    display: -ms-flex;\n    display: -o-flex;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -ms-flex-item-align: center;\n        align-self: center;\n    margin-top: 10px;\n    font-family: \"HelveticaNeue\", sans-serif;\n}\n", ""]);
 
 // exports
 
@@ -10650,7 +10470,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.table-row[data-v-551e824a] {\n  font-family: \"Helvetica Neue\";\n  text-align: center;\n  font-size: 20px;\n  font-weight: normal;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.rectangle-header[data-v-551e824a] {\n  background-color: #ffc600;\n  font-family: \"Helvetica Neue\";\n  font-size: 20px;\n  font-weight: 600 !important;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n.rectangle-header tr th[data-v-551e824a] {\n    font-weight: 500 !important;\n    font-size: 22px;\n}\n", ""]);
+exports.push([module.i, "\n.table-row[data-v-551e824a] {\n  font-family: \"HelveticaNeue\";\n  text-align: center;\n  font-size: 20px;\n  font-weight: normal;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.rectangle-header[data-v-551e824a] {\n  background-color: #ffc600;\n  font-family: \"HelveticaNeue\";\n  font-size: 20px;\n  font-weight: 600 !important;\n  font-stretch: normal;\n  font-style: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #444444;\n}\n.rectangle-header tr th[data-v-551e824a] {\n    font-weight: 500 !important;\n    font-size: 22px;\n}\n", ""]);
 
 // exports
 
@@ -10665,7 +10485,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n.submit_btn {\n  border: none;\n  background-color: white;\n  cursor: pointer;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.submit_btn:focus {\n  outline: none;\n}\n.auth-forgot-password {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-forgot-password-container {\n  max-width: 768px;\n}\n.auth-forgot-password-form .form-title {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-forgot-password-form .form-sub-title {\n  font-family: SFProText;\n  font-size: 18px;\n  color: black;\n}\n.auth-forgot-password-form .form-group label {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-forgot-password-form .form-group input {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-forgot-password-form .form-group input:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-forgot-password-form .form-group input.is-invalid {\n    border-color: #d9534f !important;\n}\n.auth-forgot-password-form .form-group .error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-forgot-password-form .form-group .error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n.auth-forgot-password-form .login-cta-element i {\n  margin-right: 1rem;\n}\n.auth-forgot-password-form .login-cta-element .login-cta-labels .login-cta-label-desc {\n  font-family: \"SFProDisplay\";\n  opacity: 0.6;\n  font-size: 16px;\n  font-weight: 500;\n  color: #000000;\n}\n.auth-forgot-password-form .login-cta-element .login-cta-labels .login-cta-label {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  color: #000000;\n}\ninput {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\ninput:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\ninput.is-invalid {\n    border-color: #d9534f !important;\n}\n.error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n", ""]);
+exports.push([module.i, "\n.submit_btn {\n  border: none;\n  background-color: white;\n  cursor: pointer;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.submit_btn:focus {\n  outline: none;\n}\n.auth-forgot-password {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-forgot-password-container {\n  max-width: 768px;\n}\n.auth-forgot-password-form .form-title {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-forgot-password-form .form-sub-title {\n  font-family: SFProText;\n  font-size: 18px;\n  color: black;\n}\n.auth-forgot-password-form .form-group label {\n  color: #444444;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-forgot-password-form .form-group input {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-forgot-password-form .form-group input:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-forgot-password-form .form-group input.is-invalid {\n    border-color: #d9534f !important;\n}\n.auth-forgot-password-form .form-group .error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-forgot-password-form .form-group .error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n.auth-forgot-password-form .login-cta-element i {\n  margin-right: 1rem;\n}\n.auth-forgot-password-form .login-cta-element .login-cta-labels .login-cta-label-desc {\n  font-family: \"SFProDisplay\";\n  opacity: 0.6;\n  font-size: 16px;\n  font-weight: 500;\n  color: #000000;\n}\n.auth-forgot-password-form .login-cta-element .login-cta-labels .login-cta-label {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  color: #000000;\n}\ninput {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: HelveticaNeue;\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\ninput:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\ninput.is-invalid {\n    border-color: #d9534f !important;\n}\n.error {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.error .invalid-feedback {\n    display: block;\n    margin: 0;\n}\n", ""]);
 
 // exports
 
@@ -10695,7 +10515,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n.form-group label[data-v-6572bb56] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.form-group input[data-v-6572bb56] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.form-group input[data-v-6572bb56]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.form-group input.is-invalid[data-v-6572bb56] {\n    border-color: #d9534f !important;\n}\n.form-group .error[data-v-6572bb56] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.form-group .error .invalid-feedback[data-v-6572bb56] {\n    display: block;\n    margin: 0;\n}\n.stripe-card[data-v-6572bb56] {\n  padding: 10px;\n}\n@media (min-width: 1025px) {\n  /* \n    ##Screen desktop = 1025px to higher resolution desktops\n    */\n.list-group[data-v-6572bb56] {\n    width: 70%;\n    margin: auto;\n}\n}\n.radio-list-group input[type=radio][data-v-6572bb56] {\n  display: none;\n}\n.radio-list-group .list-group-item[data-v-6572bb56] {\n  position: relative;\n  overflow: hidden;\n  border-style: hidden;\n}\n.radio-list-group .list-group-item label[data-v-6572bb56] {\n  display: block;\n  width: 100%;\n  font-weight: normal;\n}\n.radio-list-group .list-group-item input + span[data-v-6572bb56] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 100%;\n  border: 1px solid #ddd;\n  padding: 10px 15px;\n  margin-bottom: -1px;\n  z-index: 1;\n}\n.radio-list-group .list-group-item input + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F111\";\n  font-size: 20px;\n  line-height: 20px;\n  font-weight: bold;\n}\n.radio-list-group .list-group-item input:checked + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F10C\";\n}\n.radio-list-group .list-group-item:hover input + span[data-v-6572bb56] {\n  background-color: #f5f5f5;\n}\n.radio-list-group .list-group-item input:checked + span[data-v-6572bb56] {\n  border-color: #ffe100;\n  z-index: 10;\n}\n.list-group-item[data-v-6572bb56]:first-child {\n  border-top-left-radius: 0 !important;\n  border-top-right-radius: 0 !important;\n}\n.list-group-item[data-v-6572bb56]:last-child {\n  margin-bottom: 0;\n  border-bottom-right-radius: 0 !important;\n  border-bottom-left-radius: 0 !important;\n}\n.radio-list-group .list-group-item-success input:checked + span i.fa[data-v-6572bb56]:before {\n  color: #d0e9c6 !important;\n}\n.btn-edit[data-v-6572bb56] {\n  vertical-align: middle;\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-top: 10px;\n}\n.pay-with-stripe[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-bottom: 10px;\n  margin-right: 10px;\n}\n.btn-add[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: left;\n  margin-top: 10px;\n  margin-bottom: 25px;\n}\n.new-card[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  padding-left: 20px;\n  padding-right: 20px;\n  padding-top: 5px;\n  padding-bottom: 5px;\n  margin-bottom: 10px;\n  margin-top: 10px;\n}\n.edit-card[data-v-6572bb56] {\n  margin-left: 30px;\n  margin-top: 20px;\n}\n.payment[data-v-6572bb56] {\n  margin-bottom: 50px;\n}\n.list-group-item[data-v-6572bb56] {\n  margin: 5px;\n  padding: 20px;\n}\nimg[data-v-6572bb56] {\n  vertical-align: middle;\n  border-style: none;\n}\nbutton[data-v-6572bb56]:disabled,\nbutton[disabled][data-v-6572bb56] {\n  background-color: #cccccc;\n}\n.container-billing[data-v-6572bb56] {\n  margin-bottom: 20px;\n}\n*[data-v-6572bb56]:focus:not(a) {\n  outline: 2px solid none !important;\n  -webkit-box-shadow: none !important;\n          box-shadow: none !important;\n}\n.end[data-v-6572bb56] {\n  padding-left: 10px;\n}\n.nopayment[data-v-6572bb56] {\n  margin-bottom: 15px;\n}\n#card-errors[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n#card-errors2[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFProText-Regular.ttf\") format(\"truetype\");\n}\n.form-group label[data-v-6572bb56] {\n  color: #444444;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.form-group input[data-v-6572bb56] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.form-group input[data-v-6572bb56]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.form-group input.is-invalid[data-v-6572bb56] {\n    border-color: #d9534f !important;\n}\n.form-group .error[data-v-6572bb56] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.form-group .error .invalid-feedback[data-v-6572bb56] {\n    display: block;\n    margin: 0;\n}\n.stripe-card[data-v-6572bb56] {\n  padding: 10px;\n}\n@media (min-width: 1025px) {\n  /* \n    ##Screen desktop = 1025px to higher resolution desktops\n    */\n.list-group[data-v-6572bb56] {\n    width: 70%;\n    margin: auto;\n}\n}\n.radio-list-group input[type=radio][data-v-6572bb56] {\n  display: none;\n}\n.radio-list-group .list-group-item[data-v-6572bb56] {\n  position: relative;\n  overflow: hidden;\n  border-style: hidden;\n}\n.radio-list-group .list-group-item label[data-v-6572bb56] {\n  display: block;\n  width: 100%;\n  font-weight: normal;\n}\n.radio-list-group .list-group-item input + span[data-v-6572bb56] {\n  position: absolute;\n  top: 0;\n  right: 0;\n  left: 0;\n  bottom: 0;\n  width: 100%;\n  height: 100%;\n  border: 1px solid #ddd;\n  padding: 10px 15px;\n  margin-bottom: -1px;\n  z-index: 1;\n}\n.radio-list-group .list-group-item input + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F111\";\n  font-size: 20px;\n  line-height: 20px;\n  font-weight: bold;\n}\n.radio-list-group .list-group-item input:checked + span i.fa[data-v-6572bb56]:before {\n  content: \"\\F10C\";\n}\n.radio-list-group .list-group-item:hover input + span[data-v-6572bb56] {\n  background-color: #f5f5f5;\n}\n.radio-list-group .list-group-item input:checked + span[data-v-6572bb56] {\n  border-color: #ffe100;\n  z-index: 10;\n}\n.list-group-item[data-v-6572bb56]:first-child {\n  border-top-left-radius: 0 !important;\n  border-top-right-radius: 0 !important;\n}\n.list-group-item[data-v-6572bb56]:last-child {\n  margin-bottom: 0;\n  border-bottom-right-radius: 0 !important;\n  border-bottom-left-radius: 0 !important;\n}\n.radio-list-group .list-group-item-success input:checked + span i.fa[data-v-6572bb56]:before {\n  color: #d0e9c6 !important;\n}\n.btn-edit[data-v-6572bb56] {\n  vertical-align: middle;\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-size: 14px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-top: 10px;\n}\n.pay-with-stripe[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: right;\n  padding-left: 10px;\n  padding-right: 10px;\n  margin-bottom: 10px;\n  margin-right: 10px;\n}\n.btn-add[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  float: left;\n  margin-top: 10px;\n  margin-bottom: 25px;\n}\n.new-card[data-v-6572bb56] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  font-family: \"SFProText\";\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  font-size: 14px;\n  text-align: center;\n  color: #000000;\n  padding-left: 20px;\n  padding-right: 20px;\n  padding-top: 5px;\n  padding-bottom: 5px;\n  margin-bottom: 10px;\n  margin-top: 10px;\n}\n.edit-card[data-v-6572bb56] {\n  margin-left: 30px;\n  margin-top: 20px;\n}\n.payment[data-v-6572bb56] {\n  margin-bottom: 50px;\n}\n.list-group-item[data-v-6572bb56] {\n  margin: 5px;\n  padding: 20px;\n}\nimg[data-v-6572bb56] {\n  vertical-align: middle;\n  border-style: none;\n}\nbutton[data-v-6572bb56]:disabled,\nbutton[disabled][data-v-6572bb56] {\n  background-color: #cccccc;\n}\n.container-billing[data-v-6572bb56] {\n  margin-bottom: 20px;\n}\n*[data-v-6572bb56]:focus:not(a) {\n  outline: 2px solid none !important;\n  -webkit-box-shadow: none !important;\n          box-shadow: none !important;\n}\n.end[data-v-6572bb56] {\n  padding-left: 10px;\n}\n.nopayment[data-v-6572bb56] {\n  margin-bottom: 15px;\n}\n#card-errors[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n#card-errors2[data-v-6572bb56] {\n  padding: 4px 0;\n  color: #fa755a;\n}\n", ""]);
 
 // exports
 
@@ -10725,7 +10545,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#wrapper[data-v-74157b94] {\n  padding-top: 58px;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n  min-width: 100vw;\n  /* Profile Content */\n}\n#my-event-page-content-wrapper .profile-content[data-v-74157b94] {\n    padding-right: 80px;\n    padding-left: 70px;\n    background: #fff;\n    min-height: 460px;\n}\n#my-event-page-content-wrapper .welcome[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 42px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n    margin-bottom: 16px;\n}\n#my-event-page-content-wrapper .subtitle[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n    margin-top: 38px;\n    margin-bottom: 30px;\n}\n#my-event-page-content-wrapper .no-results[data-v-74157b94] {\n    font-family: \"SFProText\";\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n}\n#my-event-page-content-wrapper hr.sidebar-divider[data-v-74157b94] {\n    width: 100%;\n    border-color: #cccccc;\n    border-width: 2px;\n}\n#my-event-page-content-wrapper hr.content-divider[data-v-74157b94] {\n    border-top: 1px solid #cccccc;\n}\n#my-event-page-content-wrapper .content[data-v-74157b94] {\n    margin-bottom: 58px;\n    font-family: \"SFProText\";\n    font-size: 18px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n}\n#my-event-page-content-wrapper .card-events[data-v-74157b94] {\n    padding-bottom: 148px;\n}\n#my-event-page-content-wrapper .card-events .table td[data-v-74157b94] {\n      vertical-align: bottom !important;\n      border-top: none !important;\n      border-bottom: 1px solid #f1f1f2 !important;\n      font-family: sf-pro-text;\n      font-size: 18px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #000000;\n}\n#my-event-page-content-wrapper .card-events .add-btn[data-v-74157b94] {\n      width: 110px;\n      height: 30px;\n      border-radius: 5px;\n      background-color: #ffe100 !important;\n      font-family: sf-pro-text;\n      font-size: 14px;\n      font-weight: bold;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: center;\n      color: #000000;\n      border: none;\n      cursor: pointer;\n}\n#my-events-modal .btn-close[data-v-74157b94] {\n  font-size: 26px;\n  text-decoration: none;\n  position: absolute;\n  right: 10px;\n  top: 0;\n  color: #626469;\n  cursor: pointer;\n}\n#my-events-modal .modal-container[data-v-74157b94] {\n  padding: 35px 28px;\n}\n#my-events-modal .modal-container .login-cta-element i[data-v-74157b94] {\n    margin-right: 1rem;\n}\n#my-events-modal .modal-container .login-cta-element .login-cta-labels .login-cta-label-desc[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n#my-events-modal .modal-container .login-cta-element .login-cta-labels .login-cta-label[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n#my-events-modal .modal-container .form-group label[data-v-74157b94] {\n    color: #444444;\n    font-family: \"Helvetica Neue\";\n    font-size: 18px;\n    font-weight: bold;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94] {\n    border: 0 none;\n    border-bottom: solid 2px #cccccc;\n    border-radius: 0;\n    font-family: \"Helvetica Neue\";\n    font-size: 18px;\n    margin-top: 0.5rem;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94]:focus {\n      border-color: #26B4FF !important;\n      -webkit-box-shadow: none !important;\n              box-shadow: none !important;\n}\n#my-events-modal .modal-container .form-group input.is-invalid[data-v-74157b94] {\n      border-color: #d9534f !important;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94]::-webkit-outer-spin-button,\n  #my-events-modal .modal-container .form-group input[data-v-74157b94]::-webkit-inner-spin-button {\n    -webkit-appearance: none;\n    margin: 0;\n}\n#my-events-modal .modal-container .form-group input[type=number][data-v-74157b94] {\n    -moz-appearance: textfield;\n}\n#my-events-modal .modal-container .form-group .error[data-v-74157b94] {\n    height: 25px;\n    margin-top: 0.25rem;\n}\n#my-events-modal .modal-container .form-group .error .invalid-feedback[data-v-74157b94] {\n      display: block;\n      margin: 0;\n}\n#my-events-modal .modal-title[data-v-74157b94] {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  height: 40px;\n}\n#my-events-modal .modal-detail[data-v-74157b94] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 30px;\n}\n#my-events-modal .modal-subtitle[data-v-74157b94] {\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.my-events-cta-element[data-v-74157b94] {\n  padding-bottom: 35px;\n  cursor: pointer;\n}\n.my-events-cta-element i[data-v-74157b94] {\n    margin-right: 1rem;\n}\n.my-events-cta-element .my-events-cta-labels .my-events-cta-label-desc[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.my-events-cta-element .my-events-cta-labels .my-events-cta-label[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n@media (min-width: 768px) {\n.td-date[data-v-74157b94] {\n    width: 200px;\n}\n.td-CN[data-v-74157b94], .td-btn[data-v-74157b94] {\n    width: 150px;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n    min-width: 0;\n    width: 100%;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-74157b94] {\n    display: block !important;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n    min-width: 0;\n    width: 100%;\n}\n#my-event-page-content-wrapper .add-btn[data-v-74157b94] {\n      width: 80px !important;\n      height: 25px !important;\n}\n#my-event-page-content-wrapper .profile-content[data-v-74157b94] {\n      padding: 0px 20px !important;\n      text-align: center;\n}\n#my-event-page-content-wrapper .profile-usermenu ul li[data-v-74157b94] {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-74157b94] {\n    padding: 0px 20px;\n}\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#wrapper[data-v-74157b94] {\n  padding-top: 58px;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n  min-width: 100vw;\n  /* Profile Content */\n}\n#my-event-page-content-wrapper .profile-content[data-v-74157b94] {\n    padding-right: 80px;\n    padding-left: 70px;\n    background: #fff;\n    min-height: 460px;\n}\n#my-event-page-content-wrapper .welcome[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 42px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n    margin-bottom: 16px;\n}\n#my-event-page-content-wrapper .subtitle[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: bold;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n    color: #444444;\n    margin-top: 38px;\n    margin-bottom: 30px;\n}\n#my-event-page-content-wrapper .no-results[data-v-74157b94] {\n    font-family: \"SFProText\";\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n}\n#my-event-page-content-wrapper hr.sidebar-divider[data-v-74157b94] {\n    width: 100%;\n    border-color: #cccccc;\n    border-width: 2px;\n}\n#my-event-page-content-wrapper hr.content-divider[data-v-74157b94] {\n    border-top: 1px solid #cccccc;\n}\n#my-event-page-content-wrapper .content[data-v-74157b94] {\n    margin-bottom: 58px;\n    font-family: \"SFProText\";\n    font-size: 18px;\n    font-weight: normal;\n    font-style: normal;\n    font-stretch: normal;\n    line-height: normal;\n    letter-spacing: normal;\n}\n#my-event-page-content-wrapper .card-events[data-v-74157b94] {\n    padding-bottom: 148px;\n}\n#my-event-page-content-wrapper .card-events .table td[data-v-74157b94] {\n      vertical-align: bottom !important;\n      border-top: none !important;\n      border-bottom: 1px solid #f1f1f2 !important;\n      font-family: sf-pro-text;\n      font-size: 18px;\n      font-weight: normal;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      color: #000000;\n}\n#my-event-page-content-wrapper .card-events .add-btn[data-v-74157b94] {\n      width: 110px;\n      height: 30px;\n      border-radius: 5px;\n      background-color: #ffe100 !important;\n      font-family: sf-pro-text;\n      font-size: 14px;\n      font-weight: bold;\n      font-style: normal;\n      font-stretch: normal;\n      line-height: normal;\n      letter-spacing: normal;\n      text-align: center;\n      color: #000000;\n      border: none;\n      cursor: pointer;\n}\n#my-events-modal .btn-close[data-v-74157b94] {\n  font-size: 26px;\n  text-decoration: none;\n  position: absolute;\n  right: 10px;\n  top: 0;\n  color: #626469;\n  cursor: pointer;\n}\n#my-events-modal .modal-container[data-v-74157b94] {\n  padding: 35px 28px;\n}\n#my-events-modal .modal-container .login-cta-element i[data-v-74157b94] {\n    margin-right: 1rem;\n}\n#my-events-modal .modal-container .login-cta-element .login-cta-labels .login-cta-label-desc[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n#my-events-modal .modal-container .login-cta-element .login-cta-labels .login-cta-label[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n#my-events-modal .modal-container .form-group label[data-v-74157b94] {\n    color: #444444;\n    font-family: \"HelveticaNeue\";\n    font-size: 18px;\n    font-weight: bold;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94] {\n    border: 0 none;\n    border-bottom: solid 2px #cccccc;\n    border-radius: 0;\n    font-family: \"HelveticaNeue\";\n    font-size: 18px;\n    margin-top: 0.5rem;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94]:focus {\n      border-color: #26B4FF !important;\n      -webkit-box-shadow: none !important;\n              box-shadow: none !important;\n}\n#my-events-modal .modal-container .form-group input.is-invalid[data-v-74157b94] {\n      border-color: #d9534f !important;\n}\n#my-events-modal .modal-container .form-group input[data-v-74157b94]::-webkit-outer-spin-button,\n  #my-events-modal .modal-container .form-group input[data-v-74157b94]::-webkit-inner-spin-button {\n    -webkit-appearance: none;\n    margin: 0;\n}\n#my-events-modal .modal-container .form-group input[type=number][data-v-74157b94] {\n    -moz-appearance: textfield;\n}\n#my-events-modal .modal-container .form-group .error[data-v-74157b94] {\n    height: 25px;\n    margin-top: 0.25rem;\n}\n#my-events-modal .modal-container .form-group .error .invalid-feedback[data-v-74157b94] {\n      display: block;\n      margin: 0;\n}\n#my-events-modal .modal-title[data-v-74157b94] {\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  height: 40px;\n}\n#my-events-modal .modal-detail[data-v-74157b94] {\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n  margin-bottom: 30px;\n}\n#my-events-modal .modal-subtitle[data-v-74157b94] {\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n}\n.my-events-cta-element[data-v-74157b94] {\n  padding-bottom: 35px;\n  cursor: pointer;\n}\n.my-events-cta-element i[data-v-74157b94] {\n    margin-right: 1rem;\n}\n.my-events-cta-element .my-events-cta-labels .my-events-cta-label-desc[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.my-events-cta-element .my-events-cta-labels .my-events-cta-label[data-v-74157b94] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n@media (min-width: 768px) {\n.td-date[data-v-74157b94] {\n    width: 200px;\n}\n.td-CN[data-v-74157b94], .td-btn[data-v-74157b94] {\n    width: 150px;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n    min-width: 0;\n    width: 100%;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-74157b94] {\n    display: block !important;\n}\n#my-event-page-content-wrapper[data-v-74157b94] {\n    min-width: 0;\n    width: 100%;\n}\n#my-event-page-content-wrapper .add-btn[data-v-74157b94] {\n      width: 80px !important;\n      height: 25px !important;\n}\n#my-event-page-content-wrapper .profile-content[data-v-74157b94] {\n      padding: 0px 20px !important;\n      text-align: center;\n}\n#my-event-page-content-wrapper .profile-usermenu ul li[data-v-74157b94] {\n      display: -webkit-box;\n      display: -ms-flexbox;\n      display: flex;\n      -webkit-box-pack: center;\n          -ms-flex-pack: center;\n              justify-content: center;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-74157b94] {\n    padding: 0px 20px;\n}\n}\n", ""]);
 
 // exports
 
@@ -10800,7 +10620,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-a8bc0e38] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-a8bc0e38] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-a8bc0e38] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-a8bc0e38] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-a8bc0e38] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-a8bc0e38] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-a8bc0e38] {\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-a8bc0e38]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-a8bc0e38] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-a8bc0e38] {\n  padding: 0px;\n}\n.active[data-v-a8bc0e38] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-a8bc0e38] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-a8bc0e38] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-a8bc0e38] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-a8bc0e38] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-a8bc0e38] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-a8bc0e38] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n}\n#wrapper[data-v-a8bc0e38] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-a8bc0e38] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-a8bc0e38] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-a8bc0e38] {\n    padding: 0px 20px !important;\n    text-align: center;\n}\n#wrapper[data-v-a8bc0e38] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-a8bc0e38] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-a8bc0e38] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-a8bc0e38] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-a8bc0e38] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-a8bc0e38] {\n    padding: 0px 20px;\n}\n}\n.auth-join[data-v-a8bc0e38] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-join-container[data-v-a8bc0e38] {\n  max-width: 723px;\n  padding-top: 30px;\n}\n.auth-join-form .form-title[data-v-a8bc0e38] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-join-form .form-group label[data-v-a8bc0e38] {\n  color: #444444;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-join-form .form-group input[data-v-a8bc0e38] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-join-form .form-group input[data-v-a8bc0e38]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-join-form .form-group input.is-invalid[data-v-a8bc0e38] {\n    border-color: #d9534f !important;\n}\n.auth-join-form .form-group .error[data-v-a8bc0e38] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-join-form .form-group .error .invalid-feedback[data-v-a8bc0e38] {\n    display: block;\n    margin: 0;\n}\n.auth-join-form .join-cta-element[data-v-a8bc0e38] {\n  cursor: pointer;\n}\n.auth-join-form .join-cta-element i[data-v-a8bc0e38] {\n    margin-right: 1rem;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label-desc[data-v-a8bc0e38] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label[data-v-a8bc0e38] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n@media (max-width: 768px) {\n.auth-join-container .card[data-v-a8bc0e38] {\n    margin-bottom: 20px;\n}\n}\n.auth-join-container .card[data-v-a8bc0e38] {\n  margin-top: 100px !important;\n  border: 1px solid #cccccc !important;\n  border-radius: 0 !important;\n}\n.card-body[data-v-a8bc0e38] {\n  padding: 0.7rem !important;\n}\n.card-title[data-v-a8bc0e38] {\n  font-size: 24px;\n  color: #444444;\n  font-family: \"SFProDisplay\";\n}\n.card-subtitle[data-v-a8bc0e38] {\n  font-size: 17px;\n  margin-top: 10px;\n  font-family: \"SFProText\";\n  line-height: 28px;\n}\n.reset-btn[data-v-a8bc0e38] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-size: 17px;\n  color: #000000;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-a8bc0e38] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-a8bc0e38] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-a8bc0e38] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-a8bc0e38] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-a8bc0e38] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-a8bc0e38] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-a8bc0e38] {\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-a8bc0e38]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-a8bc0e38] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-a8bc0e38] {\n  padding: 0px;\n}\n.active[data-v-a8bc0e38] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-a8bc0e38] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-a8bc0e38] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-a8bc0e38] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-a8bc0e38] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-a8bc0e38] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-a8bc0e38] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n}\n#wrapper[data-v-a8bc0e38] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-a8bc0e38] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-a8bc0e38] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n.profile-content[data-v-a8bc0e38] {\n    padding: 0px 20px !important;\n    text-align: center;\n}\n#wrapper[data-v-a8bc0e38] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-a8bc0e38] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-a8bc0e38] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-a8bc0e38] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-a8bc0e38] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-a8bc0e38] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-a8bc0e38] {\n    padding: 0px 20px;\n}\n}\n.auth-join[data-v-a8bc0e38] {\n  background: white;\n  padding: 94px 0;\n  min-height: 1000px;\n}\n.auth-join-container[data-v-a8bc0e38] {\n  max-width: 723px;\n  padding-top: 30px;\n}\n.auth-join-form .form-title[data-v-a8bc0e38] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  color: #444444;\n}\n.auth-join-form .form-group label[data-v-a8bc0e38] {\n  color: #444444;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n}\n.auth-join-form .form-group input[data-v-a8bc0e38] {\n  border: 0 none;\n  border-bottom: solid 2px #cccccc;\n  border-radius: 0;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  margin-top: 0.5rem;\n}\n.auth-join-form .form-group input[data-v-a8bc0e38]:focus {\n    border-color: #26B4FF !important;\n    -webkit-box-shadow: none !important;\n            box-shadow: none !important;\n}\n.auth-join-form .form-group input.is-invalid[data-v-a8bc0e38] {\n    border-color: #d9534f !important;\n}\n.auth-join-form .form-group .error[data-v-a8bc0e38] {\n  height: 25px;\n  margin-top: 0.25rem;\n}\n.auth-join-form .form-group .error .invalid-feedback[data-v-a8bc0e38] {\n    display: block;\n    margin: 0;\n}\n.auth-join-form .join-cta-element[data-v-a8bc0e38] {\n  cursor: pointer;\n}\n.auth-join-form .join-cta-element i[data-v-a8bc0e38] {\n    margin-right: 1rem;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label-desc[data-v-a8bc0e38] {\n    font-family: \"SFProDisplay\";\n    opacity: 0.6;\n    font-size: 16px;\n    font-weight: 500;\n    color: #000000;\n}\n.auth-join-form .join-cta-element .join-cta-labels .join-cta-label[data-v-a8bc0e38] {\n    font-family: \"SFProDisplay\";\n    font-size: 24px;\n    font-weight: 500;\n    color: #000000;\n}\n@media (max-width: 768px) {\n.auth-join-container .card[data-v-a8bc0e38] {\n    margin-bottom: 20px;\n}\n}\n.auth-join-container .card[data-v-a8bc0e38] {\n  margin-top: 100px !important;\n  border: 1px solid #cccccc !important;\n  border-radius: 0 !important;\n}\n.card-body[data-v-a8bc0e38] {\n  padding: 0.7rem !important;\n}\n.card-title[data-v-a8bc0e38] {\n  font-size: 24px;\n  color: #444444;\n  font-family: \"SFProDisplay\";\n}\n.card-subtitle[data-v-a8bc0e38] {\n  font-size: 17px;\n  margin-top: 10px;\n  font-family: \"SFProText\";\n  line-height: 28px;\n}\n.reset-btn[data-v-a8bc0e38] {\n  border-radius: 5px;\n  background-color: #ffe100;\n  margin-top: 20px;\n  margin-bottom: 10px;\n  font-size: 17px;\n  color: #000000;\n}\n", ""]);
 
 // exports
 
@@ -10860,7 +10680,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-bec152ec] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-bec152ec] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-bec152ec] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-bec152ec] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-bec152ec] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-bec152ec] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-bec152ec] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-bec152ec] {\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-bec152ec]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-bec152ec] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-bec152ec] {\n  padding: 0px;\n}\n.active[data-v-bec152ec] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-bec152ec] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-bec152ec] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-bec152ec] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"Helvetica Neue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-bec152ec] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-bec152ec] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-bec152ec] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-bec152ec] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-bec152ec] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-bec152ec] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-bec152ec] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-bec152ec] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-bec152ec] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-bec152ec] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-bec152ec] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-bec152ec] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-bec152ec] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-bec152ec] {\n    padding: 0px 20px;\n}\n}\n.title[data-v-bec152ec] {\n  width: 200px;\n  height: 21px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.sub-title[data-v-bec152ec] {\n  width: 200px;\n  height: 21px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.col-lg[data-v-bec152ec], .col-lg-1[data-v-bec152ec], .col-lg-3[data-v-bec152ec], .list-group-item[data-v-bec152ec] {\n  margin-left: 0;\n  margin-right: 0;\n  padding-left: 0;\n  padding-right: 0;\n}\n.list-group-item[data-v-bec152ec] {\n  position: relative;\n  display: block;\n  padding: 0;\n  margin-bottom: -1px;\n  background-color: transparent;\n  border-left: 0;\n  border-right: 0;\n  border-bottom: 1px solid #cccccc;\n  border-top: 1px solid #cccccc;\n}\n.list-group-item[data-v-bec152ec]:first-child {\n  border-top: 0;\n}\n.list-group-item[data-v-bec152ec]:last-child {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.join-cta-label[data-v-bec152ec] {\n  width: 95px;\n  height: 29px;\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-bec152ec] {\n  width: 93px;\n  height: 19px;\n  opacity: 0.6;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.list-group-item[data-v-bec152ec]:not(:first-child) {\n  padding-top: 14px;\n}\n", ""]);
+exports.push([module.i, "\n@font-face {\n  font-family: \"HelveticaNeue\";\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.eot\");\n  src: url(\"/fonts/HelveticaNeueCyr-Bold.woff\") format(\"woff\");\n}\n@font-face {\n  font-family: \"SFUIDisplay-Regular\";\n  src: url(\"/fonts/SFUIDisplay-Regular.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProText\";\n  src: url(\"/fonts/SFUIText-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SFProDisplay\";\n  src: url(\"/fonts/SourceSansPro-Bold.ttf\") format(\"truetype\");\n}\n@font-face {\n  font-family: \"SourceSansPro-Regular\";\n  src: url(\"/fonts/SourceSansPro-Regular.ttf\") format(\"truetype\");\n}\n#sidebar-wrapper[data-v-bec152ec] {\n  min-height: 100vh;\n  margin-left: -15rem;\n  -webkit-transition: margin .25s ease-out;\n  transition: margin .25s ease-out;\n  border-right: solid 2px #cccccc;\n}\n#sidebar-wrapper .sidebar-heading[data-v-bec152ec] {\n  padding: 0.875rem 1.25rem;\n  font-size: 1.2rem;\n}\n#sidebar-wrapper .list-group[data-v-bec152ec] {\n  width: 15rem;\n}\n#page-content-wrapper[data-v-bec152ec] {\n  min-width: 100vw;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-bec152ec] {\n  margin-left: 0;\n}\n.profile-sidebar[data-v-bec152ec] {\n  padding-left: 119px;\n  padding-right: 69px;\n}\n.profile-usertitle-name[data-v-bec152ec] {\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: 2px;\n  text-align: center;\n  color: #000000;\n  margin-top: 44px;\n  margin-bottom: 58px;\n  /*border-bottom: solid 1px #cccccc;*/\n  height: 19px;\n  opacity: 0.9;\n  font-family: \"SFProDisplay\";\n}\n.profile-usermenu ul li a[data-v-bec152ec] {\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin: 14px 15px;\n}\n.profile-usermenu ul li a[data-v-bec152ec]:hover {\n  background-color: #fafcfd;\n  color: #ffc600;\n}\n.profile-usermenu ul[data-v-bec152ec] {\n  margin-bottom: 33px;\n}\n.nav-link[data-v-bec152ec] {\n  padding: 0px;\n}\n.active[data-v-bec152ec] {\n  border-bottom: solid 2px #ffc600 !important;\n  padding-bottom: 9px;\n  margin-bottom: 3px !important;\n  width: -webkit-fit-content;\n  width: -moz-fit-content;\n  width: fit-content;\n}\n\n/* Profile Content */\n.profile-content[data-v-bec152ec] {\n  padding-right: 80px;\n  padding-left: 70px;\n  background: #fff;\n  min-height: 460px;\n}\n.welcome[data-v-bec152ec] {\n  font-family: \"SFProDisplay\";\n  font-size: 42px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #444444;\n  margin-bottom: 16px;\n}\n.dashboard-link[data-v-bec152ec] {\n  margin-top: 34px;\n  margin-left: 130px;\n  margin-bottom: 275px;\n  height: 22px;\n  font-family: \"HelveticaNeue\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #4a90e2;\n}\nhr.sidebar-divider[data-v-bec152ec] {\n  width: 100%;\n  border-color: #cccccc;\n  border-width: 2px;\n  /*margin-top: 2rem;*/\n  /*margin-bottom: 1rem;*/\n  /*border-top: 1px solid #cccccc;*/\n  /*border-bottom: 1px solid #cccccc;*/\n}\nhr.content-divider[data-v-bec152ec] {\n  border-top: 1px solid #cccccc;\n}\n.content[data-v-bec152ec] {\n  margin-bottom: 58px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n#wrapper[data-v-bec152ec] {\n  padding-top: 58px;\n}\n@media (min-width: 768px) {\n#sidebar-wrapper[data-v-bec152ec] {\n    margin-left: 0;\n}\n#page-content-wrapper[data-v-bec152ec] {\n    min-width: 0;\n    width: 100%;\n}\n#wrapper.toggled #sidebar-wrapper[data-v-bec152ec] {\n    margin-left: -15rem;\n}\n}\n@media (max-width: 768px) {\n#wrapper[data-v-bec152ec] {\n    display: block !important;\n}\n#sidebar-wrapper[data-v-bec152ec] {\n    border: none;\n    margin: 0px;\n    min-height: unset;\n}\n.dashboard-link[data-v-bec152ec] {\n    margin-bottom: 100px !important;\n    text-align: center;\n    margin-left: 0px;\n    margin-right: 0px;\n}\n.profile-usermenu ul li[data-v-bec152ec] {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n}\n#page-content-wrapper[data-v-bec152ec] {\n    min-width: 0;\n    width: 100%;\n}\n.profile-sidebar[data-v-bec152ec] {\n    padding: 0px !important;\n}\n}\n@media (max-width: 900px) {\n.profile-content[data-v-bec152ec] {\n    padding: 0px 20px;\n}\n}\n.title[data-v-bec152ec] {\n  width: 200px;\n  height: 21px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: bold;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.sub-title[data-v-bec152ec] {\n  width: 200px;\n  height: 21px;\n  font-family: \"SFProText\";\n  font-size: 18px;\n  font-weight: normal;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.col-lg[data-v-bec152ec], .col-lg-1[data-v-bec152ec], .col-lg-3[data-v-bec152ec], .list-group-item[data-v-bec152ec] {\n  margin-left: 0;\n  margin-right: 0;\n  padding-left: 0;\n  padding-right: 0;\n}\n.list-group-item[data-v-bec152ec] {\n  position: relative;\n  display: block;\n  padding: 0;\n  margin-bottom: -1px;\n  background-color: transparent;\n  border-left: 0;\n  border-right: 0;\n  border-bottom: 1px solid #cccccc;\n  border-top: 1px solid #cccccc;\n}\n.list-group-item[data-v-bec152ec]:first-child {\n  border-top: 0;\n}\n.list-group-item[data-v-bec152ec]:last-child {\n  border-bottom-right-radius: 0;\n  border-bottom-left-radius: 0;\n}\n.join-cta-label[data-v-bec152ec] {\n  width: 95px;\n  height: 29px;\n  font-family: \"SFProDisplay\";\n  font-size: 24px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.join-cta-label-desc[data-v-bec152ec] {\n  width: 93px;\n  height: 19px;\n  opacity: 0.6;\n  font-family: \"SFProDisplay\";\n  font-size: 16px;\n  font-weight: 500;\n  font-style: normal;\n  font-stretch: normal;\n  line-height: normal;\n  letter-spacing: normal;\n  color: #000000;\n}\n.list-group-item[data-v-bec152ec]:not(:first-child) {\n  padding-top: 14px;\n}\n", ""]);
 
 // exports
 
@@ -10905,7 +10725,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, "\n// Body\n$body-bg: #f8fafc;\n\n// Typography\n$font-family-sans-serif: \"Nunito\", sans-serif;\n$font-size-base: 0.9rem;\n$line-height-base: 1.6;\n$font-family-sf-pro-display: \"SFProDisplay\";\n$font-family-sf-pro-text: \"SFProText\";\n$font-family-helvetica-neue: \"Helvetica Neue\";\n\n// Colors\n$blue: #3490dc;\n$indigo: #6574cd;\n$purple: #9561e2;\n$pink: #f66D9b;\n$red: #e3342f;\n$orange: #f6993f;\n$yellow: #ffed4a;\n$green: #38c172;\n$teal: #4dc0b5;\n$cyan: #6cb2eb;\n$h-blue: #4a90e2;\n$line-yellow: #ffc600;\n$y-oval: #ffe100;\n$gr-oval: #d8d8d8;\n$bg-yellow: #ffe100;\n$bt-line-yellow: #fff300; \n", ""]);
+exports.push([module.i, "\n// Body\n$body-bg: #f8fafc;\n\n// Typography\n$font-family-sans-serif: \"Nunito\", sans-serif;\n$font-size-base: 0.9rem;\n$line-height-base: 1.6;\n$font-family-sf-pro-display: \"SFProDisplay\";\n$font-family-sf-pro-text: \"SFProText\";\n$font-family-helvetica-neue: \"HelveticaNeue\";\n\n// Colors\n$blue: #3490dc;\n$indigo: #6574cd;\n$purple: #9561e2;\n$pink: #f66D9b;\n$red: #e3342f;\n$orange: #f6993f;\n$yellow: #ffed4a;\n$green: #38c172;\n$teal: #4dc0b5;\n$cyan: #6cb2eb;\n$h-blue: #4a90e2;\n$line-yellow: #ffc600;\n$y-oval: #ffe100;\n$gr-oval: #d8d8d8;\n$bg-yellow: #ffe100;\n$bt-line-yellow: #fff300;\n", ""]);
 
 // exports
 
@@ -10990,6 +10810,24 @@ function toComment(sourceMap) {
 	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
 
 	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/is-buffer/index.js":
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+module.exports = function isBuffer (obj) {
+  return obj != null && obj.constructor != null &&
+    typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
 }
 
 
@@ -34135,190 +33973,96 @@ var render = function() {
                   "div",
                   { staticClass: "d-flex", attrs: { id: "wrapper" } },
                   [
-                    _c("SideBar"),
+                    _c("SideBar", { attrs: { sponsor: _vm.sponsor } }),
                     _vm._v(" "),
                     _c("div", { attrs: { id: "page-content-wrapper" } }, [
                       _c("div", { staticClass: "container-fluid" }, [
                         _c("div", { staticClass: "profile-content" }, [
-                          _c("div", { staticClass: "row" }, [
-                            _c("div", { staticClass: "col-6" }, [
-                              _c("div", { staticClass: "row mb-2" }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "event-container col-12" },
-                                  [
-                                    _c("div", { staticClass: "box image" }, [
-                                      _c("div", { staticClass: "box-header" }, [
-                                        _c("h3", [
-                                          _c("a", { attrs: { href: "" } }, [
-                                            _c("img", {
-                                              attrs: {
-                                                src: "/img/starbuck_logo.png",
-                                                alt: ""
-                                              }
-                                            }),
-                                            _vm._v(
-                                              "\n                                                            Starbucks\n                                                        "
-                                            )
-                                          ]),
-                                          _vm._v(" "),
-                                          _c(
-                                            "span",
-                                            { staticClass: "summary" },
-                                            [
-                                              _vm._v("add an "),
-                                              _c("a", [_vm._v("event")])
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("span", [
-                                            _vm._v("March 21,18:45pm "),
-                                            _c("i", {
-                                              staticClass:
-                                                "fas fa-globe-americas"
-                                            })
-                                          ])
-                                        ])
-                                      ]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "box-content" },
-                                        [
-                                          _c("div", { staticClass: "bottom" }, [
-                                            _c("p", [
-                                              _vm._v(
-                                                "\n                                                            orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,\n                                                        "
-                                              )
-                                            ]),
-                                            _vm._v(" "),
-                                            _c("span", [
-                                              _c("span", {
-                                                staticClass: "fa fa-search-plus"
-                                              })
-                                            ])
-                                          ])
-                                        ]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "div",
-                                        { staticClass: "box-buttons" },
-                                        [
-                                          _c("div", { staticClass: "row" }, [
-                                            _c(
-                                              "button",
-                                              { staticClass: "btn" },
-                                              [
+                          _c(
+                            "div",
+                            { staticClass: "row" },
+                            _vm._l(_vm.instagramPosts, function(instagramPost) {
+                              return _c(
+                                "div",
+                                {
+                                  key: instagramPost.id,
+                                  staticClass: "col-4 pb-4"
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticClass: "event-container" },
+                                    [
+                                      _c("div", { staticClass: "box image" }, [
+                                        _c(
+                                          "div",
+                                          { staticClass: "box-header" },
+                                          [
+                                            _c("h3", [
+                                              _c("a", { attrs: { href: "" } }, [
+                                                _c("img", {
+                                                  attrs: {
+                                                    src: _vm.sponsor.logo,
+                                                    alt: ""
+                                                  }
+                                                }),
+                                                _vm._v(
+                                                  "\n                                                        " +
+                                                    _vm._s(_vm.sponsor.name) +
+                                                    "\n                                                    "
+                                                )
+                                              ]),
+                                              _vm._v(" "),
+                                              _c(
+                                                "span",
+                                                { staticClass: "summary" },
+                                                [
+                                                  _vm._v("add an "),
+                                                  _c("a", [_vm._v("event")])
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c("span", [
+                                                _vm._v("March 21,18:45pm "),
                                                 _c("i", {
                                                   staticClass:
-                                                    "far fa-comment-alt"
-                                                }),
-                                                _vm._v(" "),
-                                                _c("span", [_vm._v("123")])
+                                                    "fas fa-globe-americas"
+                                                })
+                                              ])
+                                            ])
+                                          ]
+                                        ),
+                                        _vm._v(" "),
+                                        _c(
+                                          "div",
+                                          { staticClass: "box-content" },
+                                          [
+                                            _c(
+                                              "div",
+                                              { staticClass: "content" },
+                                              [
+                                                _c("img", {
+                                                  attrs: {
+                                                    src:
+                                                      instagramPost.image_url,
+                                                    alt: "",
+                                                    width: "100%"
+                                                  }
+                                                })
                                               ]
                                             ),
                                             _vm._v(" "),
-                                            _c(
-                                              "button",
-                                              { staticClass: "btn" },
-                                              [
-                                                _c("i", {
-                                                  staticClass: "fas fa-retweet"
-                                                }),
-                                                _vm._v(" "),
-                                                _c("span", [_vm._v("123")])
-                                              ]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "button",
-                                              { staticClass: "btn" },
-                                              [
-                                                _c("i", {
-                                                  staticClass: "far fa-heart"
-                                                }),
-                                                _vm._v(" "),
-                                                _c("span", [_vm._v("123")])
-                                              ]
-                                            )
-                                          ])
-                                        ]
-                                      )
-                                    ])
-                                  ]
-                                )
-                              ]),
-                              _vm._v(" "),
-                              _c("div", { staticClass: "row" }, [
-                                _c("div", { staticClass: "col-6 pl-0 pr-1" }, [
-                                  _c("img", {
-                                    attrs: {
-                                      src: "/img/demo2.png",
-                                      width: "100%"
-                                    }
-                                  })
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "col-6 pr-0 pl-1" }, [
-                                  _c("img", {
-                                    attrs: {
-                                      src: "/img/demo2.png",
-                                      width: "100%"
-                                    }
-                                  })
-                                ])
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-6" }, [
-                              _c("div", { staticClass: "event-container" }, [
-                                _c("div", { staticClass: "box image" }, [
-                                  _c("div", { staticClass: "box-header" }, [
-                                    _c("h3", [
-                                      _c("a", { attrs: { href: "" } }, [
-                                        _c("img", {
-                                          attrs: {
-                                            src: "/img/starbuck_logo.png",
-                                            alt: ""
-                                          }
-                                        }),
-                                        _vm._v(
-                                          "\n                                                        Starbucks\n                                                    "
+                                            _c("div", { staticClass: "bottom" })
+                                          ]
                                         )
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("span", { staticClass: "summary" }, [
-                                        _vm._v("add an "),
-                                        _c("a", [_vm._v("event")])
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("span", [
-                                        _vm._v("March 21,18:45pm "),
-                                        _c("i", {
-                                          staticClass: "fas fa-globe-americas"
-                                        })
                                       ])
-                                    ])
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "box-content" }, [
-                                    _c("div", { staticClass: "content" }, [
-                                      _c("img", {
-                                        attrs: {
-                                          src: "/img/demo-image.png",
-                                          alt: "",
-                                          width: "100%"
-                                        }
-                                      })
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("div", { staticClass: "bottom" })
-                                  ])
-                                ])
-                              ])
-                            ])
-                          ])
+                                    ]
+                                  )
+                                ]
+                              )
+                            }),
+                            0
+                          )
                         ])
                       ])
                     ])
@@ -34665,1033 +34409,6 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-0fa893f2", module.exports)
-  }
-}
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-10a53d98\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/sponsor/CampaignEdit.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("sponsor-common", {
-    attrs: {
-      sponsor: _vm.sponsor,
-      campaign: _vm.campaign,
-      activeLink: _vm.navLink
-    },
-    scopedSlots: _vm._u([
-      {
-        key: "setting-content",
-        fn: function() {
-          return [
-            _c("form", { attrs: { id: "validation-form" } }, [
-              _c("div", { staticClass: "row add-campaign-row input-form " }, [
-                _c("div", { staticClass: "col-12" }, [
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c("span", { staticClass: "campaign" }, [
-                        _vm._v("Campaigns")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c("span", { staticClass: "caption" }, [
-                        _vm._v("Edit Campaign")
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }, [
-                      _c("label", { attrs: { for: "name" } }, [
-                        _vm._v("Campaign Name")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c("div", { staticClass: "w-100 add-input-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.campaign.name,
-                              expression: "campaign.name"
-                            }
-                          ],
-                          staticClass: "w-80",
-                          attrs: { id: "name", name: "name", type: "text" },
-                          domProps: { value: _vm.campaign.name },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.campaign,
-                                "name",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }, [
-                      _c("label", { attrs: { for: "logo" } }, [_vm._v("Logo")])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c("img", {
-                        staticClass: "logo",
-                        attrs: { id: "logo", alt: "logo", src: _vm.logoUrl }
-                      }),
-                      _vm._v(" "),
-                      _c("input", {
-                        ref: "logo",
-                        attrs: { id: "imageProfile", type: "file" },
-                        on: { change: _vm.selectLogo }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "label",
-                        {
-                          staticClass: "input-label",
-                          attrs: { for: "imageProfile" }
-                        },
-                        [_vm._v("Choose File")]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }, [
-                      _c("label", { attrs: { for: "budget" } }, [
-                        _vm._v("Budget")
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c("div", { staticClass: "w-100 add-input-group" }, [
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.campaign.budget,
-                              expression: "campaign.budget"
-                            }
-                          ],
-                          attrs: { id: "budget", name: "budget", type: "text" },
-                          domProps: { value: _vm.campaign.budget },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.campaign,
-                                "budget",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }, [
-                      _c("label", [_vm._v("Logo Size & Price")])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c("div", { staticClass: "col-7 pl-0 pr-0" }, [
-                        _c(
-                          "table",
-                          {
-                            staticClass: "table table-bordered",
-                            staticStyle: { width: "368px" }
-                          },
-                          [
-                            _c("thead", { staticClass: "rectangle-header" }, [
-                              _c("tr", [
-                                _c("th", { attrs: { width: "180px" } }, [
-                                  _vm._v("Size")
-                                ]),
-                                _vm._v(" "),
-                                _c("th", { attrs: { width: "180px" } }, [
-                                  _vm._v("Price")
-                                ])
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "tbody",
-                              _vm._l(_vm.sizes, function(size, index) {
-                                return _c("tr", { staticClass: "table-row" }, [
-                                  _c("td", [_vm._v(_vm._s(size.size))]),
-                                  _vm._v(" "),
-                                  _c("td", [_vm._v(_vm._s(size.price))])
-                                ])
-                              }),
-                              0
-                            )
-                          ]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-5 col-7 pl-1 pr-0" }, [
-                        _c("table", { staticClass: "table table-borderless" }, [
-                          _c("thead", [_c("tr", [_c("th", [_vm._v(" ")])])]),
-                          _vm._v(" "),
-                          _c(
-                            "tbody",
-                            _vm._l(_vm.sizes, function(size, index) {
-                              return _c("tr", { staticClass: "table-row" }, [
-                                _c("td", { staticStyle: { float: "left" } }, [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "col custom-control custom-checkbox mid-checkbox",
-                                      staticStyle: {
-                                        display: "inline-block",
-                                        width: "30px"
-                                      }
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: _vm.enableSizePrice[index],
-                                            expression: "enableSizePrice[index]"
-                                          }
-                                        ],
-                                        staticClass: "custom-control-input",
-                                        attrs: { type: "checkbox", id: index },
-                                        domProps: {
-                                          checked: Array.isArray(
-                                            _vm.enableSizePrice[index]
-                                          )
-                                            ? _vm._i(
-                                                _vm.enableSizePrice[index],
-                                                null
-                                              ) > -1
-                                            : _vm.enableSizePrice[index]
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            var $$a =
-                                                _vm.enableSizePrice[index],
-                                              $$el = $event.target,
-                                              $$c = $$el.checked ? true : false
-                                            if (Array.isArray($$a)) {
-                                              var $$v = null,
-                                                $$i = _vm._i($$a, $$v)
-                                              if ($$el.checked) {
-                                                $$i < 0 &&
-                                                  _vm.$set(
-                                                    _vm.enableSizePrice,
-                                                    index,
-                                                    $$a.concat([$$v])
-                                                  )
-                                              } else {
-                                                $$i > -1 &&
-                                                  _vm.$set(
-                                                    _vm.enableSizePrice,
-                                                    index,
-                                                    $$a
-                                                      .slice(0, $$i)
-                                                      .concat(
-                                                        $$a.slice($$i + 1)
-                                                      )
-                                                  )
-                                              }
-                                            } else {
-                                              _vm.$set(
-                                                _vm.enableSizePrice,
-                                                index,
-                                                $$c
-                                              )
-                                            }
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c("label", {
-                                        staticClass: "custom-control-label",
-                                        attrs: { for: index }
-                                      })
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    staticClass: "slider",
-                                    staticStyle: {
-                                      width: "150px",
-                                      position: "relative",
-                                      top: "-5px"
-                                    },
-                                    attrs: {
-                                      disabled: !_vm.enableSizePrice[index],
-                                      type: "range",
-                                      min: "1",
-                                      max: "100",
-                                      value: "1"
-                                    }
-                                  })
-                                ])
-                              ])
-                            }),
-                            0
-                          )
-                        ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }, [
-                      _c("label", [_vm._v("Hashtags")])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c("div", { staticClass: "row w-100" }, [
-                        _c(
-                          "div",
-                          { staticClass: "col" },
-                          [
-                            _c("hash-tag", {
-                              model: {
-                                value: _vm.campaign.hashtags,
-                                callback: function($$v) {
-                                  _vm.$set(_vm.campaign, "hashtags", $$v)
-                                },
-                                expression: "campaign.hashtags"
-                              }
-                            })
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "w-100" })
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }, [
-                      _c("label", [_vm._v("Geo Target")])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c(
-                        "div",
-                        { staticClass: "row w-100" },
-                        [
-                          _vm._l(_vm.campaign.geoTargets, function(
-                            target,
-                            index
-                          ) {
-                            return _vm.campaign.geoTargets.length > 0
-                              ? [
-                                  _c(
-                                    "div",
-                                    {
-                                      staticClass:
-                                        "col custom-control custom-checkbox mid-checkbox"
-                                    },
-                                    [
-                                      _c("input", {
-                                        directives: [
-                                          {
-                                            name: "model",
-                                            rawName: "v-model",
-                                            value: target.status,
-                                            expression: "target.status"
-                                          }
-                                        ],
-                                        staticClass: "custom-control-input",
-                                        attrs: {
-                                          type: "checkbox",
-                                          id: "target-" + index
-                                        },
-                                        domProps: {
-                                          checked: Array.isArray(target.status)
-                                            ? _vm._i(target.status, null) > -1
-                                            : target.status
-                                        },
-                                        on: {
-                                          change: function($event) {
-                                            var $$a = target.status,
-                                              $$el = $event.target,
-                                              $$c = $$el.checked ? true : false
-                                            if (Array.isArray($$a)) {
-                                              var $$v = null,
-                                                $$i = _vm._i($$a, $$v)
-                                              if ($$el.checked) {
-                                                $$i < 0 &&
-                                                  _vm.$set(
-                                                    target,
-                                                    "status",
-                                                    $$a.concat([$$v])
-                                                  )
-                                              } else {
-                                                $$i > -1 &&
-                                                  _vm.$set(
-                                                    target,
-                                                    "status",
-                                                    $$a
-                                                      .slice(0, $$i)
-                                                      .concat(
-                                                        $$a.slice($$i + 1)
-                                                      )
-                                                  )
-                                              }
-                                            } else {
-                                              _vm.$set(target, "status", $$c)
-                                            }
-                                          }
-                                        }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "label",
-                                        {
-                                          staticClass: "custom-control-label",
-                                          attrs: { for: "target-" + index },
-                                          on: {
-                                            mouseover: function($event) {
-                                              return _vm.displayButton(index)
-                                            },
-                                            mouseleave: function($event) {
-                                              return _vm.hideButton()
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _vm._v(
-                                            "\n                                            " +
-                                              _vm._s(target.name) +
-                                              "\n                                            "
-                                          ),
-                                          _vm.displayGeoEditIndex === index
-                                            ? _c(
-                                                "button",
-                                                {
-                                                  staticClass:
-                                                    "ml-2 btn btn-info btn-circle black",
-                                                  attrs: { type: "button" },
-                                                  on: {
-                                                    click: function($event) {
-                                                      $event.preventDefault()
-                                                      return _vm.editGeoTarget(
-                                                        target,
-                                                        index
-                                                      )
-                                                    }
-                                                  }
-                                                },
-                                                [
-                                                  _c("i", {
-                                                    staticClass: "fa fa-pen"
-                                                  })
-                                                ]
-                                              )
-                                            : _vm._e()
-                                        ]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "w-100" })
-                                ]
-                              : _vm._e()
-                          }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-100" }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "row w-100" }, [
-                            _c(
-                              "span",
-                              {
-                                staticClass:
-                                  "jquery-validation-error small form-text invalid-feedback"
-                              },
-                              [_vm._v(_vm._s(_vm.addGeoTargetError) + "}")]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "w-100" }),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col mt-1" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-info btn-circle yellow",
-                                attrs: { type: "button" },
-                                on: { click: _vm.showAddGeoTargetModal }
-                              },
-                              [_c("i", { staticClass: "fa fa-plus" })]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "span",
-                              {
-                                staticClass: "button-caption",
-                                staticStyle: { cursor: "pointer" },
-                                on: { click: _vm.showAddGeoTargetModal }
-                              },
-                              [_vm._v(" Add New Target Audience")]
-                            )
-                          ])
-                        ],
-                        2
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }, [
-                      _c("label", [_vm._v("Filter Questions")])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c("div", { staticClass: "row w-100" }, [
-                        _c("div", { staticClass: "col" }, [
-                          _vm._v("Are there any companies you do not "),
-                          _c("br"),
-                          _vm._v(
-                            "want to be on the same shirt\n                                    with you?\n                                "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "w-100" }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col" }, [
-                          _c("input", {
-                            attrs: { type: "text", placeholder: "Search" }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "w-100" }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col" }, [
-                          _c(
-                            "div",
-                            {
-                              staticClass:
-                                "row ml-0 mt-2 mb-2 px-2 py-2 company-select-container"
-                            },
-                            [
-                              _c(
-                                "div",
-                                {
-                                  staticClass:
-                                    "mx-1 mb-2 company-selected-list row"
-                                },
-                                _vm._l(_vm.excludeCompanies, function(
-                                  n,
-                                  index
-                                ) {
-                                  return _c(
-                                    "div",
-                                    { staticClass: "col-2 mx-1 my-1" },
-                                    [
-                                      _c("img", {
-                                        attrs: { width: "45px", src: n.logo }
-                                      }),
-                                      _vm._v(" "),
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "btn btn-info btn-circle small red",
-                                          attrs: { type: "button" },
-                                          on: {
-                                            click: function($event) {
-                                              $event.stopPropagation()
-                                              return _vm.removeExcludeCompany(
-                                                index
-                                              )
-                                            }
-                                          }
-                                        },
-                                        [
-                                          _c("i", {
-                                            staticClass: "fa fa-minus"
-                                          })
-                                        ]
-                                      )
-                                    ]
-                                  )
-                                }),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _vm._l(_vm.mockupCompanies, function(c) {
-                                return _c(
-                                  "div",
-                                  { staticClass: "col-2 mb-2" },
-                                  [
-                                    _c("img", {
-                                      attrs: { width: "80px", src: c.logo },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.addExcludeCompany(c)
-                                        }
-                                      }
-                                    })
-                                  ]
-                                )
-                              })
-                            ],
-                            2
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "w-100" }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col" }, [
-                          _vm._v("Are there any specific age ranges that "),
-                          _c("br"),
-                          _vm._v(
-                            "you would like to\n                                    execute?\n                                "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "w-100" }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col" }, [
-                          _c(
-                            "select",
-                            { staticClass: "form-control form-control-lg" },
-                            _vm._l(_vm.ageRanges, function(age) {
-                              return _c(
-                                "option",
-                                { domProps: { value: age } },
-                                [_vm._v(_vm._s(age))]
-                              )
-                            }),
-                            0
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "w-100" }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col" }, [
-                          _vm._v("Are there any organizations you do not"),
-                          _c("br"),
-                          _vm._v(" wish to sponsor?")
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "w-100" }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col" }, [
-                          _c("input", {
-                            attrs: { type: "text", placeholder: "Search" }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "w-100" }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col mt-2" }, [
-                          _c(
-                            "select",
-                            { staticClass: "form-control form-control-lg" },
-                            [
-                              _c("option", [_vm._v("Test 1")]),
-                              _vm._v(" "),
-                              _c("option", [_vm._v("Test 2")]),
-                              _vm._v(" "),
-                              _c("option", [_vm._v("Test 3")])
-                            ]
-                          )
-                        ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }, [
-                      _c("label", [_vm._v("Status")])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c("div", { staticClass: "row w-100" }, [
-                        _c("div", { staticClass: "col" }, [
-                          _c("label", { staticClass: "switch" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.campaign.status,
-                                  expression: "campaign.status"
-                                }
-                              ],
-                              staticClass: "default",
-                              attrs: { type: "checkbox" },
-                              domProps: {
-                                checked: Array.isArray(_vm.campaign.status)
-                                  ? _vm._i(_vm.campaign.status, null) > -1
-                                  : _vm.campaign.status
-                              },
-                              on: {
-                                change: function($event) {
-                                  var $$a = _vm.campaign.status,
-                                    $$el = $event.target,
-                                    $$c = $$el.checked ? true : false
-                                  if (Array.isArray($$a)) {
-                                    var $$v = null,
-                                      $$i = _vm._i($$a, $$v)
-                                    if ($$el.checked) {
-                                      $$i < 0 &&
-                                        _vm.$set(
-                                          _vm.campaign,
-                                          "status",
-                                          $$a.concat([$$v])
-                                        )
-                                    } else {
-                                      $$i > -1 &&
-                                        _vm.$set(
-                                          _vm.campaign,
-                                          "status",
-                                          $$a
-                                            .slice(0, $$i)
-                                            .concat($$a.slice($$i + 1))
-                                        )
-                                    }
-                                  } else {
-                                    _vm.$set(_vm.campaign, "status", $$c)
-                                  }
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "toggle-slider round" })
-                          ])
-                        ])
-                      ])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-wrap" }, [
-                    _c("div", { staticClass: "left-side2" }),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "right-side2" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "save-btn btn-primary",
-                          staticStyle: { "font-size": "18px" },
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              $event.stopPropagation()
-                              return _vm.save($event)
-                            }
-                          }
-                        },
-                        [_vm._v("Save")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "save-btn ml-2",
-                          staticStyle: { "font-size": "18px" },
-                          attrs: { type: "button" }
-                        },
-                        [_vm._v("Cancel")]
-                      )
-                    ])
-                  ])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "modal",
-              {
-                attrs: {
-                  name: "add-geo-target-modal",
-                  transition: "nice-modal-fade",
-                  width: "620",
-                  height: "auto",
-                  delay: 100,
-                  classes: "v--modal radius-modal"
-                }
-              },
-              [
-                _c(
-                  "span",
-                  {
-                    staticClass: "close-button topright",
-                    on: {
-                      click: function($event) {
-                        return _vm.$modal.hide("add-geo-target-modal")
-                      }
-                    }
-                  },
-                  [_vm._v("×")]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "add-target-modal" }, [
-                  _c("form", { attrs: { id: "add-target-validation-form" } }, [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "row w-90 my-5",
-                        staticStyle: {
-                          "margin-left": "50px",
-                          "margin-right": "50px",
-                          "max-height": "500px",
-                          overflow: "auto"
-                        }
-                      },
-                      [
-                        _c("div", { staticClass: "col mb-2 text-center" }, [
-                          _c("span", { staticClass: "title" }, [
-                            _vm._v("Target Audience")
-                          ])
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "w-100" }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col mb-0" }, [
-                          _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.tempGeoTarget.name,
-                                expression: "tempGeoTarget.name"
-                              }
-                            ],
-                            staticStyle: {
-                              width: "96%",
-                              "margin-left": "10px",
-                              "margin-right": "10px"
-                            },
-                            attrs: {
-                              id: "targetname",
-                              name: "targetname",
-                              type: "text"
-                            },
-                            domProps: { value: _vm.tempGeoTarget.name },
-                            on: {
-                              input: function($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.tempGeoTarget,
-                                  "name",
-                                  $event.target.value
-                                )
-                              }
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "w-100" }),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "col mb-2" }, [
-                          _c(
-                            "table",
-                            { staticClass: "table table-borderless mb-0" },
-                            [
-                              _c("thead", { staticClass: "rectangle-header" }, [
-                                _c("tr", [
-                                  _c("th", { attrs: { width: "50%" } }, [
-                                    _vm._v("Zip Code")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("th", { attrs: { width: "50%" } }, [
-                                    _vm._v("Radius")
-                                  ])
-                                ])
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "tbody",
-                                _vm._l(_vm.tempGeoTarget.zipcodes, function(
-                                  zipcode
-                                ) {
-                                  return _c(
-                                    "tr",
-                                    { staticClass: "table-row" },
-                                    [
-                                      _c("td", { staticClass: "px-0 py-0" }, [
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: zipcode.code,
-                                              expression: "zipcode.code"
-                                            }
-                                          ],
-                                          attrs: {
-                                            type: "text",
-                                            name: "code",
-                                            placeholder: "Zip Code"
-                                          },
-                                          domProps: { value: zipcode.code },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                zipcode,
-                                                "code",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        })
-                                      ]),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-0 py-0" }, [
-                                        _c(
-                                          "select",
-                                          {
-                                            directives: [
-                                              {
-                                                name: "model",
-                                                rawName: "v-model",
-                                                value: zipcode.radius,
-                                                expression: "zipcode.radius"
-                                              }
-                                            ],
-                                            staticClass:
-                                              "form-control form-control-lg",
-                                            attrs: { name: "radius" },
-                                            on: {
-                                              change: function($event) {
-                                                var $$selectedVal = Array.prototype.filter
-                                                  .call(
-                                                    $event.target.options,
-                                                    function(o) {
-                                                      return o.selected
-                                                    }
-                                                  )
-                                                  .map(function(o) {
-                                                    var val =
-                                                      "_value" in o
-                                                        ? o._value
-                                                        : o.value
-                                                    return val
-                                                  })
-                                                _vm.$set(
-                                                  zipcode,
-                                                  "radius",
-                                                  $event.target.multiple
-                                                    ? $$selectedVal
-                                                    : $$selectedVal[0]
-                                                )
-                                              }
-                                            }
-                                          },
-                                          [
-                                            _c(
-                                              "option",
-                                              { attrs: { value: "10" } },
-                                              [_vm._v("10 Miles")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "option",
-                                              { attrs: { value: "20" } },
-                                              [_vm._v("20 Miles")]
-                                            ),
-                                            _vm._v(" "),
-                                            _c(
-                                              "option",
-                                              { attrs: { value: "30" } },
-                                              [_vm._v("30 Miles")]
-                                            )
-                                          ]
-                                        )
-                                      ])
-                                    ]
-                                  )
-                                }),
-                                0
-                              )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass:
-                                "btn btn-info btn-circle yellow ml-2",
-                              attrs: { type: "button" },
-                              on: { click: _vm.addGeoZipcode }
-                            },
-                            [_c("i", { staticClass: "fa fa-plus" })]
-                          ),
-                          _vm._v(" "),
-                          _vm.addGeoTargetError
-                            ? _c("div", {
-                                staticClass: "is-invalid ml-2 mt-1 text-danger",
-                                domProps: {
-                                  innerHTML: _vm._s(_vm.addGeoTargetError)
-                                }
-                              })
-                            : _vm._e(),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "save-btn btn-primary mr-2",
-                              staticStyle: { "font-size": "18px" },
-                              attrs: { type: "button" },
-                              on: { click: _vm.saveGeoTarget }
-                            },
-                            [_vm._v("Save\n                            ")]
-                          )
-                        ])
-                      ]
-                    )
-                  ])
-                ])
-              ]
-            )
-          ]
-        },
-        proxy: true
-      }
-    ])
-  })
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-10a53d98", module.exports)
   }
 }
 
@@ -41863,51 +40580,56 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { attrs: { id: "sidebar-wrapper" } }, [
-      _c("div", { staticClass: "profile-sidebar" }, [
-        _c("div", { staticClass: "avatar" }, [
-          _c("div", { staticClass: "avatar-upload" }, [
-            _c("img", {
-              staticClass: "img-responsive center profile_icon",
-              attrs: { src: " /img/starbuck_logo.png", width: "150", alt: "" }
-            })
+  return _c("div", { attrs: { id: "sidebar-wrapper" } }, [
+    _c("div", { staticClass: "profile-sidebar" }, [
+      _c("div", { staticClass: "avatar" }, [
+        _c("div", { staticClass: "avatar-upload" }, [
+          _c("img", {
+            staticClass: "img-responsive center profile_icon",
+            attrs: { src: _vm.sponsor.logo, width: "200", alt: "" }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "profile-content" }, [
+        _c("div", { staticClass: "w-100 text-center" }, [
+          _c("span", { staticClass: "sponsor-name" }, [
+            _vm._v(_vm._s(_vm.sponsor.name))
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "profile-content" }, [
-          _c("span", { staticClass: "sponsor-name" }, [
-            _vm._v("Starbucks Coffee")
-          ]),
+        _c("p", { staticClass: "sponsor-description" }, [
+          _vm._v(_vm._s(_vm.sponsor.bio))
+        ]),
+        _vm._v(" "),
+        _c("span", { staticClass: "sponsor-link" }, [
+          _vm._v(_vm._s(_vm.sponsor.website))
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "sponsor-social-icons" }, [
+          _vm.sponsor.instagram
+            ? _c("a", { attrs: { href: _vm.sponsor.instagram } }, [
+                _c("i", { staticClass: "fab fa-instagram" })
+              ])
+            : _vm._e(),
           _vm._v(" "),
-          _c("p", { staticClass: "sponsor-description" }, [
-            _vm._v(
-              "Inspiring and nurturing the human spirit—one person, one cup, one neighborhood at a time. "
-            )
-          ]),
+          _vm.sponsor.facebook
+            ? _c("a", { attrs: { href: _vm.sponsor.facebook } }, [
+                _c("i", { staticClass: "fab fa-facebook-square" })
+              ])
+            : _vm._e(),
           _vm._v(" "),
-          _c("span", { staticClass: "sponsor-link" }, [
-            _vm._v("www.starbucks.com")
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "sponsor-social-icons" }, [
-            _c("i", { staticClass: "fab fa-instagram" }),
-            _vm._v(" "),
-            _c("i", { staticClass: "fab fa-facebook-square" }),
-            _vm._v(" "),
-            _c("i", { staticClass: "fab fa-twitter" })
-          ])
+          _vm.sponsor.twitter
+            ? _c("a", { attrs: { href: _vm.sponsor.fa - _vm.twitter } }, [
+                _c("i", { staticClass: "fab fa-twitter" })
+              ])
+            : _vm._e()
         ])
       ])
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -55479,23 +54201,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignEdit.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-09e6a936\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/SponsorIndex.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignEdit.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-09e6a936\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/SponsorIndex.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("273922ff", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("c57345e6", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./CampaignEdit.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./CampaignEdit.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-09e6a936\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SponsorIndex.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-09e6a936\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SponsorIndex.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -55884,23 +54606,23 @@ if(false) {
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b3b074e\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/SideBar.vue":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/home/Home.vue");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b3b074e\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/SideBar.vue");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("354b5d89", content, false, {});
+var update = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js")("469b44d9", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4c3f1cd4\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b3b074e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SideBar.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-4b3b074e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/sass-loader/lib/loader.js!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./SideBar.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -69893,7 +68615,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('sponsor-index', __webpack
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('campaign-page', __webpack_require__("./resources/js/pages/sponsor/CampaignPage.vue"));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('add-campaign', __webpack_require__("./resources/js/pages/sponsor/AddCampaign.vue"));
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('campaign-edit', __webpack_require__("./resources/js/pages/sponsor/CampaignEdit.vue"));
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('payment-history-list', __webpack_require__("./resources/js/pages/sponsor/PaymentHistoryList.vue"));
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('payment-history-page', __webpack_require__("./resources/js/pages/sponsor/PaymentHistoryPage.vue"));
@@ -72289,58 +71010,6 @@ if (false) {(function () {
     hotAPI.createRecord("data-v-19c70163", Component.options)
   } else {
     hotAPI.reload("data-v-19c70163", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ "./resources/js/pages/sponsor/CampaignEdit.vue":
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-function injectStyle (ssrContext) {
-  if (disposed) return
-  __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-10a53d98\",\"scoped\":true,\"hasInlineConfig\":true}!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/selector.js?type=styles&index=0!./resources/js/pages/sponsor/CampaignEdit.vue")
-}
-var normalizeComponent = __webpack_require__("./node_modules/vue-loader/lib/component-normalizer.js")
-/* script */
-var __vue_script__ = __webpack_require__("./node_modules/babel-loader/lib/index.js?{\"cacheDirectory\":true,\"presets\":[[\"env\",{\"modules\":false,\"targets\":{\"browsers\":[\"> 2%\"],\"uglify\":true}}]],\"plugins\":[\"transform-object-rest-spread\",[\"transform-runtime\",{\"polyfill\":false,\"helpers\":false}]]}!./resources/js/pages/sponsor/CampaignEdit.js")
-/* template */
-var __vue_template__ = __webpack_require__("./node_modules/vue-loader/lib/template-compiler/index.js?{\"id\":\"data-v-10a53d98\",\"hasScoped\":true,\"buble\":{\"transforms\":{}}}!./node_modules/vue-loader/lib/selector.js?type=template&index=0!./resources/js/pages/sponsor/CampaignEdit.vue")
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = injectStyle
-/* scopeId */
-var __vue_scopeId__ = "data-v-10a53d98"
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/js/pages/sponsor/CampaignEdit.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-10a53d98", Component.options)
-  } else {
-    hotAPI.reload("data-v-10a53d98", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true

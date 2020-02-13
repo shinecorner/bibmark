@@ -1,11 +1,8 @@
-import SideBar from "./SideBar";
+import SideBar from './SideBar';
 
 export default {
-    components: {SideBar},
-    props: {
-        sponsor: {
-        }
-    },
+    components: { SideBar },
+    props: ['sponsor', 'instagramPosts'],
     data: function() {
         return {
         };

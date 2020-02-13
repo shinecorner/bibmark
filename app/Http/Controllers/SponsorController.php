@@ -3,16 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sponsor;
-use App\Services\SponsorService;
 use Illuminate\Http\Request;
+use App\Services\SponsorService;
+use App\Services\InstagramService;
 use App\Http\Resources\SponsorResource;
 
 class SponsorController extends Controller
 {
     protected $service;
-    public function __construct(SponsorService $sponsorService)
+
+    public function __construct (
+        SponsorService $sponsorService,
+        InstagramService $instagramService
+    )
     {
         $this->service = $sponsorService;
+        $this->instagramService = $instagramService;
     }
 
     /**
@@ -23,8 +29,19 @@ class SponsorController extends Controller
     public function index($id)
     {
         $sponsor = Sponsor::find($id);
-        return view('front.index-sponsor')->with([
+
+        // $tags = explode(',', $sponsor->hashtags);
+        $tags = ['python', 'benin'];
+
+        $instagramPosts = [];
+
+        foreach ($tags as $tag) {
+            $instagramPosts = array_merge($instagramPosts, $this->instagramService->getPosts(trim($tag)));
+        }
+        
+        return view('front.index-sponsor', [
             'sponsor' => $sponsor,
+            'instagramPosts' => $instagramPosts
         ]);
     }
 

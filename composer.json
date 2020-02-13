@@ -13,6 +13,7 @@
         "bensampo/laravel-enum": "^1.16",
         "easypost/easypost-php": "^3.4",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^6.5",
         "laravel/cashier": "^8.0",
         "laravel/framework": "5.8.x-dev",
         "laravel/passport": "^7.0",
