@@ -6,7 +6,7 @@
                     <div class="col-12">
                         <div class="input-wrap">
                             <div class="left-side2"></div>
-                            <div class="right-side2"><span class="campaign">Campaigns</span></div>
+                            <div class="right-side2"><span class="campaign text-yellow">Campaigns</span></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side2"></div>
@@ -41,7 +41,7 @@
                             <div class="right-side2">
                                 <div class="col-7 pl-0 pr-0">
                                     <table class="table table-bordered" style="width:368px">
-                                        <thead class="rectangle-header">
+                                        <thead class="rectangle-header bg-yellow">
                                         <tr>
                                             <th width="180px">Size</th>
                                             <th width="180px">Price</th>
@@ -123,7 +123,7 @@
                                     </div>
                                     <div class="w-100"></div>
                                     <div class="col mt-1">
-                                        <button type="button" class="btn btn-info btn-circle button-blue"
+                                        <button type="button" class="btn btn-info btn-circle bg-yellow"
                                                 @click="showAddGeoTargetModal">
                                             <i class="fa fa-plus"></i>
                                         </button>
@@ -198,7 +198,7 @@
                         <div class="input-wrap">
                             <div class="left-side2"></div>
                             <div class="right-side2">
-                                <button class="save-btn btn-primary button-blue" type="button" @click.stop="save" style="font-size:18px">Save</button>
+                                <button class="save-btn bg-yellow" type="button" @click.stop="save" style="font-size:18px">Save</button>
                                 <button class="save-btn ml-2 bg-white" type="button" style="font-size:18px" @click="cancel()">Cancel</button>
                             </div>
                         </div>
@@ -232,7 +232,7 @@
                             <div class="w-100"></div>
                             <div class="col mb-2">
                                 <table class="table table-borderless mb-0">
-                                    <thead class="rectangle-header">
+                                    <thead class="rectangle-header bg-yellow">
                                     <tr>
                                         <th width="50%">Zip Code</th>
                                         <th width="50%">Radius</th>
@@ -254,13 +254,13 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <button type="button" class="btn btn-info btn-circle button-blue ml-2"
+                                <button type="button" class="btn btn-info btn-circle bg-yellow ml-2"
                                         @click="addGeoZipcode">
                                     <i class="fa fa-plus"></i>
                                 </button>
                                 <div v-if="addGeoTargetError" class="is-invalid ml-2 mt-1 text-danger"
                                      v-html="addGeoTargetError"></div>
-                                <button type="button" class="save-btn btn-primary mr-2 button-blue" @click="saveGeoTarget" style="font-size:18px">Save
+                                <button type="button" class="save-btn mr-2 bg-yellow" @click="saveGeoTarget" style="font-size:18px">Save
                                 </button>
                             </div>
 
@@ -291,7 +291,6 @@
         font-size: 25px;
         font-family: $font-family-helvetica-neue, sans-serif;
         font-weight: bold;
-        color: #1e70cd;
     }
 
     .total {
@@ -365,7 +364,6 @@
             width: 100px;
             height: 35px;
             font-family: $font-family-helvetica-neue, sans-serif;
-            background-color: white;
             border-radius: 3px;
             border: 1px solid  #f2f2f2;
             font-weight: normal;
@@ -411,5 +409,9 @@
     form {
         display: flex;
         flex-direction: column;
+    }
+
+    .bootbox-yellow .btn.btn-primary {
+            background-color: $line-yellow !important;
     }
 </style>

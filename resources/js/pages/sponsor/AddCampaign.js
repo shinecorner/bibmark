@@ -237,8 +237,18 @@ export default {
         cancel() {
             const self = this;
             bootbox.confirm({
-                message: 'Are you sure remove this campaign?',
-                className: 'bootbox-sm',
+                message: 'Are you sure discard this campaign?',
+                className: 'bootbox-sm bootbox-yellow',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'bg-yellow'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn'
+                    }
+                },
                 callback: function (res) {
                     if(res) {
                         window.history.back();

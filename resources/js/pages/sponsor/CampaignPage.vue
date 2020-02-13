@@ -9,14 +9,14 @@
             <div class="table">
                 <div>
                     <table id="campaign-list" class="table table-striped table-bordered mb-0">
-                        <thead class="rectangle-header">
-                        <tr>
-                            <th>Campaign Name</th>
-                            <th>Logo</th>
-                            <th>Logo Budget</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
+                        <thead class="rectangle-header bg-yellow">
+                            <tr>
+                                <th>Campaign Name</th>
+                                <th>Logo</th>
+                                <th>Logo Budget</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
                         <tr class="table-row" v-for="campaign in finalCampaigns">
@@ -37,7 +37,7 @@
             </div>
             <div class="caption">
                 <button @click='addCampaign' type="button"
-                        class="btn btn-info btn-circle button-blue"><i
+                        class="btn btn-info btn-circle bg-yellow"><i
                     class="fa fa-plus"></i></button>
             </div>
         </template>

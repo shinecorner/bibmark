@@ -197,3 +197,17 @@ input:checked + .toggle-slider:before {
 .radius-modal {
     border-radius: 20px 0 20px 20px !important;
 }
+
+.bg-yellow {
+    background: $line-yellow;
+}
+
+.text-yellow {
+    color: $line-yellow;
+}
+
+.sk-yellow {
+    .sk-rect-fix {
+        background-color: $line-yellow;
+    }
+}

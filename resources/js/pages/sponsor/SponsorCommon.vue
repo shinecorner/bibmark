@@ -169,7 +169,7 @@
             letter-spacing: normal;
             color: #444444;
             &.active {
-                color: #000000;
+                color: $line-yellow;
                 font-weight: bold;
             }
         }
