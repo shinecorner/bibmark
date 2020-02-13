@@ -13,6 +13,7 @@ class InstagramService implements Provisionable
 
     public function getPosts(array $tags = ['bibmark'], array $options = [])
     {
+        dd($tags);
         $data = $this->request($tag);
         // https://stackoverflow.com/a/48682863/5442966
         $content = $data['graphql']['hashtag']['edge_hashtag_to_media']['edges'];
