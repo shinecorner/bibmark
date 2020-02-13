@@ -2,7 +2,8 @@ export default {
 
     data() {
         return {
-            navLink: 'Campaigns'
+            navLink: 'Campaigns',
+            finalCampaigns: []
         };
     },
     props: {
@@ -15,12 +16,15 @@ export default {
             require: true
         }
     },
+    created() {
+       this.finalCampaigns = this.campaigns;
+    },
 
     methods: {
         getCampaigns: function() {
             axios.get('/sponsor/' + this.sponsor.id + '/campaign/list-json')
             .then((response) => {
-                this.campaigns = response.campaigns;
+                this.finalCampaigns = response.data.campaigns;
                 $('#campaign-list').unblock();
             });
         },

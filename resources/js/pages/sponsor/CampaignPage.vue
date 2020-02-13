@@ -19,7 +19,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="table-row" v-for="campaign in campaigns">
+                        <tr class="table-row" v-for="campaign in finalCampaigns">
                             <td>{{campaign.name}}</td>
                             <td><img :src="campaign.logo" width="50px"></td>
                             <td>{{campaign.budget}}</td>
