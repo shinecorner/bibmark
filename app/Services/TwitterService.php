@@ -46,7 +46,7 @@ class TwitterService implements Provisionable
      *
      * @return bool
      */
-    public function valid($tag = 'bibmark', $limit = 5)
+    public function valid($tag = 'bibmark', $limit = 10)
     {
         try {
             $this->request($tag, $limit);
@@ -63,7 +63,7 @@ class TwitterService implements Provisionable
      * @param  string  $tag
      * @return mixed
      */
-    protected function request($tag = 'bibmark', $limit = 5)
+    protected function request($tag = 'bibmark', $limit = 10)
     {
         $response = (new Client)->get('https://api.twitter.com/1.1/search/tweets.json?q='.$tag.'&count=' . $limit, [
             'headers' => [

@@ -34,8 +34,8 @@
                                                             <span><span class="fa fa-search-plus"></span></span>
                                                         </div>
                                                     </div>
-                                                    <div class="box-buttons">
-                                                        <div class="row">
+                                                    <div class="pb-2 pt-2">
+                                                        <div class="text-center">
                                                             <button class="btn">
                                                                 <i class="fas fa-retweet"></i>
                                                                 <span>
@@ -52,6 +52,9 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div v-if="!twitterPosts.length">
+                                            <h2>No tweets at this time!</h2>
                                         </div>
                                     </div>
                                     <div class="col-8">
@@ -77,6 +80,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div v-if="!instagramPosts.length">
+                                                <h2>No instagram post at this time!</h2>
                                             </div>
                                         </div>
                                     </div>

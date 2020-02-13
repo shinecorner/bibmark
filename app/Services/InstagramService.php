@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use GuzzleHttp\Client;
 use App\Contracts\Provisionable;
 
@@ -59,6 +60,10 @@ class InstagramService implements Provisionable
      */
     protected function request($tag, $limit = 5)
     {
+        if ($tag == '') {
+            throw new Exception();
+        }
+
         $response = (new Client)->get('https://www.instagram.com/explore/tags/'.ltrim($tag, '/').'?__a=1');
 
         return json_decode((string) $response->getBody(), true);
