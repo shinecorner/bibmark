@@ -200,6 +200,15 @@ input:checked + .toggle-slider:before {
 
 .bg-yellow {
     background: $line-yellow;
+    &.btn {
+        &:hover, &:active {
+            background-color: $line-yellow;
+        }
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
 }
 
 .text-yellow {
