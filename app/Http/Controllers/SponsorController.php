@@ -35,16 +35,16 @@ class SponsorController extends Controller
 
         $tags = explode(',', $sponsor->hashtags);
 
-        $twitterPosts = $this->twitterService->getPosts($tags);
-        
-        // $instagramPosts = $this->instagramService->getPosts($tags);
+        if (count($tags) > 0) {
+            $twitterPosts = $this->twitterService->getPosts($tags);
+            $instagramPosts = $this->instagramService->getPosts($tags);
+        }
 
-
-        dd($twitterPosts);
         
         return view('front.index-sponsor', [
             'sponsor' => $sponsor,
-            'instagramPosts' => $instagramPosts
+            'instagramPosts' => $instagramPosts,
+            'twitterPosts' => $twitterPosts
         ]);
     }
 

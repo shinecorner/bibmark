@@ -27,7 +27,10 @@ class TwitterService implements Provisionable
                             'date' => $tweet['created_at'],
                             'description' => $tweet['text'],
                             'url' => isset($tweet['entities']['urls'][0])?
-                                $tweet['entities']['urls'][0]['url'] : 'https://example.com'
+                                $tweet['entities']['urls'][0]['url'] : 'https://example.com',
+                            'retweet_count' => $tweet['retweet_count'],
+                            'favorite_count' => $tweet['favorite_count'],
+                            'profile_image_url' =>$tweet['user']['profile_image_url']
                         ]
                     );
                 }
@@ -43,7 +46,7 @@ class TwitterService implements Provisionable
      *
      * @return bool
      */
-    public function valid($tag='bibmark', $limit=5)
+    public function valid($tag = 'bibmark', $limit = 5)
     {
         try {
             $this->request($tag, $limit);
@@ -60,7 +63,7 @@ class TwitterService implements Provisionable
      * @param  string  $tag
      * @return mixed
      */
-    protected function request($tag = 'bibmark', $limit=5)
+    protected function request($tag = 'bibmark', $limit = 5)
     {
         $response = (new Client)->get('https://api.twitter.com/1.1/search/tweets.json?q='.$tag.'&count=' . $limit, [
             'headers' => [

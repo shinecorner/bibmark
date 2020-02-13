@@ -7,31 +7,48 @@ use App\Contracts\Provisionable;
 
 class InstagramService implements Provisionable
 {
-    public function __construct()
-    {
-    }
-
     public function getPosts(array $tags = ['bibmark'], array $options = [])
     {
-        dd($tags);
-        $data = $this->request($tag);
-        // https://stackoverflow.com/a/48682863/5442966
-        $content = $data['graphql']['hashtag']['edge_hashtag_to_media']['edges'];
         $posts = [];
 
-        foreach ($content as $data) {
-            array_push(
-                $posts, [
-                    'id' => $data['node']['id'],
-                    'username' => 'John Doe',
-                    'date' => $data['node']['taken_at_timestamp'],
-                    'description' => $data['node']['edge_media_to_caption']['edges'][0]['node']['text'],
-                    'image_url' => $data['node']['display_url']
-                ]
-            );
+        foreach ($tags as $tag) {
+            if ($this->valid(trim($tag))) {
+                $bulkPosts = $this->request(trim($tag))['graphql']['hashtag']['edge_hashtag_to_media']['edges'];
+
+                foreach ($bulkPosts as $intaPost) {
+                    array_push(
+                        $posts, [
+                            'id' => $intaPost['node']['id'],
+                            'username' => $intaPost['node']['owner']['id'],
+                            'date' => $intaPost['node']['taken_at_timestamp'],
+                            'url' => $intaPost['node']['display_url'],
+                            'description' => isset($intaPost['node']['edge_media_to_caption']['edges'][0]) ?
+                                $intaPost['node']['edge_media_to_caption']['edges'][0]['node']['text']: 'https://example.com',
+                            'display_url' => $intaPost['node']['display_url']
+                        ]
+                    );
+                }
+            }
+
         }
 
         return $posts;
+    }
+
+    /**
+     * Determine if the request is valid.
+     *
+     * @return bool
+     */
+    public function valid($tag = 'bibmark', $limit = 5)
+    {
+        try {
+            $this->request($tag, $limit);
+
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -40,7 +57,7 @@ class InstagramService implements Provisionable
      * @param  string  $tag
      * @return array
      */
-    protected function request($tag, $limit=10)
+    protected function request($tag, $limit = 5)
     {
         $response = (new Client)->get('https://www.instagram.com/explore/tags/'.ltrim($tag, '/').'?__a=1');
 

@@ -7,5 +7,9 @@
 @endsection
 
 @section('content')
-    <sponsor-index :sponsor='@json($sponsor)' :instagram-posts='@json($instagramPosts)' ></sponsor-index>
+    <sponsor-index 
+        :sponsor='@json($sponsor)'
+        :instagram-posts='@json($instagramPosts)'
+        :twitter-posts='@json($twitterPosts)'>
+    </sponsor-index>
 @endsection

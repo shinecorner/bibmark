@@ -6,30 +6,75 @@
                     <!-- Sidebar -->
                     <SideBar :sponsor="sponsor"></SideBar>
                     <!-- /#sidebar-wrapper -->
-                    <!-- {{ instagramPosts }} -->
+
                     <!-- Page Content -->
                     <div id="page-content-wrapper">
                         <div class="container-fluid">
                             <div class="profile-content">
                                 <div class="row">
-                                    <div class="col-4 pb-4" :key = "instagramPost.id" v-for="instagramPost in instagramPosts">
-                                        <div class="event-container">
-                                            <div class="box image">
-                                                <div class="box-header">
-                                                    <h3>
-                                                        <a href=""><img :src="sponsor.logo" alt="">
-                                                            {{sponsor.name}}
-                                                        </a>
-                                                        <span class="summary">add an <a>event</a></span>
-                                                        <span>March 21,18:45pm <i
-                                                            class="fas fa-globe-americas"></i></span>
-                                                    </h3>
-                                                </div>
-                                                <div class="box-content">
-                                                    <div class="content">
-                                                        <img :src="instagramPost.image_url" alt="" width="100%">
+                                    <div class="col-4">
+                                        <div class="row mb-2" :key = "twitterPost.id" v-for="twitterPost in twitterPosts">
+                                            <div class="event-container col-12">
+                                                <div class="box image">
+                                                    <div class="box-header">
+                                                        <h3>
+                                                            <a href="#">
+                                                                <img :src="twitterPost.profile_image_url" alt="">
+                                                                {{ twitterPost.username }}
+                                                            </a>
+                                                            <span> {{ twitterPost.date | twitterDateFormat }} <i
+                                                                class="fas fa-globe-americas"></i></span>
+                                                        </h3>
                                                     </div>
-                                                    <div class="bottom">
+                                                    <div class="box-content">
+                                                        <div class="bottom">
+                                                            <p>
+                                                                {{ twitterPost.description }}
+                                                            </p>
+                                                            <span><span class="fa fa-search-plus"></span></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="box-buttons">
+                                                        <div class="row">
+                                                            <button class="btn">
+                                                                <i class="fas fa-retweet"></i>
+                                                                <span>
+                                                                    {{ twitterPost.retweet_count }}
+                                                                </span>
+                                                            </button>
+                                                            <button class="btn">
+                                                                <i class="far fa-heart"></i>
+                                                                <span>
+                                                                    {{ twitterPost.favorite_count }}
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="row">
+                                            <div class="col-6 pb-2" :key="instagramPost.id" v-for="instagramPost in instagramPosts">
+                                                <div class="event-container">
+                                                    <div class="box image">
+                                                        <div class="box-header">
+                                                            <h3>
+                                                                <a href=""><img src="https://via.placeholder.com/50" class="ing-fluid" alt="">
+                                                                    John Doe
+                                                                </a>
+                                                                <span>{{ instagramPost.date | instagramDateFormat }} <i
+                                                                    class="fas fa-globe-americas"></i></span>
+                                                            </h3>
+                                                        </div>
+                                                        <div class="box-content">
+                                                            <div class="bottom">
+                                                            </div>
+                                                            <div class="content">
+                                                                <img :src="instagramPost.display_url" alt="" class="img-fluid">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -627,6 +672,5 @@
         background: #FFF;
     }
 </style>
-
 
 
