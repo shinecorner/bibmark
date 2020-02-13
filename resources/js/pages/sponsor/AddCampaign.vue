@@ -199,7 +199,7 @@
                             <div class="left-side2"></div>
                             <div class="right-side2">
                                 <button class="save-btn btn-primary" type="button" @click.stop="save" style="font-size:18px">Save</button>
-                                <button class="save-btn ml-2" type="button" style="font-size:18px">Cancel</button>
+                                <button class="save-btn ml-2 bg-white" type="button" style="font-size:18px" @click="cancel()">Cancel</button>
                             </div>
                         </div>
                     </div>
