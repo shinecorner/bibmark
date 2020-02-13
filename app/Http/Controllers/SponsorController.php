@@ -30,13 +30,15 @@ class SponsorController extends Controller
     {
         $sponsor = Sponsor::find($id);
 
-        // $tags = explode(',', $sponsor->hashtags);
-        $tags = ['python', 'benin'];
+        $tags = explode(',', $sponsor->hashtags);
 
         $instagramPosts = [];
 
         foreach ($tags as $tag) {
-            $instagramPosts = array_merge($instagramPosts, $this->instagramService->getPosts(trim($tag)));
+            $instagramPosts = array_merge(
+                $instagramPosts,
+                $this->instagramService->getPosts(trim($tag))
+            );
         }
         
         return view('front.index-sponsor', [
