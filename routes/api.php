@@ -24,7 +24,7 @@ Route::middleware('auth:api')->group(function() {
     Route::get('sizes', 'SizeController@getAll');
 
     // Get posts from social network by tags
-    Route::get('sponsors/{sponsor}/posts/{network}', 'API\SponsorPostController@index');
+    Route::get('sponsors/{sponsor}/posts/{network}', 'SponsorController@getPosts');
 });
 
 Route::get('random_product', 'ProductController@random');

@@ -11,45 +11,52 @@
                     <div id="page-content-wrapper">
                         <div class="container-fluid">
                             <div class="profile-content">
+                                <div class="row justify-content-center">
+                                    <div class="col-7">
+                                        <div class="spinner" v-if="loadingTweets">
+                                            <div class="bounce1"></div>
+                                            <div class="bounce2"></div>
+                                            <div class="bounce3"></div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <div class="row mb-2">
-                                            <div class="event-container col-12">
-                                                <div class="box image">
-                                                    <div class="box-header">
-                                                        <h3>
-                                                            <a href=""><img :src="sponsor.logo" alt="">
-                                                                {{sponsor.name}}
-                                                            </a>
-                                                            <span class="summary">add an <a>event</a></span>
-                                                            <span>March 21,18:45pm <i
-                                                                class="fas fa-globe-americas"></i></span>
-                                                        </h3>
-                                                    </div>
-                                                    <div class="box-content">
-                                                        <div class="bottom">
-                                                            <p>
-                                                                orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                                            </p>
-                                                            <span><span class="fa fa-search-plus"></span></span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="box-buttons">
-                                                        <div class="row">
-                                                            <button class="btn"><i class="far fa-comment-alt"></i> <span>123</span></button>
-                                                            <button class="btn"><i class="fas fa-retweet"></i> <span>123</span></button>
-                                                            <button class="btn"><i class="far fa-heart"></i> <span>123</span></button>
-                                                        </div>
-                                                    </div>
+                                        <div class="row mb-3 pl-2 mr-1" v-bind:key="tweet.id" v-for="tweet in tweets">
+                                            <div class="row p-2 tweet">
+                                                <div class="col-md-1 text-center">
+                                                    <img :src="tweet.profile_image_url" alt="" class="img-fluid tweet-thumbnail">
+                                                </div>
+                                                <div class="col-md-11 pl-4 tweet-content">
+                                                    <h6>
+                                                        {{ tweet.username }} @{{ tweet.screen_name }}  - <span class="summary">{{ tweet.date | twitterDateFormat }}</span>
+                                                    </h6>
+                                                    <p>
+                                                        {{ tweet.description }}
+                                                    </p>
+                                                    <p>
+                                                        <a href="" class="controls">
+                                                            <i class="fas fa-retweet"></i> <span> {{ tweet.retweet_count }} </span>
+                                                        </a>
+                                                        <a href="" class="pl-4 controls">
+                                                            <i class="far fa-heart"></i> <span> {{ tweet.favorite_count }} </span>
+                                                        </a>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-6 pl-0 pr-1">
-                                                <img src="/img/demo2.png" width="100%"/>
+                                        <div class="row justify-content-center">
+                                            <div class="col-2">
+                                                <div class="spinner" v-if="loadingInstagramPosts">
+                                                    <div class="bounce1"></div>
+                                                    <div class="bounce2"></div>
+                                                    <div class="bounce3"></div>
+                                                </div>
                                             </div>
-                                            <div class="col-6 pr-0 pl-1">
-                                                <img src="/img/demo2.png" width="100%"/>
+                                        </div>
+                                        <div class="row justify-content-between">
+                                            <div class="col-6 pl-0 pr-1" :key = "instagramPost.id" v-for="instagramPost in instagramPosts">
+                                                <img :src="instagramPost.display_url" alt="" class="img-fluid pb-3 img-thumbnail instagram-img">
                                             </div>
                                         </div>
                                     </div>
@@ -666,6 +673,69 @@
     .event-container > .box > .box-new-comment > .content > .row > textarea:focus,
     .event-container > .box.video .box-new-comment > .content:active > .row {
         background: #FFF;
+    }
+    .spinner {
+        width: 70px;
+        text-align: center;
+    }
+
+    .spinner > div {
+        width: 18px;
+        height: 18px;
+        background-color: #333;
+
+        border-radius: 100%;
+        display: inline-block;
+        -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+        animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    }
+
+    .spinner .bounce1 {
+        -webkit-animation-delay: -0.32s;
+        animation-delay: -0.32s;
+    }
+
+    .spinner .bounce2 {
+        -webkit-animation-delay: -0.16s;
+        animation-delay: -0.16s;
+    }
+
+    @-webkit-keyframes sk-bouncedelay {
+        0%, 80%, 100% { -webkit-transform: scale(0) }
+        40% { -webkit-transform: scale(1.0) }
+    }
+
+    @keyframes sk-bouncedelay {
+        0%, 80%, 100% { 
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        } 40% { 
+            -webkit-transform: scale(1.0);
+            transform: scale(1.0);
+        }
+    }
+    .tweet {
+        background: #F5F8FA;
+        border: 1px solid #F5F8FA;
+    }
+    .tweet-thumbnail {
+        max-width: 49px;
+        max-height: 49px;
+        border-radius: 50%;
+    }
+    .tweet-content {
+        width: 100%;
+        min-width: 500px;
+    }
+    .controls {
+        text-decoration: none;
+        color: #657886;
+    }
+    .instagram-img {
+        object-fit: cover;
+        overflow: hidden;
+        height: 20vw;
+        width : 20vw;
     }
 </style>
 

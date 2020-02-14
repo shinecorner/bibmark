@@ -24,6 +24,7 @@ class TwitterService implements Provisionable
                         $tweets, [
                             'id' => $tweet['id'],
                             'username' => $tweet['user']['name'],
+                            'screen_name' => $tweet['user']['screen_name'],
                             'date' => $tweet['created_at'],
                             'description' => $tweet['text'],
                             'url' => isset($tweet['entities']['urls'][0])?

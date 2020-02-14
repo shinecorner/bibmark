@@ -4,38 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Sponsor;
 use Illuminate\Http\Request;
-use App\Services\SponsorService;
-use App\Services\TwitterService;
-use App\Services\InstagramService;
 use App\Http\Resources\SponsorResource;
+use App\Services\{SponsorService, TwitterService, InstagramService};
 
 class SponsorController extends Controller
 {
-    protected $service;
+    const NETWORKS = [
+        'instagram',
+        'twitter'
+    ];
 
-    public function __construct (
-        SponsorService $sponsorService,
-        InstagramService $instagramService,
-        TwitterService $twitterService
-    )
+    public function __construct (SponsorService $sponsorService, InstagramService $instagramService, TwitterService $twitterService)
     {
         $this->service = $sponsorService;
         $this->instagramService = $instagramService;
         $this->twitterService = $twitterService;
     }
-
-    public function getInstagramPosts(array $tags = ['bibmark'])
-    {
-        $instagramPosts = $this->instagramService->getPosts($tags);
-        return $this->sendSuccess($instagramPosts, 'Get all Instagram posts succeeded.');
-    }
-
-    public function getTwitterPosts(array $tags = ['bibmark'])
-    {
-        $twitterPosts = $this->twitterService->getPosts($tags);
-        return $this->sendSuccess($twitterPosts, 'Get all Twitter posts succeeded.');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -142,5 +126,39 @@ class SponsorController extends Controller
             'background_image' => $background_image
         ]);
         return response()->json(['sponsor' => $sponsor], 200);
+    }
+
+    /**
+     * Get all posts from social network.
+     *
+     * @param Sponsor $sponsor
+     * @param string network
+     * @return Response
+     */
+    public function getPosts(Sponsor $sponsor, string $network)
+    {
+        $network = strtolower($network);
+
+        if (in_array($network, self::NETWORKS)) {
+            $tags = explode(',', $sponsor->hashtags);
+
+            return $this->makeRequest($tags, $network);
+        }
+
+        return response()->json([], 200);
+    }
+
+    /**
+     * Perform request
+     *
+     * @param array $tags
+     * @param string network
+     * @return array
+     */
+    public function makeRequest(array $tags = ['bibmark'], $network)
+    {
+        $service = $network. 'Service';
+
+        return $this->{$service}->getPosts($tags);
     }
 }
