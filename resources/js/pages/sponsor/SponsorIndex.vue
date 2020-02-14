@@ -12,77 +12,67 @@
                         <div class="container-fluid">
                             <div class="profile-content">
                                 <div class="row">
-                                    <div class="col-4">
-                                        <div class="row mb-2" :key = "twitterPost.id" v-for="twitterPost in twitterPosts">
+                                    <div class="col-6">
+                                        <div class="row mb-2">
                                             <div class="event-container col-12">
                                                 <div class="box image">
                                                     <div class="box-header">
                                                         <h3>
-                                                            <a href="#">
-                                                                <img :src="twitterPost.profile_image_url" alt="">
-                                                                {{ twitterPost.username }}
+                                                            <a href=""><img :src="sponsor.logo" alt="">
+                                                                {{sponsor.name}}
                                                             </a>
-                                                            <span> {{ twitterPost.date | twitterDateFormat }} <i
+                                                            <span class="summary">add an <a>event</a></span>
+                                                            <span>March 21,18:45pm <i
                                                                 class="fas fa-globe-americas"></i></span>
                                                         </h3>
                                                     </div>
                                                     <div class="box-content">
                                                         <div class="bottom">
                                                             <p>
-                                                                {{ twitterPost.description }}
+                                                                orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
                                                             </p>
                                                             <span><span class="fa fa-search-plus"></span></span>
                                                         </div>
                                                     </div>
-                                                    <div class="pb-2 pt-2">
-                                                        <div class="text-center">
-                                                            <button class="btn">
-                                                                <i class="fas fa-retweet"></i>
-                                                                <span>
-                                                                    {{ twitterPost.retweet_count }}
-                                                                </span>
-                                                            </button>
-                                                            <button class="btn">
-                                                                <i class="far fa-heart"></i>
-                                                                <span>
-                                                                    {{ twitterPost.favorite_count }}
-                                                                </span>
-                                                            </button>
+                                                    <div class="box-buttons">
+                                                        <div class="row">
+                                                            <button class="btn"><i class="far fa-comment-alt"></i> <span>123</span></button>
+                                                            <button class="btn"><i class="fas fa-retweet"></i> <span>123</span></button>
+                                                            <button class="btn"><i class="far fa-heart"></i> <span>123</span></button>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div v-if="!twitterPosts.length">
-                                            <h2>No tweets at this time!</h2>
+                                        <div class="row">
+                                            <div class="col-6 pl-0 pr-1">
+                                                <img src="/img/demo2.png" width="100%"/>
+                                            </div>
+                                            <div class="col-6 pr-0 pl-1">
+                                                <img src="/img/demo2.png" width="100%"/>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-8">
-                                        <div class="row">
-                                            <div class="col-6 pb-2" :key="instagramPost.id" v-for="instagramPost in instagramPosts">
-                                                <div class="event-container">
-                                                    <div class="box image">
-                                                        <div class="box-header">
-                                                            <h3>
-                                                                <a href=""><img src="https://via.placeholder.com/50" class="ing-fluid" alt="">
-                                                                    John Doe
-                                                                </a>
-                                                                <span>{{ instagramPost.date | instagramDateFormat }} <i
-                                                                    class="fas fa-globe-americas"></i></span>
-                                                            </h3>
-                                                        </div>
-                                                        <div class="box-content">
-                                                            <div class="bottom">
-                                                            </div>
-                                                            <div class="content">
-                                                                <img :src="instagramPost.display_url" alt="" class="img-fluid">
-                                                            </div>
-                                                        </div>
+                                    <div class="col-6">
+                                        <div class="event-container">
+                                            <div class="box image">
+                                                <div class="box-header">
+                                                    <h3>
+                                                        <a href=""><img :src="sponsor.logo" alt="">
+                                                            {{sponsor.name}}
+                                                        </a>
+                                                        <span class="summary">add an <a>event</a></span>
+                                                        <span>March 21,18:45pm <i
+                                                            class="fas fa-globe-americas"></i></span>
+                                                    </h3>
+                                                </div>
+                                                <div class="box-content">
+                                                    <div class="content">
+                                                        <img src="/img/demo-image.png" alt="" width="100%">
+                                                    </div>
+                                                    <div class="bottom">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div v-if="!instagramPosts.length">
-                                                <h2>No instagram post at this time!</h2>
                                             </div>
                                         </div>
                                     </div>

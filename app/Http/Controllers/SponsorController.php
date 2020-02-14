@@ -24,6 +24,18 @@ class SponsorController extends Controller
         $this->twitterService = $twitterService;
     }
 
+    public function getInstagramPosts(array $tags = ['bibmark'])
+    {
+        $instagramPosts = $this->instagramService->getPosts($tags);
+        return $this->sendSuccess($instagramPosts, 'Get all Instagram posts succeeded.');
+    }
+
+    public function getTwitterPosts(array $tags = ['bibmark'])
+    {
+        $twitterPosts = $this->twitterService->getPosts($tags);
+        return $this->sendSuccess($twitterPosts, 'Get all Twitter posts succeeded.');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -32,19 +44,9 @@ class SponsorController extends Controller
     public function index($id)
     {
         $sponsor = Sponsor::find($id);
-
-        $tags = explode(',', $sponsor->hashtags);
-
-        if (count($tags) > 0) {
-            $twitterPosts = $this->twitterService->getPosts($tags);
-            $instagramPosts = $this->instagramService->getPosts($tags);
-        }
-
         
         return view('front.index-sponsor', [
             'sponsor' => $sponsor,
-            'instagramPosts' => $instagramPosts,
-            'twitterPosts' => $twitterPosts
         ]);
     }
 
