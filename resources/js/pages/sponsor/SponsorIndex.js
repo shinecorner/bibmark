@@ -47,7 +47,7 @@ export default {
         twitterDateFormat: function (value) {
           if (!value) return '';
 
-          return value.substring(0, 10);
+          return value.substring(4, 10);
         },
     },
 }

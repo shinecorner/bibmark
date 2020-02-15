@@ -1,85 +1,110 @@
 <template>
     <sponsor-common :sponsor="sponsor" type="full">
         <template v-slot:setting-content>
-            <div class="container-fluid1" style="background: #ffffff">
-                <div class="d-flex" id="wrapper">
-                    <!-- Sidebar -->
-                    <SideBar :sponsor="sponsor"></SideBar>
-                    <!-- /#sidebar-wrapper -->
-
-                    <!-- Page Content -->
-                    <div id="page-content-wrapper">
-                        <div class="container-fluid">
-                            <div class="profile-content">
-                                <div class="row justify-content-center">
-                                    <div class="col-7">
-                                        <div class="spinner" v-if="loadingTweets">
-                                            <div class="bounce1"></div>
-                                            <div class="bounce2"></div>
-                                            <div class="bounce3"></div>
-                                        </div>
-                                    </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2 sidebar">
+                        <div class="text-center">
+                            <img class="rounded-circle img-fluid" :src="sponsor.logo" width="200" alt="">
+                            <h4 class="pt-3">{{ sponsor.name }}</h4>
+                            <p class="text-left">
+                                {{ sponsor.bio }}
+                            </p>
+                            <p class="text-left">
+                                <a class="text-dark" href="">{{ sponsor.website }}</a>
+                                <br>
+                                <a class="text-dark" v-if="sponsor.instagram" :href="sponsor.instagram"><i class="fab fa-instagram"></i></a>
+                                <a class="text-dark" v-if="sponsor.facebook" :href="sponsor.facebook"><i class="fab fa-facebook-square"></i></a>
+                                <a class="text-dark" v-if="sponsor.twitter" :href="sponsor.fa-twitter"><i class="fab fa-twitter"></i></a>
+                            </p>
+                            <p class="text-left">
+                                <button class="btn btn-sm edit-profile-btn">Edit profile</button>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mt-10">
+                        <div class="row justify-content-center">
+                            <div class="col-md-2">
+                                <div class="spinner" v-if="loadingTweets">
+                                    <div class="bounce1"></div>
+                                    <div class="bounce2"></div>
+                                    <div class="bounce3"></div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="row mb-3 pl-2 mr-1" v-bind:key="tweet.id" v-for="tweet in tweets">
-                                            <div class="row p-2 tweet">
-                                                <div class="col-md-1 text-center">
-                                                    <img :src="tweet.profile_image_url" alt="" class="img-fluid tweet-thumbnail">
-                                                </div>
-                                                <div class="col-md-11 pl-4 tweet-content">
-                                                    <h6>
-                                                        {{ tweet.username }} @{{ tweet.screen_name }}  - <span class="summary">{{ tweet.date | twitterDateFormat }}</span>
-                                                    </h6>
-                                                    <p>
-                                                        {{ tweet.description }}
-                                                    </p>
-                                                    <p>
-                                                        <a href="" class="controls">
-                                                            <i class="fas fa-retweet"></i> <span> {{ tweet.retweet_count }} </span>
-                                                        </a>
-                                                        <a href="" class="pl-4 controls">
-                                                            <i class="far fa-heart"></i> <span> {{ tweet.favorite_count }} </span>
-                                                        </a>
-                                                    </p>
-                                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <!-- tweet list -->
+                                <ol class="tweet-list">
+                                    <li class="tweet-card mb-3" v-bind:key="tweet.id" v-for="tweet in tweets">
+                                        <div class="tweet-content">
+                                            <div class="tweet-header">
+                                                <span class="fullname">
+                                                    <strong>{{ tweet.username }}</strong>
+                                                </span>
+                                                <span class="username">@{{ tweet.screen_name }}</span>
+                                                <span class="tweet-time">- {{ tweet.date | twitterDateFormat }}</span>
+                                            </div>
+                                            <a>
+                                                <img class="tweet-card-avatar" :src="tweet.profile_image_url" alt="">
+                                            </a>
+                                            <div class="tweet-text">
+                                                <p data-aria-label-part="0">
+                                                    {{ tweet.description }}
+                                                </p>
+                                            </div>
+                                            <div class="tweet-footer">
+                                                <a class="tweet-footer-btn">
+                                                    <i class="fas fa-comment-alt"></i><span> 0</span>
+                                                </a>
+                                                <a class="tweet-footer-btn">
+                                                    <i class="fas fa-retweet"></i><span> {{ tweet.retweet_count }}</span>
+                                                </a>
+                                                <a class="tweet-footer-btn">
+                                                    <i class="far fa-heart"></i><span> {{ tweet.favorite_count }}</span>
+                                                </a>
                                             </div>
                                         </div>
-                                        <div class="row justify-content-center">
-                                            <div class="col-2">
-                                                <div class="spinner" v-if="loadingInstagramPosts">
-                                                    <div class="bounce1"></div>
-                                                    <div class="bounce2"></div>
-                                                    <div class="bounce3"></div>
-                                                </div>
-                                            </div>
+                                    </li>
+                                </ol>
+                                <!-- End: tweet list -->
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-2">
+                                <div class="spinner" v-if="loadingInstagramPosts">
+                                    <div class="bounce1"></div>
+                                    <div class="bounce2"></div>
+                                    <div class="bounce3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-2 instagram-posts">
+                            <div class="col-md-6 pb-4" :key = "instagramPost.id" v-for="instagramPost in instagramPosts">
+                                <img class="img-fluid instagram-img" :src="instagramPost.display_url" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col">
+                                <div class="event-container">
+                                    <div class="box image">
+                                        <div class="box-header">
+                                            <h3>
+                                                <a href=""><img :src="sponsor.logo" alt="">
+                                                    {{sponsor.name}}
+                                                </a>
+                                                <span class="summary">add an <a>event</a></span>
+                                                <span>March 21,18:45pm <i
+                                                    class="fas fa-globe-americas"></i></span>
+                                            </h3>
                                         </div>
-                                        <div class="row justify-content-between">
-                                            <div class="col-6 pl-0 pr-1" :key = "instagramPost.id" v-for="instagramPost in instagramPosts">
-                                                <img :src="instagramPost.display_url" alt="" class="img-fluid pb-3 img-thumbnail instagram-img">
+                                        <div class="box-content">
+                                            <div class="content">
+                                                <img src="/img/demo-image.png" alt="" width="100%">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="event-container">
-                                            <div class="box image">
-                                                <div class="box-header">
-                                                    <h3>
-                                                        <a href=""><img :src="sponsor.logo" alt="">
-                                                            {{sponsor.name}}
-                                                        </a>
-                                                        <span class="summary">add an <a>event</a></span>
-                                                        <span>March 21,18:45pm <i
-                                                            class="fas fa-globe-americas"></i></span>
-                                                    </h3>
-                                                </div>
-                                                <div class="box-content">
-                                                    <div class="content">
-                                                        <img src="/img/demo-image.png" alt="" width="100%">
-                                                    </div>
-                                                    <div class="bottom">
-                                                    </div>
-                                                </div>
+                                            <div class="bottom">
                                             </div>
                                         </div>
                                     </div>
@@ -87,9 +112,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /#page-content-wrapper -->
                 </div>
-                <!-- /#wrapper -->
             </div>
         </template>
     </sponsor-common>
@@ -100,33 +123,45 @@
 <style lang="scss" scoped>
     @import '~@/_variables.scss';
 
-    #sidebar-wrapper {
-        min-height: 100vh;
-        margin-left: -15rem;
-        -webkit-transition: margin .25s ease-out;
-        -moz-transition: margin .25s ease-out;
-        -o-transition: margin .25s ease-out;
-        transition: margin .25s ease-out;
-        border-right: solid 2px #cccccc;
+    .tweet-list {
+        list-style: none;
+        margin: 8px 4px 0;
+        padding: 0;
+    }
+    .tweet-card {
+        background-color: #fff;
+        border-bottom: 1px solid #e6ecf0;
+        min-height: 52px;
+        padding: 9px 12px;
     }
 
-    #sidebar-wrapper .sidebar-heading {
-        padding: 0.875rem 1.25rem;
-        font-size: 1.2rem;
+    .tweet-content {
+        margin-left: 58px;
+        font-size: 14px;
+        line-height: 20px;
+        font-weight: normal;
     }
 
-    #sidebar-wrapper .list-group {
-        width: 15rem;
+    .tweet-card-avatar {
+        border-radius: 50%;
+        height: 48px;
+        width: 48px;
+        float: left;
+        margin-top: 3px;
+        margin-left: -58px;
     }
 
-    #page-content-wrapper {
-        width: 100%;
+    .tweet-footer-btn {
+        margin-right: 30px;
     }
 
-    /* Profile Content */
-    .profile-content {
-        background: #fff;
-        min-height: 460px;
+    .tweet-footer-btn i, .tweet-footer-btn span {
+        color: #657786;
+        font-size: 16px;
+    }
+
+    .tweet-footer-btn span {
+        margin-left: 8px;
     }
 
     .event-container {
@@ -138,7 +173,6 @@
         font-family: $font-family-helvetica-neue;
         font-size: 13px;
     }
-
     .event-container > h2 {
         color: #9298A4;
         font-weight: 400;
@@ -146,11 +180,9 @@
         margin: 140px auto 80px;
         text-align: center;
     }
-
     .event-container > h2:first-child {
         margin: 40px auto 80px;
     }
-
     .event-container > .box {
         background: #FFF;
         border-radius: 4px;
@@ -158,25 +190,21 @@
         overflow: hidden;
         position: relative;
     }
-
     .event-container > .box > [class*="box-"] {
         margin: 0 auto;
         padding: 0 30px;
         position: relative;
     }
-
     .event-container > .box > [class*="box-"] img {
         display: block;
         width: 100%;
     }
-
     .event-container > .box > .box-header {
         margin: 0 auto;
         padding: 0 10px 0px;
         width: initial;
         height: 60px;
     }
-
     .event-container > .box > .box-header > h3 {
         font-size: 15px;
         font-weight: 700;
@@ -186,18 +214,15 @@
         padding: 5px 0 0;
         position: relative;
     }
-
     .event-container > .box > .box-header > h3 > a {
         margin: 0;
         overflow: hidden;
         padding: 0;
         position: relative;
     }
-
     .event-container > .box > .box-header > h3 > .summary {
         display: inline-block;
     }
-
     .event-container > .box > .box-header > h3 > span {
         color: #9197A3;
         display: block;
@@ -205,12 +230,10 @@
         font-weight: 400;
         margin-top: 2px;
     }
-
     .event-container > .box > .box-header > h3 > span .fa {
         font-size: 15px;
         margin-left: 5px;
     }
-
     .event-container > .box > .box-header > span {
         background: #F4F4F4;
         border-radius: 3px;
@@ -225,16 +248,13 @@
         right: 40px;
         top: 0;
     }
-
     .event-container > .box > .box-header > span:hover {
         color: #888;
     }
-
     .event-container > .box > .box-header > span > i {
         height: 18px;
         line-height: 18px;
     }
-
     .event-container > .box > .box-header img {
         border-radius: 100px;
         float: left;
@@ -243,7 +263,6 @@
         margin: -5px 10px 0 0;
         object-fit: cover;
     }
-
     .event-container > .box > .box-content {
         margin: 0;
         overflow: hidden;
@@ -251,7 +270,6 @@
         position: relative;
         width: initial;
     }
-
     .event-container > .box > .box-content > .content {
         height: auto;
         margin: 0;
@@ -260,20 +278,17 @@
         position: relative;
         width: initial;
     }
-
     .event-container > .box > .box-content > .bottom {
         margin: 0 auto;
         padding: 0 10px 0 50px;
         position: relative;
         width: initial;
     }
-
     .event-container > .box > .box-content > .bottom > p {
         line-height: 20px;
         margin: 0;
         padding: 0px 10px 0 20px
     }
-
     .event-container > .box > .box-content > .bottom > span {
         background: linear-gradient(to top, rgba(0, 0, 0, .45), rgba(0, 0, 0, 0));
         height: 160px;
@@ -288,7 +303,6 @@
         vertical-align: bottom;
         width: 100%;
     }
-
     .event-container > .box > .box-content > .bottom > span > span {
         background: rgba(0, 0, 0, .35);
         border-radius: 4px;
@@ -307,23 +321,19 @@
         -moz-transition: all .25s ease-in-out;
         transition: all .25s ease-in-out;
     }
-
     .event-container > .box > .box-content > .bottom > span > span:hover {
         opacity: 1;
     }
-
     .event-container > .box > .box-likes {
         margin: 0 auto;
         overflow: hidden;
         padding: 0 30px;
         position: relative;
     }
-
     .event-container > .box > .box-likes > .row {
         border-top: 1px solid #F4F4F4;
         padding: 20px 0;
     }
-
     .event-container > .box > .box-likes > .row > span {
         display: inline-block;
         font-size: 13px;
@@ -331,46 +341,38 @@
         position: relative;
         vertical-align: middle;
     }
-
     .event-container > .box > .box-likes > .row:first-child {
         float: left;
         width: 60%;
     }
-
     .event-container > .box > .box-likes > .row:last-child {
         float: left;
         text-align: end;
         width: 40%;
     }
-
     .event-container > .box > .box-likes > .row:first-child > span:nth-child(4) {
         background: #4D679F;
         border-radius: 50px;
         font-weight: bold;
         padding: 0 8px 0 6px;
     }
-
     .event-container > .box > .box-likes > .row:first-child > span:nth-child(4) > a {
         color: #FFF;
     }
-
     .event-container > .box > .box-likes > .row:first-child > span,
     .event-container > .box > .box-likes > .row:last-child > span {
         color: #9197A3;
     }
-
     .event-container > .box > .box-likes > .row:last-child > span {
         display: inline-block;
         verrtical-align: middle;
     }
-
     .event-container > .box > .box-likes > .row img {
         border-radius: 100px;
         height: 28px;
         object-fit: cover;
         width: 28px;
     }
-
     .event-container > .box > .box-buttons {
         overflow: hidden;
         padding: 0;
@@ -379,24 +381,20 @@
         margin-left: 70px;
         margin-top: 10px;
     }
-
     .event-container > .box > .box-buttons *, *::before, *::after {
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
     }
-
     .event-container > .box > .box-buttons > .row {
         border-bottom: 1px solid #F4F4F4;
         overflow: hidden;
         padding: 0;
         position: relative;
     }
-
     .event-container > .box > .box-buttons > .row > button:last-child {
         border: 0;
     }
-
     .event-container > .box > .box-buttons > .row > button {
         background: #FFF;
         border: 0;
@@ -410,333 +408,71 @@
         padding: 0;
         width: 33.33333333333%;
     }
-
-    .btn:focus,
-    .btn:active:focus,
-    .btn.active:focus,
-    .btn.focus,
-    .btn:active.focus,
-    .btn.active.focus {
-        background: #FFF;
-        border: 0;
-        color: #9197A3;
-    }
-    .btn:hover,
-    .btn:focus,
-    .btn.focus {
-        background: #FFF;
-        border: 0;
-        color: #9197A3;
-    }
-    .btn:active,
-    .btn.active {
-        background: #FFF;
-        border: 0;
-    }
-
-    .event-container > .box > .box-buttons > .row > button > span {
-        margin-left: 10px;
-    }
-
-    .event-container > .box > .box-buttons > .row > button:hover {
-        background: #F5F5F5;
-        color: #7D8696;
-    }
-
-    .event-container > .box > .box-buttons > .row > button:focus {
-        background: #F0F2F2;
-        color: #6C7588;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, .2);
-        outline-color: #08F;
-    }
-
-    .event-container > .box > .box-click {
-        color: #4D679F;
-        font-size: 13px;
-        margin: 0 auto;
-        overflow: hidden;
-        padding: 10px 30px;
-        position: relative;
-    }
-
-    .event-container > .box > .box-click > span {
-        cursor: pointer;
-    }
-
-    .event-container > .box > .box-click > span i {
-        font-size: 18px;
-        margin-right: 5px;
-    }
-
-    .event-container > .box > .box-comments {
-        margin: 0;
-        overflow: hidden;
-        padding: 0;
-        position: relative;
-    }
-
-    .event-container > .box > .box-comments > .comment {
-        border-top: 1px solid #F4F4F4;
-        margin: 0;
-        overflow: hidden;
-        padding: 16px 30px;
-        position: relative;
-    }
-
-    .event-container > .box > .box-comments > .comment > img {
-        border-radius: 100px;
-        float: left;
-        height: 56px;
-        margin: 0;
-        object-fit: cover;
-        width: 56px;
-    }
-
-    .event-container > .box > .box-comments > .comment > .content {
-        height: auto;
-        line-height: 20px;
-        margin: 0 0 0 70px;
-        overflow: hidden;
-        padding: 0;
-        position: relative;
-        width: initial;
-    }
-
-    .event-container > .box > .box-comments > .comment > .content > h3 {
-        float: left;
-        font-size: 14px;
-        font-weight: 600;
-        margin: 4px auto 0;
-        text-transform: capitalize;
-        width: 150px;
-    }
-
-    .event-container > .box > .box-comments > .comment > .content > h3 > span {
-        color: #9197A3;
-        display: block;
-        font-size: 12px;
-        font-weight: 400;
-        text-transform: none;
-    }
-
-    .event-container > .box > .box-comments > .comment > .content > p {
-        color: #4B4D53;
-        font-size: 13px;
-        margin: 0;
-        padding: 0;
-    }
-
-    .event-container > .box > .box-new-comment {
-        background: #9298A4;
-        margin: 0;
-        overflow: hidden;
-        padding: 20px 30px;
-        position: relative;
-    }
-
-    .event-container > .box > .box-new-comment > img {
-        border-radius: 100px;
-        float: left;
-        height: 40px;
-        margin: 0;
-        object-fit: cover;
-        width: 40px;
-    }
-
-    .event-container > .box > .box-new-comment > .content {
-        border-radius: 20px;
-        margin: 4px 0 0 52px;
-        overflow: hidden;
-        padding: 0;
-        position: relative;
-        width: initial;
-        -webkit-transition: all .25s ease-in-out;
-        -moz-transition: all .25s ease-in-out;
-        transition: all .25s ease-in-out;
-    }
-
-    .event-container > .box > .box-new-comment > .content > .row {
-        background: transparent;
-        display: inline-block;
-        height: 32px;
-        overflow: hidden;
-        position: relative;
-        vertical-align: middle;
-        width: 100%;
-        -webkit-transition: all .25s ease-in-out;
-        -moz-transition: all .25s ease-in-out;
-        transition: all .25s ease-in-out;
-    }
-
-    .event-container > .box > .box-new-comment > .content > .row:last-child {
-        color: #C6C9D0;
-        font-size: 22px;
-        height: 28px;
-        line-height: 27px;
-        margin: 2px 0;
-        position: absolute;
-        text-align: center;
-        top: 0;
-        right: 10px;
-        width: 40px;
-    }
-
-    .event-container > .box > .box-new-comment > .content > .row:last-child > span {
-        cursor: pointer;
-    }
-
-    .event-container > .box > .box-new-comment > .content > .row > textarea {
-        border: 1px solid transparent;
-        border-radius: 20px;
-        color: #555;
-        outline: 0;
-        padding: 0 40px 0 10px;
-        resize: none;
-        width: calc(100% - 52px) !important;
-        -webkit-transition: all .25s ease-in-out;
-        -moz-transition: all .25s ease-in-out;
-        transition: all .25s ease-in-out;
-    }
-
-    .event-container > .box.update,
-    .event-container > .box.text {
-        border: 1px solid #E0E1E4;
-        box-shadow: none;
-        padding: 20px 0 0;
-    }
-
-    .event-container > .box.update > .box-header,
-    .event-container > .box.text > .box-header {
-        padding: 0 30px;
-    }
-
-    .event-container > .box.update > .box-header > span,
-    .event-container > .box.text > .box-header > span {
-        background: transparent;
-        color: #9298A4;
-        font-size: 32px;
-        margin: -10px auto 0;
-    }
-
-    .event-container > .box.update > .box-content > .content > p,
-    .event-container > .box.text > .box-content > .content > p {
-        border-top: 1px solid #F4F4F4;
-        color: #4D5057;
-        font-size: 14px;
-        line-height: 22px;
-        padding: 26px 30px;
-    }
-
-    .event-container > .box.update > .box-content > .content > .img {
-        margin: 0;
-        overflow: hidden;
-        padding: 0;
-        position: relative;
-        width: initial;
-    }
-
-    .event-container > .box.update > .box-content > .content > .img:before {
-        border: 1px solid rgba(0, 0, 0, .25);
-        bottom: 0;
-        content: "";
-        height: 100%;
-        left: 0;
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 100%;
-    }
-
-    .event-container > .box.text > .box-buttons > .row > button {
-        font-size: 13px;
-    }
-
-    .event-container > .box.text > .box-buttons > .row > button > span {
-        font-size: 20px;
-    }
-
-    .event-container > .box.image > .box-new-comment > .content,
-    .event-container > .box.image > .box-new-comment > .content > .row > textarea,
-    .event-container > .box.video > .box-new-comment > .content,
-    .event-container > .box.video > .box-new-comment > .content > .row > textarea {
-        background: #9298A4;
-        -webkit-transition: all .25s ease-in-out;
-        -moz-transition: all .25s ease-in-out;
-        transition: all .25s ease-in-out;
-    }
-
-    .event-container > .box > .box-new-comment > .content > .row > textarea:focus,
-    .event-container > .box.image > .box-new-comment > .content:active > .row {
-        background: #FFF;
-    }
-
-    .event-container > .box > .box-new-comment > .content > .row > textarea:focus,
-    .event-container > .box.video .box-new-comment > .content:active > .row {
-        background: #FFF;
-    }
     .spinner {
         width: 70px;
         text-align: center;
     }
-
     .spinner > div {
         width: 18px;
         height: 18px;
         background-color: #333;
-
         border-radius: 100%;
         display: inline-block;
         -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
         animation: sk-bouncedelay 1.4s infinite ease-in-out both;
     }
-
     .spinner .bounce1 {
         -webkit-animation-delay: -0.32s;
         animation-delay: -0.32s;
     }
-
     .spinner .bounce2 {
         -webkit-animation-delay: -0.16s;
         animation-delay: -0.16s;
     }
-
     @-webkit-keyframes sk-bouncedelay {
         0%, 80%, 100% { -webkit-transform: scale(0) }
         40% { -webkit-transform: scale(1.0) }
     }
-
     @keyframes sk-bouncedelay {
-        0%, 80%, 100% { 
+        0%, 80%, 100% {
             -webkit-transform: scale(0);
             transform: scale(0);
-        } 40% { 
+        } 40% {
             -webkit-transform: scale(1.0);
             transform: scale(1.0);
         }
     }
-    .tweet {
+    .sidebar {
+        border-right: solid 2px #cccccc;
+    }
+    .text-dark {
+        color: #444444;
+    }
+    .edit-profile-btn {
+        border: 1px solid #444444;
+    }
+
+    .mt-10 {
+        margin-top: -10px
+    }
+
+    .tweet-card {
         background: #F5F8FA;
         border: 1px solid #F5F8FA;
+        border-radius: 1px;
     }
-    .tweet-thumbnail {
-        max-width: 49px;
-        max-height: 49px;
-        border-radius: 50%;
+
+    .instagram-posts {
+        padding-left: 5px;
+        padding-right: 5px;
     }
-    .tweet-content {
-        width: 100%;
-        min-width: 500px;
-    }
-    .controls {
-        text-decoration: none;
-        color: #657886;
-    }
+
     .instagram-img {
         object-fit: cover;
-        overflow: hidden;
-        height: 20vw;
-        width : 20vw;
+        width:230px;
+        height:230px;
     }
+
 </style>
 
 
