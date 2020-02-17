@@ -28,7 +28,7 @@ class SponsorController extends Controller
     public function index($id)
     {
         $sponsor = Sponsor::find($id);
-
+        
         return view('front.index-sponsor', [
             'sponsor' => $sponsor,
         ]);

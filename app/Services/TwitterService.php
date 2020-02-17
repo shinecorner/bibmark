@@ -14,7 +14,7 @@ class TwitterService implements Provisionable
         $tweets = [];
 
         foreach ($tags as $tag) {
-
+            
             if ($this->valid(trim($tag))) {
 
                 $bulkTweets = $this->request(trim($tag))['statuses'];
