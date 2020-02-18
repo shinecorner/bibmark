@@ -107,7 +107,7 @@ Route::namespace('Admin')->middleware(['auth'])->group(function() {
         // sponsor
         Route::get('/sponsor/{sponsor_id}/home', 'AdminController@dashboardSponsor');
         Route::middleware(['superadmin'])->group(function() {
-            Route::resource('sponsors', 'SponsorController')->only(['index', 'show', 'create', 'edit']);
+            Route::resource('sponsors', 'SponsorController')->only(['index', 'show', 'create']);
             Route::prefix('sponsors/{sponsor_id}/users')->group(function() {
                 Route::get('create', 'SponsorController@createUser')->name('sponsors.user.create');
                 Route::get('{user_id}', 'SponsorController@editUser')->name('sponsors.user.edit');

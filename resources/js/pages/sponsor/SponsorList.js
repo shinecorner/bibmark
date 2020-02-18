@@ -65,7 +65,7 @@ export default {
                         );
                     }
                     $('td', row).eq(7).addClass('text-center text-nowrap').html('').append(
-                    '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'sponsors/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
+                    // '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'sponsors/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
                     '<div class="btn-group">' +
                         '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat dropdown-toggle hide-arrow user-tooltip" title="Actions" data-toggle="dropdown"><i class="ion ion-ios-settings"></i></button>' +
                         '<div class="dropdown-menu' + (isRtl ? '' : ' dropdown-menu-right') + '">' +
