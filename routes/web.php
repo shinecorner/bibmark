@@ -89,6 +89,10 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/sponsor/{id}/campaign/save', 'CampaignController@createOrUpdate');
     Route::delete('/campaign/{id}', 'CampaignController@destroy');
 
+    // Charities...
+    Route::get('charities/{charity}/donations', 'CharityController@getDonations')->name('charities.donations.index');
+    Route::get('charities/{charity}/orders', 'CharityController@getOrders')->name('charities.orders.index');
+
 });
 
 Route::get('/reset-password/{token}/{email}', 'WebController@resetPasswordPage');

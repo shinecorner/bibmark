@@ -126,6 +126,11 @@ Vue.component('Apparel', require('./pages/apparel/Product.vue'))
 // common component
 Vue.component('hash-tag', require('./pages/common/components/Hashtag.vue'))
 
+// Charity Donation...
+Vue.component('charity-common', require('./pages/charity/CharityCommon.vue'))
+Vue.component('charity-donation-list', require('./pages/charity/CharityDonationList.vue'))
+Vue.component('charity-order-list', require('./pages/charity/CharityOrderList.vue'))
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
