@@ -90,8 +90,8 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('/campaign/{id}', 'CampaignController@destroy');
 
     // Charities...
-    Route::get('charities/{charity}/donations', 'CharityController@getDonations')->name('charities.donations.index');
-    Route::get('charities/{charity}/orders', 'CharityController@getOrders')->name('charities.orders.index');
+    Route::get('charity/{charity}/donation', 'CharityController@getDonations')->name('charities.donations.index');
+    Route::get('charity/{charity}/order', 'CharityController@getOrders')->name('charities.orders.index');
 
 });
 

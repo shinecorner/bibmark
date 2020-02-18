@@ -37,10 +37,10 @@
                     {text: "Edit Profile", isActive: false, url: ""},
                     {text: "Manage Team", isActive: false, url: ""},
                     {text: "Campaigns", isActive: false, url: ""},
-                    {text: "Order Gallery", isActive: false, url: "/charities/{0}/orders"},
+                    {text: "Order Gallery", isActive: false, url: "/charity/{0}/order"},
                     {text: "Reports", isActive: false, url: ""},
                     {text: "Payment Information", isActive: false, url: ""},
-                    {text: "Donation History", isActive: false, url: "/charities/{0}/donations"}
+                    {text: "Donation History", isActive: false, url: "/charity/{0}/donation"}
                 ],
                 logo: null,
                 defaultLogo: "/img/profile/profile-fit.png",
