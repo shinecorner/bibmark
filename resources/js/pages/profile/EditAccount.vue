@@ -77,7 +77,7 @@
             return {
                 user: Laravel.user,
                 email: Laravel.user.email,
-                name: Laravel.user.firstname+' '+Laravel.user.lastname,
+                name: Laravel.user.firstname+' '+(Laravel.user.lastname ? Laravel.user.lastname : ''),
                 errorMSG: ''
             };
         },
