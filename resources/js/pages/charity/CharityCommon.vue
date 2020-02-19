@@ -122,7 +122,7 @@
         .input-cover-wrap {
             position: absolute;
             bottom: 19px;
-            right: 100px;
+            right: 80px;
 
             input {
                 display: none;
