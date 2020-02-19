@@ -8,22 +8,22 @@
         <slick
             ref="slick"
             :options="slickOptions">
-            <a href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
+            <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
                 <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
-            <a href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
+            <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
                 <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
-            <a href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
+            <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
                 <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
-            <a href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
+            <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
                 <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
-            <a href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
+            <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
                 <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
-            <a href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
+            <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
                 <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
         </slick>
@@ -34,7 +34,7 @@
             <i class="fa fa-angle-right"></i>
         </div>
         <div class="text-center range-controls">
-            <input type="range" class="custom-range" v-model="sliderVal" @change="applyZoom" style="width: 200px; color: white;">
+            <input type="range" class="custom-range" v-model="sliderVal" @change="applyZoom" style="width: 200px; color: white;"> <i class="fa fa-plus-circle pl-2"></i>
         </div>
     </modal>
 </template>
@@ -135,7 +135,7 @@ export default {
     }
     .range-controls {
         position: absolute;
-        bottom: 30px;
+        bottom: 20px;
         left: 42%;
     }
 
@@ -147,6 +147,16 @@ export default {
 
         a {
             color: #717171;
+        }
+    }
+    .fa-plus-circle {
+        color: #D1D1D3;
+        font-size: 14px;
+    }
+    .gallery-img {
+        outline : none;
+        img {
+            outline : none;
         }
     }
 </style>
