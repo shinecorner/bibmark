@@ -99,9 +99,6 @@ export default {
             this.applyZoom();
         },
         applyZoom() {
-
-            console.log(this.sliderVal, this.imageHeight, this.imageWidth, this.imagePaddingLeft, this.imagePaddingTop)
-
             this.imageHeight = (this.sliderVal * 4) + 350;
             this.imageWidth = (this.sliderVal * 4) + 350;
 
