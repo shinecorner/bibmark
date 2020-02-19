@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <table  class="table table-striped table-bordered">
+    <div class="table-responsive pt-5">
+        <table class="table table-striped table-bordered">
             <thead class="rectangle-header">
                 <tr>
                     <th class="label">Credit Card Number</th>
@@ -77,6 +77,9 @@
             font-size: 22px;
         }
     }
+}
+.table {
+    width: 98%;
 }
 
 </style>

@@ -15,12 +15,12 @@
             </div>
         </template>
         <template v-else>
-            <div class="main-section">
+            <div class="main-section pt-5 pb-3">
                 <div class="col-2 nav-links">
                 <span class="navigation-link" :class="{ active: item.isActive, disabled: !item.url }" v-for="(item, index) in navLinks"
                       :key="index" @click="redirect(item.url)">{{item.text}}</span>
                 </div>
-                <div class="col-9 offset-1">
+                <div class="col-9 offset-1" style="padding-right: 45px">
                     <slot name="setting-content" :cover="cover"></slot>
                 </div>
             </div>
@@ -125,7 +125,10 @@
 
 <style lang="scss" scoped>
     @import '~@/_variables.scss';
-
+    @font-face {
+        font-family: "SFProDisplay";
+        src: url("/fonts/SF-Pro-Display-Regular.otf") format('truetype');
+    }
     .sponsor-common {
         padding: 0;
         background-color: white;

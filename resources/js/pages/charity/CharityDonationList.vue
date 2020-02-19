@@ -76,6 +76,6 @@
     }
 
     .table-responsive {
-        padding-right: 50px;
+        padding-right: 22px;
     }
 </style>

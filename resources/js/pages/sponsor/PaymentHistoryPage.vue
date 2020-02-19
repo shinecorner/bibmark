@@ -2,9 +2,7 @@
     <sponsor-common :sponsor="sponsor" :activeLink="navLink">
         <template v-slot:setting-content>
             <span class="history">Payment History</span>
-            <div class="table">
-                <payment-history-list v-bind:history="history"></payment-history-list>
-            </div>
+            <payment-history-list v-bind:history="history"></payment-history-list>
         </template>
     </sponsor-common>
 </template>
@@ -34,9 +32,6 @@
 <style lang="scss" scoped>
 @import '~@/_variables.scss';
 .sponsor-common {
-    .table {
-        padding-left: 153px !important;
-    }
 
     .history {
         font-size: 25px;
@@ -44,7 +39,6 @@
         font-weight: bold;
         color: #ffc600;
         margin-bottom: 60px;
-        padding-left: 153px;
     }
 }
 </style>

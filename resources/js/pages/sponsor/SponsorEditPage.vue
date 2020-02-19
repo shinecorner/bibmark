@@ -286,5 +286,13 @@
                  }
             }
         }
+        #validation-form {
+            margin-right: -120px;
+        }
+        @media (max-width: 1500px)  {
+            #validation-form {
+                margin-right: 0px;
+            }
+        }
     }
 </style>
