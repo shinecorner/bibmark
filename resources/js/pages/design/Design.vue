@@ -277,7 +277,7 @@ export default {
             x: event.clientX - dragging.x,
             y: event.clientY - dragging.y
 
-            // Clamp the position of the knob to be a maximum of 
+            // Clamp the position of the knob to be a maximum of
             // the knobs container, and a minimum of 0
             };var newTop = Math.max(0, Math.min(knob.offsetTop + diff.y, bar.offsetHeight));
             knob.style.top = newTop + 'px';
@@ -308,7 +308,7 @@ export default {
                 "name":"Test Template"
                 }
             }`
-            
+
             this.logs = name + ' Template Added'
         },
         getCharities() {
@@ -345,7 +345,7 @@ export default {
     @media(max-width:992px){
 .wrapper{
     width:100%;
-} 
+}
 }
 .panel-heading {
     padding: 0;
@@ -570,7 +570,7 @@ export default {
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     will-change: top;
-} 
+}
 .img-template{
     /* width: 80%; */
     /* padding-right:10px; */
@@ -599,7 +599,7 @@ export default {
     .avatar{
         padding: 10px;
     }
-    .avatars img:hover { 
+    .avatars img:hover {
         border: 1px solid #26B4FF;
     }
     .name{

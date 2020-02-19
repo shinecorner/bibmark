@@ -1,4 +1,7 @@
+import Gallery from './Gallery';
+
 export default {
+    components: { Gallery },
     data() {
         return {
             navLink: 'Order Gallery',

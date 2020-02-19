@@ -4,7 +4,7 @@
             <div class="caption pb-4">
                 <span class="donation">Order Gallery</span>
             </div>
-
+            <gallery></gallery>
             <div class="gallery pb-5">
                 <div class="row">
                     <div class="col-md-2">
