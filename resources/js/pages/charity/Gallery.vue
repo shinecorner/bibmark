@@ -1,30 +1,30 @@
 <template>
-    <modal name="gallery" :width="1200" :height="600">
+    <modal name="gallery" :width="1468" :height="953">
         <p class="text-right close-modal">
             <a href="javascript:void(0)" v-on:click="hideModal">
-                <i class="fa fa-times"></i>
+                <i class="fas fa-times icon"></i>
             </a>
         </p>
         <slick
             ref="slick"
             :options="slickOptions">
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
             </a>
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
             </a>
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
             </a>
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
             </a>
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
             </a>
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
             </a>
         </slick>
         <div class="btn carousel-buttons prev-slide" @click="prev()">
@@ -33,9 +33,14 @@
         <div class="btn carousel-buttons next-slide" @click="next()">
             <i class="fa fa-angle-right"></i>
         </div>
-        <div class="text-center range-controls">
-            <input type="range" class="slider" v-model="sliderVal" @change="applyZoom" style="width: 200px; color: white;"> <i class="fa fa-plus-circle pl-2"></i>
+        <div class="row justify-content-center slider-controls">
+            <div class="col-md-3 text-right">
+                <input type="range" class="slider" v-model="sliderVal" @change="applyZoom">
+            </div>
         </div>
+        <a href="javascript:void(0)" class="zoom-in"  @click="zoomIn">
+            <i class="fa fa-plus-circle"></i>
+        </a>
     </modal>
 </template>
 
@@ -51,11 +56,11 @@ export default {
                 prevArrow: false,
                 nextArrow: false,
             },
-            sliderVal: "",
-            imageHeight: 250,
-            imageWidth: 250,
-            imagePaddingTop: 100,
-            imagePaddingLeft: 470,
+            sliderVal: 50,
+            imageHeight: 50,
+            imageWidth: 50,
+            imagePaddingTop: 50,
+            imagePaddingLeft: 450,
         };
     },
     props: ['bus'],
@@ -80,12 +85,52 @@ export default {
                 this.$refs.slick.reSlick();
             });
         },
-        applyZoom() {
-            this.imageHeight = (2 * this.sliderVal) + 250;
-            this.imageWidth = (2 * this.sliderVal) + 250;
+        zoomIn() {
+            this.sliderVal += 10;
 
-            this.imagePaddingTop = 150 - (this.sliderVal);
-            this.imagePaddingLeft = 460 - (this.sliderVal);
+            if (this.sliderVal >= 100) {
+                this.sliderVal = 100;
+            }
+
+            if (this.sliderVal <= 0) {
+                this.sliderVal = 0;
+            }
+
+            this.applyZoom();
+        },
+        applyZoom() {
+            this.imageHeight = this.sliderVal;
+            this.imageWidth = this.sliderVal;
+
+            // Padding top
+            if (this.sliderVal >= 0 && this.sliderVal <= 25) {
+                this.imagePaddingTop = 250;
+            }
+
+            if (this.sliderVal > 25 && this.sliderVal <= 50) {
+                this.imagePaddingTop = 150;
+            }
+
+            if (this.sliderVal > 50) {
+                this.imagePaddingTop = 50;
+            }
+
+            // Padding left
+            if (this.sliderVal >= 0 && this.sliderVal <= 25) {
+                this.imagePaddingLeft = 600;
+            }
+
+            if (this.sliderVal > 25 && this.sliderVal <= 50) {
+                this.imagePaddingLeft = 450;
+            }
+            console.log(this.sliderVal)
+            if (this.sliderVal > 50 && this.sliderVal <= 75) {
+                this.imagePaddingLeft = 350;
+            }
+
+            if (this.sliderVal > 75) {
+                this.imagePaddingLeft = 50;
+            }
         },
     },
     mounted() {
@@ -102,10 +147,10 @@ export default {
         z-index: 9;
         width: 134px;
         height: 149px;
-        color: #717171;
-        font-size: 42px;
+        color: #D4D4D4;
+        font-size: 100px;
         position: absolute;
-        font-weight: lighter;
+        font-weight: 100;
         text-align: center;
     }
 
@@ -118,45 +163,73 @@ export default {
     }
     /* Special styling for WebKit/Blink */
     input[type=range]::-webkit-slider-thumb {
-        background: #ffffff;
+        background: #fff;
+        width: 32px;
+        height: 32px;
         border: 1px solid #CCCCCC;
     }
 
     /* All the same stuff for Firefox */
     input[type=range]::-moz-range-thumb {
         background: #ffffff;
+        width: 32px;
+        height: 32px;
         border: 1px solid #CCCCCC;
     }
 
     /* All the same stuff for IE */
     input[type=range]::-ms-thumb {
         background: #ffffff;
+        width: 32px;
+        height: 32px;
         border: 1px solid #CCCCCC;
     }
     .range-controls {
         position: absolute;
         bottom: 20px;
         left: 42%;
+        width: 321px;
     }
 
     .close-modal {
-        font-size: 30px;
+        font-size: 60px;
         color: #717171;
-        padding-right: 20px;
-        padding-top: 10px;
-
+        padding-right: 21px;
+        padding-top: 21px;
+        font-weight: 100;
         a {
             color: #717171;
         }
-    }
-    .fa-plus-circle {
-        color: #D1D1D3;
-        font-size: 14px;
     }
     .gallery-img {
         outline : none;
         img {
             outline : none;
+        }
+    }
+    .slider {
+        width: 321px;
+        height: 5px;
+    }
+    .icon {
+        color: #D4D4D4;
+    }
+    .slider-controls {
+        position: absolute;
+        bottom: 50px;
+        left: 30%;
+    }
+    .zoom-in {
+        position: absolute;
+        bottom: 45px;
+        left: 62%;
+        color: #c2c2c2;
+        i {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #CCCCCC;
+            border-radius: 100%;
+            font-size: 30px;
         }
     }
 </style>
