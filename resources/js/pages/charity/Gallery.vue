@@ -98,12 +98,16 @@ export default {
 
             this.applyZoom();
         },
-        applyZoom() {
+        applyZoom() {            
             this.imageHeight = (this.sliderVal * 4) + 350;
             this.imageWidth = (this.sliderVal * 4) + 350;
 
             this.imagePaddingLeft = 540 - (this.sliderVal * 2.2);
             this.imagePaddingTop = 120 - (this.sliderVal * 2.4);
+
+            if (this.imagePaddingTop <= 0) {
+                this.imagePaddingTop = 0;
+            }
         },
     },
     mounted() {
