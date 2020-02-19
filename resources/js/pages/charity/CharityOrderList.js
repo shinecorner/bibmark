@@ -5,7 +5,8 @@ export default {
     data() {
         return {
             navLink: 'Order Gallery',
-            showProfilePic: false
+            showProfilePic: false,
+            bus: new Vue()
         };
     },
     props: {
@@ -14,4 +15,9 @@ export default {
             require: true
         }
     },
+    methods: {
+        showModal() {
+            this.$root.$emit('showGalleryModalEvent')
+        }
+    }
 }

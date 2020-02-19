@@ -4,46 +4,75 @@
             <div class="caption pb-4">
                 <span class="donation">Order Gallery</span>
             </div>
+            <!-- I think we should pass images to gallery component and selected image -->
+            <!-- 
+                <gallery images="images"></gallery>
+             -->
             <gallery></gallery>
+
             <div class="gallery pb-5">
                 <div class="row">
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                 </div>
                 <div class="row pt-5">
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-md-2">
-                        <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        <a href="javascript:void(0)" v-on:click="showModal()">
+                            <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" alt="" class="img-fluid">
+                        </a>
                     </div>
                 </div>
             </div>
