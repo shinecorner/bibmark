@@ -9,22 +9,22 @@
             ref="slick"
             :options="slickOptions">
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
             <a class="gallery-img" href="javascript:void(0)" :style="{ paddingTop: imagePaddingTop + 'px', paddingLeft: imagePaddingLeft + 'px' }">
-                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + '%', width: imageWidth + '%' }" alt="">
+                <img src="https://cdn.zeplin.io/5c6d748d4074579a2d70d638/assets/3D89C00B-0323-46A1-A829-6B4C03D0AC8C.png" :style="{ height: imageHeight + 'px', width: imageWidth + 'px' }" alt="">
             </a>
         </slick>
         <div class="btn carousel-buttons prev-slide" @click="prev()">
@@ -57,10 +57,10 @@ export default {
                 nextArrow: false,
             },
             sliderVal: 50,
-            imageHeight: 50,
-            imageWidth: 50,
-            imagePaddingTop: 50,
-            imagePaddingLeft: 450,
+            imageHeight: 600,
+            imageWidth: 600,
+            imagePaddingTop: 0,
+            imagePaddingLeft: 400,
         };
     },
     props: ['bus'],
@@ -86,7 +86,7 @@ export default {
             });
         },
         zoomIn() {
-            this.sliderVal += 10;
+            this.sliderVal += 1;
 
             if (this.sliderVal >= 100) {
                 this.sliderVal = 100;
@@ -99,38 +99,11 @@ export default {
             this.applyZoom();
         },
         applyZoom() {
-            this.imageHeight = this.sliderVal;
-            this.imageWidth = this.sliderVal;
+            this.imageHeight = (this.sliderVal * 4) + 400;
+            this.imageWidth = (this.sliderVal * 4) + 400;
 
-            // Padding top
-            if (this.sliderVal >= 0 && this.sliderVal <= 25) {
-                this.imagePaddingTop = 250;
-            }
-
-            if (this.sliderVal > 25 && this.sliderVal <= 50) {
-                this.imagePaddingTop = 150;
-            }
-
-            if (this.sliderVal > 50) {
-                this.imagePaddingTop = 50;
-            }
-
-            // Padding left
-            if (this.sliderVal >= 0 && this.sliderVal <= 25) {
-                this.imagePaddingLeft = 600;
-            }
-
-            if (this.sliderVal > 25 && this.sliderVal <= 50) {
-                this.imagePaddingLeft = 450;
-            }
-            console.log(this.sliderVal)
-            if (this.sliderVal > 50 && this.sliderVal <= 75) {
-                this.imagePaddingLeft = 350;
-            }
-
-            if (this.sliderVal > 75) {
-                this.imagePaddingLeft = 50;
-            }
+            this.imagePaddingLeft = 540 - (this.sliderVal * 2.2);
+            this.imagePaddingTop = 120 - (this.sliderVal * 2.4);
         },
     },
     mounted() {
