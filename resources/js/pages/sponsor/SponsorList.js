@@ -65,11 +65,13 @@ export default {
                         );
                     }
                     $('td', row).eq(7).addClass('text-center text-nowrap').html('').append(
+                    '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'/sponsor/' + data[0] + '/profile/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
                     // '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'sponsors/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
                     '<div class="btn-group">' +
                         '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat dropdown-toggle hide-arrow user-tooltip" title="Actions" data-toggle="dropdown"><i class="ion ion-ios-settings"></i></button>' +
                         '<div class="dropdown-menu' + (isRtl ? '' : ' dropdown-menu-right') + '">' +
-                        '<a class="dropdown-item" href="sponsors/' + data[0] + '">View sponsor</a>' +
+                        // '<a class="dropdown-item" href="sponsors/' + data[0] + '">View sponsor</a>' +
+                        '<a class="dropdown-item" href="/sponsor/' + data[0] + '/campaign">View campaigns</a>' +
                         '<a class="dropdown-item btn-remove" href="javascript:void(0)" data="' + data[0] + '">Remove</a>' +
                         '</div>' +
                     '</div>'

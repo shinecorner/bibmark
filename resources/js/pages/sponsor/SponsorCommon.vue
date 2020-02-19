@@ -17,7 +17,7 @@
         <template v-else>
             <div class="main-section">
                 <div class="col-2 nav-links">
-                <span class="navigation-link" :class="{ active: item.isActive }" v-for="(item, index) in navLinks"
+                <span class="navigation-link" :class="{ active: item.isActive, disabled: !item.url }" v-for="(item, index) in navLinks"
                       :key="index" @click="redirect(item.url)">{{item.text}}</span>
                 </div>
                 <div class="col-10 tab-section">
@@ -195,6 +195,9 @@
             &.active {
                 color: $line-yellow;
                 font-weight: bold;
+            }
+            &.disabled {
+                opacity: 0.25;
             }
         }
 

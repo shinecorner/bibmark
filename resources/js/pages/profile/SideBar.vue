@@ -21,7 +21,7 @@
             <!-- USER TITLE -->
             <div class="profile-usertitle">
                 <div class="profile-usertitle-name text-center">
-                    {{user.firstname + ' ' + user.lastname}}
+                    {{user.firstname + ' ' + (user.lastname ? user.lastname : '')}}
                 </div>
             </div>
             <!-- END SIDEBAR USER TITLE -->
