@@ -34,7 +34,7 @@
             <i class="fa fa-angle-right"></i>
         </div>
         <div class="text-center range-controls">
-            <input type="range" class="custom-range" v-model="sliderVal" @change="applyZoom" style="width: 200px; color: white;"> <i class="fa fa-plus-circle pl-2"></i>
+            <input type="range" class="slider" v-model="sliderVal" @change="applyZoom" style="width: 200px; color: white;"> <i class="fa fa-plus-circle pl-2"></i>
         </div>
     </modal>
 </template>
