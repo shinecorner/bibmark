@@ -86,7 +86,7 @@ export default {
             });
         },
         zoomIn() {
-            this.sliderVal += 1;
+            this.sliderVal = parseInt(this.sliderVal) + 1;
 
             if (this.sliderVal >= 100) {
                 this.sliderVal = 100;
@@ -99,8 +99,11 @@ export default {
             this.applyZoom();
         },
         applyZoom() {
-            this.imageHeight = (this.sliderVal * 4) + 400;
-            this.imageWidth = (this.sliderVal * 4) + 400;
+
+            console.log(this.sliderVal, this.imageHeight, this.imageWidth, this.imagePaddingLeft, this.imagePaddingTop)
+
+            this.imageHeight = (this.sliderVal * 4) + 350;
+            this.imageWidth = (this.sliderVal * 4) + 350;
 
             this.imagePaddingLeft = 540 - (this.sliderVal * 2.2);
             this.imagePaddingTop = 120 - (this.sliderVal * 2.4);
