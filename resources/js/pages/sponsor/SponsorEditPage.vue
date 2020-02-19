@@ -3,7 +3,7 @@
         <template v-slot:setting-content>
             <form id="validation-form" v-on:submit.prevent>
                 <span class="edit-profile">Edit Profile</span>
-                <div class="row edit-profile-row">
+                <div class="row">
                     <div class="col-6">
                         <div class="input-wrap">
                             <div class="left-side"><label for="imageProfile">Profile&nbsp;Picture</label></div>

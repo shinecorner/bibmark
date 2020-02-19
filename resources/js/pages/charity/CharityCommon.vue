@@ -20,7 +20,7 @@
                         <span class="navigation-link" :class="{ active: item.isActive }" v-for="(item, index) in navLinks"
                             :key="index" @click="redirect(item.url)">{{item.text}}</span>
                     </div>
-                    <div class="col-9 offset-1">
+                    <div class="col-9 offset-1" style="padding-right: 50px">
                         <slot name="charity-content" :cover="cover"></slot>
                     </div>
                 </div>
@@ -95,7 +95,10 @@
 
 <style lang="scss" scoped>
     @import '~@/_variables.scss';
-
+    @font-face {
+        font-family: "SFProDisplay";
+        src: url("/fonts/SF-Pro-Display-Regular.otf") format('truetype');
+    }
     .charity-common {
         padding: 0;
         background-color: white;
@@ -119,7 +122,7 @@
         .input-cover-wrap {
             position: absolute;
             bottom: 19px;
-            right: 76px;
+            right: 100px;
 
             input {
                 display: none;

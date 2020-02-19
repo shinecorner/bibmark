@@ -20,7 +20,7 @@
                 <span class="navigation-link" :class="{ active: item.isActive, disabled: !item.url }" v-for="(item, index) in navLinks"
                       :key="index" @click="redirect(item.url)">{{item.text}}</span>
                 </div>
-                <div class="col-10 tab-section">
+                <div class="col-9 offset-1">
                     <slot name="setting-content" :cover="cover"></slot>
                 </div>
             </div>
