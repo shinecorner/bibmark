@@ -289,7 +289,7 @@
         #validation-form {
             margin-right: -120px;
         }
-        @media (max-width: 1500px)  {
+        @media (max-width: 1800px)  {
             #validation-form {
                 margin-right: 0px;
             }
