@@ -92,7 +92,7 @@ Route::middleware(['auth'])->group(function() {
     // Charities...
     Route::get('charity/{charity}/donation', 'CharityController@getDonations')->name('charities.donations.index');
     Route::get('charity/{charity}/order', 'CharityController@getOrders')->name('charities.orders.index');
-
+    Route::get('charity/{charity}', 'CharityController@index')->name('charities.index');
 });
 
 Route::get('/reset-password/{token}/{email}', 'WebController@resetPasswordPage');
