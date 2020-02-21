@@ -48,7 +48,7 @@
 
 <style lang="scss" scoped>
     .table {
-        width: 98%;
+        width: 96%;
     }
 
     // .caption {

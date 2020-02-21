@@ -79,7 +79,7 @@
     }
 }
 .table {
-    width: 98%;
+    width: 97%;
 }
 
 </style>

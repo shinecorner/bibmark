@@ -6,7 +6,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table text-center table-striped table-bordered mb-0">
+                <table class="table text-center table-striped table-bordered mb-0" style="width: 97%">
                     <thead class="rectangle-header bg-yellow">
                         <tr>
                             <th>Name</th>

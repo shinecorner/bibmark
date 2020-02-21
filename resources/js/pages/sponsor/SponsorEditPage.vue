@@ -287,11 +287,11 @@
             }
         }
         #validation-form {
-            margin-right: -120px;
+            margin-right: -100px;
         }
         @media (max-width: 1800px)  {
             #validation-form {
-                margin-right: 0px;
+                margin-right: 20px;
             }
         }
     }
