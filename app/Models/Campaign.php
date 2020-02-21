@@ -14,4 +14,8 @@ class Campaign extends Model
      * @var array
      */
     protected $guarded = [];
+    public function geoTargets()
+    {
+        return $this->morphMany(MorphType::GeoTarget, 'target');
+    }
 }

@@ -17,4 +17,5 @@ final class MorphType extends Enum
     const Design = 'App\Models\Design';
     const OrderItem = 'App\Models\OrderItem';
     const PendingBalance = 'App\Models\PendingBalance';
+    const GeoTarget = 'App\Models\CampaignGeoTarget';
 }

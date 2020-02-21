@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class GeoTargetDetails extends Model
 {
-    //
+    protected $guarded = [];
 }

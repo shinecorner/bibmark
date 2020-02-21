@@ -5,8 +5,8 @@ export default {
             navLink: 'Campaigns',
             defaultLogo: "/img/profile/profile-fit.png",
             logo: null,
-            tempGeoTarget: {},
             mainGeoTargets: [],
+            tempGeoTarget: {},            
             addGeoTargetError: '',
             displayGeoEditIndex: '',
             editGeoTargetIndex: -1,                        
@@ -24,6 +24,11 @@ export default {
         campaign: {
             type: Object,
             require: true
+        },
+        currentGeoTargets: {
+            type: [Array],
+            require: false,
+            default: function(){return []}
         }
     },   
     computed: {
@@ -32,7 +37,7 @@ export default {
         },
     },
     created: function(){
-        this.mainGeoTargets = this.campaign.geoTargets;
+        this.mainGeoTargets = this.currentGeoTargets;
     },
     beforeMount: function () {
         if (this.campaign == null) {
@@ -143,13 +148,14 @@ export default {
             // Refesh modal data
             this.tempGeoTarget = {
                 name: '',
+                status: false,
                 zipcodes: [],
             };
-            this.tempGeoTarget.zipcodes.push({code: '', radius: '10'})
+            this.tempGeoTarget.zipcodes.push({zipcode: '', radius: '10'})
             this.$modal.show('add-geo-target-modal');
         },
         addGeoZipcode() {
-            this.tempGeoTarget.zipcodes.push({code: '', radius: '10'})
+            this.tempGeoTarget.zipcodes.push({zipcode: '', radius: '10'})
         },
         saveGeoTarget() {
             this.addGeoTargetError = '';
@@ -162,7 +168,7 @@ export default {
 
             let that = this;
             this.tempGeoTarget.zipcodes.forEach(function (value) {
-                if (value.code === '') {
+                if (value.zipcode === '') {
                     isValid = false;
                     that.addGeoTargetError += 'The zip code must be filled.';
                 }

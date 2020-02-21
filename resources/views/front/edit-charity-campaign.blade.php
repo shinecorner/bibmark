@@ -10,5 +10,5 @@
 @endsection
 
 @section('content')
-    <add-charity-campaign :charity='@json($charity)' :campaign='@json($campaign)' :campaignId='@json($campaignId)'></add-charity-campaign>
+    <add-charity-campaign :charity='@json($charity)' :campaign='@json($campaign)' :campaign-id='@json($campaignId)' :current-geo-targets='@json($geoTargetDetails)'></add-charity-campaign>
 @endsection

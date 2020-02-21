@@ -57,7 +57,7 @@
                         </div>
                         <div class="input-wrap">                            
                             <div class="left-side2"><label>Geo Target</label></div>
-                            <div class="right-side2">
+                            <div class="right-side2">                                
                                 <div class="row w-100">
                                     <template
                                         v-if="mainGeoTargets.length > 0"
@@ -158,8 +158,8 @@
                                     <tbody>
                                     <tr class="table-row" v-for="zipcode in tempGeoTarget.zipcodes">
                                         <td class="px-0 py-0">
-                                            <input type="text" name="code" placeholder="Zip Code"
-                                                   v-model="zipcode.code"/></td>
+                                            <input type="text" name="zipcode" placeholder="Zip Code"
+                                                   v-model="zipcode.zipcode"/></td>
                                         <td class="px-0 py-0">
                                             <select class="form-control form-control-lg" name="radius"
                                                     v-model="zipcode.radius">
