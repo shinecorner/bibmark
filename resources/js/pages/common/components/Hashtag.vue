@@ -1,5 +1,5 @@
 <template>
-    <input @keyup="prepareHashtags" ref="hashtag" type="text">
+    <input @keyup="prepareHashtags" :value="value" ref="hashtag" type="text">
 </template>
 <script>
     export default {
