@@ -6,7 +6,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table text-center table-striped table-bordered mb-0" style="width: 97%">
+                <table class="table text-center table-striped table-bordered mb-0">
                     <thead class="rectangle-header bg-yellow">
                         <tr>
                             <th>Name</th>
@@ -73,9 +73,5 @@
         letter-spacing: normal;
         text-align: center;
         color: #444444;
-    }
-
-    .table-responsive {
-        padding-right: 22px;
     }
 </style>

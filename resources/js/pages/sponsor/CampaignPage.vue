@@ -7,7 +7,7 @@
             </div>
 
             <div class="">
-                <div class="table-responsive">
+                <div class="table-responsive ">
                     <table id="campaign-list" class="table table-striped table-bordered mb-0">
                         <thead class="rectangle-header bg-yellow">
                             <tr>
@@ -47,13 +47,6 @@
 <script src="./CampaignPage.js"></script>
 
 <style lang="scss" scoped>
-    .table {
-        width: 96%;
-    }
-
-    // .caption {
-        // padding-left: 154px;
-    // }
 
     .caption span {
         margin-bottom: 18px;

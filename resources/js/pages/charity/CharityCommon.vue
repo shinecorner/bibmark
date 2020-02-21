@@ -20,7 +20,7 @@
                         <span class="navigation-link" :class="{ active: item.isActive }" v-for="(item, index) in navLinks"
                             :key="index" @click="redirect(item.url)">{{item.text}}</span>
                     </div>
-                    <div class="col-9 offset-1" style="padding-right: 45px">
+                    <div class="col-9 offset-1 pr-4vw">
                         <slot name="charity-content" :cover="cover"></slot>
                     </div>
                 </div>

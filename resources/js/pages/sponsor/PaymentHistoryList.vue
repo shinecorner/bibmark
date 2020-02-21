@@ -78,8 +78,5 @@
         }
     }
 }
-.table {
-    width: 97%;
-}
 
 </style>
