@@ -131,6 +131,8 @@ Vue.component('charity-common', require('./pages/charity/CharityCommon.vue'))
 Vue.component('charity-donation-list', require('./pages/charity/CharityDonationList.vue'))
 Vue.component('charity-order-list', require('./pages/charity/CharityOrderList.vue'))
 Vue.component('charity-index', require('./pages/charity/CharityIndex.vue'))
+Vue.component('charity-campaign-page', require('./pages/charity/CampaignPage.vue'))
+Vue.component('add-charity-campaign', require('./pages/charity/AddCampaign.vue'))
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

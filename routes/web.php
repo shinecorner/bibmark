@@ -93,6 +93,13 @@ Route::middleware(['auth'])->group(function() {
     Route::get('charity/{charity}/donation', 'CharityController@getDonations')->name('charities.donations.index');
     Route::get('charity/{charity}/order', 'CharityController@getOrders')->name('charities.orders.index');
     Route::get('charity/{charity}', 'CharityController@index')->name('charities.index');
+    Route::get('charity/{id}/campaign', 'CharityCampaignController@index');
+    Route::get('charity/{id}/campaign/list-json', 'CharityCampaignController@list');
+    Route::get('charity/{id}/campaign/create', 'CharityCampaignController@create');
+    Route::get('charity/{id}/campaign/{campaignId}/edit', 'CharityCampaignController@edit');
+    Route::post('charity/{id}/campaign/save', 'CharityCampaignController@createOrUpdate');
+    Route::delete('charity-campaign/{id}', 'CharityCampaignController@destroy');    
+
 });
 
 Route::get('/reset-password/{token}/{email}', 'WebController@resetPasswordPage');
