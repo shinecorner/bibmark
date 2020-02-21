@@ -40,7 +40,7 @@ export default {
     created: function(){
         this.mainGeoTargets = this.currentGeoTargets;
         console.log(this.campaign);
-        if(this.campaign.hasOwnProperty('logo_width')){
+        if(this.campaign.hasOwnProperty('logo_width') && this.campaign.logo_width){
             this.campaign.logo_width = this.campaign.logo_width + '"';
         }
     },
