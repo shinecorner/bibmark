@@ -23,7 +23,8 @@ export default {
         },
         campaign: {
             type: Object,
-            require: true
+            require: false,
+            default: function(){return {}}
         },
         currentGeoTargets: {
             type: [Array],
@@ -38,6 +39,10 @@ export default {
     },
     created: function(){
         this.mainGeoTargets = this.currentGeoTargets;
+        console.log(this.campaign);
+        if(this.campaign.hasOwnProperty('logo_width')){
+            this.campaign.logo_width = this.campaign.logo_width + '"';
+        }
     },
     beforeMount: function () {
         if (this.campaign == null) {
@@ -60,6 +65,18 @@ export default {
                 },
                 "Budget has to be a Number"
             );
+            $.validator.addMethod(
+                "numberWithQuote",
+                function (value, elm) {
+                    if (value) {
+                        value = value.replace(/"/g, '')
+                        return !isNaN(value);
+                    } else {
+                        return true;
+                    }
+                },
+                "Logo Width has to be a Number"
+            );
             $('#validation-form').validate({
                 rules: {
                     'name': {
@@ -67,6 +84,9 @@ export default {
                     },
                     'budget': {
                         numberIfNotNull: true
+                    },
+                    'logo_width':{
+                        numberWithQuote: true
                     }
                 },
                 errorPlacement: function errorPlacement(error, element) {
@@ -101,10 +121,11 @@ export default {
             }
 
             let formData = new FormData();
+            let input_logo_width = this.campaign.logo_width;
             formData.append('name', this.campaign.name);
             formData.append('budget', this.campaign.budget ? this.campaign.budget : 0);
             formData.append('charity_id', this.charity.id);
-            formData.append('logo_width', this.campaign.logo_width);
+            formData.append('logo_width', input_logo_width.substring(0, input_logo_width.length-1));
             formData.append('hashtags', this.campaign.hashtags);
             formData.append('status', this.campaign.status ? 1 : 0);
             formData.append('geo_targets', (this.mainGeoTargets) ? JSON.stringify(this.mainGeoTargets) : []);

@@ -39,8 +39,8 @@
                         <div class="input-wrap">
                             <div class="left-side2"><label for="budget">Logo Width</label></div>
                             <div class="right-side2">
-                                <div class="w-100 add-input-group">
-                                    <input id="budget" name="budget" v-model="campaign.logo_width" type="text"/>
+                                <div class="w-100 add-input-group">                                    
+                                    <logo-width :value="campaign.logo_width" v-model="campaign.logo_width"></logo-width>
                                 </div>
                             </div>
                         </div>
