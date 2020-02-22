@@ -40,13 +40,29 @@ class CampaignService
         if (isset($data['id'])) {
             $campaign = Campaign::find($data['id']);
             if ($campaign->update($values)) {
+                if(isset($data['geo_targets']) && !empty($data['geo_targets'])){
+                    $campaign->geoTargets()->delete();
+                    $this->syncGeoTarget($campaign, $data['geo_targets']);
+                }
                 return $campaign;
             }
         } else {
             $campaign = Campaign::create($values);
+            if(isset($data['geo_targets']) && !empty($data['geo_targets'])){
+                $this->syncGeoTarget($campaign, $data['geo_targets']);
+            }
             return $campaign;
         }
         return null;
+    }
+    public function syncGeoTarget(&$campaign, $data){           
+        $input_targets = json_decode((string) $data, true);
+        if(!empty($input_targets)){
+            foreach($input_targets as $i_target){
+                $geo_target = $campaign->geoTargets()->create(['name' => $i_target['name'], 'status' => boolval($i_target['status'])]);
+                $geo_target->details()->createMany($i_target['zipcodes']);
+            }                    
+        }        
     }
 
 }

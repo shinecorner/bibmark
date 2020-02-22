@@ -52,7 +52,8 @@ class CampaignController extends Controller
         $sponsor = Sponsor::find($id);
         return view('front.add-campaign')->with([
             'id' => $id,
-            'sponsor' => $sponsor
+            'sponsor' => $sponsor,
+            'geoTargetDetails' => []
         ]);
     }
 
@@ -60,11 +61,13 @@ class CampaignController extends Controller
     {
         $sponsor = Sponsor::find($id);
         $campaign = Campaign::find($campaignId);
+        $geo_target_details = $campaign->listGeoTargets();
         return view('front.edit-campaign')->with([
             'id' => $id,
             'campaignId' => $campaignId,
             'sponsor' => $sponsor,
-            'campaign' => $campaign
+            'campaign' => $campaign,
+            'geoTargetDetails' => $geo_target_details
         ]);
     }
 

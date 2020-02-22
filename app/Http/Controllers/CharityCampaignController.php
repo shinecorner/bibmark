@@ -52,25 +52,26 @@ class CharityCampaignController extends Controller
         $charity = Charity::find($id);
         return view('front.add-charity-campaign')->with([
             'id' => $id,
-            'charity' => $charity
+            'charity' => $charity,
+            'geoTargetDetails' => []
         ]);
     }
 
     public function edit($id, $campaignId)
     {
         $charity = Charity::find($id);
-        $campaign = CharityCampaign::find($campaignId);        
-        $campaign->geoTargets = [];
+        $campaign = CharityCampaign::find($campaignId);
+        $geo_target_details = $campaign->listGeoTargets();        
         return view('front.edit-charity-campaign')->with([
             'id' => $id,
             'campaignId' => $campaignId,
             'charity' => $charity,
-            'campaign' => $campaign
+            'campaign' => $campaign,
+            'geoTargetDetails' => $geo_target_details
         ]);
     }
 
-    public function createOrUpdate(CreateOrUpdateCampaignRequest $request, CharityCampaignService $campaignService){        
-        // print_r($request->all());exit;
+    public function createOrUpdate(CreateOrUpdateCampaignRequest $request, CharityCampaignService $campaignService){                
         if (!empty($request['logo_url']) && !is_string($request['logo_url'])) {
             $request['logo'] = $this->extraService->uploadImage(
                 [

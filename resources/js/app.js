@@ -125,6 +125,7 @@ Vue.component('Apparel', require('./pages/apparel/Product.vue'))
 
 // common component
 Vue.component('hash-tag', require('./pages/common/components/Hashtag.vue'))
+Vue.component('logo-width', require('./pages/common/components/LogoWidth.vue'))
 
 // Charity Donation...
 Vue.component('charity-common', require('./pages/charity/CharityCommon.vue'))
