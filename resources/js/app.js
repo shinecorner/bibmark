@@ -89,6 +89,7 @@ Vue.component('charity-list', require('./pages/charity/CharityList.vue'))
 Vue.component('charity-edit', require('./pages/charity/CharityEdit.vue'))
 Vue.component('charity-show', require('./pages/charity/CharityShow.vue'))
 Vue.component('charity-detail-page', require('./pages/charity/CharityDetailPage.vue'))
+Vue.component('charity-edit-page', require('./pages/charity/CharityEditPage.vue'))
 
 Vue.component('asset-list', require('./pages/asset/AssetList.vue'))
 Vue.component('asset-edit', require('./pages/asset/AssetEdit.vue'))

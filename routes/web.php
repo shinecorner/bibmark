@@ -92,12 +92,13 @@ Route::middleware(['auth'])->group(function() {
     // Charities...
     Route::get('charity/{charity}/donation', 'CharityController@getDonations')->name('charities.donations.index');
     Route::get('charity/{charity}/order', 'CharityController@getOrders')->name('charities.orders.index');
+    Route::get('/charity/{charity_id}/profile/edit', 'CharityController@show');
     Route::get('charity/{id}/campaign', 'CharityCampaignController@index');
     Route::get('charity/{id}/campaign/list-json', 'CharityCampaignController@list');
     Route::get('charity/{id}/campaign/create', 'CharityCampaignController@create');
     Route::get('charity/{id}/campaign/{campaignId}/edit', 'CharityCampaignController@edit');
     Route::post('charity/{id}/campaign/save', 'CharityCampaignController@createOrUpdate');
-    Route::delete('charity-campaign/{id}', 'CharityCampaignController@destroy');    
+    Route::delete('charity-campaign/{id}', 'CharityCampaignController@destroy');
 
 });
 
@@ -126,6 +127,7 @@ Route::namespace('Admin')->middleware(['auth'])->group(function() {
 
         Route::resource('charities', 'CharityController')->only(['index', 'show', 'create', 'edit']);
         Route::get('/charity/{charity_id}/home', 'AdminController@dashboardCharity');
+
         Route::resource('events', 'EventController')->only(['index', 'show', 'create', 'edit']);
         Route::get('/event/{event_id}/home', 'AdminController@dashboardEvent');
         Route::resource('users', 'UserController')->only(['index', 'show', 'create', 'edit']);

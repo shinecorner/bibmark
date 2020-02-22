@@ -16,18 +16,27 @@ class CharityController extends Controller
     {
         return view('front.charities.donations.index', [
             'charity' => $charity
-        ]);;
+        ]);
     }
 
     /**
      * Get all of the order gallery for the charity.
      *
-     * @return \Illuminate\Http\Response
+     * @param Charity $charity
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getOrders(Request $request, Charity $charity)
+    public function getOrders(Charity $charity)
     {
         return view('front.charities.orders.index', [
             'charity' => $charity
-        ]);;
+        ]);
+    }
+
+    public function show($charity_id) {
+        $charity = Charity::find((int) $charity_id);
+        return view('front.edit-charity', [
+            'charity' => $charity,
+            'id' => $charity_id
+        ]);
     }
 }
