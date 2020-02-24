@@ -50,23 +50,23 @@ class CharityController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Sponsor  $sponsor
-     * @return \Illuminate\Http\Response
+     * Update charity data
+     * @param Request $request
+     * @param $id
+     * @param CharityService $charityService
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id, CharityService $charityService)
     {
         $result = new CharityResource($charityService->createOrUpdateCharity($request->all()));
 
-        $sponsor = Charity::find($id);
-        $logo= $request['logo'] ? $this->service->uploadImage($request['logo'], 'profile') : $sponsor->logo;
+        $charity = Charity::find($id);
+        $logo= $request['logo'] ? $this->service->uploadImage($request['logo'], 'profile') : $charity->logo;
 
-        $sponsor->update([
+        $charity->update([
             'logo' => $logo,
         ]);
 
-        return response()->json(['sponsor' => $sponsor], 200);
+        return response()->json(['sponsor' => $charity], 200);
     }
 }

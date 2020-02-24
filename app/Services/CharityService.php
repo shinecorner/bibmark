@@ -123,7 +123,7 @@ class CharityService
         return false;
     }
 
-    public function uploadImage($image, $type = "sponsor")
+    public function uploadImage($image, $type = "charity")
     {
         return resolve(ExtraService::class)->uploadImage([
             'image' => $image,
