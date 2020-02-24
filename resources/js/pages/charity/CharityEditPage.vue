@@ -184,7 +184,7 @@
                     formData.append("hashtags", this.charity.hashtags.replace(/#/g, ''));
                 }
                 if(this.charity.bio){
-                    formData.append("bio", null);
+                    formData.append("bio", this.charity.bio);
                 }
                 if(this.charity.website){
                     formData.append("website", this.charity.website);

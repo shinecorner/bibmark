@@ -93,6 +93,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('charity/{charity}/donation', 'CharityController@getDonations')->name('charities.donations.index');
     Route::get('charity/{charity}/order', 'CharityController@getOrders')->name('charities.orders.index');
     Route::get('/charity/{charity_id}/profile/edit', 'CharityController@show');
+    Route::put('/charity/{charity_id}/profile/edit', 'CharityController@update');
     Route::get('charity/{id}/campaign', 'CharityCampaignController@index');
     Route::get('charity/{id}/campaign/list-json', 'CharityCampaignController@list');
     Route::get('charity/{id}/campaign/create', 'CharityCampaignController@create');

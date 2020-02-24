@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Charity;
 
 class CharityService
 {
     /**
      * Get all charities
-     * 
+     *
      * @return array
      */
     public function getAllCharities()
@@ -21,7 +21,7 @@ class CharityService
      * Get charity by id
      *
      * @param integer $id
-     * @return App\Models\Charity
+     * @return \App\Models\Charity
      */
     public function getCharityById($id)
     {
@@ -30,19 +30,32 @@ class CharityService
 
     /**
      * Create or Update a charity
-     * 
+     *
      * @param array $data
-     * @return App\Models\Charity 
+     * @return \App\Models\Charity
      */
     public function createOrUpdateCharity($data)
     {
         $user = Auth::user();
         if ($user->isSuperAdmin()) {
             $values = [
-                'name' => $data['name'],
-                'logo' => $data['logo'],
-                'background_image' => $data['background_image'],
+                'name' => $data['name'] ?? null,
+                'logo' => $data['logo'] ?? null,
+                'background_image' => $data['background_image'] ?? null,
                 'balance' => isset($data['balance']) ? floatval($data['balance']) : 0,
+                'bio' => $data['bio'] ?? null,
+                'hashtags' => $data['hashtags'] ?? null,
+                'website' => $data['website'] ?? null,
+                'facebook' => $data['facebook'] ?? null,
+                'instagram' => $data['instagram'] ?? null,
+                'twitter' => $data['twitter'] ?? null,
+                'company_address' => $data['company_address'] ?? null,
+                'city' => $data['city'] ?? null,
+                'state' => $data['state'] ?? null,
+                'zip' => $data['zip'] ?? null,
+                'country' => $data['country'] ?? null,
+                'company_phone' => $data['company_phone'] ?? null,
+                'email' => $data['email'] ?? null,
             ];
             if (isset($data['id'])) {
                 $charity = Charity::find($data['id']);
@@ -59,6 +72,19 @@ class CharityService
                 'logo' => $data['logo'],
                 'background_image' => $data['background_image'],
                 'balance' => isset($data['balance']) ? floatval($data['balance']) : 0,
+                'bio' => $data['bio'] ?? null,
+                'hashtags' => $data['hashtags'] ?? null,
+                'website' => $data['website'] ?? null,
+                'facebook' => $data['facebook'] ?? null,
+                'instagram' => $data['instagram'] ?? null,
+                'twitter' => $data['twitter'] ?? null,
+                'company_address' => $data['company_address'] ?? null,
+                'city' => $data['city'] ?? null,
+                'state' => $data['state'] ?? null,
+                'zip' => $data['zip'] ?? null,
+                'country' => $data['country'] ?? null,
+                'company_phone' => $data['company_phone'] ?? null,
+                'email' => $data['email'] ?? null,
             ];
             if (isset($data['id'])) {
                 $charity = Charity::find($data['id']);
@@ -81,7 +107,7 @@ class CharityService
 
     /**
      * Delete a charity
-     * 
+     *
      * @param integer charityId
      * @return boolean
      */
@@ -95,5 +121,13 @@ class CharityService
         }
 
         return false;
+    }
+
+    public function uploadImage($image, $type = "sponsor")
+    {
+        return resolve(ExtraService::class)->uploadImage([
+            'image' => $image,
+            'type' => $type
+        ]);
     }
 }

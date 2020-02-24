@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CharityResource;
 use App\Models\Charity;
+use App\Services\CharityService;
 use Illuminate\Http\Request;
 
 class CharityController extends Controller
 {
+    protected $service;
+
+    public function __construct(CharityService $charityService)
+    {
+        $this->service = $charityService;
+    }
+
     /**
      * Get all of the donations for the charity.
      *
@@ -38,5 +47,26 @@ class CharityController extends Controller
             'charity' => $charity,
             'id' => $charity_id
         ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Sponsor  $sponsor
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id, CharityService $charityService)
+    {
+        $result = new CharityResource($charityService->createOrUpdateCharity($request->all()));
+
+        $sponsor = Charity::find($id);
+        $logo= $request['logo'] ? $this->service->uploadImage($request['logo'], 'profile') : $sponsor->logo;
+
+        $sponsor->update([
+            'logo' => $logo,
+        ]);
+
+        return response()->json(['sponsor' => $sponsor], 200);
     }
 }
