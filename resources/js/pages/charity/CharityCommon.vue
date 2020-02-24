@@ -17,11 +17,11 @@
         <template v-else>
                 <div class="main-section pt-5 pb-3">
                     <div class="col-2 nav-links">
-                        <span class="navigation-link" :class="{ active: item.isActive }" v-for="(item, index) in navLinks"
+                        <span class="navigation-link" :class="{ active: item.isActive, disabled: !item.url }" v-for="(item, index) in navLinks"
                             :key="index" @click="redirect(item.url)">{{item.text}}</span>
                     </div>
                     <div class="col-9 offset-1 pr-4vw">
-                        <slot name="charity-content" :cover="cover"></slot>
+                        <slot name="setting-content" :cover="cover"></slot>
                     </div>
                 </div>
         </template>
@@ -34,7 +34,7 @@
         data() {
             return {
                 navLinks: [
-                    {text: "Edit Profile", isActive: false, url: ""},
+                    {text: "Edit Profile", isActive: false, url: "/charity/{0}/profile/edit"},
                     {text: "Manage Team", isActive: false, url: ""},
                     {text: "Campaigns", isActive: false, url: ""},
                     {text: "Order Gallery", isActive: false, url: "/charity/{0}/order"},
@@ -169,6 +169,10 @@
             &.active {
                 color: $line-yellow;
                 font-weight: bold;
+            }
+
+            &.disabled {
+                opacity: 0.25;
             }
         }
 
