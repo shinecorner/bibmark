@@ -67,6 +67,6 @@ class CharityController extends Controller
             'logo' => $logo,
         ]);
 
-        return response()->json(['sponsor' => $charity], 200);
+        return response()->json(['charity' => $charity], 200);
     }
 }
