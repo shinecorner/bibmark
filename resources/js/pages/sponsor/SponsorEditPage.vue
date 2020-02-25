@@ -188,7 +188,7 @@
                 });
                 formData.append("id", this.sponsor.id);
 
-                if(this.slug){
+                if(this.name){
                     formData.append("name", this.sponsor.name);
                 }
 
