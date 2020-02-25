@@ -188,11 +188,11 @@
                 });
                 formData.append("id", this.sponsor.id);
 
-                if(this.name){
+                if(this.sponsor.name){
                     formData.append("name", this.sponsor.name);
                 }
 
-                if(this.sponsor.slug){
+                if(this.slug){
                     formData.append("slug", this.slug);
                 }
                 if(this.sponsor.hashtags){
