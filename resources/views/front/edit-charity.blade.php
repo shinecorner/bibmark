@@ -9,5 +9,5 @@ window.charity_id = {{$id}};
 @endsection
 
 @section('content')
-<charity-edit-page :charity='@json($charity)' ></charity-edit-page>
+<charity-edit-page :charity='@json($charity)' :slug='@json($slug)' ></charity-edit-page>
 @endsection

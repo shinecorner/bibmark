@@ -5,15 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CharityResource;
 use App\Models\Charity;
 use App\Services\CharityService;
+use App\Services\SlugService;
 use Illuminate\Http\Request;
 
 class CharityController extends Controller
 {
-    protected $service;
+    protected $charityService;
 
-    public function __construct(CharityService $charityService)
+    protected $slugService;
+
+    public function __construct(CharityService $charityService, SlugService $slugService)
     {
-        $this->service = $charityService;
+        $this->charityService = $charityService;
+        $this->slugService = $slugService;
     }
 
     /**
@@ -45,7 +49,8 @@ class CharityController extends Controller
         $charity = Charity::find((int) $charity_id);
         return view('front.edit-charity', [
             'charity' => $charity,
-            'id' => $charity_id
+            'id' => $charity_id,
+            'slug' => $charity->slug()->first() ? $charity->slug->slug : ''
         ]);
     }
 
@@ -60,12 +65,23 @@ class CharityController extends Controller
     {
         $result = new CharityResource($charityService->createOrUpdateCharity($request->all()));
 
+        /** @var \App\Models\Charity $charity */
         $charity = Charity::find($id);
-        $logo= $request['logo'] ? $this->service->uploadImage($request['logo'], 'profile') : $charity->logo;
 
+        // Update charity logo
+        $logo = $request['logo'] ? $this->charityService->uploadImage($request['logo'], 'profile') : $charity->logo;
         $charity->update([
             'logo' => $logo,
         ]);
+
+        //Update charity slug
+        if ($request->has('slug')) {
+            $this->slugService->createOrUpdateSlug([
+                'slug' => $request->get('slug'),
+                'slugable_type' => Charity::class,
+                'slugable_id' => $charity->getAttribute('id')
+            ]);
+        }
 
         return response()->json(['charity' => $charity], 200);
     }

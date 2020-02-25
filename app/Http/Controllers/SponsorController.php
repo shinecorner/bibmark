@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sponsor;
 use Illuminate\Http\Request;
 use App\Http\Resources\SponsorResource;
-use App\Services\{SponsorService, TwitterService, InstagramService};
+use App\Services\{SponsorService, TwitterService, InstagramService, SlugService};
 
 class SponsorController extends Controller
 {
@@ -14,11 +14,17 @@ class SponsorController extends Controller
         'twitter'
     ];
 
-    public function __construct (SponsorService $sponsorService, InstagramService $instagramService, TwitterService $twitterService)
+    public function __construct (
+        SponsorService $sponsorService,
+        InstagramService $instagramService,
+        TwitterService $twitterService,
+        SlugService $slugService
+    )
     {
         $this->service = $sponsorService;
         $this->instagramService = $instagramService;
         $this->twitterService = $twitterService;
+        $this->slugService = $slugService;
     }
     /**
      * Display a listing of the resource.
@@ -28,7 +34,7 @@ class SponsorController extends Controller
     public function index($id)
     {
         $sponsor = Sponsor::find($id);
-        
+
         return view('front.index-sponsor', [
             'sponsor' => $sponsor,
         ]);
@@ -65,7 +71,8 @@ class SponsorController extends Controller
         $sponsor = Sponsor::find($id);
         return view('front.edit-sponsor')->with([
             'sponsor' => $sponsor,
-            'id' => $id
+            'id' => $id,
+            'slug' => $sponsor->slug()->first() ? $sponsor->slug->slug : ''
         ]);
     }
 
@@ -92,11 +99,20 @@ class SponsorController extends Controller
         $result = new SponsorResource($sponsorService->createOrUpdateSponsor($request->all()));
 
         $sponsor = Sponsor::find($id);
-        $logo= $request['logo'] ? $this->service->uploadImage($request['logo'], 'profile') : $sponsor->logo;
 
+        $logo= $request['logo'] ? $this->service->uploadImage($request['logo'], 'profile') : $sponsor->logo;
         $sponsor->update([
             'logo' => $logo,
         ]);
+
+        //Update charity slug
+        if ($request->has('slug')) {
+            $this->slugService->createOrUpdateSlug([
+                'slug' => $request->get('slug'),
+                'slugable_type' => Sponsor::class,
+                'slugable_id' => $sponsor->getAttribute('id')
+            ]);
+        }
 
         return response()->json(['sponsor' => $sponsor], 200);
     }

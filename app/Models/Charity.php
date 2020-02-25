@@ -50,6 +50,14 @@ class Charity extends Model
     }
 
     /**
+     * Get the charity's slug.
+     */
+    public function slug()
+    {
+        return $this->morphOne(\App\Models\Slug::class, 'slugable');
+    }
+
+    /**
      * check if a certain user has a admin role to this charity
      *
      * @param integer $user_id
