@@ -192,7 +192,7 @@
                     formData.append("name", this.sponsor.name);
                 }
 
-                if(this.sponsor.name){
+                if(this.sponsor.slug){
                     formData.append("slug", this.slug);
                 }
                 if(this.sponsor.hashtags){
