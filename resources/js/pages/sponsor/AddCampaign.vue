@@ -94,8 +94,8 @@
                             <div class="right-side2">
                                 <div class="row w-100">
                                     <template
-                                        v-if="campaign.geoTargets.length > 0"
-                                        v-for="(target, index) in campaign.geoTargets">
+                                        v-if="mainGeoTargets.length > 0"
+                                        v-for="(target, index) in mainGeoTargets">
                                         <div class="col custom-control custom-checkbox mid-checkbox">
                                             <input type="checkbox" class="custom-control-input" :id="`target-${index}`"
                                                    v-model="target.status">
@@ -241,8 +241,8 @@
                                     <tbody>
                                     <tr class="table-row" v-for="zipcode in tempGeoTarget.zipcodes">
                                         <td class="px-0 py-0">
-                                            <input type="text" name="code" placeholder="Zip Code"
-                                                   v-model="zipcode.code"/></td>
+                                            <input type="text" name="zipcode" placeholder="Zip Code"
+                                                   v-model="zipcode.zipcode"/></td>
                                         <td class="px-0 py-0">
                                             <select class="form-control form-control-lg" name="radius"
                                                     v-model="zipcode.radius">

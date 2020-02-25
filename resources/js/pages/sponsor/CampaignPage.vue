@@ -6,8 +6,8 @@
                 <span class="total">Total Logo Uploaded: 19M</span>
             </div>
 
-            <div class="table">
-                <div>
+            <div class="">
+                <div class="table-responsive ">
                     <table id="campaign-list" class="table table-striped table-bordered mb-0">
                         <thead class="rectangle-header bg-yellow">
                             <tr>
@@ -19,7 +19,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tr class="table-row" v-for="campaign in finalCampaigns">
+                        <tr class="table-row" v:key="campaign.id" v-for="campaign in finalCampaigns">
                             <td>{{campaign.name}}</td>
                             <td><img :src="campaign.logo" width="50px"></td>
                             <td>{{campaign.budget}}</td>
@@ -47,13 +47,6 @@
 <script src="./CampaignPage.js"></script>
 
 <style lang="scss" scoped>
-    .table {
-        padding-left: 154px !important;
-    }
-
-    .caption {
-        padding-left: 154px;
-    }
 
     .caption span {
         margin-bottom: 18px;
@@ -64,7 +57,7 @@
         font-size: 25px;
         font-family: HelveticaNeue, sans-serif;
         font-weight: bold;
-        color: #000000;
+        color: #FFC600;
     }
 
     .total {

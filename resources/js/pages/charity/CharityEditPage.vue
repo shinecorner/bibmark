@@ -1,5 +1,5 @@
 <template>
-    <sponsor-common :sponsor="sponsor" :activeLink="navLink">
+    <charity-common :charity="charity" :activeLink="navLink">
         <template v-slot:setting-content>
             <form id="validation-form" v-on:submit.prevent>
                 <span class="edit-profile">Edit Profile</span>
@@ -14,70 +14,70 @@
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="companyName">Full&nbsp;Name</label></div>
-                            <div class="right-side"><input id="companyName" name="companyName" type="text" v-model="sponsor.name"></div>
+                            <div class="right-side"><input id="companyName" name="companyName" type="text" v-model="charity.name"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="bio">Bio</label></div>
-                            <div class="right-side"><textarea id="bio" name="bio" v-model="sponsor.bio"></textarea></div>
+                            <div class="right-side"><textarea id="bio" name="bio" v-model="charity.bio"></textarea></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="website">Website</label></div>
-                            <div class="right-side"><input id="website" type="text" v-model="sponsor.website"></div>
+                            <div class="right-side"><input id="website" type="text" v-model="charity.website"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="instagram">Instagram</label></div>
-                            <div class="right-side"><input id="instagram" type="text" v-model="sponsor.instagram"></div>
+                            <div class="right-side"><input id="instagram" type="text" v-model="charity.instagram"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="facebook">Facebook</label></div>
-                            <div class="right-side"><input id="facebook" type="text" v-model="sponsor.facebook"></div>
+                            <div class="right-side"><input id="facebook" type="text" v-model="charity.facebook"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="twitter">Twitter</label></div>
-                            <div class="right-side"><input id="twitter" type="text"  v-model="sponsor.twitter"></div>
+                            <div class="right-side"><input id="twitter" type="text"  v-model="charity.twitter"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="hashtags">Hashtags</label></div>
                             <div class="right-side">
-                                <input @keyup="onHashtagChange" ref="hashtag" id="hashtags" type="text" v-model="sponsor.hashtags">
+                                <input @keyup="onHashtagChange" ref="hashtag" id="hashtags" type="text" v-model="charity.hashtags">
                             </div>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="input-wrap">
                             <div class="left-side"><label for="companyAddress">Company&nbsp;Address</label></div>
-                            <div class="right-side"><input id="companyAddress" type="text" v-model="sponsor.company_address"></div>
+                            <div class="right-side"><input id="companyAddress" type="text" v-model="charity.company_address"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="city">City</label></div>
-                            <div class="right-side"><input id="city" type="text" v-model="sponsor.city"></div>
+                            <div class="right-side"><input id="city" type="text" v-model="charity.city"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="state">State</label></div>
-                            <div class="right-side"><input id="state" type="text" v-model="sponsor.state"></div>
+                            <div class="right-side"><input id="state" type="text" v-model="charity.state"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="zipCode">Zip&nbsp;Code</label></div>
-                            <div class="right-side"><input id="zipCode" type="text" v-model="sponsor.zip"></div>
+                            <div class="right-side"><input id="zipCode" type="text" v-model="charity.zip"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="country">Country</label></div>
-                            <div class="right-side"><input id="country" type="text" v-model="sponsor.country"></div>
+                            <div class="right-side"><input id="country" type="text" v-model="charity.country"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="companyPhone">Phone</label></div>
-                            <div class="right-side"><input id="companyPhone" type="text" v-model="sponsor.company_phone"></div>
+                            <div class="right-side"><input id="companyPhone" type="text" v-model="charity.company_phone"></div>
                         </div>
                         <div class="input-wrap">
                             <div class="left-side"><label for="companyEmail">Email</label></div>
-                            <div class="right-side"><input id="companyEmail" type="text" v-model="sponsor.email"></div>
+                            <div class="right-side"><input id="companyEmail" type="text" v-model="charity.email"></div>
                         </div>
                     </div>
                 </div>
                 <button @click="saveProfile" class="save-btn">Save</button>
             </form>
         </template>
-    </sponsor-common>
+    </charity-common>
 </template>
 
 <script>
@@ -89,19 +89,19 @@
             };
         },
         props: {
-            sponsor: {
+            charity: {
                 type: Object,
                 require: true
             }
         },
         mounted: function() {
             this.initValidation();
-            this.showProfilePic = this.sponsor.logo;
-            this.sponsor.hashtags = this.prepareHashtags(this.$refs.hashtag.value);
+            this.showProfilePic = this.charity.logo;
+            this.charity.hashtags = this.prepareHashtags(this.$refs.hashtag.value);
         },
         computed: {
             logoUrl() {
-                return this.sponsor.logo ? this.sponsor.logo : this.defaultLogo
+                return this.charity.logo ? this.charity.logo : this.defaultLogo
             },
         },
         methods: {
@@ -176,51 +176,51 @@
                     width: 128,
                     height: 128
                 });
-                formData.append("id", this.sponsor.id);
-                if(this.sponsor.name){
-                    formData.append("name", this.sponsor.name);
+                formData.append("id", this.charity.id);
+                if(this.charity.name){
+                    formData.append("name", this.charity.name);
                 }
-                if(this.sponsor.hashtags){
-                    formData.append("hashtags", this.sponsor.hashtags.replace(/#/g, ''));
+                if(this.charity.hashtags){
+                    formData.append("hashtags", this.charity.hashtags.replace(/#/g, ''));
                 }
-                if(this.sponsor.bio){
-                    formData.append("bio", null);
+                if(this.charity.bio){
+                    formData.append("bio", this.charity.bio);
                 }
-                if(this.sponsor.website){
-                    formData.append("website", this.sponsor.website);
+                if(this.charity.website){
+                    formData.append("website", this.charity.website);
                 }
-                if(this.sponsor.instagram){
-                    formData.append("instagram", this.sponsor.instagram);
+                if(this.charity.instagram){
+                    formData.append("instagram", this.charity.instagram);
                 }
-                if(this.sponsor.twitter){
-                    formData.append("twitter", this.sponsor.twitter);
+                if(this.charity.twitter){
+                    formData.append("twitter", this.charity.twitter);
                 }
-                if(this.sponsor.facebook){
-                    formData.append("facebook", this.sponsor.facebook);
+                if(this.charity.facebook){
+                    formData.append("facebook", this.charity.facebook);
                 }
-                if(this.sponsor.company_address){
-                    formData.append("company_address", this.sponsor.company_address);
+                if(this.charity.company_address){
+                    formData.append("company_address", this.charity.company_address);
                 }
-                if(this.sponsor.city){
-                    formData.append("city", this.sponsor.city);
+                if(this.charity.city){
+                    formData.append("city", this.charity.city);
                 }
-                if(this.sponsor.state){
-                    formData.append("state", this.sponsor.state);
+                if(this.charity.state){
+                    formData.append("state", this.charity.state);
                 }
-                if(this.sponsor.zip){
-                    formData.append("zip", this.sponsor.zip);
+                if(this.charity.zip){
+                    formData.append("zip", this.charity.zip);
                 }
-                if(this.sponsor.country){
-                    formData.append("country", this.sponsor.country);
+                if(this.charity.country){
+                    formData.append("country", this.charity.country);
                 }
-                if(this.sponsor.company_phone){
-                    formData.append("company_phone", this.sponsor.company_phone);
+                if(this.charity.company_phone){
+                    formData.append("company_phone", this.charity.company_phone);
                 }
-                if(this.sponsor.email){
-                    formData.append("email", this.sponsor.email);
+                if(this.charity.email){
+                    formData.append("email", this.charity.email);
                 }
                 axios
-                    .post(`/sponsor/${this.sponsor.id}/profile/edit`, formData, {
+                    .post(`/charity/${this.charity.id}/profile/edit`, formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
@@ -241,7 +241,7 @@
 
 <style lang="scss" scoped>
     @import '~@/_variables.scss';
-    .sponsor-common {
+    .charity-common {
         .save-btn {
             size: 28px;
             color: #444444;

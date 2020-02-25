@@ -19,8 +19,7 @@ class CreateOrUpdateCampaignRequest extends Request
             'budget' => 'sometimes|numeric',
             'logo' => 'sometimes|url|nullable',            
             'logo_width' => 'sometimes|numeric|nullable',
-            'charity_id' => 'required|integer',
-            'geo_targets' => 'sometimes|nullable',
+            'charity_id' => 'required|integer',            
             'status' => 'required|boolean',
         ];
     }

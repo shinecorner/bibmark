@@ -1,11 +1,11 @@
 <template>
     <charity-common :activeLink="navLink">
-        <template v-slot:charity-content>
+        <template v-slot:setting-content>
             <div class="caption pb-4">
                 <span class="donation">Order Gallery</span>
             </div>
             <!-- I think we should pass images to gallery component and selected image -->
-            <!-- 
+            <!--
                 <gallery images="images"></gallery>
              -->
             <gallery></gallery>
