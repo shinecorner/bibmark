@@ -169,7 +169,8 @@
         }
 
         .nav-links {
-            padding: 0 15px 67px 95px;
+            padding: 0 15px 67px 4vw;
+            margin-left: 0.8rem;
             display: -webkit-flex;
             display: -moz-flex;
             display: -ms-flex;
