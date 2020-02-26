@@ -11,7 +11,7 @@ class InstagramService implements Provisionable
     public function getPosts(array $tags = ['bibmark'], array $options = [])
     {
         $posts = [];
-        $limit = 10;
+        $limit = 20;
         foreach ($tags as $tag) {
             if ($this->valid(trim($tag))) {
                 $bulkPosts = $this->request(trim($tag))['graphql']['hashtag']['edge_hashtag_to_media']['edges'];
@@ -41,7 +41,7 @@ class InstagramService implements Provisionable
      *
      * @return bool
      */
-    public function valid($tag = 'bibmark', $limit = 10)
+    public function valid($tag = 'bibmark', $limit = 20)
     {
         try {
             $this->request($tag, $limit);
@@ -58,7 +58,7 @@ class InstagramService implements Provisionable
      * @param  string  $tag
      * @return array
      */
-    protected function request($tag, $limit = 10)
+    protected function request($tag, $limit = 20)
     {
         if ($tag == '') {
             throw new Exception();
