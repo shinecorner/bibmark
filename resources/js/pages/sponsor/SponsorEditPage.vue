@@ -1,5 +1,5 @@
 <template>
-    <sponsor-common :sponsor="sponsor" :activeLink="navLink">
+    <sponsor-common :sponsor="sponsor" :slug="slug" :activeLink="navLink">
         <template v-slot:setting-content>
             <form id="validation-form" v-on:submit.prevent>
                 <span class="edit-profile">Edit Profile</span>
@@ -12,6 +12,12 @@
                                 <input v-on:change="selectLogo" ref="logo" id="imageProfile" type="file">
                                 <label class="input-label" for="imageProfile">Choose File</label></div>
                         </div>
+
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="slug">Slug</label></div>
+                            <div class="right-side"><input id="slug" name="slug" type="text" v-model="slug"></div>
+                        </div>
+
                         <div class="input-wrap">
                             <div class="left-side"><label for="companyName">Full&nbsp;Name</label></div>
                             <div class="right-side"><input id="companyName" name="companyName" type="text" v-model="sponsor.name"></div>
@@ -91,6 +97,10 @@
         props: {
             sponsor: {
                 type: Object,
+                require: true
+            },
+            slug: {
+                type: String,
                 require: true
             }
         },
@@ -177,8 +187,13 @@
                     height: 128
                 });
                 formData.append("id", this.sponsor.id);
+
                 if(this.sponsor.name){
                     formData.append("name", this.sponsor.name);
+                }
+
+                if(this.slug){
+                    formData.append("slug", this.slug);
                 }
                 if(this.sponsor.hashtags){
                     formData.append("hashtags", this.sponsor.hashtags.replace(/#/g, ''));

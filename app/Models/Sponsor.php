@@ -46,6 +46,14 @@ class Sponsor extends Model
     }
 
     /**
+     * Get the sponsor's slug.
+     */
+    public function slug()
+    {
+        return $this->morphOne(\App\Models\Slug::class, 'slugable');
+    }
+
+    /**
      * Get a default billing
      *
      * @return Billing
