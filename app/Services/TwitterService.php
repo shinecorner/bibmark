@@ -14,6 +14,7 @@ class TwitterService implements Provisionable
     public function getPosts(array $tags = ['bibmark'], array $options = [])
     {
         $tweets = [];
+        $limit = 10;
 
         foreach ($tags as $tag) {                        
             try{
@@ -40,7 +41,7 @@ class TwitterService implements Provisionable
                 return [];
             }            
         }
-        
+        $tweets = array_slice($tweets, 0, $limit);
         return $tweets;
     }
 
@@ -49,7 +50,7 @@ class TwitterService implements Provisionable
      *
      * @return bool
      */
-    public function valid($tag = 'bibmark', $limit = 10)
+    public function valid($tag = 'bibmark', $limit = 100)
     {
         try {
             $this->request($tag, $limit);
@@ -66,7 +67,7 @@ class TwitterService implements Provisionable
      * @param  string  $tag
      * @return mixed
      */
-    protected function request($tag = 'bibmark', $limit = 10)
+    protected function request($tag = 'bibmark', $limit = 100)
     {
 
         $stack = HandlerStack::create();

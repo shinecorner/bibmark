@@ -17,9 +17,9 @@
                                 <a class="text-dark" v-if="charity.facebook" :href="charity.facebook"><i class="fab fa-facebook-square"></i></a>
                                 <a class="text-dark" v-if="charity.twitter" :href="charity.twitter"><i class="fab fa-twitter"></i></a>
                             </p>
-                            <p class="text-left">
+                            <!-- <p class="text-left">
                                 <button class="btn btn-sm edit-profile-btn">Edit profile</button>
-                            </p>
+                            </p> -->
                         </div>
                     </div>
                     <div class="col-md-5 mt-10">                        
