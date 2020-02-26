@@ -6,13 +6,14 @@ export default {
     data () {
         return {
           loadingTweets: false,
-          loadingInstagramPosts: false,
+          loadingInstagrams: false,
           tweets: [],
           instagramPosts: []
         }
     },
     mounted () {
         this.loadTweets();
+        this.loadInstagramImages();
     },
     methods: {
         loadTweets: function (event) {
@@ -25,13 +26,10 @@ export default {
                 .catch(error => {
                   console.log(error)
                 })
-                .finally(() => {
-                    this.loadingTweets = false;
-                    this.loadingInstagramPosts = true;
-                    this.loadInstagramImages();
-                })
+                .finally(() => {this.loadingTweets = false})
         },
         loadInstagramImages: function (event) {
+            this.loadingInstagrams = true;
             axios
                 .get(`/api/charities/${this.charity.id}/posts/instagram`)
                 .then(response => {
@@ -40,7 +38,7 @@ export default {
                 .catch(error => {
                   console.log(error)
                 })
-                .finally(() => this.loadingInstagramPosts = false)
+                .finally(() => this.loadingInstagrams = false)
         },
     },
     filters: {

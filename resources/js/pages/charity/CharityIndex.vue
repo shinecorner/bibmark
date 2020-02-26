@@ -10,69 +10,22 @@
                             <p class="text-left">
                                 {{ charity.bio }}
                             </p>
-                            <p class="text-left">
+                            <p class="text-left">                                
                                 <a class="text-dark" href="">{{ charity.website }}</a>
                                 <br>
                                 <a class="text-dark" v-if="charity.instagram" :href="charity.instagram"><i class="fab fa-instagram"></i></a>
                                 <a class="text-dark" v-if="charity.facebook" :href="charity.facebook"><i class="fab fa-facebook-square"></i></a>
-                                <a class="text-dark" v-if="charity.twitter" :href="charity.fa-twitter"><i class="fab fa-twitter"></i></a>
+                                <a class="text-dark" v-if="charity.twitter" :href="charity.twitter"><i class="fab fa-twitter"></i></a>
                             </p>
                             <p class="text-left">
                                 <button class="btn btn-sm edit-profile-btn">Edit profile</button>
                             </p>
                         </div>
                     </div>
-                    <div class="col-md-5 mt-10">
+                    <div class="col-md-5 mt-10">                        
                         <div class="row justify-content-center">
                             <div class="col-md-2">
-                                <div class="spinner" v-if="loadingTweets">
-                                    <div class="bounce1"></div>
-                                    <div class="bounce2"></div>
-                                    <div class="bounce3"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <!-- tweet list -->
-                                <ol class="tweet-list">
-                                    <li class="tweet-card mb-3" v-bind:key="tweet.id" v-for="tweet in tweets">
-                                        <div class="tweet-content">
-                                            <div class="tweet-header">
-                                                <span class="fullname">
-                                                    <strong>{{ tweet.username }}</strong>
-                                                </span>
-                                                <span class="username">@{{ tweet.screen_name }}</span>
-                                                <span class="tweet-time">- {{ tweet.date | twitterDateFormat }}</span>
-                                            </div>
-                                            <a>
-                                                <img class="tweet-card-avatar" :src="tweet.profile_image_url" alt="">
-                                            </a>
-                                            <div class="tweet-text">
-                                                <p data-aria-label-part="0">
-                                                    {{ tweet.description }}
-                                                </p>
-                                            </div>
-                                            <div class="tweet-footer">
-                                                <a class="tweet-footer-btn">
-                                                    <i class="fas fa-comment-alt"></i><span> 0</span>
-                                                </a>
-                                                <a class="tweet-footer-btn">
-                                                    <i class="fas fa-retweet"></i><span> {{ tweet.retweet_count }}</span>
-                                                </a>
-                                                <a class="tweet-footer-btn">
-                                                    <i class="far fa-heart"></i><span> {{ tweet.favorite_count }}</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ol>
-                                <!-- End: tweet list -->
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-md-2">
-                                <div class="spinner" v-if="loadingInstagramPosts">
+                                <div class="spinner" v-if="loadingInstagrams">
                                     <div class="bounce1"></div>
                                     <div class="bounce2"></div>
                                     <div class="bounce3"></div>
@@ -86,31 +39,60 @@
                         </div>
                     </div>
                     <div class="col-md-5">
-                        <div class="row">
-                            <div class="col">
-                                <div class="event-container">
-                                    <div class="box image">
-                                        <div class="box-header">
-                                            <h3>
-                                                <a href=""><img :src="charity.logo" alt="">
-                                                    {{charity.name}}
-                                                </a>
-                                                <span class="summary">add an <a>event</a></span>
-                                                <span>March 21,18:45pm <i
-                                                    class="fas fa-globe-americas"></i></span>
-                                            </h3>
-                                        </div>
-                                        <div class="box-content">
-                                            <div class="content">
-                                                <img src="/img/demo-image.png" alt="" width="100%">
-                                            </div>
-                                            <div class="bottom">
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-2">
+                                <div class="spinner" v-if="loadingTweets">
+                                    <div class="bounce1"></div>
+                                    <div class="bounce2"></div>
+                                    <div class="bounce3"></div>
                                 </div>
                             </div>
                         </div>
+                        <div class="row event-container" v-bind:key="tweet.id" v-for="tweet in tweets">
+                            <div class="row header">
+                                <div class="col-md-2">
+                                    <div class="header-logo">                                        
+                                        <a href=""><img :src="tweet.profile_image_url" alt=""></a>                                        
+                                    </div>
+                                </div>
+                                <div class="col-md-10 header-detail">
+                                    <h3>
+                                        <a class="charity-name" href="">
+                                            {{ tweet.username }}                                            
+                                        </a>
+                                        <div class="charity-meta">
+                                            <span> @{{ tweet.screen_name }}</span>
+                                            <span class="separator"><i class="fa fa-circle"></i></span>
+                                            <span>{{ tweet.date | twitterDateFormat }}</span>
+                                        </div>
+                                        <div class="summary">{{ tweet.description }}</div>
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class ="row content">
+                                <div class="col-md-2"></div>
+                                <div class="col-md-10 header-detail">
+                                    <img :src="tweet.profile_banner_url" width="400" alt="">
+                                </div>
+                            </div>
+                            <!-- <div class="tweet-footer">
+                                <a class="tweet-footer-btn">
+                                    <i class="fas fa-comment-alt"></i><span> 0</span>
+                                </a>
+                                <a class="tweet-footer-btn">
+                                    <i class="fas fa-retweet"></i><span> {{ tweet.retweet_count }}</span>
+                                </a>
+                                <a class="tweet-footer-btn">
+                                    <i class="far fa-heart"></i><span> {{ tweet.favorite_count }}</span>
+                                </a>
+                            </div> -->
+                            <!-- <div class="row">
+                                <div class="col-md-2">&nbsp;</div>
+                                <div class="col-md-10 content">
+                                    <img src="/img/demo-image.png" alt="" width="100%">
+                                </div>
+                            </div> -->
+                        </div>    
                     </div>
                 </div>
             </div>
@@ -165,248 +147,69 @@
     }
 
     .event-container {
-        margin: 0 auto;
+        margin-bottom: 15px;
         overflow: hidden;
         padding: 0;
-        position: relative;
-        border: 1px solid lightgrey;
-        font-family: $font-family-helvetica-neue;
+        position: relative;        
+        // font-family: $font-family-helvetica-neue;
         font-size: 13px;
+        background-color: #192734;        
+        border-radius: 15px;
     }
-    .event-container > h2 {
-        color: #9298A4;
-        font-weight: 400;
-        letter-spacing: -1px;
-        margin: 140px auto 80px;
-        text-align: center;
-    }
-    .event-container > h2:first-child {
-        margin: 40px auto 80px;
-    }
-    .event-container > .box {
-        background: #FFF;
-        border-radius: 4px;
-        height: auto;
-        overflow: hidden;
-        position: relative;
-    }
-    .event-container > .box > [class*="box-"] {
-        margin: 0 auto;
-        padding: 0 30px;
-        position: relative;
-    }
-    .event-container > .box > [class*="box-"] img {
-        display: block;
-        width: 100%;
-    }
-    .event-container > .box > .box-header {
-        margin: 0 auto;
-        padding: 0 10px 0px;
-        width: initial;
-        height: 60px;
-    }
-    .event-container > .box > .box-header > h3 {
+    
+    .event-container .header{
         font-size: 15px;
         font-weight: 700;
-        height: 60px;
+        // height: 60px;
         margin: 5px auto;
         overflow: hidden;
         padding: 5px 0 0;
         position: relative;
     }
-    .event-container > .box > .box-header > h3 > a {
-        margin: 0;
-        overflow: hidden;
-        padding: 0;
-        position: relative;
-    }
-    .event-container > .box > .box-header > h3 > .summary {
-        display: inline-block;
-    }
-    .event-container > .box > .box-header > h3 > span {
-        color: #9197A3;
-        display: block;
-        font-size: 13px;
-        font-weight: 400;
-        margin-top: 2px;
-    }
-    .event-container > .box > .box-header > h3 > span .fa {
-        font-size: 15px;
-        margin-left: 5px;
-    }
-    .event-container > .box > .box-header > span {
-        background: #F4F4F4;
-        border-radius: 3px;
-        color: #BCBFC6;
-        cursor: pointer;
-        font-size: 24px;
-        height: 18px;
-        line-height: 18px;
-        margin: 5px auto 0;
-        padding: 3px 4px;
-        position: absolute;
-        right: 40px;
-        top: 0;
-    }
-    .event-container > .box > .box-header > span:hover {
-        color: #888;
-    }
-    .event-container > .box > .box-header > span > i {
-        height: 18px;
-        line-height: 18px;
-    }
-    .event-container > .box > .box-header img {
+    .event-container .header .header-logo img{
         border-radius: 100px;
         float: left;
         height: 50px;
         width: 50px;
-        margin: -5px 10px 0 0;
+        margin: -2px 10px 0 0;
+        -o-object-fit: cover;
         object-fit: cover;
     }
-    .event-container > .box > .box-content {
-        margin: 0;
-        overflow: hidden;
-        padding: 0;
-        position: relative;
-        width: initial;
+    .event-container .header .header-detail{
+        
     }
-    .event-container > .box > .box-content > .content {
-        height: auto;
-        margin: 0;
-        overflow: hidden;
-        padding: 0;
-        position: relative;
-        width: initial;
+    .event-container .header .header-detail h3{
+        color: #fff;        
+        font-size: 15px;
     }
-    .event-container > .box > .box-content > .bottom {
-        margin: 0 auto;
-        padding: 0 10px 0 50px;
-        position: relative;
-        width: initial;
+    .event-container .header .header-detail h3 a.charity-name{
+        color: #fff;
+        font-weight: 700;
+        font-size: 17px;
     }
-    .event-container > .box > .box-content > .bottom > p {
-        line-height: 20px;
-        margin: 0;
-        padding: 0px 10px 0 20px
-    }
-    .event-container > .box > .box-content > .bottom > span {
-        background: linear-gradient(to top, rgba(0, 0, 0, .45), rgba(0, 0, 0, 0));
-        height: 160px;
-        left: 0;
-        line-height: 160px;
-        margin: 0 auto;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        text-align: right;
-        top: -160px;
-        vertical-align: bottom;
-        width: 100%;
-    }
-    .event-container > .box > .box-content > .bottom > span > span {
-        background: rgba(0, 0, 0, .35);
-        border-radius: 4px;
-        bottom: 0;
-        color: #FFF;
-        cursor: pointer;
-        font-size: 20px;
-        margin: 0 30px 25px auto;
-        opacity: .75;
-        overflow: hidden;
-        padding: 10px;
-        position: absolute;
-        right: 0;
-        top: auto;
-        -webkit-transition: all .25s ease-in-out;
-        -moz-transition: all .25s ease-in-out;
-        transition: all .25s ease-in-out;
-    }
-    .event-container > .box > .box-content > .bottom > span > span:hover {
-        opacity: 1;
-    }
-    .event-container > .box > .box-likes {
-        margin: 0 auto;
-        overflow: hidden;
-        padding: 0 30px;
-        position: relative;
-    }
-    .event-container > .box > .box-likes > .row {
-        border-top: 1px solid #F4F4F4;
-        padding: 20px 0;
-    }
-    .event-container > .box > .box-likes > .row > span {
+    .event-container .header .header-detail h3 .charity-meta{
         display: inline-block;
-        font-size: 13px;
-        margin: 0 2px 0 0;
+        color: #7e8e9c;      
+        font-size: 17px;
+        font-weight: 400;        
+    }
+    .event-container .header .header-detail h3 .separator{
+        font-size: 4px;
         position: relative;
+        top: -2px;
+        margin: 0 3px;       
+    }    
+    .event-container .header .header-detail h3 .summary{
+        margin: 5px 0 5px 0;
+        line-height: 1.1rem;
+    }
+    .event-container .content img{
+        // border-radius: 100px;        
         vertical-align: middle;
-    }
-    .event-container > .box > .box-likes > .row:first-child {
-        float: left;
-        width: 60%;
-    }
-    .event-container > .box > .box-likes > .row:last-child {
-        float: left;
-        text-align: end;
-        width: 40%;
-    }
-    .event-container > .box > .box-likes > .row:first-child > span:nth-child(4) {
-        background: #4D679F;
-        border-radius: 50px;
-        font-weight: bold;
-        padding: 0 8px 0 6px;
-    }
-    .event-container > .box > .box-likes > .row:first-child > span:nth-child(4) > a {
-        color: #FFF;
-    }
-    .event-container > .box > .box-likes > .row:first-child > span,
-    .event-container > .box > .box-likes > .row:last-child > span {
-        color: #9197A3;
-    }
-    .event-container > .box > .box-likes > .row:last-child > span {
-        display: inline-block;
-        verrtical-align: middle;
-    }
-    .event-container > .box > .box-likes > .row img {
-        border-radius: 100px;
-        height: 28px;
-        object-fit: cover;
-        width: 28px;
-    }
-    .event-container > .box > .box-buttons {
-        overflow: hidden;
-        padding: 0;
-        position: relative;
-        width: 35%;
-        margin-left: 70px;
-        margin-top: 10px;
-    }
-    .event-container > .box > .box-buttons *, *::before, *::after {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-    .event-container > .box > .box-buttons > .row {
-        border-bottom: 1px solid #F4F4F4;
-        overflow: hidden;
-        padding: 0;
-        position: relative;
-    }
-    .event-container > .box > .box-buttons > .row > button:last-child {
-        border: 0;
-    }
-    .event-container > .box > .box-buttons > .row > button {
-        background: #FFF;
-        border: 0;
-        color: #9197A3;
-        font-size: 13px;
-        float: left;
-        height: 60px;
-        line-height: 60px;
-        margin: 0;
-        *outline: 1px #08F;
-        padding: 0;
-        width: 33.33333333333%;
+        border-style: none;
+        border-radius: 15px;
+        width: 95%;
+        margin: 0 10px 10px 10px;
     }
     .spinner {
         width: 70px;

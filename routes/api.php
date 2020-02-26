@@ -25,7 +25,7 @@ Route::middleware('auth:api')->group(function() {
 
     // Get posts from social network by tags
     Route::get('sponsors/{sponsor}/posts/{network}', 'SponsorController@getPosts');
-    Route::get('charities/{sponsor}/posts/{network}', 'CharityController@getPosts');
+    Route::get('charities/{charity}/posts/{network}', 'CharityController@getPosts');
 });
 
 Route::get('random_product', 'ProductController@random');
