@@ -199,7 +199,7 @@
                     formData.append("hashtags", this.sponsor.hashtags.replace(/#/g, ''));
                 }
                 if(this.sponsor.bio){
-                    formData.append("bio", null);
+                    formData.append("bio", this.sponsor.bio);
                 }
                 if(this.sponsor.website){
                     formData.append("website", this.sponsor.website);

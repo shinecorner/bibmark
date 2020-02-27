@@ -5,7 +5,18 @@
                 <div class="row">
                     <div class="col-md-2 sidebar">
                         <div class="text-center">
-                            <img class="rounded-circle img-fluid" :src="sponsor.logo" width="200" alt="">
+                            <div class="spinner" style="width: 100%" v-if="uploadingProfilePicture">
+                                <div class="bounce1"></div>
+                                <div class="bounce2"></div>
+                                <div class="bounce3"></div>
+                            </div>
+                            <div class="profile-img-container" v-if="!uploadingProfilePicture">                
+                                <img class="rounded-circle profile-picture-fluid" :src="origLogoURL" width="200" alt="">
+                                <div class="img-overlay">                              
+                                    <input style="display:none" v-on:change="selectProfilePicture()" ref="logo" id="logo" type="file">
+                                    <label for="logo">Change Profile <br> Picture</label>                                    
+                                </div>
+                            </div>    
                             <h4 class="pt-3">{{ sponsor.name }}</h4>
                             <p class="text-left">
                                 {{ sponsor.bio }}
@@ -15,10 +26,10 @@
                                 <br>
                                 <a class="text-dark" v-if="sponsor.instagram" :href="sponsor.instagram"><i class="fab fa-instagram"></i></a>
                                 <a class="text-dark" v-if="sponsor.facebook" :href="sponsor.facebook"><i class="fab fa-facebook-square"></i></a>
-                                <a class="text-dark" v-if="sponsor.twitter" :href="sponsor.fa-twitter"><i class="fab fa-twitter"></i></a>
+                                <a class="text-dark" v-if="sponsor.twitter" :href="sponsor.twitter"><i class="fab fa-twitter"></i></a>
                             </p>
                             <p class="text-left">
-                                <button class="btn btn-sm edit-profile-btn">Edit profile</button>
+                                <button class="btn btn-sm edit-profile-btn" @click="editProfile">Edit profile</button>
                             </p>
                         </div>
                     </div>
@@ -42,8 +53,11 @@
                                                 <span class="fullname">
                                                     <strong>{{ tweet.username }}</strong>
                                                 </span>
-                                                <span class="username">@{{ tweet.screen_name }}</span>
-                                                <span class="tweet-time">- {{ tweet.date | twitterDateFormat }}</span>
+                                                <div class="user-metadata">
+                                                    <span class="username">@{{ tweet.screen_name }}</span>
+                                                    <span class="separator"><i class="fa fa-circle"></i></span>
+                                                    <span class="tweet-time"> {{ tweet.date | twitterDateFormat }}</span>
+                                                </div>
                                             </div>
                                             <a>
                                                 <img class="tweet-card-avatar" :src="tweet.profile_image_url" alt="">
@@ -55,7 +69,7 @@
                                             </div>
                                             <div class="tweet-footer">
                                                 <a class="tweet-footer-btn">
-                                                    <i class="fas fa-comment-alt"></i><span> 0</span>
+                                                    <i class="far fa-comment"></i><span> {{ tweet.profile_statuses_count }} </span>
                                                 </a>
                                                 <a class="tweet-footer-btn">
                                                     <i class="fas fa-retweet"></i><span> {{ tweet.retweet_count }}</span>
@@ -72,7 +86,7 @@
                         </div>
                         <div class="row justify-content-center">
                             <div class="col-md-2">
-                                <div class="spinner" v-if="loadingInstagramPosts">
+                                <div class="spinner" v-if="loadingInstagrams">
                                     <div class="bounce1"></div>
                                     <div class="bounce2"></div>
                                     <div class="bounce3"></div>
@@ -122,7 +136,31 @@
 
 <style lang="scss" scoped>
     @import '~@/_variables.scss';
-
+    .profile-img-container{
+        position: relative;
+    }
+    .profile-img-container .profile-picture-fluid{
+        width: 100%;
+        min-height: 175px;
+    }
+    .profile-img-container .img-overlay{
+        display:none;
+        position: absolute; 
+        bottom: 0; 
+        text-align: center;
+        background-color:rgba(255,255,255,0.5); 
+        color: #4E5155;       
+        width: 100%; /* Full width */
+        height: 35%;
+        font-weight: 500;
+        padding: 10px 20px;        
+    }
+    .profile-img-container:hover .img-overlay{
+        display:block;
+    }
+    .profile-img-container:hover .img-overlay label{
+        cursor: pointer !important;
+    }
     .tweet-list {
         list-style: none;
         margin: 8px 4px 0;
@@ -133,13 +171,25 @@
         border-bottom: 1px solid #e6ecf0;
         min-height: 52px;
         padding: 9px 12px;
+        position: relative;
     }
-
+    .tweet-card .tweet-header .user-metadata {
+        color: #7e8e9c;
+        display: inline;
+        margin-left: 5px;        
+    }
+    .tweet-card .tweet-header .user-metadata .separator{
+        font-size: 4px;
+        position: relative;
+        top: -2px;
+        margin: 0 3px;       
+    }
     .tweet-content {
         margin-left: 58px;
         font-size: 14px;
         line-height: 20px;
         font-weight: normal;
+        position: relative;
     }
 
     .tweet-card-avatar {
@@ -149,6 +199,8 @@
         float: left;
         margin-top: 3px;
         margin-left: -58px;
+        position: absolute;
+        top: 0px;
     }
 
     .tweet-footer-btn {

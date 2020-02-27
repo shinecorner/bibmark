@@ -33,6 +33,7 @@ class TwitterService implements Provisionable
                             'favorite_count' => $tweet['favorite_count'],
                             'profile_image_url' => $tweet['user']['profile_image_url_https'],
                             'profile_banner_url' => isset($tweet['user']['profile_banner_url']) ? $tweet['user']['profile_banner_url'] : "",
+                            'profile_statuses_count' => isset($tweet['user']['statuses_count']) ? $tweet['user']['statuses_count'] : 0,
                         ]
                     );
                 }

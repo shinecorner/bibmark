@@ -143,7 +143,23 @@ class SponsorController extends Controller
         ]);
         return response()->json(['sponsor' => $sponsor], 200);
     }
-
+    /**
+     * Update profile picture
+     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateProfilePicture(Request $request, $id){
+        $sponsor = Sponsor::find($id);                
+        if ($request->file('logo')) {            
+            $logo= $request->file('logo') ? $this->service->uploadImage($request->file('logo'), 'profile') : $sponsor->logo;
+            $sponsor->update([
+                'logo' => $logo,
+            ]);
+        }
+        return response()->json(['sponsor' => $sponsor], 200);
+    }
     /**
      * Get all posts from social network.
      *

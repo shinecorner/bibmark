@@ -82,6 +82,7 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/sponsor/{id}/profile/edit', 'SponsorController@update');
     Route::get('/sponsor/{id}/payment/history', 'PaymentController@paymentHistoryShow');
     Route::put('/sponsor/{id}/profile/updateCover', 'SponsorController@updateCover');
+    Route::post('/sponsor/{id}/profile/updateProfilePicture', 'SponsorController@updateProfilePicture');
     Route::get('/sponsor/{id}/campaign', 'CampaignController@index');
     Route::get('/sponsor/{id}/campaign/list-json', 'CampaignController@list');
     Route::get('/sponsor/{id}/campaign/create', 'CampaignController@create');

@@ -6,12 +6,16 @@ export default {
     data () {
         return {
           loadingTweets: false,
-          loadingInstagramPosts: false,
+          loadingInstagrams: false,
+          uploadingProfilePicture: false,
           tweets: [],
-          instagramPosts: []
+          instagramPosts: [],
+          logoFile: '',
+          origLogoURL: ''
         }
     },
     mounted () {
+        this.origLogoURL = (this.sponsor.logo) ? this.sponsor.logo : '';
         this.loadTweets();
     },
     methods: {
@@ -27,7 +31,7 @@ export default {
                 })
                 .finally(() => {
                     this.loadingTweets = false;
-                    this.loadingInstagramPosts = true;
+                    this.loadingInstagrams = true;
                     this.loadInstagramImages();
                 })
         },
@@ -40,7 +44,30 @@ export default {
                 .catch(error => {
                   console.log(error)
                 })
-                .finally(() => this.loadingInstagramPosts = false)
+                .finally(() => this.loadingInstagrams = false)
+        },
+        editProfile: function(){
+          window.location = `/sponsor/${this.sponsor.id}/profile/edit`;
+        },
+        selectProfilePicture: function(event){    
+          this.uploadingProfilePicture = true;  
+          this.logoFile = this.$refs.logo.files[0];
+          let formData = new FormData();
+          formData.append('logo', this.logoFile);
+          formData.append('id', this.sponsor.id);
+          axios.post( `/sponsor/${this.sponsor.id}/profile/updateProfilePicture`,
+            formData,
+            {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
+              }
+            }
+          ).then(response => {             
+            this.origLogoURL = response.data.sponsor.logo;            
+          })
+          .catch(error => {
+            console.log(error);
+          }).finally(() => this.uploadingProfilePicture = false);
         },
     },
     filters: {
