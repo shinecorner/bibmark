@@ -29,36 +29,44 @@ class SlugService
     /**
      * Add new slug
      * @param $data
-     * @return bool
+     * @return array
      */
     public function addSlug($data) {
+        $created = false;
         if (!$this->validate($data)->fails()) {
             $newSlug = new Slug();
             $newSlug->setRawAttributes($data);
-            return $newSlug->save();
+            $created = $newSlug->save();
         }
-        return false;
+        return [
+            'result' => $created,
+            'errors' => $this->validate($data)->getMessageBag()->getMessages()
+        ];
     }
 
     /**
      * Update slug data
      * @param $data
      * @param $id
-     * @return bool
+     * @return array
      */
     public function updateSlug($data, $id) {
+        $updated = false;
         if (!$this->validate($data)->fails()) {
             $slug = Slug::find($id);
             $slug->setRawAttributes($data);
-            return $slug->save();
+            $updated = $slug->save();
         }
-        return false;
+        return [
+            'result' => $updated,
+            'errors' => $this->validate($data)->getMessageBag()->getMessages()
+        ];
     }
 
     /**
      * Check then create or update slug data
      * @param $data
-     * @return bool
+     * @return array
      */
     public function createOrUpdateSlug($data) {
         /** @var Collection $slugCollection */

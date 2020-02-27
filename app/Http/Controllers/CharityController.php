@@ -74,15 +74,20 @@ class CharityController extends Controller
             'logo' => $logo,
         ]);
 
+        $result = ['charity' => $charity];
+
         //Update charity slug
         if ($request->has('slug')) {
-            $this->slugService->createOrUpdateSlug([
+            $updateSlugResult = $this->slugService->createOrUpdateSlug([
                 'slug' => $request->get('slug'),
                 'slugable_type' => Charity::class,
                 'slugable_id' => $charity->getAttribute('id')
             ]);
+            if (!$updateSlugResult['result']) {
+                $result["errors"] = $updateSlugResult["errors"];
+            }
         }
 
-        return response()->json(['charity' => $charity], 200);
+        return response()->json($result, 200);
     }
 }

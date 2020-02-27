@@ -105,16 +105,23 @@ class SponsorController extends Controller
             'logo' => $logo,
         ]);
 
+        $result = [
+            "sponsor" => $sponsor
+        ];
+
         //Update charity slug
         if ($request->has('slug')) {
-            $this->slugService->createOrUpdateSlug([
+            $updateSlugResult = $this->slugService->createOrUpdateSlug([
                 'slug' => $request->get('slug'),
                 'slugable_type' => Sponsor::class,
                 'slugable_id' => $sponsor->getAttribute('id')
             ]);
+            if (!$updateSlugResult['result']) {
+                $result["errors"] = $updateSlugResult["errors"];
+            }
         }
 
-        return response()->json(['sponsor' => $sponsor], 200);
+        return response()->json($result, 200);
     }
 
     /**

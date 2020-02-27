@@ -12,12 +12,6 @@
                                 <input v-on:change="selectLogo" ref="logo" id="imageProfile" type="file">
                                 <label class="input-label" for="imageProfile">Choose File</label></div>
                         </div>
-
-                        <div class="input-wrap">
-                            <div class="left-side"><label for="slug">Slug</label></div>
-                            <div class="right-side"><input id="slug" name="slug" type="text" v-model="slug"></div>
-                        </div>
-
                         <div class="input-wrap">
                             <div class="left-side"><label for="companyName">Full&nbsp;Name</label></div>
                             <div class="right-side"><input id="companyName" name="companyName" type="text" v-model="sponsor.name"></div>
@@ -46,6 +40,17 @@
                             <div class="left-side"><label for="hashtags">Hashtags</label></div>
                             <div class="right-side">
                                 <input @keyup="onHashtagChange" ref="hashtag" id="hashtags" type="text" v-model="sponsor.hashtags">
+                            </div>
+                        </div>
+                        <div class="input-wrap">
+                            <div class="left-side"><label for="slug">Slug</label></div>
+                            <div class="right-side">
+                                <input id="slug" name="slug" type="text" v-model="slug">
+                                <small v-if="!errorsList.slug.valid" id="slugError" class="form-text">
+                                    <p class="text-red" v-for="error in errorsList.slug.messages" style="color: red;">
+                                        {{ error }}
+                                    </p>
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -91,7 +96,13 @@
         data() {
             return {
                 navLink: 'Edit Profile',
-                showProfilePic:false
+                showProfilePic:false,
+                errorsList: {
+                    slug: {
+                        valid: true,
+                        messages: []
+                    }
+                }
             };
         },
         props: {
@@ -174,6 +185,7 @@
                 if (!$('#validation-form').valid()) {
                     return;
                 }
+                const self = this;
                 let formData = new FormData();
                 if (this.logo) {
                     formData.append("logo", this.logo);
@@ -241,7 +253,13 @@
                         }
                     })
                     .then(response => {
-                        console.log(response);
+                        if(response.data.errors) {
+                            self.errorsList.slug.valid = false;
+                            self.errorsList.slug.messages = response.data.errors.slug;
+                        } else {
+                            self.errorsList.slug.valid = true;
+                            self.errorsList.slug.messages = [];
+                        }
                     })
                     .catch(error => {
                         console.log(error.response.data.errors);
