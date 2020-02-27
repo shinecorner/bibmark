@@ -12,10 +12,10 @@
                             </div>
                             <div class="profile-img-container" v-if="!uploadingProfilePicture">                
                                 <img class="rounded-circle profile-picture-fluid" :src="origLogoURL" width="200" alt="">
-                                <div class="img-overlay">                              
+                                <!-- <div class="img-overlay">                              
                                     <input style="display:none" v-on:change="selectProfilePicture()" ref="logo" id="logo" type="file">
                                     <label for="logo">Change Profile <br> Picture</label>                                    
-                                </div>
+                                </div> -->
                             </div>    
                             <h4 class="pt-3">{{ sponsor.name }}</h4>
                             <p class="text-left">
@@ -28,9 +28,9 @@
                                 <a class="text-dark" v-if="sponsor.facebook" :href="sponsor.facebook"><i class="fab fa-facebook-square"></i></a>
                                 <a class="text-dark" v-if="sponsor.twitter" :href="sponsor.twitter"><i class="fab fa-twitter"></i></a>
                             </p>
-                            <p class="text-left">
+                            <!-- <p class="text-left">
                                 <button class="btn btn-sm edit-profile-btn" @click="editProfile">Edit profile</button>
-                            </p>
+                            </p> -->
                         </div>
                     </div>
                     <div class="col-md-5 mt-10">
