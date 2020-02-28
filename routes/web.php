@@ -82,6 +82,7 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/sponsor/{id}/profile/edit', 'SponsorController@update');
     Route::get('/sponsor/{id}/payment/history', 'PaymentController@paymentHistoryShow');
     Route::put('/sponsor/{id}/profile/updateCover', 'SponsorController@updateCover');
+    Route::post('/sponsor/{id}/profile/updateProfilePicture', 'SponsorController@updateProfilePicture');
     Route::get('/sponsor/{id}/campaign', 'CampaignController@index');
     Route::get('/sponsor/{id}/campaign/list-json', 'CampaignController@list');
     Route::get('/sponsor/{id}/campaign/create', 'CampaignController@create');
@@ -92,6 +93,7 @@ Route::middleware(['auth'])->group(function() {
     // Charities...
     Route::get('charity/{charity}/donation', 'CharityController@getDonations')->name('charities.donations.index');
     Route::get('charity/{charity}/order', 'CharityController@getOrders')->name('charities.orders.index');
+    Route::get('charity/{charity}', 'CharityController@index')->name('charities.index');
     Route::get('/charity/{charity_id}/profile/edit', 'CharityController@show');
     Route::put('/charity/{charity_id}/profile/edit', 'CharityController@update');
     Route::get('charity/{id}/campaign', 'CharityCampaignController@index');
