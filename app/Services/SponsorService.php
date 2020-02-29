@@ -45,7 +45,6 @@ class SponsorService
             $values = [
                 'name' => $data['name'],
                 'hashtags' => $data['hashtags'],
-                'logo' => isset($data['logo'])?$data['logo']: null,
                 'background_image' => isset($data['background_image'])?$data['background_image']: null,
                 'bio' => isset($data['bio'])?$data['bio']: null,
                 'website' => isset($data['website'])?$data['website']: null,
@@ -59,10 +58,13 @@ class SponsorService
                 'country' => isset($data['country'])?$data['country']: null,
                 'company_phone' => isset($data['company_phone'])?$data['company_phone']: null,
                 'email' => isset($data['email'])?$data['email']: null,
-                'background_image' => isset($data['background_image'])?$data['background_image']: null,
                 'balance' => isset($data['balance']) ? floatval($data['balance']) : 0,
                 'budget' => isset($data['budget']) ? floatval($data['budget']) : 0,
             ];
+
+            if (isset($data['logo'])) {
+                $values['logo'] = $data['logo'];
+            }
 
             if (isset($data['id'])) {
                 $sponsor = Sponsor::find($data['id']);
