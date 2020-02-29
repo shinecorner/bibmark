@@ -40,7 +40,6 @@ class CharityService
         if ($user->isSuperAdmin()) {
             $values = [
                 'name' => $data['name'] ?? null,
-                'logo' => $data['logo'] ?? null,
                 'background_image' => $data['background_image'] ?? null,
                 'balance' => isset($data['balance']) ? floatval($data['balance']) : 0,
                 'bio' => $data['bio'] ?? null,
@@ -57,6 +56,9 @@ class CharityService
                 'company_phone' => $data['company_phone'] ?? null,
                 'email' => $data['email'] ?? null,
             ];
+            if (isset($data['logo'])) {
+                $values['logo'] = $data['logo'];
+            }
             if (isset($data['id'])) {
                 $charity = Charity::find($data['id']);
                 if ($charity->update($values)) {

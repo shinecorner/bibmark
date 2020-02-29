@@ -253,7 +253,7 @@
                         }
                     })
                     .then(response => {
-
+                        self.charity = response.data.charity
                         if(response.data.errors) {
                             self.errorsList.slug.valid = false;
                             self.errorsList.slug.messages = response.data.errors.slug;

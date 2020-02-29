@@ -18,6 +18,12 @@ class Slug extends Model
         'slugable_id' => 'required'
     ];
 
+    static $updateRules = [
+        'slug' => 'required|max:255',
+        'slugable_type' => 'required|max:255',
+        'slugable_id' => 'required'
+    ];
+
     /**
      * Get the owning slugable model.
      */

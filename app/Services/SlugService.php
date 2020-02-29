@@ -20,9 +20,13 @@ class SlugService
     /**
      * Validate slug data
      * @param $data
+     * @param $customRules
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function validate($data) {
+    public function validate($data, $customRules = []) {
+        if (!empty($customRules)) {
+            return Validator::make($data, $customRules);
+        }
         return Validator::make($data, Slug::$rules);
     }
 
@@ -52,7 +56,7 @@ class SlugService
      */
     public function updateSlug($data, $id) {
         $updated = false;
-        if (!$this->validate($data)->fails()) {
+        if (!$this->validate($data, Slug::$updateRules)->fails()) {
             $slug = Slug::find($id);
             $slug->setRawAttributes($data);
             $updated = $slug->save();
