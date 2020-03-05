@@ -31,10 +31,8 @@ class SponsorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
-    {
-        $sponsor = Sponsor::find($id);
-
+    public function index(Request $request, Sponsor $sponsor)
+    {        
         return view('front.index-sponsor', [
             'sponsor' => $sponsor,
         ]);

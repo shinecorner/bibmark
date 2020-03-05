@@ -78,7 +78,7 @@ Route::middleware(['auth'])->group(function() {
 
     // Sponsors
     Route::get('/sponsor', 'DesignController@getSponsors');
-    Route::get('/sponsor/{id}', 'SponsorController@index');
+    Route::get('/sponsor/{sponsor}', 'SponsorController@index')->name('sponsor.index')->middleware('slug_detect');
     Route::get('/sponsor/{id}/profile/edit', 'SponsorController@show');
     Route::put('/sponsor/{id}/profile/edit', 'SponsorController@update');
     Route::get('/sponsor/{id}/payment/history', 'PaymentController@paymentHistoryShow');
@@ -94,7 +94,7 @@ Route::middleware(['auth'])->group(function() {
     // Charities...
     Route::get('charity/{charity}/donation', 'CharityController@getDonations')->name('charities.donations.index');
     Route::get('charity/{charity}/order', 'CharityController@getOrders')->name('charities.orders.index');
-    Route::get('charity/{charity}', 'CharityController@index')->name('charities.index');
+    Route::get('charity/{charity}', 'CharityController@index')->name('charity.index')->middleware('slug_detect');
     Route::get('/charity/{charity_id}/profile/edit', 'CharityController@show');
     Route::put('/charity/{charity_id}/profile/edit', 'CharityController@update');
     Route::get('charity/{id}/campaign', 'CharityCampaignController@index');
@@ -103,7 +103,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('charity/{id}/campaign/{campaignId}/edit', 'CharityCampaignController@edit');
     Route::post('charity/{id}/campaign/save', 'CharityCampaignController@createOrUpdate');
     Route::delete('charity-campaign/{id}', 'CharityCampaignController@destroy');
-
+    Route::get('{slug}', 'SlugController@fetch')->name('slug.fetch');    
 });
 
 Route::get('/reset-password/{token}/{email}', 'WebController@resetPasswordPage');

@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'superadmin' => \App\Http\Middleware\CheckSuperAdmin::class,
         'frontauth' => \App\Http\Middleware\CheckAuth::class,
+        'slug_detect' => \App\Http\Middleware\SlugDetect::class
     ];
 
     /**
@@ -79,5 +80,6 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
+        \App\Http\Middleware\SlugDetect::class,
     ];
 }
