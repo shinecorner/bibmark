@@ -133,5 +133,8 @@ class WebController extends Controller
     {
         return view('front.pages.charity');
     }
-    
+
+    public function designDemo() {
+        return view('front.designdemo');
+    }
 }

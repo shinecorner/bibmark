@@ -41,7 +41,7 @@ Vue.use(VueToastr, {
     defaultType: 'info',
     defaultTimeout: 1500
 })
-
+import { Chrome } from 'vue-color'
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -54,6 +54,7 @@ Vue.use(VueToastr, {
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
 
 //frontend
+Vue.component('color-picker', Chrome);
 Vue.component('app-home', require('./pages/home/Home.vue'))
 Vue.component('home-slider', require('./pages/home/Slider.vue'))
 Vue.component('common-header', require('./pages/common/Header.vue'))
@@ -115,6 +116,7 @@ Vue.component('order-list', require('./pages/order/OrderList.vue'))
 
 Vue.component('design-list', require('./pages/design/DesignList.vue'))
 Vue.component('design-edit', require('./pages/design/DesignEdit.vue'))
+Vue.component('design-tool', require('./pages/design_tool/DesignTool.vue'))
 
 Vue.component('dashboard', require('./pages/dashboard/Dasboard.vue'))
 

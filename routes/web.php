@@ -21,6 +21,7 @@ Route::get('/apparel', 'WebController@apparelPage');
 Route::get('/sponsors', 'WebController@sponsorsPage');
 Route::get('/races', 'WebController@racesPage');
 Route::get('/charity', 'WebController@charityPage');
+Route::get('/design-demo', 'WebController@designDemo');
 
 // Footer menus routes
 Route::get('/story', 'FooterPageController@storyPage');
