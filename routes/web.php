@@ -102,8 +102,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('charity/{id}/campaign/create', 'CharityCampaignController@create');
     Route::get('charity/{id}/campaign/{campaignId}/edit', 'CharityCampaignController@edit');
     Route::post('charity/{id}/campaign/save', 'CharityCampaignController@createOrUpdate');
-    Route::delete('charity-campaign/{id}', 'CharityCampaignController@destroy');
-    Route::get('{slug}', 'SlugController@fetch')->name('slug.fetch');    
+    Route::delete('charity-campaign/{id}', 'CharityCampaignController@destroy');        
 });
 
 Route::get('/reset-password/{token}/{email}', 'WebController@resetPasswordPage');
@@ -231,3 +230,4 @@ Route::prefix('internal')->group(function() {
         Route::get('profile', 'ProfileController@index')->name('profile');
     });
 });
+Route::get('{slug}', 'SlugController@fetch')->name('slug.fetch')->middleware(['auth']);

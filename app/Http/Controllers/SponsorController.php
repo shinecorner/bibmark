@@ -70,7 +70,7 @@ class SponsorController extends Controller
         return view('front.edit-sponsor')->with([
             'sponsor' => $sponsor,
             'id' => $id,
-            'slug' => $sponsor->slug()->first() ? $sponsor->slug->slug : ''
+            'slug' => $sponsor->slug() ? $sponsor->slug()->slug : ''
         ]);
     }
 

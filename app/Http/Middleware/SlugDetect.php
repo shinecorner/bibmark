@@ -19,10 +19,10 @@ class SlugDetect
     {       
         $slug = null; 
         if($request->route()->named('charity.index')){
-            $slug = $request->charity->slug()->first();                        
+            $slug = $request->charity->slug();                        
         }
         elseif($request->route()->named('sponsor.index')){            
-            $slug = $request->sponsor->slug()->first();            
+            $slug = $request->sponsor->slug();            
         }
         if($slug){
             return redirect()->route('slug.fetch', ['slug' => $slug]);

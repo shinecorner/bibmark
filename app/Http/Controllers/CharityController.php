@@ -58,7 +58,7 @@ class CharityController extends Controller
         return view('front.edit-charity', [
             'charity' => $charity,
             'id' => $charity_id,
-            'slug' => $charity->slug()->first() ? $charity->slug->slug : ''
+            'slug' => $charity->slug() ? $charity->slug()->slug : ''
         ]);
     }
 

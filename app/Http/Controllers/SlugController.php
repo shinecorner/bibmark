@@ -20,10 +20,8 @@ class SlugController extends Controller
     {        
         if($slug->slugable_type == 'App\Models\Sponsor'){     
             $sponsor = Sponsor::find($slug->slugable_id);
-            if($sponsor){
-                return view('front.index-sponsor', [
-                    'sponsor' => $sponsor,
-                ]);
+            if($sponsor){                
+                return app('App\Http\Controllers\SponsorController')->index($request, $sponsor);
             }
             else{
                 abort(404);
@@ -32,9 +30,7 @@ class SlugController extends Controller
         elseif($slug->slugable_type == 'App\Models\Charity'){
             $charity = Charity::find($slug->slugable_id);
             if($charity){
-                return view('front.index-charity', [
-                    'charity' => $charity,
-                ]);
+                return app('App\Http\Controllers\CharityController')->index($request, $charity);
             }
             else{
                 abort(404);

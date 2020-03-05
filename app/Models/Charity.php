@@ -54,7 +54,7 @@ class Charity extends Model
      */
     public function slug()
     {
-        return $this->morphOne(\App\Models\Slug::class, 'slugable');
+        return $this->morphOne(\App\Models\Slug::class, 'slugable')->first();
     }
 
     /**
