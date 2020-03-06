@@ -8,7 +8,7 @@
         </button>
         <div class="collapse navbar-collapse align-self-center" id="collapsibleNavbar">
             <div class="d-flex justify-content-between w-100">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav mx-auto">
                     <li class="nav-item default-space">
                         <a class="nav-link black" :class="{ active: isActive('/tech') }" href="/tech">THE&nbsp;TECH</a>
                     </li>
