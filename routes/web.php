@@ -44,10 +44,18 @@ Route::get('/join', 'WebController@joinPage')->middleware('frontauth');
 
 Route::post('login', 'WebController@doLogin')->name('dologin');
 
-Route::middleware(['guest'])->group(function() {
-    Route::post('login', 'WebController@doLogin')->name('dologin');
-    Route::get('/forgot-password', 'WebController@forgotPasswordPage');
+Route::get('/forgot-password', 'PasswordResetController@forgotPasswordPage');
+Route::post('/forgot-password', 'PasswordResetController@forgotPassword');
+
+Route::get('/reset-password/{token}/{email}', 'PasswordResetController@resetPasswordPage');
+Route::post('/reset-password', 'PasswordResetController@resetPassword');
+
+Route::group([  'prefix' => 'password'], function () {
+    Route::post('create', 'PasswordResetController@create');
+    // Route::get('find/{token}', 'PasswordResetController@find');
+    // Route::post('reset', 'PasswordResetController@reset');
 });
+//Route::get('admin/password/reset/{token}', 'Admin\AdminController@resetPassword');
 
 Route::middleware(['auth'])->group(function() {
     Route::get('doLogout', 'WebController@doLogout')->name('doLogout');
@@ -105,13 +113,7 @@ Route::middleware(['auth'])->group(function() {
     Route::delete('charity-campaign/{id}', 'CharityCampaignController@destroy');        
 });
 
-Route::get('/reset-password/{token}/{email}', 'WebController@resetPasswordPage');
-Route::get('/reset-password', 'WebController@showResetForm');
-Route::group([  'prefix' => 'password'], function () {
-    Route::post('create', 'PasswordResetController@create');
-    // Route::get('find/{token}', 'PasswordResetController@find');
-    // Route::post('reset', 'PasswordResetController@reset');
-});
+
 
 // backend
 Route::namespace('Admin')->middleware(['auth'])->group(function() {
@@ -144,10 +146,6 @@ Route::namespace('Admin')->middleware(['auth'])->group(function() {
     });
 });
 
-
-//Route::get('admin/password/reset/{token}', 'Admin\AdminController@resetPassword');
-Route::post('/forgot-password', 'Admin\AdminController@forgotPassword');
-Route::post('/reset-password', 'Admin\AdminController@resetPassword');
 
 Route::prefix('internal')->group(function() {
 
