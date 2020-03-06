@@ -49,13 +49,7 @@ Route::post('/forgot-password', 'PasswordResetController@forgotPassword');
 
 Route::get('/reset-password/{token}/{email}', 'PasswordResetController@resetPasswordPage');
 Route::post('/reset-password', 'PasswordResetController@resetPassword');
-
-Route::group([  'prefix' => 'password'], function () {
-    Route::post('create', 'PasswordResetController@create');
-    // Route::get('find/{token}', 'PasswordResetController@find');
-    // Route::post('reset', 'PasswordResetController@reset');
-});
-//Route::get('admin/password/reset/{token}', 'Admin\AdminController@resetPassword');
+Route::post('/create-password-token', 'PasswordResetController@create');
 
 Route::middleware(['auth'])->group(function() {
     Route::get('doLogout', 'WebController@doLogout')->name('doLogout');
@@ -220,9 +214,7 @@ Route::prefix('internal')->group(function() {
         Route::delete('design/{design_id}', 'InternalController@deleteDesign');
 
         // extra
-        Route::post('image/upload', 'InternalController@uploadImage');
-        Route::post('password/create', 'PasswordResetController@create');
-        Route::post('password/reset', 'PasswordResetController@reset');
+        Route::post('image/upload', 'InternalController@uploadImage');        
 
         // profile
         Route::get('profile', 'ProfileController@index')->name('profile');

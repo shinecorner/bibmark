@@ -188,7 +188,7 @@ export default {
                 }
             });
             var self = this;
-            axios.post('/internal/password/create', {
+            axios.post('/create-password-token', {
                 email: this.email
             }).then((response) => {
                 $('#user-list').unblock();

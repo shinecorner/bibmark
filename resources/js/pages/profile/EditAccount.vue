@@ -108,7 +108,7 @@
                 email: this.email
             }
             console.log(data)
-            axios.post('/password/create', data).then(response => {
+            axios.post('/create-password-token', data).then(response => {
                     console.log(response.data.message);
                     //alert(response.data.message)
                     this.$toastr('success', response.data.message, 'Success')
