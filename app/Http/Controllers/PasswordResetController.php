@@ -27,7 +27,7 @@ class PasswordResetController extends Controller
         $email = $request->get('email');
         $user = User::where('email', $email)->first();
         if (!$user) {
-            return response()->json(['success'=>false, 'msg' => 'The user for this email does not exist.']);
+            return response()->json(['success'=>false, 'message' => 'The user for this email does not exist.']);
         }
 
         $token = app('auth.password.broker')->createToken($user);
@@ -35,7 +35,7 @@ class PasswordResetController extends Controller
         Mail::send('emails.password', ['token' => $token, 'email' => $email], function ($message) use ($user, $email) {
             $message->to($email)->subject('Reset Password');
         });
-        return response()->json(['success'=>true, 'msg' => 'The email was sent. Please check your email box']);
+        return response()->json(['success'=>true, 'message' => 'The email was sent. Please check your email box']);
     }
 
     public function resetPasswordPage($token, $email)
@@ -62,7 +62,7 @@ class PasswordResetController extends Controller
             ->first();
 
         if (!$token) {
-            return response()->json(['success'=>false, 'msg'=>'We can not find a user with that email address.']);
+            return response()->json(['success'=>false, 'message'=>'We can not find a user with that email address.']);
         }
 
         $user->password = bcrypt($request->get('password'));
@@ -70,7 +70,7 @@ class PasswordResetController extends Controller
 
         \DB::table('password_resets')->where('email', $token->email)->delete();
 
-        return response()->json(['success'=>true, 'msg'=>'Your password has been reset.']);
+        return response()->json(['success'=>true, 'message'=>'Your password has been reset.']);
     }
     /**
      * Create token password reset
@@ -83,6 +83,7 @@ class PasswordResetController extends Controller
         $user = User::where('email', $request->email)->first();
         if (!$user) {
             return response()->json([
+                'success'=>false,
                 'message' => 'We can\'t find a user with that e-mail address.'
             ], 404);
         }
@@ -98,6 +99,7 @@ class PasswordResetController extends Controller
         }
 
         return response()->json([
+            'success'=>true,
             'message' => 'We have e-mailed your password reset link!'
         ]);
     }
