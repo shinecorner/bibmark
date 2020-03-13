@@ -134,6 +134,8 @@ Route::namespace('Admin')->middleware(['auth'])->group(function() {
         Route::resource('events', 'EventController')->only(['index', 'show', 'create', 'edit']);
         Route::get('/event/{event_id}/home', 'AdminController@dashboardEvent');
         Route::resource('users', 'UserController')->only(['index', 'show', 'create', 'edit']);
+        Route::get('/user/{user}/change-password', 'UserController@changePassword');
+        Route::post('/user/{user}/change-password', 'UserController@savePassword');
         Route::resource('products', 'ProductController')->only(['index', 'show', 'create', 'edit']);
         Route::resource('locations', 'LocationController')->only(['index', 'show', 'create', 'edit']);
         Route::resource('orders', 'OrderController')->only(['index', 'show', 'create', 'edit']);

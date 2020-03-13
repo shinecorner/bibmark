@@ -47,7 +47,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('admin.pages.user.show', [
+            'user' => $user
+        ]);
     }
 
     /**
@@ -74,7 +76,23 @@ class UserController extends Controller
     {
         //
     }
-
+    public function changePassword(Request $request, User $user)
+    {        
+        return view('admin.pages.user.change_password', [
+            'user' => $user
+        ]);
+    }
+    public function savePassword(Request $request, User $user)
+    {      
+        $response = ['success' => false, 'message' => 'There is an error while update password'];
+        if($user){
+            $user->password = bcrypt($request->password);
+            $user->save();
+            $response['message'] = 'Password updated successfully';
+            $response['success'] = true;            
+        } 
+        return response()->json($response);        
+    }
     /**
      * Remove the specified resource from storage.
      *

@@ -104,6 +104,8 @@ Vue.component('event-detail-page', require('./pages/event/EventDetailPage.vue'))
 
 Vue.component('user-list', require('./pages/user/UserList.vue'))
 Vue.component('user-edit', require('./pages/user/UserEdit.vue'))
+Vue.component('user-show', require('./pages/user/UserShow.vue'))
+Vue.component('user-change-password', require('./pages/user/UserChangePassword.vue'))
 
 Vue.component('product-list', require('./pages/product/ProductList.vue'))
 Vue.component('product-edit', require('./pages/product/ProductEdit.vue'))

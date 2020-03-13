@@ -82,6 +82,7 @@ export default {
                         '<a class="dropdown-item" href="/' + data[0] + '">View user</a>' +
                         '<a class="dropdown-item btn-remove" href="javascript:void(0)" data="' + data[0] + '">Remove</a>' +
                         '<a class="dropdown-item btn-reset-password" href="javascript:void(0)" data="' + data[2] + '">Reset Password</a>' +
+                        '<a class="dropdown-item btn-change-password" href="javascript:void(0)" onclick="window.location=\'user/' + data[0] + '/change-password\'">Change Password</a>' +
                         '</div>' +
                     '</div>'
                     );
@@ -132,6 +133,7 @@ export default {
                         '<a class="dropdown-item" href="/' + data[0] + '">View user</a>' +
                         '<a class="dropdown-item btn-remove" href="javascript:void(0)" data="' + data[0] + '">Remove</a>' +
                         '<a class="dropdown-item btn-reset-password" href="javascript:void(0)" data="' + data[2] + '">Reset Password</a>' +
+                        '<a class="dropdown-item btn-change-password" href="javascript:void(0)" onclick="window.location=\'user/' + data[0] + '/change-password\'">Change Password</a>' +
                         '</div>' +
                     '</div>'
                     );
