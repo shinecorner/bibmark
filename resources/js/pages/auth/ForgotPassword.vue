@@ -1,7 +1,7 @@
 <template>
     <div class="auth-forgot-password">
         <div class="container auth-forgot-password-container">
-            <form class="auth-forgot-password-form" >
+            <form class="auth-forgot-password-form" @submit.prevent="submit">
                 <div class="form-title text-center">
                     Forgot Password
                 </div>
@@ -15,7 +15,7 @@
                     <div class="error">
                         <div v-if="errors.has('email')" class="invalid-feedback">{{ errors.first('email') }}</div>
                         <div v-show="error" class="invalid-feedback">{{error}}</div>
-                        <div v-show="msg" class="invalid-feedback">{{msg}}</div>
+                        <div v-show="message" class="invalid-feedback">{{message}}</div>
                     </div>
                 </div>
                 <div class="form-row">
@@ -42,18 +42,26 @@
         data: () => ({
             email: '',
             error: '',
-            msg: '',
+            message: '',
         }),
         methods: {
             submit() {
                 this.$validator.validate().then(result => {
                     if (result) {
-                        axios.post('forgot-password', {email: this.email}).then((res) => {
-                            if (res.data.error)
-                                this.error = res.data.error;
+                        axios.post('create-password-token', {email: this.email}).then((res) => {
+                            if (res.data.success)
+                                this.error = res.data.message;
                             else {
-                                this.msg = res.data.msg;
+                                this.message = res.data.message;
                             }
+                        }) .catch((error) => {                                                       
+                            if(error.response.hasOwnProperty("data")){
+                                this.error = error.response.data.message;
+                            }
+                            else{
+                                this.error = error.response.statusText;
+                            }
+
                         })
                     }
                 });

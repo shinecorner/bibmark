@@ -19,7 +19,7 @@
             <!-- / Logo -->
 
             <!-- Form -->
-            <form class="my-5" method="POST" action="{{ url('internal/password/reset') }}">
+            <form class="my-5" method="POST" action="{{ url('reset-password') }}">
             @csrf
                 <input type="hidden" name="token" value="{{ $token }}">
                 <div class="form-group">

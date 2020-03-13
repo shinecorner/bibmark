@@ -44,7 +44,7 @@ class PasswordResetRequestNotification extends Notification implements ShouldQue
      */
     public function toMail($notifiable)
     {
-        $url = url('/admin/password/reset/' . $this->token);
+        $url = url('/reset-password/' . $this->token . '/' . $this->user->email);
 
         return (new MailMessage)
                     ->subject('Password Reset')

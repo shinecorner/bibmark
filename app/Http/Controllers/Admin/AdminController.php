@@ -84,56 +84,5 @@ class AdminController extends Controller
         return view('admin.pages.dashboard.event', [
             'eventId' => $eventId
         ]);
-    }
-
-    /**
-     * forgot-password
-     *
-     * @param \Illuminate\Http\Request
-     * @return \Illuminate\Http\Response
-     */
-    public function forgotPassword(Request $request)
-    {
-        $email = $request->get('email');
-        $user = User::where('email', $email)->first();
-        if (!$user) {
-            return response()->json(['success'=>false, 'msg' => 'The user for this email does not exist.']);
-        }
-
-        $token = app('auth.password.broker')->createToken($user);
-
-        Mail::send('emails.password', ['token' => $token, 'email' => $email], function ($message) use ($user, $email) {
-            $message->to($email)->subject('Reset Password');
-        });
-        return response()->json(['success'=>true, 'msg' => 'The email was sent. Please check your email box']);
-    }
-
-    /**
-     * reset password
-     *
-     * @param \Illuminate\Http\Request
-     * @return \Illuminate\Http\Response
-     */
-    public function resetPassword(Request $request)
-    {
-        $user = User::where('email', $request->get('email'))->first();
-        if (!$user) {
-            return response()->json(['success'=>false,'error' => 'The user for this email does not exist.']);
-        }
-
-        $token = \DB::table('password_resets')
-            ->where('email', $user->email)
-            ->first();
-
-        if (!$token) {
-            return response()->json(['success'=>false, 'msg'=>'We can not find a user with that email address.']);
-        }
-
-        $user->password = bcrypt($request->get('password'));
-        $user->save();
-
-        \DB::table('password_resets')->where('email', $token->email)->delete();
-
-        return response()->json(['success'=>true, 'msg'=>'Your password has been reset.']);
-    }
+    }    
 }

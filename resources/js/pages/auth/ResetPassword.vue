@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="error">
-                    <div v-show="msg" class="invalid-feedback">{{msg}}</div>
+                    <div v-show="message" class="invalid-feedback">{{message}}</div>
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-12">
@@ -53,7 +53,7 @@
         data: () => ({
             password: '',
             confirmPassword: '',
-            msg: ''
+            message: ''
         }),
 
         props: ['token', 'email'],
@@ -66,7 +66,7 @@
                             email: this.email,
                             password: this.password
                         }).then((res) => {
-                            // this.msg = res.data.msg;
+                            // this.message = res.data.message;
                             if (res.data.success == true) {
                                 window.location.href = '/login';
                             }
