@@ -102,6 +102,7 @@
     .charity-common {
         padding: 0;
         background-color: white;
+        margin-top: -113px;
 
         .main-section {
             display: -webkit-flex;
@@ -113,7 +114,7 @@
         }
 
         .image-wrapper {
-            height: 431px;
+            height: 544px;
             width: 100%;
             margin-bottom: 29px;
             position: relative;
