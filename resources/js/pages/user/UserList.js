@@ -39,6 +39,7 @@ export default {
               });
         },
         getUsersUnderSponsor: function(callback) {
+            var self = this;
             $('#user-list').dataTable({
                 "destroy": true,
                 "ajax": {
@@ -75,7 +76,7 @@ export default {
                     );
 
                     $('td', row).eq(5).addClass('text-center text-nowrap').html('').append(
-                    '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'users/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
+                    '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'' + self.sponsorId + '/users/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
                     '<div class="btn-group">' +
                         '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat dropdown-toggle hide-arrow user-tooltip" title="Actions" data-toggle="dropdown"><i class="ion ion-ios-settings"></i></button>' +
                         '<div class="dropdown-menu' + (isRtl ? '' : ' dropdown-menu-right') + '">' +
