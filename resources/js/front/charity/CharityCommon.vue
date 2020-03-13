@@ -21,7 +21,7 @@
                             :key="index" @click="redirect(item.url)">{{item.text}}</span>
                     </div>
                     <div class="col-9 offset-1 pr-4vw">
-                        <slot name="setting-content" :cover="cover"></slot>
+                        <slot name="charity-content" :cover="cover"></slot>
                     </div>
                 </div>
         </template>

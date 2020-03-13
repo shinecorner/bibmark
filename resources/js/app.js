@@ -55,90 +55,89 @@ import { Chrome } from 'vue-color'
 
 //frontend
 Vue.component('color-picker', Chrome);
-Vue.component('app-home', require('./pages/home/Home.vue'))
-Vue.component('home-slider', require('./pages/home/Slider.vue'))
-Vue.component('common-header', require('./pages/common/Header.vue'))
-Vue.component('common-footer', require('./pages/common/Footer.vue'))
+Vue.component('app-home', require('./front/home/Home.vue'))
+Vue.component('home-slider', require('./front/home/Slider.vue'))
+Vue.component('common-header', require('./front/common/Header.vue'))
+Vue.component('common-footer', require('./front/common/Footer.vue'))
 
-Vue.component('auth-login', require('./pages/auth/Login.vue'))
-Vue.component('auth-join', require('./pages/auth/Join.vue'))
-Vue.component('auth-forgot-password', require('./pages/auth/ForgotPassword.vue'))
-Vue.component('auth-reset-password', require('./pages/auth/ResetPassword.vue'))
+Vue.component('auth-login', require('./front/auth/Login.vue'))
+Vue.component('auth-join', require('./front/auth/Join.vue'))
+Vue.component('auth-forgot-password', require('./front/auth/ForgotPassword.vue'))
+Vue.component('auth-reset-password', require('./front/auth/ResetPassword.vue'))
 
-Vue.component('user-profile', require('./pages/profile/Profile.vue'))
-Vue.component('edit-account', require('./pages/profile/EditAccount.vue'))
-Vue.component('my-events', require('./pages/profile/MyEvents.vue'))
-Vue.component('my-designs', require('./pages/profile/MyDesigns.vue'))
+Vue.component('user-profile', require('./front/profile/Profile.vue'))
+Vue.component('edit-account', require('./front/profile/EditAccount.vue'))
+Vue.component('my-events', require('./front/profile/MyEvents.vue'))
+Vue.component('my-designs', require('./front/profile/MyDesigns.vue'))
 
 // backend
-Vue.component('sponsor-common', require('./pages/sponsor/SponsorCommon.vue'))
-Vue.component('sponsor-list', require('./pages/sponsor/SponsorList.vue'))
-Vue.component('sponsor-edit', require('./pages/sponsor/SponsorEdit.vue'))
-Vue.component('sponsor-show', require('./pages/sponsor/SponsorShow.vue'))
-Vue.component('sponsor-detail-page', require('./pages/sponsor/SponsorDetailPage.vue'))
-Vue.component('sponsor-edit-page', require('./pages/sponsor/SponsorEditPage.vue'))
-Vue.component('sponsor-index', require('./pages/sponsor/SponsorIndex.vue'))
+Vue.component('sponsor-list', require('./admin/sponsor/SponsorList.vue'))
+Vue.component('sponsor-edit', require('./admin/sponsor/SponsorEdit.vue'))
+Vue.component('sponsor-show', require('./admin/sponsor/SponsorShow.vue'))
+Vue.component('sponsor-detail-page', require('./admin/sponsor/SponsorDetailPage.vue'))
+Vue.component('sponsor-edit-page', require('./front/sponsor/SponsorEditPage.vue'))
+Vue.component('sponsor-index', require('./front/sponsor/SponsorIndex.vue'))
 
 
-Vue.component('campaign-page', require('./pages/sponsor/CampaignPage.vue'))
-Vue.component('add-campaign', require('./pages/sponsor/AddCampaign.vue'))
+Vue.component('campaign-page', require('./front/sponsor/CampaignPage.vue'))
+Vue.component('add-campaign', require('./front/sponsor/AddCampaign.vue'))
+Vue.component('sponsor-common', require('./front/sponsor/SponsorCommon.vue'))
+Vue.component('payment-history-list', require('./front/sponsor/PaymentHistoryList.vue'))
+Vue.component('payment-history-page', require('./front/sponsor/PaymentHistoryPage.vue'))
 
-Vue.component('payment-history-list', require('./pages/sponsor/PaymentHistoryList.vue'))
-Vue.component('payment-history-page', require('./pages/sponsor/PaymentHistoryPage.vue'))
+Vue.component('charity-list', require('./admin/charity/CharityList.vue'))
+Vue.component('charity-edit', require('./admin/charity/CharityEdit.vue'))
+Vue.component('charity-show', require('./admin/charity/CharityShow.vue'))
+Vue.component('charity-detail-page', require('./admin/charity/CharityDetailPage.vue'))
+Vue.component('charity-edit-page', require('./front/charity/CharityEditPage.vue'))
 
-Vue.component('charity-list', require('./pages/charity/CharityList.vue'))
-Vue.component('charity-edit', require('./pages/charity/CharityEdit.vue'))
-Vue.component('charity-show', require('./pages/charity/CharityShow.vue'))
-Vue.component('charity-detail-page', require('./pages/charity/CharityDetailPage.vue'))
-Vue.component('charity-edit-page', require('./pages/charity/CharityEditPage.vue'))
+Vue.component('asset-list', require('./admin/asset/AssetList.vue'))
+Vue.component('asset-edit', require('./admin/asset/AssetEdit.vue'))
+Vue.component('asset-show', require('./admin/asset/AssetShow.vue'))
+Vue.component('asset-detail-page', require('./admin/asset/AssetDetailPage.vue'))
 
-Vue.component('asset-list', require('./pages/asset/AssetList.vue'))
-Vue.component('asset-edit', require('./pages/asset/AssetEdit.vue'))
-Vue.component('asset-show', require('./pages/asset/AssetShow.vue'))
-Vue.component('asset-detail-page', require('./pages/asset/AssetDetailPage.vue'))
+Vue.component('event-list', require('./admin/event/EventList.vue'))
+Vue.component('event-edit', require('./admin/event/EventEdit.vue'))
+Vue.component('event-show', require('./admin/event/EventShow.vue'))
+Vue.component('event-detail-page', require('./admin/event/EventDetailPage.vue'))
 
-Vue.component('event-list', require('./pages/event/EventList.vue'))
-Vue.component('event-edit', require('./pages/event/EventEdit.vue'))
-Vue.component('event-show', require('./pages/event/EventShow.vue'))
-Vue.component('event-detail-page', require('./pages/event/EventDetailPage.vue'))
+Vue.component('user-list', require('./admin/user/UserList.vue'))
+Vue.component('user-edit', require('./admin/user/UserEdit.vue'))
+Vue.component('user-show', require('./admin/user/UserShow.vue'))
+Vue.component('user-change-password', require('./admin/user/UserChangePassword.vue'))
 
-Vue.component('user-list', require('./pages/user/UserList.vue'))
-Vue.component('user-edit', require('./pages/user/UserEdit.vue'))
-Vue.component('user-show', require('./pages/user/UserShow.vue'))
-Vue.component('user-change-password', require('./pages/user/UserChangePassword.vue'))
+Vue.component('product-list', require('./admin/product/ProductList.vue'))
+Vue.component('product-edit', require('./admin/product/ProductEdit.vue'))
 
-Vue.component('product-list', require('./pages/product/ProductList.vue'))
-Vue.component('product-edit', require('./pages/product/ProductEdit.vue'))
+Vue.component('location-list', require('./admin/location/LocationList.vue'))
+Vue.component('location-create', require('./admin/location/LocationCreate.vue'))
+Vue.component('location-edit', require('./admin/location/LocationEdit.vue'))
 
-Vue.component('location-list', require('./pages/location/LocationList.vue'))
-Vue.component('location-create', require('./pages/location/LocationCreate.vue'))
-Vue.component('location-edit', require('./pages/location/LocationEdit.vue'))
+Vue.component('order-list', require('./admin/order/OrderList.vue'))
 
-Vue.component('order-list', require('./pages/order/OrderList.vue'))
+Vue.component('design-list', require('./admin/design/DesignList.vue'))
+Vue.component('design-edit', require('./admin/design/DesignEdit.vue'))
+Vue.component('design-tool', require('./front/design_tool/DesignTool.vue'))
 
-Vue.component('design-list', require('./pages/design/DesignList.vue'))
-Vue.component('design-edit', require('./pages/design/DesignEdit.vue'))
-Vue.component('design-tool', require('./pages/design_tool/DesignTool.vue'))
+Vue.component('dashboard', require('./admin/dashboard/Dasboard.vue'))
 
-Vue.component('dashboard', require('./pages/dashboard/Dasboard.vue'))
+Vue.component('cart', require('./front/cart/Cart.vue'))
 
-Vue.component('cart', require('./pages/cart/Cart.vue'))
+// Vue.component('Design', require('./pages/design/Design.vue'))
 
-Vue.component('Design', require('./pages/design/Design.vue'))
-
-Vue.component('Apparel', require('./pages/apparel/Product.vue'))
+Vue.component('Apparel', require('./front/apparel/Product.vue'))
 
 // common component
-Vue.component('hash-tag', require('./pages/common/components/Hashtag.vue'))
-Vue.component('logo-width', require('./pages/common/components/LogoWidth.vue'))
+Vue.component('hash-tag', require('./front/common/components/Hashtag.vue'))
+Vue.component('logo-width', require('./front/common/components/LogoWidth.vue'))
 
 // Charity Donation...
-Vue.component('charity-common', require('./pages/charity/CharityCommon.vue'))
-Vue.component('charity-donation-list', require('./pages/charity/CharityDonationList.vue'))
-Vue.component('charity-order-list', require('./pages/charity/CharityOrderList.vue'))
-Vue.component('charity-index', require('./pages/charity/CharityIndex.vue'))
-Vue.component('charity-campaign-page', require('./pages/charity/CampaignPage.vue'))
-Vue.component('add-charity-campaign', require('./pages/charity/AddCampaign.vue'))
+Vue.component('charity-common', require('./front/charity/CharityCommon.vue'))
+Vue.component('charity-donation-list', require('./front/charity/CharityDonationList.vue'))
+Vue.component('charity-order-list', require('./front/charity/CharityOrderList.vue'))
+Vue.component('charity-index', require('./front/charity/CharityIndex.vue'))
+Vue.component('charity-campaign-page', require('./front/charity/CampaignPage.vue'))
+Vue.component('add-charity-campaign', require('./front/charity/AddCampaign.vue'))
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
