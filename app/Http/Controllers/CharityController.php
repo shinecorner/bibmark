@@ -144,4 +144,10 @@ class CharityController extends Controller
 
         return $this->{$service}->getPosts($tags);
     }
+    public function report(Request $request, Charity $charity)
+    {
+        return view('front.charities.report.index', [
+            'charity' => $charity
+        ]);
+    }
 }

@@ -69,7 +69,12 @@ export default {
                     '<div class="btn-group">' +
                         '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat dropdown-toggle hide-arrow user-tooltip" title="Actions" data-toggle="dropdown"><i class="ion ion-ios-settings"></i></button>' +
                         '<div class="dropdown-menu' + (isRtl ? '' : ' dropdown-menu-right') + '">' +
-                        '<a class="dropdown-item" href="charities/' + data[0] + '">View charity</a>' +
+                        '<a target="_blank" class="dropdown-item" href="/charity/' + data[0] + '">View charity</a>' +
+                        '<a target="_blank" class="dropdown-item" href="/charity/' + data[0] + '/profile/edit">Profile Edit</a>' +
+                        '<a target="_blank" class="dropdown-item" href="/charity/' + data[0] + '/donation' + '">Donation</a>' +
+                        '<a target="_blank" class="dropdown-item" href="/charity/' + data[0] + '/order' + '">Order</a>' +
+                        '<a target="_blank" class="dropdown-item" href="/charity/' + data[0] + '/campaign' + '">Campaign</a>' +
+                        '<a target="_blank" class="dropdown-item" href="/charity/' + data[0] + '/report' + '">Report</a>' +
                         '<a class="dropdown-item btn-remove" href="javascript:void(0)" data="' + data[0] + '">Remove</a>' +
                         '</div>' +
                     '</div>'

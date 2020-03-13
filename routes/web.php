@@ -99,7 +99,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('charity/{charity}', 'CharityController@index')->name('charity.index')->middleware('slug_detect');
     Route::get('/charity/{charity_id}/profile/edit', 'CharityController@show');
     Route::put('/charity/{charity_id}/profile/edit', 'CharityController@update');
-    Route::get('charity/{id}/campaign', 'CharityCampaignController@index');
+    Route::get('charity/{id}/report', 'CharityController@report')->name('charity.report');
+    Route::get('charity/{id}/campaign', 'CharityCampaignController@index');    
     Route::get('charity/{id}/campaign/list-json', 'CharityCampaignController@list');
     Route::get('charity/{id}/campaign/create', 'CharityCampaignController@create');
     Route::get('charity/{id}/campaign/{campaignId}/edit', 'CharityCampaignController@edit');
