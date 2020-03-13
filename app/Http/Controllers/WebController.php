@@ -16,7 +16,11 @@ class WebController extends Controller
     }
 
     public function loginPage()
-    {
+    {        
+        if(!session()->has('url.intended'))
+        {
+            session(['url.intended' => url()->previous()]);
+        }
         return view('front.auth.login');
     }
 
@@ -68,7 +72,8 @@ class WebController extends Controller
             // attempt to do the login
             if (Auth::attempt($userdata)) {
 
-                return Redirect::to('/profile');
+                // return Redirect::to('/profile');
+                return redirect(session('url.intended'));
 
             } else {
 

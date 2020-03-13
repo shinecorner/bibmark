@@ -10,7 +10,7 @@
 @section('content')
 {{-- <auth-login></auth-login> --}}
 <div class="auth-login">
-    <div class="container auth-login-container">
+    <div class="container auth-login-container">        
         <form class="auth-login-form" method="POST" action="{{ route('dologin') }}">
                 @csrf
             <div class="form-title text-center mb-5">

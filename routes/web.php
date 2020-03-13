@@ -111,7 +111,7 @@ Route::middleware(['auth'])->group(function() {
 
 
 // backend
-Route::namespace('Admin')->middleware(['auth'])->group(function() {
+Route::namespace('Admin')->middleware(['auth','superadmin'])->group(function() {
 
     Route::prefix('dashboard')->group(function() {
         Route::get('/', 'AdminController@dashboard')->name('dashboard');

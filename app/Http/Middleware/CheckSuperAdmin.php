@@ -21,6 +21,6 @@ class CheckSuperAdmin
             return $next($request);
         }
         
-        return redirect('/dashboard/settings');
+        return redirect('/');
     }
 }
