@@ -3,19 +3,19 @@
         <div class="card" id="input-form">
             <div class="card-body pb-2">
                 
-                    <div class="row">
+                    <div class="row mb-2">
                         <label for="staticEmail" class="col-sm-2 form-label">Name</label>
                             <div class="col-sm-10">
                                 {{user.name}}
                             </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-2">
                         <label for="staticEmail" class="col-sm-2 form-label">Email</label>
                             <div class="col-sm-10">
                                 {{user.email}}
                             </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-2">
                         <label for="staticEmail" class="col-sm-2 form-label">Phone</label>
                             <div class="col-sm-10">
                                 {{user.phone}}

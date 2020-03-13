@@ -10,7 +10,7 @@
 
 @section('content')
     <h4 class="font-weight-bold py-3 mb-4">
-    Edit user <span class="text-muted">#{{ $user->id }}</span>
+    Show User <span class="text-muted">#{{ $user->id }}</span>
     </h4>
     <user-show :user="{{ $user }}"></user-show>
 @endsection

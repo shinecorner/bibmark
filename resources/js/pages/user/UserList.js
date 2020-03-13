@@ -72,18 +72,18 @@ export default {
                 "createdRow": function (row, data, index) {
                     var isRtl = $('body').attr('dir') === 'rtl' || $('html').attr('dir') === 'rtl';
                     $('td', row).eq(1).html('').append(
-                        '<a href="users/' + data[0] + '">' + data[1] + '</a>'
+                        '<a href="/dashboard/users/' + data[0] + '">' + data[1] + '</a>'
                     );
 
                     $('td', row).eq(5).addClass('text-center text-nowrap').html('').append(
-                    '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'' + self.sponsorId + '/users/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
+                    '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat user-tooltip" title="Edit" onclick="window.location=\'/dashboard/users/' + data[0] + '/edit\'"><i class="ion ion-md-create"></i></button>&nbsp;&nbsp;' +
                     '<div class="btn-group">' +
                         '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat dropdown-toggle hide-arrow user-tooltip" title="Actions" data-toggle="dropdown"><i class="ion ion-ios-settings"></i></button>' +
                         '<div class="dropdown-menu' + (isRtl ? '' : ' dropdown-menu-right') + '">' +
-                        '<a class="dropdown-item" href="/' + data[0] + '">View user</a>' +
+                        '<a class="dropdown-item" href="/dashboard/users/' + data[0] + '">View user</a>' +
                         '<a class="dropdown-item btn-remove" href="javascript:void(0)" data="' + data[0] + '">Remove</a>' +
                         '<a class="dropdown-item btn-reset-password" href="javascript:void(0)" data="' + data[2] + '">Reset Password</a>' +
-                        '<a class="dropdown-item btn-change-password" href="javascript:void(0)" onclick="window.location=\'user/' + data[0] + '/change-password\'">Change Password</a>' +
+                        '<a class="dropdown-item btn-change-password" href="javascript:void(0)" onclick="window.location=\'/dashboard/user/' + data[0] + '/change-password\'">Change Password</a>' +
                         '</div>' +
                     '</div>'
                     );
@@ -123,7 +123,7 @@ export default {
                 "createdRow": function (row, data, index) {
                     var isRtl = $('body').attr('dir') === 'rtl' || $('html').attr('dir') === 'rtl';
                     $('td', row).eq(1).html('').append(
-                        '<a href="users/' + data[0] + '">' + data[1] + '</a>'
+                        '<a href="/dashboard/users/' + data[0] + '">' + data[1] + '</a>'
                     );
 
                     $('td', row).eq(5).addClass('text-center text-nowrap').html('').append(
@@ -131,7 +131,7 @@ export default {
                     '<div class="btn-group">' +
                         '<button type="button" class="btn btn-default btn-xs icon-btn md-btn-flat dropdown-toggle hide-arrow user-tooltip" title="Actions" data-toggle="dropdown"><i class="ion ion-ios-settings"></i></button>' +
                         '<div class="dropdown-menu' + (isRtl ? '' : ' dropdown-menu-right') + '">' +
-                        '<a class="dropdown-item" href="/' + data[0] + '">View user</a>' +
+                        '<a class="dropdown-item" href="/dashboard/users/' + data[0] + '">View user</a>' +
                         '<a class="dropdown-item btn-remove" href="javascript:void(0)" data="' + data[0] + '">Remove</a>' +
                         '<a class="dropdown-item btn-reset-password" href="javascript:void(0)" data="' + data[2] + '">Reset Password</a>' +
                         '<a class="dropdown-item btn-change-password" href="javascript:void(0)" onclick="window.location=\'user/' + data[0] + '/change-password\'">Change Password</a>' +
