@@ -1,6 +1,6 @@
 <template>
     <charity-common :charity="charity" :slug="slug" :activeLink="navLink">
-        <template v-slot:setting-content>
+        <template v-slot:charity-content>
             <form id="validation-form" v-on:submit.prevent>
                 <span class="edit-profile">Edit Profile</span>
                 <div class="row">

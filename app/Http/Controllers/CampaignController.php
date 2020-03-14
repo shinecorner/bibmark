@@ -32,7 +32,7 @@ class CampaignController extends Controller
         $sponsor = Sponsor::find($id);
         $campaigns = $this->service->getBySponsorId($id);
 
-        return view('front.campaign')->with([
+        return view('front.pages.sponsor.campaign.campaign')->with([
             'campaigns' => $campaigns,
             'id' => $id,
             'sponsor' => $sponsor,
@@ -50,7 +50,7 @@ class CampaignController extends Controller
     public function create($id)
     {
         $sponsor = Sponsor::find($id);
-        return view('front.add-campaign')->with([
+        return view('front.pages.sponsor.campaign.add-campaign')->with([
             'id' => $id,
             'sponsor' => $sponsor,
             'geoTargetDetails' => []
@@ -62,7 +62,7 @@ class CampaignController extends Controller
         $sponsor = Sponsor::find($id);
         $campaign = Campaign::find($campaignId);
         $geo_target_details = $campaign->listGeoTargets();
-        return view('front.edit-campaign')->with([
+        return view('front.pages.sponsor.campaign.edit-campaign')->with([
             'id' => $id,
             'campaignId' => $campaignId,
             'sponsor' => $sponsor,

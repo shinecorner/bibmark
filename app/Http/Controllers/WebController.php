@@ -37,12 +37,12 @@ class WebController extends Controller
 
     public function profilePage()
     {
-        return view('front.profile');
+        return view('front.pages.my.profile');
     }
 
     public function editAccountPage()
     {
-        return view('front.edit-account');
+        return view('front.pages.my.edit-account');
     }
 
     public function doLogin()
@@ -94,41 +94,41 @@ class WebController extends Controller
 
     public function myEventsPage()
     {
-        return view('front.my-events');
+        return view('front.pages.my.my-events');
     }
 
     public function myDesignsPage()
     {
-        return view('front.my-designs');
+        return view('front.pages.my.my-designs');
     }
 
     // Menu Header Pages
     public function techPage()
     {
-        return view('front.pages.tech');
+        return view('front.pages.cms.tech');
     }
 
     public function apparelPage()
     {
-        return view('front.pages.apparel');
+        return view('front.pages.apparel.apparel');
     }
 
     public function sponsorsPage()
     {
-        return view('front.pages.sponsors');
+        return view('front.pages.cms.sponsors');
     }
 
     public function racesPage()
     {
-        return view('front.pages.races');
+        return view('front.pages.cms.races');
     }
 
     public function charityPage()
     {
-        return view('front.pages.charity');
+        return view('front.pages.charities.charity');
     }
 
     public function designDemo() {
-        return view('front.designdemo');
+        return view('front.pages.design.designdemo');
     }
 }

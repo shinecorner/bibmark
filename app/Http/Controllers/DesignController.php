@@ -19,7 +19,7 @@ class DesignController extends Controller
      */
     public function index()
     {
-        return view('front.design');
+        return view('front.pages.design.design');
     }
 
     /**

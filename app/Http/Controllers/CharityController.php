@@ -35,7 +35,7 @@ class CharityController extends Controller
      */
     public function getDonations(Request $request, Charity $charity)
     {
-        return view('front.charities.donations.index', [
+        return view('front.pages.charities.donations.index', [
             'charity' => $charity
         ]);
     }
@@ -48,14 +48,14 @@ class CharityController extends Controller
      */
     public function getOrders(Charity $charity)
     {
-        return view('front.charities.orders.index', [
+        return view('front.pages.charities.orders.index', [
             'charity' => $charity
         ]);
     }
 
     public function show($charity_id) {
         $charity = Charity::find((int) $charity_id);
-        return view('front.edit-charity', [
+        return view('front.pages.charities.edit-charity', [
             'charity' => $charity,
             'id' => $charity_id,
             'slug' => $charity->slug() ? $charity->slug()->slug : ''
@@ -106,7 +106,7 @@ class CharityController extends Controller
      */
     public function index(Request $request, Charity $charity)
     {
-        return view('front.index-charity', [
+        return view('front.pages.charities.index-charity', [
             'charity' => $charity,
         ]);
     }
@@ -146,7 +146,7 @@ class CharityController extends Controller
     }
     public function report(Request $request, Charity $charity)
     {
-        return view('front.charities.report.index', [
+        return view('front.pages.charities.report.index', [
             'charity' => $charity
         ]);
     }

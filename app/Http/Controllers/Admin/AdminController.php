@@ -19,7 +19,7 @@ class AdminController extends Controller
      */
     public function login()
     {
-        return view('admin.pages.login');
+        return view('admin.pages.auth.login');
     }
 
     /**
@@ -29,7 +29,7 @@ class AdminController extends Controller
      */
 //    public function resetPassword($token)
 //    {
-//    	return view('admin.pages.reset-password',[
+//    	return view('admin.pages.auth.reset-password',[
 //            'token' => $token
 //        ]);
 //    }

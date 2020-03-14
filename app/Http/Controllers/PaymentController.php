@@ -18,7 +18,7 @@ class PaymentController extends Controller
     {
         $sponsor = Sponsor::find($id);
 
-        return view('front.payment-history')->with([
+        return view('front.pages.sponsor.payment-history')->with([
             'history' => [
                 '1'=>
                 [

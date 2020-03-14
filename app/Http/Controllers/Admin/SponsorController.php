@@ -101,7 +101,7 @@ class SponsorController extends Controller
     public function showSponsorPage(Sponsor $sponsor, $id)
     {
         $searchedSponsor = $sponsor::find($id);
-        return view('front.edit-sponsor')->with([
+        return view('front.pages.sponsor.edit-sponsor')->with([
             'logoUrl' => $searchedSponsor->logo,
             'coverUrl' => $searchedSponsor->background_image
         ]);

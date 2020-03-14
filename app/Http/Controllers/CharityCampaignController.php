@@ -32,7 +32,7 @@ class CharityCampaignController extends Controller
         $charity = Charity::find($id);
         $campaigns = $this->service->getByCharityId($id);
         
-        return view('front.charity_campaign')->with([
+        return view('front.pages.charities.campaign.charity_campaign')->with([
             'campaigns' => $campaigns,
             'id' => $id,
             'charity' => $charity,
@@ -50,7 +50,7 @@ class CharityCampaignController extends Controller
     public function create($id)
     {
         $charity = Charity::find($id);
-        return view('front.add-charity-campaign')->with([
+        return view('front.pages.charities.campaign.add-charity-campaign')->with([
             'id' => $id,
             'charity' => $charity,
             'geoTargetDetails' => []
@@ -62,7 +62,7 @@ class CharityCampaignController extends Controller
         $charity = Charity::find($id);
         $campaign = CharityCampaign::find($campaignId);
         $geo_target_details = $campaign->listGeoTargets();        
-        return view('front.edit-charity-campaign')->with([
+        return view('front.pages.charities.campaign.edit-charity-campaign')->with([
             'id' => $id,
             'campaignId' => $campaignId,
             'charity' => $charity,

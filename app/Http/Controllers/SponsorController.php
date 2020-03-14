@@ -33,7 +33,7 @@ class SponsorController extends Controller
      */
     public function index(Request $request, Sponsor $sponsor)
     {        
-        return view('front.index-sponsor', [
+        return view('front.pages.sponsor.index-sponsor', [
             'sponsor' => $sponsor,
         ]);
     }
@@ -67,7 +67,7 @@ class SponsorController extends Controller
     public function show($id)
     {
         $sponsor = Sponsor::find($id);
-        return view('front.edit-sponsor')->with([
+        return view('front.pages.sponsor.edit-sponsor')->with([
             'sponsor' => $sponsor,
             'id' => $id,
             'slug' => $sponsor->slug() ? $sponsor->slug()->slug : ''
