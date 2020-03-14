@@ -4,9 +4,9 @@
 @endsection
 
 @section('scripts')
-    window.charity_id = {{ $charity->id }};
+    <!-- window.charity_id = {{ $charity->id }}; -->
 @endsection
 
 @section('content')
-    Charity report
+<charity-report></charity-report>
 @endsection

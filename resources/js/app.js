@@ -14,6 +14,7 @@ import VeeValidate from 'vee-validate'
 import VModal from 'vue-js-modal'
 import VueToastr from '@deveodk/vue-toastr'
 import '@deveodk/vue-toastr/dist/@deveodk/vue-toastr.css'
+import VueApexCharts from 'vue-apexcharts'
 
 // State management
 import Vuex from 'vuex'
@@ -55,6 +56,7 @@ import { Chrome } from 'vue-color'
 
 //frontend
 Vue.component('color-picker', Chrome);
+Vue.component('apexchart', VueApexCharts)
 Vue.component('app-home', require('./front/home/Home.vue'))
 Vue.component('home-slider', require('./front/home/Slider.vue'))
 Vue.component('common-header', require('./front/common/Header.vue'))
@@ -133,6 +135,7 @@ Vue.component('logo-width', require('./front/common/components/LogoWidth.vue'))
 
 // Charity Donation...
 Vue.component('charity-common', require('./front/charity/CharityCommon.vue'))
+Vue.component('charity-report', require('./front/charity/CharityReport.vue'))
 Vue.component('charity-donation-list', require('./front/charity/CharityDonationList.vue'))
 Vue.component('charity-order-list', require('./front/charity/CharityOrderList.vue'))
 Vue.component('charity-index', require('./front/charity/CharityIndex.vue'))
