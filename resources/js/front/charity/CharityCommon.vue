@@ -38,7 +38,7 @@
                     {text: "Manage Team", isActive: false, url: ""},
                     {text: "Campaigns", isActive: false, url: ""},
                     {text: "Order Gallery", isActive: false, url: "/charity/{0}/order"},
-                    {text: "Reports", isActive: false, url: ""},
+                    {text: "Reports", isActive: false, url: "/charity/{0}/report"},
                     {text: "Payment Information", isActive: false, url: ""},
                     {text: "Donation History", isActive: false, url: "/charity/{0}/donation"}
                 ],

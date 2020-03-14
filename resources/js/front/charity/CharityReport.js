@@ -1,7 +1,7 @@
 export default {
     data() {
         return {
-            navLink: 'Report',
+            navLink: 'Reports',
             linechart: {
                 series: [{
                     name: 'Count',
