@@ -10,7 +10,7 @@
         <template v-if="type==='full'">
             <div class="main-section">
                 <div class="col-12 tab-section">
-                    <slot name="setting-content" :cover="cover"></slot>
+                    <slot name="sponsor-content" :cover="cover"></slot>
                 </div>
             </div>
         </template>
@@ -21,7 +21,7 @@
                       :key="index" @click="redirect(item.url)">{{item.text}}</span>
                 </div>
                 <div class="col-9 offset-1 pr-4vw">
-                    <slot name="setting-content" :cover="cover"></slot>
+                    <slot name="sponsor-content" :cover="cover"></slot>
                 </div>
             </div>
         </template>
@@ -38,7 +38,7 @@
                     {text: "Manage Team", isActive: false, url: ""},
                     {text: "Campaigns", isActive: false, url: "/sponsor/{0}/campaign"},
                     {text: "Order Gallery", isActive: false, url: ""},
-                    {text: "Reports", isActive: false, url: ""},
+                    {text: "Reports", isActive: false, url: "/sponsor/{0}/report"},
                     {text: "Payment Information", isActive: false, url: ""},
                     {text: "Payment History", isActive: false, url: "/sponsor/{0}/payment/history"}
                 ],

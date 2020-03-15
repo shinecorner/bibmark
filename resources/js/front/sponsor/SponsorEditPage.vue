@@ -1,6 +1,6 @@
 <template>
     <sponsor-common :sponsor="sponsor" :slug="slug" :activeLink="navLink">
-        <template v-slot:setting-content>
+        <template v-slot:sponsor-content>
             <form id="validation-form" v-on:submit.prevent>
                 <span class="edit-profile">Edit Profile</span>
                 <div class="row">
@@ -47,7 +47,7 @@
                             <div class="right-side">
                                 <input id="slug" name="slug" type="text" v-model="slug">
                                 <small v-if="!errorsList.slug.valid" id="slugError" class="form-text">
-                                    <p class="text-red" v-for="error in errorsList.slug.messages" style="color: red;">
+                                    <p class="text-red" v-bind:key="error" v-for="error in errorsList.slug.messages" style="color: red;">
                                         {{ error }}
                                     </p>
                                 </small>

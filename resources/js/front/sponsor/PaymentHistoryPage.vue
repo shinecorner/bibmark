@@ -1,6 +1,6 @@
 <template>
     <sponsor-common :sponsor="sponsor" :activeLink="navLink">
-        <template v-slot:setting-content>
+        <template v-slot:sponsor-content>
             <span class="history">Payment History</span>
             <payment-history-list v-bind:history="history"></payment-history-list>
         </template>

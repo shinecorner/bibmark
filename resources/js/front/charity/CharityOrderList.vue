@@ -1,6 +1,6 @@
 <template>
     <charity-common :activeLink="navLink">
-        <template v-slot:setting-content>
+        <template v-slot:charity-content>
             <div class="caption pb-4">
                 <span class="donation">Order Gallery</span>
             </div>

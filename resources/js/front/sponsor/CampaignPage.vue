@@ -1,6 +1,6 @@
 <template>
     <sponsor-common :sponsor="sponsor" :activeLink="navLink">
-        <template v-slot:setting-content>
+        <template v-slot:sponsor-content>
             <div class="caption">
                 <span class="campaign">Campaigns</span>
                 <span class="total">Total Logo Uploaded: 19M</span>
@@ -19,7 +19,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        <tr class="table-row" v:key="campaign.id" v-for="campaign in finalCampaigns">
+                        <tr class="table-row" v-bind:key="campaign.id" v-for="campaign in finalCampaigns">
                             <td>{{campaign.name}}</td>
                             <td><img :src="campaign.logo" width="50px"></td>
                             <td>{{campaign.budget}}</td>

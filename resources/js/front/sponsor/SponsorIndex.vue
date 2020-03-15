@@ -1,6 +1,6 @@
 <template>
     <sponsor-common :sponsor="sponsor" type="full">
-        <template v-slot:setting-content>
+        <template v-slot:sponsor-content>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-2 sidebar">

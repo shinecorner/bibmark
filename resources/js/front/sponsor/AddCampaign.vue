@@ -1,6 +1,6 @@
 <template>
     <sponsor-common :sponsor="sponsor" :activeLink="navLink">
-        <template v-slot:setting-content>
+        <template v-slot:sponsor-content>
             <form id="validation-form">
                 <div class="row add-campaign-row input-form ">
                     <div class="col-12">

@@ -198,4 +198,14 @@ class SponsorController extends Controller
 
         return $this->{$service}->getPosts($tags);
     }
+
+    public function report($id)
+    {
+        $sponsor = Sponsor::find($id);
+        return view('front.pages.sponsor.report')->with([
+            'sponsor' => $sponsor,
+            'id' => $id,
+            'slug' => $sponsor->slug() ? $sponsor->slug()->slug : ''
+        ]);
+    }
 }
